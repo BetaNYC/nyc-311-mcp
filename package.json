@@ -1,0 +1,56 @@
+{
+  "name": "@betanyc/nyc-311-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for the NYC 311 Public API — city-services calendar, emergency/weather status alerts, and 311 service-request lookup",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-assistant",
+    "nyc",
+    "new-york-city",
+    "civic-tech",
+    "open-data",
+    "open-government",
+    "betanyc",
+    "311",
+    "nyc-311",
+    "alternate-side-parking",
+    "service-request",
+    "city-services"
+  ],
+  "license": "MIT",
+  "author": "BetaNYC",
+  "homepage": "https://github.com/BetaNYC/nyc-311-mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BetaNYC/nyc-311-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BetaNYC/nyc-311-mcp/issues"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "nyc-311-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
