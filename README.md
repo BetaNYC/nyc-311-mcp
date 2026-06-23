@@ -149,14 +149,14 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 
 ---
 
-## Setup — getting an API key
+## API key
 
-The NYC 311 Public API requires a subscription key on every request.
+**Yes — a free API key is required.** The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
 
 1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and register / sign in.
 2. Subscribe to the **NYC 311 Public Developers** product (see the table below for which product to choose).
 3. On your [profile page](https://api-portal.nyc.gov/profile), copy a subscription key. Each subscription has a **primary** and a **secondary** key — either one works; the pair exists so you can rotate keys without downtime.
-4. Set it as the `NYC_311_API_KEY` environment variable.
+4. Set it as the `NYC_311_API_KEY` environment variable, e.g. `export NYC_311_API_KEY="your-subscription-key"`.
 
 ### Which product to subscribe to
 
@@ -285,6 +285,10 @@ Part of BetaNYC's family of MCP servers for NYC and NYS civic data:
 Issues and pull requests welcome at [github.com/BetaNYC/nyc-311-mcp](https://github.com/BetaNYC/nyc-311-mcp).
 
 ---
+
+## Support our work
+
+Freedom isn't free. [Support BetaNYC](https://beta.nyc/donate/).
 
 ## License
 
