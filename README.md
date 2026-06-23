@@ -286,6 +286,10 @@ Issues and pull requests welcome at [github.com/BetaNYC/nyc-311-mcp](https://git
 
 ---
 
+## Support our work
+
+Freedom isn't free. [Support BetaNYC](https://beta.nyc/donate/).
+
 ## License
 
 MIT License
