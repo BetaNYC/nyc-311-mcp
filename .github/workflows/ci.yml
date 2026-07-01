@@ -1,0 +1,72 @@
+# Continuous integration for nyc-311-mcp.
+#
+# This gate enforces that the TypeScript compiles cleanly (`npm run build`)
+# on every pull request and every push to main, across both ends of the
+# supported Node range. It is the TypeScript-repo counterpart to the main
+# BetaNYC workspace's Python CI (engineering-checks.yml) and follows
+# platform/system/engineering-standards.md: tests run at both ends of the
+# declared version range so version drift is caught before merge.
+#
+# Node matrix: 20.x and 22.x. package.json declares "engines.node >= 18",
+# but Node 18 reached End-of-Life on 2025-04-30, so the floor tested here
+# is Node 20 (oldest actively-maintained LTS) with Node 22 as the ceiling.
+# This matches the sibling repo nyc-charter-laws-rules, which made the same
+# call for the same reason. If the engines floor is later raised to >= 20,
+# this comment can be removed.
+#
+# Build-only for now: this repo has no `test` script yet. When test coverage
+# lands, add a "Run tests" step (`npm test`) after the build step.
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/**"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/**"
+  # Manual trigger — lets us fire a run on any branch. Needed because a
+  # path-scoped pull_request/push event does not fire on the very PR that
+  # introduces the workflow, so this gate never executed on its own PR (#2).
+  # Adding `.github/workflows/**` to the path filters above closes that gap for
+  # future workflow edits; this dispatch is retained permanently as a low-cost
+  # affordance for on-demand re-runs.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - "20.x"
+          - "22.x"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
