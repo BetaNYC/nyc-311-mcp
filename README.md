@@ -25,7 +25,7 @@ Exposes 4 tools over MCP:
 
 ### `get_calendar`
 
-Returns Alternate Side Parking, Collections (trash/recycling/compost), and Schools status for a single date or a date range. The range may not exceed 90 days. If no parameters are given, it defaults to today.
+Returns Alternate Side Parking, Collections (trash/recycling/compost), and Schools status for a single date or a date range. The range may not exceed 90 days. If no parameters are given, it defaults to today. Dates are interpreted in the America/New_York timezone — "today" means today in New York, regardless of the server's local time.
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -195,6 +195,12 @@ cd nyc-311-mcp
 npm install
 npm run build
 NYC_311_API_KEY=your_key npm start
+```
+
+Run the test suite (builds first; no API key or network needed):
+
+```bash
+npm test
 ```
 
 ---
