@@ -23,7 +23,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     {
       name: "get_calendar",
       description:
-        "Get Alternate Side Parking, Garbage & Recycling, and Schools status for a date or date range (max 90 days). If no date is given, defaults to today.",
+        "Get Alternate Side Parking, Garbage & Recycling, and Schools status for a date or date range (max 90 days). Dates are interpreted in America/New_York (Eastern Time); if no date is given, defaults to today in New York.",
       inputSchema: {
         type: "object",
         properties: {
