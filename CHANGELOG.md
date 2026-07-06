@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-07-06
+
 ### Fixed
 
 - `get_calendar` no-arg "today" now computed in America/New_York instead of
@@ -39,5 +41,6 @@ Initial release, published to npm as
   `get_status` / emergency and weather status alerts, `get_service_request`,
   and `get_service_request_list`.
 
-[Unreleased]: https://github.com/BetaNYC/nyc-311-mcp/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/BetaNYC/nyc-311-mcp/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/BetaNYC/nyc-311-mcp/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/BetaNYC/nyc-311-mcp/releases/tag/v1.0.0

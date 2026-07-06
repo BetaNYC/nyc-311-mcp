@@ -49,16 +49,73 @@ function buildUrl(path: string, params: Record<string, string> = {}): string {
   return url.toString();
 }
 
+const MAX_ERROR_BODY_CHARS = 500;
+const MAX_RETRY_AFTER_MS = 10_000;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Parse a Retry-After header (seconds or HTTP-date) into a bounded wait in ms. */
+export function retryAfterMs(header: string | null): number {
+  if (header) {
+    const seconds = Number(header);
+    if (Number.isFinite(seconds)) {
+      // Delta-seconds form; negative or zero means retry immediately-ish.
+      return Math.min(Math.max(seconds, 0) * 1000, MAX_RETRY_AFTER_MS);
+    }
+    const dateMs = Date.parse(header);
+    if (!Number.isNaN(dateMs)) {
+      return Math.min(Math.max(dateMs - Date.now(), 0), MAX_RETRY_AFTER_MS);
+    }
+  }
+  return 1000;
+}
+
+async function errorFromResponse(res: Response): Promise<Error> {
+  let bodyText = "";
+  try {
+    bodyText = (await res.text()).trim();
+  } catch {
+    // body unreadable; fall through with empty text
+  }
+  if (bodyText.length > MAX_ERROR_BODY_CHARS) {
+    bodyText = `${bodyText.slice(0, MAX_ERROR_BODY_CHARS)}… (truncated)`;
+  }
+  let message = `NYC 311 API error ${res.status}: ${res.statusText}`;
+  if (res.status === 401) {
+    message +=
+      " — authentication failed; check that NYC_311_API_KEY is set to a valid subscription key from https://api-portal.nyc.gov/ (product: 'NYC 311 Public Developers').";
+  }
+  if (bodyText) {
+    message += ` Response body: ${bodyText}`;
+  }
+  return new Error(message);
+}
+
+async function fetchWithRetry(
+  url: string,
+  init: RequestInit
+): Promise<Response> {
+  let res = await fetch(url, init);
+  if (res.status === 429) {
+    // One bounded retry, honoring Retry-After when present.
+    await sleep(retryAfterMs(res.headers.get("retry-after")));
+    res = await fetch(url, init);
+  }
+  return res;
+}
+
 async function apiGet<T = unknown>(
   path: string,
   params: Record<string, string> = {}
 ): Promise<T> {
   const apiKey = getApiKey();
-  const res = await fetch(buildUrl(path, params), {
+  const res = await fetchWithRetry(buildUrl(path, params), {
     headers: { "Ocp-Apim-Subscription-Key": apiKey },
   });
   if (!res.ok) {
-    throw new Error(`NYC 311 API error ${res.status}: ${res.statusText}`);
+    throw await errorFromResponse(res);
   }
   return res.json() as Promise<T>;
 }
@@ -68,7 +125,7 @@ async function apiPost<T = unknown>(
   body: unknown
 ): Promise<T> {
   const apiKey = getApiKey();
-  const res = await fetch(buildUrl(path), {
+  const res = await fetchWithRetry(buildUrl(path), {
     method: "POST",
     headers: {
       "Ocp-Apim-Subscription-Key": apiKey,
@@ -77,7 +134,7 @@ async function apiPost<T = unknown>(
     body: JSON.stringify(body),
   });
   if (!res.ok) {
-    throw new Error(`NYC 311 API error ${res.status}: ${res.statusText}`);
+    throw await errorFromResponse(res);
   }
   return res.json() as Promise<T>;
 }
@@ -96,8 +153,24 @@ function assertIsoDate(date: string): string {
   return date;
 }
 
-function todayIso(): string {
-  return new Date().toISOString().split("T")[0];
+// "Today" in New York, not UTC — toISOString() would roll to tomorrow after
+// 8pm ET (EDT) / 7pm ET (EST). en-CA formats as YYYY-MM-DD.
+export function todayIso(now: Date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+  }).format(now);
+}
+
+// Service request numbers look like "311-17323508".
+const SR_NUMBER_PATTERN = /^311-\d+$/i;
+
+export function assertSrNumber(srNumber: string): string {
+  if (!SR_NUMBER_PATTERN.test(srNumber)) {
+    throw new Error(
+      `Invalid service request number '${srNumber}': expected format '311-XXXXXXXX' (the literal prefix '311-' followed by digits, e.g. '311-17323508').`
+    );
+  }
+  return srNumber;
 }
 
 function daysBetween(fromIso: string, toIso: string): number {
@@ -157,11 +230,15 @@ export async function getStatus(type: StatusType): Promise<unknown> {
 }
 
 export async function getServiceRequest(srNumber: string): Promise<unknown> {
-  return apiGet<unknown>("/GetServiceRequest", { srnumber: srNumber });
+  return apiGet<unknown>("/GetServiceRequest", {
+    srnumber: assertSrNumber(srNumber),
+  });
 }
 
 export async function getServiceRequestList(
   srNumbers: string[]
 ): Promise<unknown> {
-  return apiPost<unknown>("/GetServiceRequestList", { SRNumbers: srNumbers });
+  return apiPost<unknown>("/GetServiceRequestList", {
+    SRNumbers: srNumbers.map(assertSrNumber),
+  });
 }
