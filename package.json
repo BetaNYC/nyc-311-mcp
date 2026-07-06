@@ -1,7 +1,7 @@
 {
   "name": "@betanyc/nyc-311-mcp",
   "version": "1.0.0",
-  "description": "MCP server for the NYC 311 Public API — city-services calendar, emergency/weather status alerts, and 311 service-request lookup",
+  "description": "MCP server for the NYC 311 Public API \u2014 city-services calendar, emergency/weather status alerts, and 311 service-request lookup",
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -40,7 +40,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "npm run build && node --test"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

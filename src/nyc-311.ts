@@ -14,24 +14,8 @@ function getApiKey(): string {
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type CalendarItem = {
-  type?: string;
-  status?: string;
-  exceptionName?: string;
-  details?: string;
-};
-
-export type CalendarDay = {
-  today_id?: string;
-  items?: CalendarItem[];
-};
-
-export type CalendarResponse = {
-  days?: CalendarDay[];
-};
-
-// Status and service-request response shapes are not fully documented upstream,
-// so they are typed loosely and returned as raw parsed JSON.
+// Response shapes are not fully documented upstream, so all endpoints are
+// typed loosely and returned as raw parsed JSON.
 export type StatusType =
   | "CodeBlue"
   | "FireHydrant"
@@ -39,47 +23,30 @@ export type StatusType =
   | "SnowOnSidewalk"
   | "SnowOnStreet";
 
-// ─── Fetch helpers ─────────────────────────────────────────────────────────────
+// ─── Fetch helper ──────────────────────────────────────────────────────────────
 
-function buildUrl(path: string, params: Record<string, string> = {}): string {
+async function apiFetch(
+  path: string,
+  opts: { params?: Record<string, string>; body?: unknown } = {}
+): Promise<unknown> {
+  const apiKey = getApiKey();
   const url = new URL(`${BASE_URL}${path}`);
-  for (const [key, value] of Object.entries(params)) {
+  for (const [key, value] of Object.entries(opts.params ?? {})) {
     url.searchParams.set(key, value);
   }
-  return url.toString();
-}
-
-async function apiGet<T = unknown>(
-  path: string,
-  params: Record<string, string> = {}
-): Promise<T> {
-  const apiKey = getApiKey();
-  const res = await fetch(buildUrl(path, params), {
-    headers: { "Ocp-Apim-Subscription-Key": apiKey },
-  });
+  const headers: Record<string, string> = {
+    "Ocp-Apim-Subscription-Key": apiKey,
+  };
+  let init: RequestInit = { headers };
+  if (opts.body !== undefined) {
+    headers["Content-Type"] = "application/json";
+    init = { ...init, method: "POST", body: JSON.stringify(opts.body) };
+  }
+  const res = await fetch(url.toString(), init);
   if (!res.ok) {
     throw new Error(`NYC 311 API error ${res.status}: ${res.statusText}`);
   }
-  return res.json() as Promise<T>;
-}
-
-async function apiPost<T = unknown>(
-  path: string,
-  body: unknown
-): Promise<T> {
-  const apiKey = getApiKey();
-  const res = await fetch(buildUrl(path), {
-    method: "POST",
-    headers: {
-      "Ocp-Apim-Subscription-Key": apiKey,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error(`NYC 311 API error ${res.status}: ${res.statusText}`);
-  }
-  return res.json() as Promise<T>;
+  return res.json();
 }
 
 // ─── Date helpers ──────────────────────────────────────────────────────────────
@@ -112,19 +79,9 @@ export async function getCalendar(opts: {
   date?: string;
   fromDate?: string;
   toDate?: string;
-}): Promise<CalendarResponse> {
-  let fromIso = opts.fromDate;
-  let toIso = opts.toDate;
-
-  if (!fromIso && !toIso) {
-    const single = opts.date ?? todayIso();
-    fromIso = single;
-    toIso = single;
-  } else {
-    // If a range is partially provided, fall back to date / each other.
-    fromIso = fromIso ?? opts.date ?? toIso ?? todayIso();
-    toIso = toIso ?? opts.date ?? fromIso;
-  }
+}): Promise<unknown> {
+  const fromIso = opts.fromDate ?? opts.date ?? todayIso();
+  const toIso = opts.toDate ?? fromIso;
 
   const span = daysBetween(fromIso, toIso);
   if (span < 0) {
@@ -138,30 +95,24 @@ export async function getCalendar(opts: {
     );
   }
 
-  return apiGet<CalendarResponse>("/GetCalendar", {
-    fromdate: assertIsoDate(fromIso),
-    todate: assertIsoDate(toIso),
+  return apiFetch("/GetCalendar", {
+    params: {
+      fromdate: assertIsoDate(fromIso),
+      todate: assertIsoDate(toIso),
+    },
   });
 }
 
-const STATUS_PATHS: Record<StatusType, string> = {
-  CodeBlue: "/Status/CodeBlue",
-  FireHydrant: "/Status/FireHydrant",
-  OEM: "/Status/OEM",
-  SnowOnSidewalk: "/Status/SnowOnSidewalk",
-  SnowOnStreet: "/Status/SnowOnStreet",
-};
-
 export async function getStatus(type: StatusType): Promise<unknown> {
-  return apiGet<unknown>(STATUS_PATHS[type]);
+  return apiFetch(`/Status/${type}`);
 }
 
 export async function getServiceRequest(srNumber: string): Promise<unknown> {
-  return apiGet<unknown>("/GetServiceRequest", { srnumber: srNumber });
+  return apiFetch("/GetServiceRequest", { params: { srnumber: srNumber } });
 }
 
 export async function getServiceRequestList(
   srNumbers: string[]
 ): Promise<unknown> {
-  return apiPost<unknown>("/GetServiceRequestList", { SRNumbers: srNumbers });
+  return apiFetch("/GetServiceRequestList", { body: { SRNumbers: srNumbers } });
 }
