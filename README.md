@@ -284,6 +284,15 @@ Part of BetaNYC's family of MCP servers for NYC and NYS civic data:
 
 Issues and pull requests welcome at [github.com/BetaNYC/nyc-311-mcp](https://github.com/BetaNYC/nyc-311-mcp).
 
+## Releases
+
+Releases are automated. Pushing a tag `vX.Y.Z` that matches the version in
+`package.json` triggers `.github/workflows/release.yml`, which runs the tests,
+publishes `@betanyc/nyc-311-mcp` to npm (with provenance), and creates a
+GitHub Release with generated notes. Version history lives in
+[CHANGELOG.md](CHANGELOG.md). Publishing requires the `NPM_TOKEN` repository
+secret.
+
 ---
 
 ## Support our work
