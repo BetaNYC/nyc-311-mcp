@@ -310,6 +310,18 @@ If you build something with this project, we'd love to hear about it. We can hel
   newsletter](https://www.beta.nyc/newsletter-inbox/) and we'll consider it for
   an upcoming issue.
 
+## Related BetaNYC MCP servers
+
+BetaNYC maintains a suite of open-source MCP servers for NYC and NYS civic data.
+See the full directory, with install details for each, at
+**[beta.nyc/ai-tools](https://beta.nyc/ai-tools)**.
+
+> **Working with the wider NYC Open Data portal?** For citywide complaint analysis
+> beyond single service-request lookup, the 311 Service Requests dataset lives on
+> NYC Open Data. Query it, and the rest of the catalog, with
+> [socrata-mcp-server](https://github.com/npstorey/socrata-mcp-server)
+> (`socrata-mcp-server` on npm), a third-party MCP by [Nathan Storey](https://github.com/npstorey).
+
 ---
 
 ## Contributing
