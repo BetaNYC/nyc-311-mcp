@@ -40,7 +40,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
-    "test": "npm run build && node --test dist/nyc-311.test.js",
+    "test": "npm run build && node --test dist/nyc-311.test.js \"test/*.test.mjs\"",
     "prepare": "npm run build"
   },
   "dependencies": {

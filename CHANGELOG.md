@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Tool schemas are strict. Unknown parameters are now rejected with a message
+  naming the offending key and the parameters the tool does accept, instead of
+  being silently dropped and answering with unfiltered results (#7).
+
+### Changed
+
+- Tool definitions and dispatch moved from `src/index.ts` to `src/tools.ts`,
+  exported as `TOOLS` and `callTool`, so they can be tested without starting
+  the stdio server. No change to the wire interface.
+
 ## [1.0.1] — 2026-07-06
 
 ### Fixed
