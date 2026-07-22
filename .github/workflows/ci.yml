@@ -14,16 +14,32 @@
 # call for the same reason. If the engines floor is later raised to >= 20,
 # this comment can be removed.
 #
-# Build-only for now: this repo has no `test` script yet. When test coverage
-# lands, add a "Run tests" step (`npm test`) after the build step.
+# Runs `npm test`, which is
+# `npm run build && node --test dist/nyc-311.test.js test/*.test.mjs` — the same
+# command a developer runs locally.
+#
+# The glob is deliberately UNQUOTED so the shell expands it and node receives
+# literal file paths. Quoted, node does the matching itself, and Node 20 does not
+# accept glob patterns as `node --test` arguments at all (added in 22) — it
+# treats the pattern as a literal path and runs ZERO of the test/ files. The
+# explicit dist/nyc-311.test.js path would still have run, so the breakage would
+# have looked like a partial pass rather than a miss. Do not re-add the quotes.
+#
+# No separate build step: `npm test` compiles first, so one would only run tsc
+# twice. A compile error still fails the job, with tsc's output at the top of
+# the step log.
 
 name: CI
 
 on:
+  # `test/**` matters: the tests are .mjs, so `**/*.ts` does not match them and a
+  # test-only change would otherwise skip this gate entirely — silently, which is
+  # the failure mode this workflow exists to catch.
   pull_request:
     branches: [main]
     paths:
       - "**/*.ts"
+      - "test/**"
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/**"
@@ -31,6 +47,7 @@ on:
     branches: [main]
     paths:
       - "**/*.ts"
+      - "test/**"
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/**"
@@ -46,8 +63,8 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build (Node ${{ matrix.node-version }})
+  test:
+    name: Build & test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -68,5 +85,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
+      - name: Build and test
+        run: npm test
