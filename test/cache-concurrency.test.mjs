@@ -63,3 +63,29 @@ test("a server that ignores the abort signal still cannot stall a download: the 
   const dir = path.join(cacheDir, "builds", buildKey(MANIFEST_A.generated_at), "boundaries");
   assert.deepEqual(await readdir(dir).catch(() => []), [], "no .partial left behind");
 });
+
+test("many tool calls at once on a cold cache: one manifest request, no clash over the state file (CI run 42438260798)", async () => {
+  let manifestRequests = 0;
+  const fetch = async (url) => {
+    const rel = String(url).slice(BASE.length);
+    if (rel === "manifest.json") {
+      manifestRequests += 1;
+      await new Promise((r) => setTimeout(r, 5));
+      return Response.json(MANIFEST_A);
+    }
+    return new Response(await readFile(path.join(FIX, ...rel.split("/"))));
+  };
+  for (let round = 0; round < 5; round++) {
+    manifestRequests = 0;
+    const cacheDir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-state-"));
+    const data = new BoardStatData({ dataUrl: BASE, cacheDir, fetch, logger: () => {} });
+    const results = await Promise.all(Array.from({ length: 12 }, () => data.manifest()));
+    assert.ok(results.every((r) => r.manifest.generated_at === MANIFEST_A.generated_at && !r.stale));
+    assert.equal(manifestRequests, 1, "parallel calls should share one manifest refresh");
+    // Two processes (two clients) sharing one cache folder refresh at the same moment.
+    const other = new BoardStatData({ dataUrl: BASE, cacheDir, fetch, logger: () => {}, manifestTtlMs: 0 });
+    const again = new BoardStatData({ dataUrl: BASE, cacheDir, fetch, logger: () => {}, manifestTtlMs: 0 });
+    await Promise.all([other.manifest(), again.manifest(), other.manifest({ force: true }), again.manifest({ force: true })]);
+    assert.deepEqual((await readdir(cacheDir)).filter((n) => n.endsWith(".tmp")), [], "no temp file left behind");
+  }
+});

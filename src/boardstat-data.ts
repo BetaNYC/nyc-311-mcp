@@ -26,6 +26,7 @@
 
 import { createWriteStream } from "node:fs";
 import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
+import { randomBytes } from "node:crypto";
 import { homedir } from "node:os";
 import path from "node:path";
 import { Readable } from "node:stream";
@@ -118,6 +119,7 @@ export function buildKey(generatedAt: string): string {
   return generatedAt.replace(/[^0-9A-Za-z]+/g, "-").replace(/-+$/, "");
 }
 
+let tmpCounter = 0;
 const BUILD_KEY = /^\d{4}-\d{2}-\d{2}T[0-9A-Za-z-]+$/;
 const ZIP_COLUMN = /zip/i;
 
@@ -237,7 +239,9 @@ export class BoardStatData {
 
   private async saveState(state: CacheState) {
     await mkdir(this.cacheDir, { recursive: true });
-    const tmp = `${this.statePath}.${process.pid}.tmp`;
+    // A name no other writer can share: parallel refreshes in one process, or two
+    // processes on one cache folder, each rename their own file (last one wins).
+    const tmp = `${this.statePath}.${process.pid}.${++tmpCounter}.${randomBytes(4).toString("hex")}.tmp`;
     await writeFile(tmp, JSON.stringify(state));
     await rename(tmp, this.statePath);
     this.state = state;
@@ -252,6 +256,26 @@ export class BoardStatData {
    * for `offlineBackoffMs`.
    */
   async manifest(opts: { force?: boolean } = {}): Promise<ManifestResult> {
+    const cached = await this.loadState();
+    if (!opts.force && cached && this.now() - cached.checked_at < this.ttl) {
+      return { manifest: cached.manifest, stale: false };
+    }
+    // Single flight: every caller that needs a refresh while one is running waits
+    // for that one, instead of asking beta.nyc again and racing on the state file.
+    // A forced call may have learned something the running refresh had not (a size
+    // mismatch), so it waits for that one to end and then asks again.
+    if (opts.force && this.refreshing) await this.refreshing.catch(() => undefined);
+    if (!this.refreshing || opts.force) {
+      this.refreshing = this.refreshManifest(opts).finally(() => {
+        this.refreshing = null;
+      });
+    }
+    return this.refreshing;
+  }
+
+  private refreshing: Promise<ManifestResult> | null = null;
+
+  private async refreshManifest(opts: { force?: boolean }): Promise<ManifestResult> {
     const cached = await this.loadState();
     if (!opts.force && cached && this.now() - cached.checked_at < this.ttl) {
       return { manifest: cached.manifest, stale: false };
@@ -358,8 +382,12 @@ export class BoardStatData {
    * `file()`, then `use` the local path while the build folder is held, so a newer
    * build arriving meanwhile (and pruning the old folder) cannot pull it away mid-read.
    */
-  private async withFile<T>(relPath: string, use: (p: string, mr: ManifestResult) => Promise<T>): Promise<T> {
-    const mr = await this.manifest();
+  private async withFile<T>(
+    relPath: string,
+    use: (p: string, mr: ManifestResult) => Promise<T>,
+    pinned?: ManifestResult
+  ): Promise<T> {
+    const mr = pinned ?? (await this.manifest());
     const attempt = (m: ManifestResult) =>
       this.leased(buildKey(m.manifest.generated_at), async () => {
         const { path: p } = await this.fileFor(relPath, m);
@@ -369,6 +397,12 @@ export class BoardStatData {
       return await attempt(mr);
     } catch (err) {
       if (!(err instanceof SizeMismatchError)) throw err;
+      if (pinned) {
+        // One answer must come from one build, so it is not retried on a newer one.
+        throw new Error(
+          `BoardStat published a new build while this answer was being put together (${relPath} changed since ${pinned.manifest.generated_at}). Ask again to use the new build.`
+        );
+      }
       const again = await this.manifest({ force: true });
       const unchanged =
         again.manifest.generated_at === mr.manifest.generated_at && again.manifest.files[relPath] === err.expected;
@@ -437,13 +471,30 @@ export class BoardStatData {
   }
 
   /** Column names of a published Parquet file, ZIP columns removed. */
-  async columns(relPath: string): Promise<string[]> {
-    return this.withFile(relPath, async (p) => {
-      const md = await parquetMetadataAsync(await asyncBufferFromFile(p));
-      return parquetSchema(md)
-        .children.map((c) => c.element.name)
-        .filter((n) => !ZIP_COLUMN.test(n));
-    });
+  async columns(relPath: string, pinned?: ManifestResult): Promise<string[]> {
+    return this.withFile(
+      relPath,
+      async (p) => {
+        const md = await parquetMetadataAsync(await asyncBufferFromFile(p));
+        return parquetSchema(md)
+          .children.map((c) => c.element.name)
+          .filter((n) => !ZIP_COLUMN.test(n));
+      },
+      pinned
+    );
+  }
+
+  /**
+   * A view of this client fixed to one build: every read through it uses the same
+   * manifest, so one answer never mixes two builds. A tool takes one per call.
+   */
+  async pinned(): Promise<PinnedBoardStat> {
+    const mr = await this.manifest();
+    return {
+      siteUrl: this.siteUrl,
+      manifest: async () => mr,
+      readParquet: (relPath, opts = {}) => this.readParquet(relPath, { ...opts, manifest: mr }),
+    };
   }
 
   /**
@@ -452,13 +503,13 @@ export class BoardStatData {
    */
   async readParquet(
     relPath: string,
-    opts: { columns?: string[]; rowStart?: number; rowEnd?: number; filter?: Record<string, unknown> } = {}
+    opts: ReadParquetOptions & { manifest?: ManifestResult } = {}
   ): Promise<{ rows: Record<string, unknown>[]; manifest: ManifestResult }> {
     const asked = opts.columns?.filter((c) => ZIP_COLUMN.test(c)) ?? [];
     if (asked.length) throw new Error(`ZIP code columns are not available (${asked.join(", ")}).`);
     // A filter on a ZIP column would answer a ZIP question without returning the column.
     if (opts.filter !== undefined) assertNoZipFilter(opts.filter);
-    const columns = opts.columns ?? (await this.columns(relPath));
+    const columns = opts.columns ?? (await this.columns(relPath, opts.manifest));
     return this.withFile(relPath, async (p, manifest) => {
       const rows = await parquetReadObjects({
         file: await asyncBufferFromFile(p),
@@ -471,7 +522,7 @@ export class BoardStatData {
         compressors,
       });
       return { rows: rows.map(plainRow), manifest };
-    });
+    }, opts.manifest);
   }
 
   /** A published JSON file (the boundaries GeoJSON). */
@@ -479,6 +530,15 @@ export class BoardStatData {
     return this.withFile(relPath, async (p, manifest) => ({ value: JSON.parse(await readFile(p, "utf8")), manifest }));
   }
 }
+
+export type ReadParquetOptions = { columns?: string[]; rowStart?: number; rowEnd?: number; filter?: Record<string, unknown> };
+
+/** BoardStatData fixed to one build (`BoardStatData.pinned()`). */
+export type PinnedBoardStat = {
+  readonly siteUrl: string;
+  manifest(): Promise<ManifestResult>;
+  readParquet(relPath: string, opts?: ReadParquetOptions): Promise<{ rows: Record<string, unknown>[]; manifest: ManifestResult }>;
+};
 
 /** Thrown when a download's size disagrees with the manifest. */
 export class SizeMismatchError extends Error {
