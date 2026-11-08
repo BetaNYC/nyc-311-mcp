@@ -3,3 +3,4 @@ dist/
 .env
 *.js.map
 .DS_Store
+__pycache__/

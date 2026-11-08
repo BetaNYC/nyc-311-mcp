@@ -1,0 +1,511 @@
+{
+ "last_day": "2026-11-04",
+ "top_problems_all": {
+  "requests": 687,
+  "requests_year_earlier": 781,
+  "problems": [
+   {
+    "problem": "Street Light Condition",
+    "requests": 203,
+    "median_days_to_close": 0.0,
+    "same_days_a_year_earlier": 202
+   },
+   {
+    "problem": "Illegal Parking",
+    "requests": 85,
+    "median_days_to_close": 0.1,
+    "same_days_a_year_earlier": 98
+   },
+   {
+    "problem": "Noise - Street/Sidewalk",
+    "requests": 52,
+    "median_days_to_close": 0.0,
+    "same_days_a_year_earlier": 50
+   },
+   {
+    "problem": "Street Condition",
+    "requests": 50,
+    "median_days_to_close": 2.9,
+    "same_days_a_year_earlier": 56
+   },
+   {
+    "problem": "Traffic Signal Condition",
+    "requests": 41,
+    "median_days_to_close": 0.4,
+    "same_days_a_year_earlier": 28
+   },
+   {
+    "problem": "Maintenance or Facility",
+    "requests": 25,
+    "median_days_to_close": 1.7,
+    "same_days_a_year_earlier": 40
+   },
+   {
+    "problem": "Noise - Vehicle",
+    "requests": 19,
+    "median_days_to_close": 0.0,
+    "same_days_a_year_earlier": 16
+   },
+   {
+    "problem": "Abandoned Vehicle",
+    "requests": 17,
+    "median_days_to_close": 0.0,
+    "same_days_a_year_earlier": 16
+   },
+   {
+    "problem": "Beach/Pool/Sauna Complaint",
+    "requests": 16,
+    "median_days_to_close": 3.0,
+    "same_days_a_year_earlier": 14
+   },
+   {
+    "problem": "Dead Animal",
+    "requests": 13,
+    "median_days_to_close": 2.7,
+    "same_days_a_year_earlier": 9
+   }
+  ]
+ },
+ "top_problems_fy2026": {
+  "requests": 104,
+  "requests_year_earlier": 99,
+  "problems": [
+   {
+    "problem": "Illegal Parking",
+    "requests": 15,
+    "median_days_to_close": 0.0,
+    "same_days_a_year_earlier": 13
+   },
+   {
+    "problem": "Street Light Condition",
+    "requests": 14,
+    "median_days_to_close": 4.8,
+    "same_days_a_year_earlier": 30
+   },
+   {
+    "problem": "Traffic Signal Condition",
+    "requests": 11,
+    "median_days_to_close": 0.1,
+    "same_days_a_year_earlier": 6
+   },
+   {
+    "problem": "Street Condition",
+    "requests": 9,
+    "median_days_to_close": 0.3,
+    "same_days_a_year_earlier": 8
+   },
+   {
+    "problem": "Dead Animal",
+    "requests": 7,
+    "median_days_to_close": null,
+    "same_days_a_year_earlier": 2
+   }
+  ]
+ },
+ "agency_response_all": {
+  "agencies": [
+   {
+    "agency": "DOT",
+    "requests": 376,
+    "not_closed": 96,
+    "closed": 280,
+    "median_days_to_close": 0.9,
+    "average_days_to_close": 20.8
+   },
+   {
+    "agency": "NYPD",
+    "requests": 288,
+    "not_closed": 0,
+    "closed": 288,
+    "median_days_to_close": 0.0,
+    "average_days_to_close": 0.1
+   },
+   {
+    "agency": "DPR",
+    "requests": 64,
+    "not_closed": 1,
+    "closed": 63,
+    "median_days_to_close": 1.0,
+    "average_days_to_close": 85.1
+   },
+   {
+    "agency": "DSNY",
+    "requests": 55,
+    "not_closed": 12,
+    "closed": 43,
+    "median_days_to_close": 1.8,
+    "average_days_to_close": 4.6
+   },
+   {
+    "agency": "DOHMH",
+    "requests": 28,
+    "not_closed": 1,
+    "closed": 27,
+    "median_days_to_close": 1.7,
+    "average_days_to_close": 48.2
+   },
+   {
+    "agency": "DEP",
+    "requests": 23,
+    "not_closed": 2,
+    "closed": 21,
+    "median_days_to_close": 0.9,
+    "average_days_to_close": 8.4
+   },
+   {
+    "agency": "DOB",
+    "requests": 9,
+    "not_closed": 0,
+    "closed": 9,
+    "median_days_to_close": 1.1,
+    "average_days_to_close": 35.5
+   },
+   {
+    "agency": "TLC",
+    "requests": 9,
+    "not_closed": 4,
+    "closed": 5,
+    "median_days_to_close": 63.9,
+    "average_days_to_close": 114.4
+   },
+   {
+    "agency": "DHS",
+    "requests": 7,
+    "not_closed": 0,
+    "closed": 7,
+    "median_days_to_close": 0.3,
+    "average_days_to_close": 0.6
+   },
+   {
+    "agency": "DCWP",
+    "requests": 5,
+    "not_closed": 0,
+    "closed": 5,
+    "median_days_to_close": 34.1,
+    "average_days_to_close": 49.0
+   },
+   {
+    "agency": "OSE",
+    "requests": 3,
+    "not_closed": 0,
+    "closed": 3,
+    "median_days_to_close": 29.3,
+    "average_days_to_close": 22.4
+   }
+  ]
+ },
+ "still_open_all": {
+  "not_closed": 116,
+  "by_agency": [
+   {
+    "agency": "DOT",
+    "not_closed": 96,
+    "oldest_created": "2020-01-10"
+   },
+   {
+    "agency": "DSNY",
+    "not_closed": 12,
+    "oldest_created": "2021-01-06"
+   },
+   {
+    "agency": "TLC",
+    "not_closed": 4,
+    "oldest_created": "2020-06-15"
+   },
+   {
+    "agency": "DEP",
+    "not_closed": 2,
+    "oldest_created": "2026-05-15"
+   },
+   {
+    "agency": "DOHMH",
+    "not_closed": 1,
+    "oldest_created": "2021-01-08"
+   },
+   {
+    "agency": "DPR",
+    "not_closed": 1,
+    "oldest_created": "2026-06-13"
+   }
+  ],
+  "oldest_first": [
+   {
+    "sr_number": "45358286",
+    "created": "2020-01-10 08:37:00",
+    "days_open": 2492.9
+   },
+   {
+    "sr_number": "45788181",
+    "created": "2020-03-09 14:23:00",
+    "days_open": 2433.6
+   },
+   {
+    "sr_number": "46044896",
+    "created": "2020-04-22 14:04:00",
+    "days_open": 2389.6
+   },
+   {
+    "sr_number": "46102338",
+    "created": "2020-05-01 14:18:00",
+    "days_open": 2380.6
+   },
+   {
+    "sr_number": "46385431",
+    "created": "2020-06-04 11:24:00",
+    "days_open": 2346.8
+   }
+  ]
+ },
+ "top_addresses_all": {
+  "requests": 867,
+  "requests_without_street_address": 236,
+  "addresses": [
+   {
+    "address": "JACOB RIIS PARK",
+    "requests": 67
+   },
+   {
+    "address": "157 ROCKAWAY BEACH BOULEVARD",
+    "requests": 47
+   },
+   {
+    "address": "95 STREET",
+    "requests": 41
+   },
+   {
+    "address": "175-10 CROSS BAY BOULEVARD",
+    "requests": 32
+   },
+   {
+    "address": "1 BEACH 227 STREET",
+    "requests": 31
+   }
+  ]
+ },
+ "problem_trend_noise": {
+  "months": [
+   {
+    "month": "2025-07",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2025-08",
+    "requests": 1,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2025-09",
+    "requests": 1,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2025-10",
+    "requests": 1,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2025-11",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2025-12",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2026-01",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2026-02",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2026-03",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2026-04",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2026-05",
+    "requests": 0,
+    "same_days_a_year_earlier": 1
+   },
+   {
+    "month": "2026-06",
+    "requests": 0,
+    "same_days_a_year_earlier": 1
+   },
+   {
+    "month": "2026-07",
+    "requests": 4,
+    "same_days_a_year_earlier": 0
+   },
+   {
+    "month": "2026-08",
+    "requests": 1,
+    "same_days_a_year_earlier": 1
+   },
+   {
+    "month": "2026-09",
+    "requests": 0,
+    "same_days_a_year_earlier": 1
+   },
+   {
+    "month": "2026-10",
+    "requests": 0,
+    "same_days_a_year_earlier": 1
+   },
+   {
+    "month": "2026-11",
+    "requests": 0,
+    "same_days_a_year_earlier": 0
+   }
+  ]
+ },
+ "district_summary_fy2027": {
+  "requests": 24,
+  "not_closed": 1,
+  "median_days_to_close": 0.1,
+  "average_days_to_close": 2.2,
+  "comparison": {
+   "top_problems_by_share": [
+    {
+     "problem": "Illegal Parking",
+     "district_share": 0.25,
+     "borough_share": 0.2036,
+     "city_share": 0.161
+    },
+    {
+     "problem": "Noise - Street/Sidewalk",
+     "district_share": 0.2083,
+     "borough_share": 0.0357,
+     "city_share": 0.0633
+    },
+    {
+     "problem": "Beach/Pool/Sauna Complaint",
+     "district_share": 0.1667,
+     "borough_share": 0.0001,
+     "city_share": 0.0001
+    },
+    {
+     "problem": "Traffic Signal Condition",
+     "district_share": 0.125,
+     "borough_share": 0.0123,
+     "city_share": 0.0122
+    },
+    {
+     "problem": "Street Light Condition",
+     "district_share": 0.0833,
+     "borough_share": 0.01,
+     "city_share": 0.0117
+    },
+    {
+     "problem": "Maintenance or Facility",
+     "district_share": 0.0417,
+     "borough_share": 0.0082,
+     "city_share": 0.0092
+    },
+    {
+     "problem": "Mosquitoes",
+     "district_share": 0.0417,
+     "borough_share": 0.0005,
+     "city_share": 0.0004
+    },
+    {
+     "problem": "Sewer Maintenance",
+     "district_share": 0.0417,
+     "borough_share": 0.0146,
+     "city_share": 0.0087
+    },
+    {
+     "problem": "Street Condition",
+     "district_share": 0.0417,
+     "borough_share": 0.0271,
+     "city_share": 0.019
+    }
+   ]
+  }
+ },
+ "address_history_top": {
+  "address": "JACOB RIIS PARK",
+  "requests": 67,
+  "by_problem": [
+   {
+    "problem": "Street Light Condition",
+    "requests": 31,
+    "not_closed": 11
+   },
+   {
+    "problem": "Non-Emergency Police Matter",
+    "requests": 13,
+    "not_closed": 0
+   },
+   {
+    "problem": "Beach/Pool/Sauna Complaint",
+    "requests": 4,
+    "not_closed": 0
+   },
+   {
+    "problem": "Maintenance or Facility",
+    "requests": 4,
+    "not_closed": 0
+   },
+   {
+    "problem": "Illegal Parking",
+    "requests": 3,
+    "not_closed": 0
+   },
+   {
+    "problem": "Violation of Park Rules",
+    "requests": 3,
+    "not_closed": 0
+   },
+   {
+    "problem": "Illegal Fireworks",
+    "requests": 2,
+    "not_closed": 0
+   },
+   {
+    "problem": "Street Condition",
+    "requests": 2,
+    "not_closed": 0
+   },
+   {
+    "problem": "Traffic",
+    "requests": 2,
+    "not_closed": 0
+   },
+   {
+    "problem": "Dirty Condition",
+    "requests": 1,
+    "not_closed": 0
+   },
+   {
+    "problem": "Noise - Residential",
+    "requests": 1,
+    "not_closed": 0
+   },
+   {
+    "problem": "Noise - Street/Sidewalk",
+    "requests": 1,
+    "not_closed": 0
+   }
+  ],
+  "newest_sr_numbers": [
+   "69025033",
+   "68948643",
+   "67215218",
+   "66376131",
+   "65881186"
+  ]
+ }
+}

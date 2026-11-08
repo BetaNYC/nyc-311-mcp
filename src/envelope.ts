@@ -20,7 +20,11 @@ export type BoardStatLinkFilters = {
   start?: string;
   end?: string;
   types?: string[];
+  /** Descriptions (BoardStat's `desc`), and whether they are excluded rather than kept (`descx=1`). */
+  descs?: string[];
+  descExclude?: boolean;
   agency?: string;
+  /** "Closed", "not_closed" (BoardStat's "Not yet closed"), or another status BoardStat lists. */
   status?: string;
 };
 
@@ -28,7 +32,8 @@ export type BoardStatLinkFilters = {
  * A BoardStat page link with the same filters as the answer, so a person can
  * check it. Parameter names are the ones BoardStat's district page reads
  * (BoardStat v2/site/js/district.js, readState/writeUrl): geo, id, start, end,
- * type (joined with "|"), agency, status. Without a district it links the home page.
+ * type and desc (each joined with "|"), descx=1 (exclude the descriptions), agency,
+ * status. Without a district it links the home page.
  *
  * Addresses are deliberately not accepted: BoardStat keeps street addresses out of
  * district-page URLs (district.js, writeUrl) and this link does the same.
@@ -39,6 +44,8 @@ export function boardstatUrl(siteUrl: string, f: BoardStatLinkFilters = {}): str
   if (f.start) p.set("start", f.start);
   if (f.end) p.set("end", f.end);
   if (f.types?.length) p.set("type", f.types.join("|"));
+  if (f.descs?.length) p.set("desc", f.descs.join("|"));
+  if (f.descs?.length && f.descExclude) p.set("descx", "1");
   if (f.agency) p.set("agency", f.agency);
   if (f.status) p.set("status", f.status);
   return `${new URL("district.html", siteUrl).toString()}?${p.toString()}`;
@@ -58,6 +65,8 @@ export type DistrictEnvelope<T> = {
   };
   /** Set when beta.nyc could not be reached and an older cached build answered. */
   warning?: string;
+  /** True only in that case (the cached build answered while beta.nyc was unreachable). */
+  stale?: true;
   data: T;
 };
 
@@ -99,7 +108,13 @@ export function districtEnvelope<T>(args: {
     },
     data: args.data,
   };
-  if (mr.stale && mr.warning) env.warning = mr.warning;
+  if (mr.stale) {
+    // Said twice on purpose: `warning` for clients that look for it, and a caveat for
+    // the many that read only the caveats aloud.
+    env.warning = mr.warning ?? `BoardStat could not be reached; this answer comes from the cached build of ${m.generated_at}.`;
+    env.stale = true;
+    env.caveats.push(`BoardStat could not be reached just now, so this answer comes from a saved copy of the data built ${m.generated_at}. Newer data may exist.`);
+  }
   assertNoZip(env);
   return env;
 }

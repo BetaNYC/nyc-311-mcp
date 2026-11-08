@@ -1,9 +1,10 @@
-# District tools: design (Phase 0)
+# District tools: design
 
-Status: **groundwork only.** None of the district tools exist yet. This file records the
-choices made in Phase 0 ([#13](https://github.com/BetaNYC/nyc-311-mcp/issues/13), epic
-[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12)) so Phase 1
-([#14](https://github.com/BetaNYC/nyc-311-mcp/issues/14)) builds on one shape.
+Status: **the ten tools are built** (Phase 1, [#14](https://github.com/BetaNYC/nyc-311-mcp/issues/14)),
+on the groundwork of Phase 0 ([#13](https://github.com/BetaNYC/nyc-311-mcp/issues/13)), epic
+[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12). The Phase 1 sections are at the end:
+[The ten tools](#the-ten-tools-phase-1), [How they count](#how-they-count), and
+[Checking the numbers](#checking-the-numbers).
 
 ## Where the numbers come from
 
@@ -134,12 +135,96 @@ and reaches no host but beta.nyc. Phase 0 ships the exact-match primitive
 (`lookupAddress`, after BoardStat's own normalization: trimmed, spaces collapsed, upper
 case). One address string can be in several boroughs, so all matches are returned.
 
-Left for Phase 1:
+**City spelling (Phase 1).** `src/address-spelling.ts` ports BoardStat's own address
+search (`v2/site/js/index.js`, `normalizeAddress`), so this server and the BoardStat page find
+the same addresses: upper case, periods removed, everything after the first comma dropped, a
+trailing ZIP code dropped and never used, ordinal endings dropped (`5TH` to `5`), `E/W/N/S`
+after the house number spelled out, and the street-type word expanded only as the last word
+(`AVE` to `AVENUE`; `ST NICHOLAS AVENUE` keeps its `ST`). One addition comes from the data
+itself: most numbered streets are digits (`1000 5 AVENUE`), but some buildings are written
+with the word (`1295 FIFTH AVENUE`), and some both ways (`350 5 AVENUE` and
+`350 FIFTH AVENUE`). Numbered streets from FIRST to TWELFTH are tried both ways, and the answer
+lists each spelling found. Aliases (`AVENUE OF THE AMERICAS` = `6 AVENUE`) are not attempted.
+When nothing matches, the answer says so and suggests City spellings with the same house
+number and street initial, skipping placeholders such as `-999 …` and `*** …`.
 
-- **City spelling.** The list uses the City's spelling (`5 AVENUE`, not `5th Ave`). Turning
-  what people type into that spelling needs a reviewed rule set, tested on real input.
+Still open:
+
 - **Addresses with no 311 history.** These are not in the list. The fallback should be the
   City's PAD file, as the address-matching work recommends, if BoardStat publishes a slim
   PAD-derived lookup next to its other files. DCP's Geoservice is not recommended as a
   default: it needs a key and sends every address someone types to a City server.
-- Junk values in the list (for example `*** WEB/MAP CALL SOURCE`) should be filtered out.
+- `top_addresses` keeps placeholder addresses, as the BoardStat page does, and marks them
+  `placeholder_address: true`.
+
+## The ten tools (Phase 1)
+
+| Tool | Reads | Default dates |
+|---|---|---|
+| `find_district` | `addresses.parquet` | none |
+| `district_summary` | the district's detail file; `agg/month_type.parquet` for the comparison | BoardStat's opening view |
+| `top_problems` | detail file (the period, and the same days a year earlier) | opening view |
+| `problem_trend` | detail file | opening view |
+| `agency_response` | detail file | opening view |
+| `still_open` | detail file, open rows only (they sit at the end of the file) | all data, 2020 on |
+| `top_addresses` | detail file | opening view |
+| `address_history` | `addresses.parquet`, then the address's community district file | all data |
+| `boardstat_link` | the manifest; the month file to check problem names | the page's own default |
+| `boardstat_status` | the manifest | none |
+
+"Opening view" is what `district.html` shows with no dates in the link: manifest
+`window.default_start` to the newest request. Every period is cut to `dataWindow` (the newest
+request's day, not the build date).
+
+**Districts.** `community_district` uses BoardStat's ids: borough digit (1 Manhattan,
+2 Bronx, 3 Brooklyn, 4 Queens, 5 Staten Island) times 100 plus the district number. Joint
+Interest Areas, the parks and other areas outside every community district, have their own
+ids (164, 226 to 228, 355, 356, 480 to 484, 595) and are labeled as such. `council_district`
+is 1 to 51. A council district's borough, for the comparison, is the one where most of its
+requests are, as on the page.
+
+**Filters.** `problems` are BoardStat's grouped problem names, matched without regard to
+case and checked against the month file. `descriptions` are the 311 descriptor, matched the
+same way against the requests read (a missing one is `(none)`); `exclude_descriptions`
+inverts them. A blocked bike lane is a description, `Blocked Bike Lane`, under
+`Illegal Parking`. `status` is `closed` or `not_closed` (every other status, BoardStat's
+"Not yet closed").
+
+**Lists** take a `limit` and say `truncated: true` when rows were left out.
+
+## How they count
+
+Each rule is BoardStat's, from `v2/site/js/district.js`, so the numbers are the page's:
+
+- In the period: `created_date >= start AND created_date < end + 1 day` (`where()`), New
+  York local time.
+- Not yet closed: `status IS DISTINCT FROM 'Closed'`.
+- Days to close: only requests marked Closed, and only where the build kept a usable time
+  (`CLOSED_DAYS`); medians are DuckDB's `median()`; shown with one decimal.
+- The same days a year earlier: the same filters with the dates moved back 12 months, the day
+  clamped as DuckDB's `INTERVAL` does; when the period reaches the newest data it stops at the
+  same minute a year earlier (`renderMonthly`). No comparison when that reaches before 2020.
+- Days open: to the build time in New York local time.
+- Comparison with borough and city: whole months from the month file, shares of located
+  requests, top 10 by the district's count (`renderCompare`).
+- Top addresses: requests with a street address, by `address_norm`, most first, ties by
+  address (`renderAddresses`). The most common problem breaks ties by name.
+
+**Links.** `boardstat_url` uses only the parameters `district.js` `readState()` reads: `geo`,
+`id`, `start`, `end`, `type`, `desc`, `descx`, `agency`, `status`. Addresses are never put in
+a link (Phase 0 decision). BoardStat's own home-page search does open `address.html` with
+`addr=` in the URL (`index.js` `addressUrl`); `address_history` links the district page
+instead and says how to reach the address page.
+
+## Checking the numbers
+
+`scripts/accuracy_check.py` runs the tools (through `scripts/run-district-tools.mjs`) and
+independent DuckDB SQL (`scripts/boardstat_oracle.py`, written from the page's queries, not
+from this package's code) over the same local BoardStat data folder, and compares every value:
+
+    npm run build
+    uv run --no-project --with "duckdb>=1.1,<3" python scripts/accuracy_check.py <boardstat-data-dir>
+
+The unit tests do the same with no network: `test/fixtures/build_fixtures.py` writes
+`expected.json` with the oracle over the fixture files, and `test/district-tools.test.mjs`
+checks the tools against it.

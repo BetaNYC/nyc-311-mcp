@@ -10,7 +10,7 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ## What it does
 
-Exposes 4 tools over MCP:
+Exposes 14 tools over MCP. Four use the NYC 311 Public API (they need an API key):
 
 | Tool | Description |
 |---|---|
@@ -18,6 +18,30 @@ Exposes 4 tools over MCP:
 | `get_status` | Current city status for an emergency or weather condition (Code Blue, fire hydrants, OEM alerts, snow) |
 | `get_service_request` | Look up one 311 service request by number |
 | `get_service_request_list` | Bulk look up multiple service requests in one call |
+
+Ten answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
+publishes every night (no key needed; only `www.beta.nyc` is contacted). Their numbers match
+the BoardStat page each answer links to. Details: [docs/district-tools.md](docs/district-tools.md).
+
+| Tool | Answers |
+|---|---|
+| `find_district` | Which community district and Council district an address is in (typed as you would, converted to the City's spelling) |
+| `district_summary` | Totals and top problems for a district and period, with each problem's share compared with the borough and city |
+| `top_problems` | The most-reported problems for a district and period, with the same days a year earlier |
+| `problem_trend` | Requests per month for one problem in one district, with the same days a year earlier |
+| `agency_response` | Requests, closed, not yet closed, and median and average days to close, by agency |
+| `still_open` | Requests not yet closed, oldest first, with days open and a count per agency |
+| `top_addresses` | Addresses with the most requests, optionally for given problems or descriptions |
+| `address_history` | Every request at one address, with status and the agency's resolution text |
+| `boardstat_link` | A BoardStat link with the given district, dates, problems, agency and status set |
+| `boardstat_status` | How fresh BoardStat's data is, and whether its nightly run is late |
+
+Every district tool takes a community district (BoardStat's ids: `101` is Manhattan
+Community District 1, `306` Brooklyn 6) or a Council district (`1` to `51`), and dates as
+`from_date`/`to_date`, a City `fiscal_year` (July 1 to June 30; `2027` or `"FY27"`), or
+`last_days`. Every answer carries `data_as_of`, a `boardstat_url`, plain-language `caveats`
+and its `source`. They are a BetaNYC copy of NYC Open Data, **not an official City report**.
+311 counts are reports, not problems, and "closed" does not mean fixed. No ZIP codes.
 
 ---
 
@@ -264,20 +288,12 @@ Once connected, you can ask your AI assistant things like:
 - **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. The status and service-request endpoints are returned as the API's raw JSON — their exact field set is defined by the upstream API and is passed through unchanged.
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.
 
-## Roadmap: district tools (in progress, not yet available)
+## Roadmap
 
-Work has started on tools that answer district questions from the files
-[BoardStat](https://www.beta.nyc/boardstat/) publishes every night: top problems in a
-community or council district, how fast requests are closed, what is still open, and
-which district an address is in. Each answer will say how fresh the data is and link to
-the BoardStat page with the same filters. Dates will be accepted as a calendar period or
-an NYC fiscal year (July 1 to June 30).
-
-**None of these tools ship yet.** The four tools above are everything the published
-package does. Phase 0 (the data reader, the on-disk cache, fiscal-year handling and the
-shared answer shape) is groundwork only; the design is in
-[docs/district-tools.md](docs/district-tools.md) and the plan is epic
-[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12).
+More district work is planned under epic
+[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12): the monthly reports Local Law 47 of
+2005 asked for (#15), request lookup by address and district (#16), and help reporting a
+problem to 311 (#17, #18). None of those ship yet.
 
 ---
 

@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added: ten district tools (Phase 1, #14; closes #11)
+
+- `find_district`, `district_summary`, `top_problems`, `problem_trend`, `agency_response`,
+  `still_open`, `top_addresses`, `address_history`, `boardstat_link`, `boardstat_status`.
+  They read BoardStat's nightly files and count exactly as BoardStat's district page does;
+  `scripts/accuracy_check.py` compares every number with independent DuckDB SQL.
+- `find_district` / `address_history` convert a typed address to the City's spelling with
+  BoardStat's own rules (`src/address-spelling.ts`), plus digits-or-word for numbered
+  streets (`5 AVENUE` / `FIFTH AVENUE`). ZIP codes are dropped and never used.
+- Dates also accept `last_days` (the last N days of data, ending on the newest request).
+- `boardstat_url` can carry descriptions (`desc`, `descx`); an answer served from the
+  cache while beta.nyc is unreachable now says so with `stale: true` and a caveat.
+
+### Fixed (Phase 0 follow-up, QA round 2 on #19)
+
+- A newer build arriving during a download or read no longer deletes the folder in use
+  (it failed with ENOENT); the old folder is removed when the last use ends.
+- A download from a server that ignores the abort signal no longer hangs: the idle
+  timeout now also ends the stream.
+
+### Phase 0
+
 Groundwork for the district tools (epic #12, Phase 0 #13). No new tools yet, and
 nothing a client sees has changed: tool names, descriptions and schemas are the same.
 
