@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for testing. GitHub issues are public, so please **leave out personal information**: names, phone numbers, email addresses, home addresses, and your API key. A street corner or a district is enough.
+        Thank you for testing. GitHub issues are public, so please **leave out personal information**: names, phone numbers, email addresses, home addresses, and your API key. A street corner or a district is enough. **Don't paste a 311 request number or an answer about a home address. Replace the address with the nearest corner.**
 
         **In an emergency, call 911.** This form is not watched around the clock, and the MCP never files anything with 311.
   - type: input
@@ -52,4 +52,4 @@ body:
     attributes:
       label: Beta branch
       description: From the install command, the part after `#`.
-      value: feature/12-phase5-draft-report
+      value: beta

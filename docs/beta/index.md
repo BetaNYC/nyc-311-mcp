@@ -24,7 +24,7 @@ what is in testing right now.
 
 | MCP | What is new | Guide |
 |---|---|---|
-| `@betanyc/nyc-311-mcp` (2.0 beta) | 17 new tools: district numbers from BoardStat, rebuilt Local Law 47 of 2005 reports, request lookup by address, and help reporting a problem to 311 | [Test the nyc-311-mcp beta](nyc-311-mcp.md) |
+| `@betanyc/nyc-311-mcp` (next version, beta) | 17 new tools: district numbers from BoardStat, rebuilt Local Law 47 of 2005 reports, request lookup by address, and help reporting a problem to 311 | [Test the nyc-311-mcp beta](nyc-311-mcp.md) |
 
 ## How to give feedback
 

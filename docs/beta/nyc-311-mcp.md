@@ -13,26 +13,27 @@ trying it.
 ## The short version
 
 - The beta has **21 tools**. The released version has 4.
-- It runs straight from a GitHub branch, `feature/12-phase5-draft-report`. Nothing is
+- It runs straight from a GitHub branch named `beta`. Nothing is
   published to npm, and people on the released version are not affected.
 - It may change from one day to the next. Quit and reopen your AI app to pick up the
   newest build.
 - **The reporting tools never file anything with 311.** They help you write a report
   that you submit yourself.
-- **In an emergency, call 911.** Do not rely on an AI assistant to notice danger.
+- **In an emergency, call 911.** Do not rely on an AI assistant to notice danger:
+  danger detection is keyword-based and will miss some emergencies.
 
 ## What is new
 
 | Tools | What they do | Needs the 311 API key? |
 |---|---|---|
 | **District tools** (11): `find_district`, `district_summary`, `top_problems`, `problem_trend`, `agency_response`, `still_open`, `top_addresses`, `address_history`, `find_requests`, `boardstat_link`, `boardstat_status` | Answer questions about a community district or Council district from the files [BoardStat](https://www.beta.nyc/boardstat/) publishes every night. The numbers should match the BoardStat page each answer links to. | No |
-| **Local Law 47 of 2005 reports** (3): `ll47_service_request_report`, `ll47_directory_assistance_report`, `cb_monthly_list` | Rebuild the monthly 311 reports in Charter § 1075 from NYC Open Data. These are BetaNYC rebuilds, **not the City's official reports**. | No |
+| **Local Law 47 of 2005 reports** (3): `ll47_service_request_report`, `ll47_directory_assistance_report`, `cb_monthly_list` | Rebuild, from NYC Open Data, the reports Local Law 47 of 2005 put in Charter § 1075 (two have since been repealed); the directory-assistance report is limited. These are BetaNYC rebuilds, **not the City's official reports**. | No |
 | **Request lookup** (2, improved): `get_service_request`, `get_service_request_list` | Look up a 311 request by its number (`311-XXXXXXXX`), now with a plain-language reading of its status. | Yes |
 | **Reporting help** (3): `how_to_report`, `list_311_categories`, `draft_311_report` | From a plain description ("a pothole on my block"), find the 311 article that fits, the agency, and how to report it, then draft text you can paste into 311 Online yourself. | Yes |
 | **Unchanged** (2): `get_calendar`, `get_status` | Alternate-side parking, collections and schools; Code Blue and other alerts. | Yes |
 
 Full details are in the branch's
-[README](https://github.com/BetaNYC/nyc-311-mcp/blob/feature/12-phase5-draft-report/README.md).
+[README](https://github.com/BetaNYC/nyc-311-mcp/blob/beta/README.md).
 
 ## Before you start
 
@@ -58,7 +59,7 @@ are faster.
 The beta runs with this command (you do not need to type it yourself; your app runs it):
 
 ```bash
-npx -y github:BetaNYC/nyc-311-mcp#feature/12-phase5-draft-report
+npx -y github:BetaNYC/nyc-311-mcp#beta
 ```
 
 If you already use the released nyc-311-mcp, turn it off while you test, so you know
@@ -80,7 +81,7 @@ Following the Model Context Protocol's guide,
      "mcpServers": {
        "nyc-311-beta": {
          "command": "npx",
-         "args": ["-y", "github:BetaNYC/nyc-311-mcp#feature/12-phase5-draft-report"],
+         "args": ["-y", "github:BetaNYC/nyc-311-mcp#beta"],
          "env": {
            "NYC_311_API_KEY": "your_key_here"
          }
@@ -90,7 +91,29 @@ Following the Model Context Protocol's guide,
    ```
 
    If the file already lists other servers, add only the `"nyc-311-beta": { … }` part,
-   with a comma after the entry before it. No API key? Leave out the whole `"env"` part
+   with a comma after the entry before it. For example, a file that already had a
+   `filesystem` server would end up like this:
+
+   ```json
+   {
+     "mcpServers": {
+       "filesystem": {
+         "command": "npx",
+         "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/username/Desktop"]
+       },
+       "nyc-311-beta": {
+         "command": "npx",
+         "args": ["-y", "github:BetaNYC/nyc-311-mcp#beta"],
+         "env": {
+           "NYC_311_API_KEY": "your_key_here"
+         }
+       }
+     }
+   }
+   ```
+
+   Before saving, you can paste the whole file into a JSON validator to catch a missing
+   comma or brace (remove your API key first if the validator is a website). No API key? Leave out the whole `"env"` part
    (and the comma before it); the district tools and the reports still work.
 3. Save the file, **quit Claude Desktop completely**, and open it again.
 4. To check it worked: in a chat, open the **+** menu by the message box, then
@@ -99,7 +122,7 @@ Following the Model Context Protocol's guide,
 
 If it does not show up, the same guide's
 [Troubleshooting](https://modelcontextprotocol.io/docs/develop/connect-local-servers#troubleshooting)
-section explains where Claude Desktop keeps its logs (`~/Library/Logs/Claude` on a Mac).
+section explains where Claude Desktop keeps its logs (`~/Library/Logs/Claude` on a Mac, `%APPDATA%\Claude\logs` on Windows).
 
 ### Claude Code
 
@@ -108,7 +131,7 @@ a terminal:
 
 ```bash
 claude mcp add --env NYC_311_API_KEY=your_key_here --transport stdio nyc-311-beta \
-  -- npx -y github:BetaNYC/nyc-311-mcp#feature/12-phase5-draft-report
+  -- npx -y github:BetaNYC/nyc-311-mcp#beta
 ```
 
 No API key? Leave out `--env NYC_311_API_KEY=your_key_here`. By default the server is
@@ -127,7 +150,8 @@ starting points:
 - "How have noise complaints in Manhattan Community District 3 changed over the last
   year, compared with the year before?"
 - "What 311 requests are still open in Bronx Community District 1, oldest first?"
-- "What has been reported at [an address you know]?"
+- "What has been reported at City Hall?" or at a park or library you know. For address
+  tests, use a public place, not a home address.
 - "How fresh is BoardStat's data?"
 
 **Compare one number with [BoardStat](https://www.beta.nyc/boardstat/).** Every answer
@@ -146,6 +170,8 @@ still law, and that it is not the City's official report.
 ### Request lookup (needs the API key)
 
 - "What is the status of 311 request 311-XXXXXXXX?" using a request number you have.
+  Do not copy the number or the answer into a feedback issue; describe what went wrong
+  instead.
 - Is the plain-language status clear? Does it match what the 311 portal tells you?
 
 ### Reporting help (needs the API key)
@@ -184,7 +210,8 @@ app you used. You can paste the assistant's answer.
 
 GitHub issues are public. **Leave out personal information**: names, phone numbers,
 email addresses, your home address, and your API key. A street corner or a district is
-enough.
+enough. **Don't paste a 311 request number or an answer about a home address. Replace
+the address with the nearest corner.**
 
 ## Switch back to the released version
 
@@ -217,3 +244,10 @@ claude mcp add --env NYC_311_API_KEY=your_key_here --transport stdio nyc-311 \
 
 Built by [BetaNYC](https://beta.nyc). An independent, community-built project, not
 affiliated with, endorsed by, or an official product of the City of New York.
+
+<!--
+Maintainers: the `beta` branch is not a release. It is updated only by fast-forwarding
+it to the top of the epic #12 stack (currently feature/12-phase5-draft-report), e.g.
+`git push origin origin/<top-of-stack>:refs/heads/beta`. No force pushes, so testers'
+installs never jump backward or to unrelated history.
+-->
