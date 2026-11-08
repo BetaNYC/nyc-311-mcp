@@ -758,6 +758,28 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
     ? await read({ created_date: before, is_closed: { $eq: true }, closed_date: { $gte: afterMonth } }, ["is_closed"])
     : [];
 
+  // Two kinds of inconsistent City records the three parts cannot place (QA round 2 on #21).
+  const closedNoDate =
+    want("unresolved_at_month_end_now_closed") && hasPrior
+      ? (await data.readParquet(d.file, { columns: ["created_date", "closed_date", "is_closed"], filter: { created_date: before, is_closed: { $eq: true } } })).rows.filter(
+          (r) => !(r.closed_date instanceof Date)
+        ).length
+      : null;
+  const openButClosedBefore = want("unresolved_from_prior_months")
+    ? stillOpen.filter((r) => r.closed_date instanceof Date && (r.closed_date as Date).getTime() < afterMonth.getTime()).length
+    : null;
+  const recordCaveats: string[] = [];
+  if (closedNoDate) {
+    recordCaveats.push(
+      `${closedNoDate.toLocaleString("en-US")} requests created before ${month.month} are marked Closed but have no close date, so it cannot be told whether they were unresolved at the month's end. They are not listed in any part.`
+    );
+  }
+  if (openButClosedBefore) {
+    recordCaveats.push(
+      `City records are inconsistent for ${openButClosedBefore.toLocaleString("en-US")} requests: not Closed today, but carrying a close date before ${month.month} ended. They are listed as unresolved from prior months, by their current status.`
+    );
+  }
+
   const toRow = (section: string) => (r: Row): CbRow => ({
     section,
     unique_key: String(r.unique_key),
@@ -781,7 +803,7 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
   const older = month.month !== newest;
   const asOf =
     `"unresolved_from_prior_months" means not closed when this data was built (${m.generated_at}), not at the end of ${month.month}. ` +
-    "Open data keeps only each request's current status, so a past status cannot be rebuilt. The City's § 1075(d) list would show the status when it was sent.";
+    "Open data keeps only each request's current status, so a past status cannot be rebuilt. A § 1075(d) list sent at the month's end would show the status as of then.";
 
   const env = districtEnvelope({
     manifest: mr,
@@ -799,6 +821,10 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
         unresolved_at_month_end_now_closed: want("unresolved_at_month_end_now_closed") ? closedSince.length : null,
         rows: all.length,
       },
+      record_problems: {
+        closed_without_close_date: closedNoDate,
+        not_closed_but_close_date_before_month_end: openButClosedBefore,
+      },
       offset,
       limit,
       next_offset: next,
@@ -815,6 +841,7 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
       "Unresolved means any status other than Closed (Open, In Progress, Pending, Assigned, Started, Unspecified, or none). Closed does not mean fixed.",
       "Category is the City's complaint type; description is the City's descriptor. unique_key is NYC Open Data's id for the request; it is not the 311 number (311-XXXXXXXX) the person who reported was given. Addresses are as the City wrote them.",
       "To page, pass next_page.offset and next_page.data_as_of. A page asked for with an older data_as_of is refused, so a list is never stitched from two builds.",
+      ...recordCaveats,
       ...(d.jia ? ["A Joint Interest Area has no community board of its own; § 1075(d) lists go to community boards."] : []),
     ],
   });
@@ -867,7 +894,7 @@ export const LL47_TOOLS = [
   {
     name: "ll47_directory_assistance_report",
     description:
-      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). " +
+      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A cold fiscal-year-to-date answer usually comes back complete:false first (each call has a 45 s budget); asking again completes it from the saved months. " +
       REBUILD,
     inputSchema: obj({ month: MONTH_JSON, fiscal_year: FY_JSON, limit: limitJson(50, 2000, "topics") }),
   },

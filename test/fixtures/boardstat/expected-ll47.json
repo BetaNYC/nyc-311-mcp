@@ -3564,7 +3564,11 @@
    "65736847",
    "65829974",
    "65991226"
-  ]
+  ],
+  "record_problems": {
+   "closed_without_close_date": 1,
+   "not_closed_but_close_date_before_month_end": 93
+  }
  },
  "cb_101_2026_11": {
   "new_this_month": [
@@ -3620,6 +3624,10 @@
    "70993913"
   ],
   "unresolved_from_prior_months": [],
-  "unresolved_at_month_end_now_closed": []
+  "unresolved_at_month_end_now_closed": [],
+  "record_problems": {
+   "closed_without_close_date": 0,
+   "not_closed_but_close_date_before_month_end": 0
+  }
  }
 }

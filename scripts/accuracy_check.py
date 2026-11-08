@@ -102,6 +102,7 @@ def main() -> int:
         return {"counts": {"new_this_month": len(ids["new_this_month"]),
                            "unresolved_from_prior_months": len(ids["unresolved_from_prior_months"]),
                            "unresolved_at_month_end_now_closed": len(ids["unresolved_at_month_end_now_closed"]), "rows": len(rows)},
+                "record_problems": ids["record_problems"],
                 "rows": [{"unique_key": k} for k in rows[offset:offset + limit]]}
 
     questions += [
@@ -131,9 +132,13 @@ def main() -> int:
          {"name": "cb_monthly_list", "args": {"community_district": 205, "month": "2026-09", "part": "unresolved_from_prior_months", "offset": 0, "limit": 1000}},
          lambda: (lambda ids: {"counts": {"unresolved_from_prior_months": len(ids["unresolved_from_prior_months"])},
                                "rows": [{"unique_key": k} for k in ids["unresolved_from_prior_months"][:1000]]})(o.cb_list(205, "2026-09-01", "2026-09-30")), "ll47"),
+        ("L10", "§ 1075(d) list, Manhattan CD 1, 2024-03, record problems",
+         {"name": "cb_monthly_list", "args": {"community_district": 101, "month": "2024-03", "limit": 1}},
+         lambda: {"record_problems": o.cb_list(101, "2024-03-01", "2024-03-31")["record_problems"]}, "ll47"),
         ("L9", "§ 1075(d) list, Brooklyn CD 1, 2024-03: unresolved at month end, closed since",
          {"name": "cb_monthly_list", "args": {"community_district": 301, "month": "2024-03", "part": "unresolved_at_month_end_now_closed", "limit": 1000}},
          lambda: (lambda ids: {"counts": {"unresolved_at_month_end_now_closed": len(ids["unresolved_at_month_end_now_closed"])},
+                               "record_problems": {"closed_without_close_date": ids["record_problems"]["closed_without_close_date"]},
                                "rows": [{"unique_key": k} for k in ids["unresolved_at_month_end_now_closed"][:1000]]})(o.cb_list(301, "2024-03-01", "2024-03-31")), "ll47"),
     ]
 
