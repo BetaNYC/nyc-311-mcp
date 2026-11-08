@@ -20,7 +20,7 @@ for (const c of [...COMMON, ...TRICKY, ...EMERGENCY, MISSED]) {
     id: c.id,
     input: redactZip(c.args.description + (c.args.location ? ` | ${c.args.location}` : "") + (c.args.borough ? ` | ${c.args.borough}` : "") + (c.args.when ? ` | ${c.args.when}` : "")),
     drafted: out.drafted,
-    articles: r.map((x) => (x.report_at ? `${x.report_at.ka_number} ${x.report_at.title}` : x.status)).join(" + ") || (out.emergency ? "none: call 911" : "none"),
+    articles: r.map((x) => (x.report_at ? `${x.report_at.ka_number} ${x.report_at.title}` : x.status)).join(" + ") || (out.emergency ? "none: call 911" : out.first_line.startsWith("If anyone is in danger") ? "none: no article (911 first)" : "none"),
     placeholders: r.flatMap((x) => x.placeholders).join(" "),
     questions: r.reduce((n, x) => n + x.questions_to_ask.length, 0),
     detail_options: r.map((x) => (x.what?.problem_detail_options?.options.length ?? 0) + (x.what?.problem_detail_options?.more ?? 0)).join("+"),

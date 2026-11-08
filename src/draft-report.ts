@@ -1,7 +1,7 @@
 // draft_311_report (#18, second half of #10): a ready-to-paste 311 report the person
 // files themselves. The server never files, starts or submits a 311 request, never calls
-// the Developer Partner product, and never opens or fills a portal form (decided by Noel
-// and Marvin, 2026-11-07; epic #12, "Reporting stops at guide and draft").
+// the Developer Partner product, and never opens or fills a portal form (decided by
+// BetaNYC (Noel Hidalgo), 2026-11-07; epic #12, "Reporting stops at guide and draft").
 //
 // The City publishes the fields each 311 form asks for nowhere: not in the API, not in
 // any dataset, not on the article pages (the Report button runs JavaScript). So the
@@ -172,10 +172,43 @@ const LEFT_OUT = "[contact details left out]";
 export function cleanText(s: string): { text: string; contact_removed: boolean; zip_removed: boolean } {
   let contact_removed = false;
   let t = s.replace(EMAIL, () => ((contact_removed = true), LEFT_OUT)).replace(PHONE, () => ((contact_removed = true), LEFT_OUT));
-  const z = redactZip(t);
+  const z = redactZip(t).replace(/\b(?:zip|zip code|postal code|zipcode)\s*[:#]?\s*(\[ZIP code removed\])/gi, "$1");
   const zip_removed = z !== t;
-  t = z.replace(/\s*,?\s*\[ZIP code removed\]/g, "").replace(/\s+/g, " ").trim().replace(/,$/, "");
+  t = z.replace(/\s*,?\s*\[ZIP code removed\]/g, "").replace(/\s+/g, " ").trim().replace(/^[,;]\s*/, "").replace(/[,;]$/, "");
   return { text: t, contact_removed, zip_removed };
+}
+
+// Words that start a place name, not a person's ("Bedford Ave", "Grand Concourse").
+const PLACE_NAME = /^(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Pl|Place|Park|Pkwy|Parkway|Sq|Square|Ln|Lane|Dr|Drive|Ct|Court|Broadway|Concourse|Bridge|Island|Staten|New|York|NY|NYC|Brooklyn|Queens|Manhattan|Bronx|Harlem|East|West|North|South|Upper|Lower|City|Hall|Station|Center|Centre|Building|Houses|Apt|Apartment|Unit|Floor|I|I'm|DOT|DSNY|NYPD|HPD|DEP|DOB|MTA|NYCHA|ConEd|Con|Edison|The|My)$/;
+const ROLE_THEN_NAME = /\b(?:neighbou?r|landlord|super|superintendent|roommate|tenant|owner|manager|husband|wife|boyfriend|girlfriend|partner|ex|son|daughter|brother|sister|mother|father|mom|dad|named|called|name is)\s+(?:is\s+)?[A-Z][a-z]+/;
+
+/** Whether the person's words seem to name someone (a role then a name, or two capitalized words not a place). */
+export function namesSomeone(text: string): boolean {
+  if (ROLE_THEN_NAME.test(text)) return true;
+  const pairs = text.match(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g) ?? [];
+  return pairs.some((p) => p.split(/\s+/).every((w) => !PLACE_NAME.test(w)));
+}
+export const NAMES_SOMEONE = "This draft names someone; 311 may not need their name.";
+
+// Times and recurrences that are plain in the person's words ("at 2 am", "every night",
+// "since Monday"). Lifted into When: as written; nothing is computed or inferred.
+const DAY = "(?:mon|tues|wednes|thurs|fri|satur|sun)day";
+const WHEN_PATTERNS = [
+  /\b(?:at|around|about|after|before|until|till)\s+\d{1,2}(?::\d{2})?\s*(?:am|pm|a\.m\.|p\.m\.)/gi,
+  /\b\d{1,2}(?::\d{2})?\s*(?:am|pm|a\.m\.|p\.m\.)/gi,
+  new RegExp(`\\b(?:every|each)\\s+(?:night|day|morning|afternoon|evening|weekend|week|${DAY})\\b`, "gi"),
+  new RegExp(`\\bsince\\s+(?:yesterday|last\\s+\\w+|this\\s+\\w+|${DAY}|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)\\w*\\.?\\s+\\d{1,2}|\\d{1,2}/\\d{1,2})\\b`, "gi"),
+  new RegExp(`\\b(?:all night|all day|every day|nightly|daily|tonight|this morning|this afternoon|this evening|last night|yesterday|today|(?:on|last|this)\\s+${DAY})\\b`, "gi"),
+];
+
+/** The times the person already gave, in their order, as written. Null when none. */
+export function liftWhen(text: string): string | null {
+  const hits: { at: number; end: number; s: string }[] = [];
+  for (const re of WHEN_PATTERNS) for (const m of text.matchAll(re)) hits.push({ at: m.index as number, end: (m.index as number) + m[0].length, s: m[0].trim() });
+  hits.sort((a, b) => a.at - b.at || b.end - a.end);
+  const kept: typeof hits = [];
+  for (const h of hits) if (!kept.some((k) => h.at < k.end && k.at < h.end)) kept.push(h);
+  return kept.length ? kept.map((k) => k.s).join(", ") : null;
 }
 
 // ─── the tool ─────────────────────────────────────────────────────────────────
@@ -252,28 +285,50 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
     });
   }
 
-  let parts: { said: string; match: Matched }[] = [{ said: args.description, match: whole }];
-  const distinct = each.filter((x, i) => x.match.best_match && !each.slice(0, i).some((y) => y.match.best_match?.ka_number === x.match.best_match!.ka_number));
-  if (distinct.length >= 2) parts = distinct;
-
   const sla = await slaTable(soda);
-  const reports = [];
-  for (const p of parts) reports.push(await oneReport(p.said, p.match, args, client, sla, parts.length > 1));
+  const noArticle = (m: Matched) => !m.best_match && !cityDoesNot(m);
+
+  // One problem: no article, no draft (how_to_report's no-match answer, 911 first).
+  if (each.length < 2) {
+    if (noArticle(whole)) return noMatchAnswer(whole);
+  }
+
+  // Every part is listed: a draft when it matched, a "couldn't match" entry when not, and
+  // a pointer when it matched the same article as an earlier part.
+  const reports: Record<string, unknown>[] = [];
+  if (each.length >= 2) {
+    const seen = new Map<string, number>();
+    for (const [i, x] of each.entries()) {
+      const ka = x.match.best_match?.ka_number;
+      if (noArticle(x.match)) {
+        reports.push({ status: "not_matched", this_problem: cleanText(x.said).text, note: "Couldn't match this part to a 311 article, so it has no draft. Ask how_to_report about it on its own, or browse list_311_categories." });
+      } else if (ka && seen.has(ka)) {
+        reports.push({ status: "same_article", this_problem: cleanText(x.said).text, ka_number: ka, note: `Matches the same 311 article as part ${(seen.get(ka) as number) + 1}; describe it in that report.` });
+      } else {
+        if (ka) seen.set(ka, i);
+        reports.push(await oneReport(x.said, x.match, args, client, sla, true));
+      }
+    }
+    if (!reports.some((r) => r.status === "drafted" || r.status === "not_a_311_report")) return noMatchAnswer(whole);
+  } else {
+    reports.push(await oneReport(args.description, whole, args, client, sla, false));
+  }
+  const drafts = reports.filter((r) => r.status === "drafted");
+  const unmatched = reports.filter((r) => r.status === "not_matched").length;
+  const one = reports[0] as { status: string; report_at?: { title: string; ka_number: string }; placeholders?: string[] };
 
   const first_line =
     reports.length > 1
-      ? `This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each. ${FIELDS_NOTE}`
-      : reports[0].status === "not_a_311_report"
-        ? `The City's own article says it does not take this (${reports[0].report_at?.ka_number}); its words are in where_to_go. No draft is made.`
-        : reports[0].report_at
-          ? `Draft ready for "${reports[0].report_at.title}" (${reports[0].report_at.ka_number}). ${reports[0].placeholders.length ? `Fill in the ${reports[0].placeholders.length} [add: …] place${reports[0].placeholders.length > 1 ? "s" : ""} first. ` : ""}${FIELDS_NOTE}`
-          : `${GENERIC_911} No 311 article matched well enough to name one; the draft is still usable. ${FIELDS_NOTE}`;
+      ? `${unmatched ? `${SAFETY_LINE} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
+      : one.status === "not_a_311_report"
+        ? `The City's own article says it does not take this (${one.report_at?.ka_number}); its words are in where_to_go. No draft is made.`
+        : `Draft ready for "${one.report_at!.title}" (${one.report_at!.ka_number}). ${one.placeholders!.length ? `Fill in the ${one.placeholders!.length} [add: …] place${one.placeholders!.length > 1 ? "s" : ""} first. ` : ""}${FIELDS_NOTE}`;
 
   return finish({
     ...SAFETY,
     first_line,
     emergency: null,
-    drafted: true,
+    drafted: drafts.length > 0,
     reports,
     how_to_reach_311: REACH_311,
     not_sent: NOT_SENT,
@@ -292,6 +347,28 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
       NOT_SENT,
     ],
     ...(sla?.stale ? { stale: true as const, warning: sla.warning } : whole.stale ? { stale: true as const, warning: whole.warning } : {}),
+  });
+}
+
+function cityDoesNot(m: Matched): boolean {
+  const lead = m.best_match ?? m.alternatives[0] ?? null;
+  return Boolean(lead && CITY_DOES_NOT.test(lead.summary) && !(m.best_match && m.best_match.report_actions.length));
+}
+
+/** No article matched: how_to_report's no-match answer, which leads with 911. No draft. */
+function noMatchAnswer(whole: Matched) {
+  const first = whole.first_line.startsWith(SAFETY_LINE) ? whole.first_line : `${GENERIC_911} ${whole.first_line}`;
+  return finish({
+    ...SAFETY,
+    first_line: first,
+    emergency: whole.emergency,
+    drafted: false,
+    reports: [],
+    not_drafted: "No 311 article matched, so no draft is made: a report needs the right article. Ask the person to say more about the problem, or browse list_311_categories.",
+    no_match: whole.no_match,
+    alternatives: whole.alternatives,
+    how_to_reach_311: REACH_311,
+    not_sent: NOT_SENT,
   });
 }
 
@@ -319,7 +396,7 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
   // "The City does not accept complaints about body or cooking odor from a residence."),
   // or it has no report option and no phone way and says who handles it instead.
   const lead = best ?? match.alternatives[0] ?? null;
-  if (lead && CITY_DOES_NOT.test(lead.summary) && !(best && best.report_actions.length)) {
+  if (lead && cityDoesNot(match)) {
     return {
       status: "not_a_311_report" as const,
       you_said: what.text,
@@ -387,7 +464,9 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
   // When
   const ongoing = args.ongoing === "still happening" ? "It is still happening." : args.ongoing === "keeps happening" ? "It keeps happening." : args.ongoing === "stopped" ? "It has stopped." : null;
   let whenLine: string;
+  const lifted = when ? null : liftWhen([what.text, details?.text ?? ""].join(" "));
   if (when) whenLine = `${when.text}${ongoing ? `. ${ongoing}` : ""}`;
+  else if (lifted) whenLine = `${lifted}${ongoing ? `. ${ongoing}` : ""}`;
   else {
     whenLine = `[add: when you saw it (date and time)]${ongoing ? `. ${ongoing}` : ""}`;
     placeholders.push("when");
@@ -455,12 +534,14 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
       problem_detail_options: options.length
         ? {
             as_of: sla!.rows_updated,
-            label: `From the City's 311 Service Level Agreements dataset, last updated ${sla!.rows_updated}. Old: the form's choices may differ. In brackets, the time the agency committed to respond in, as of then.`,
+            label: `From the City's 311 Service Level Agreements dataset, last updated ${sla!.rows_updated}. Old: the form's choices may differ. In brackets, the time the agency committed to respond in, as of then, not a promise of when it will be handled.`,
             options: options.slice(0, MAX_OPTIONS).map(optionText),
             ...(options.length > MAX_OPTIONS ? { more: options.length - MAX_OPTIONS } : {}),
           }
         : null,
     },
+    ...(lifted ? { when_note: "When: is taken from the person's own words; check it with them." } : {}),
+    ...(namesSomeone([said, args.details ?? ""].join(" ")) ? { names_someone: NAMES_SOMEONE } : {}),
     where: { note: WHERE_NOTE, ...(zipRemoved ? { postal_code_left_out: "A ZIP code was left out: this tool returns none. Give it on the form if it asks." } : {}) },
     the_city_says_you_need: need,
     contact,

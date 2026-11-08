@@ -4,7 +4,7 @@ Built and reviewed 2026-11-07 (about 22:35 ET) and revised for #23's safety roun
 
 `draft_311_report` turns what a person says about a problem into a short report **they submit
 themselves**: a ready-to-paste text, the 311 Online article to report it on, and what is still
-missing. Decided by Noel and Marvin on 2026-11-07: **the server never files, starts or submits a
+missing. Decided by BetaNYC (Noel Hidalgo) on 2026-11-07: **the server never files, starts or submits a
 311 request**, never calls the 311 Developer Partner product, and never opens or fills a portal
 form. Nothing in the answer is sent anywhere.
 
@@ -21,8 +21,8 @@ not publish each form's exact fields, so the form may ask for things this draft 
 |---|---|
 | **What**: the article, its 311 problem type, Problem Detail | `how_to_report`'s match (called, not copied, so its fixes apply here). Problem Detail options from the 311 Service Level Agreements dataset, labeled old (below). |
 | **Where**: address, cross streets or landmark; borough | The person. A ZIP code they type is left out (no ZIP codes in any answer). A reminder that 311 asks where and may ask to set it on a map, labeled BetaNYC wording. |
-| **When**: date and time; still happening, stopped, keeps happening | The person. |
-| **Details** | The person. Email addresses and phone numbers in their words are left out unless they pass `include_contact`. |
+| **When**: date and time; still happening, stopped, keeps happening | The person. A time or recurrence plain in their words ("at 2 am", "every night", "since Monday") is lifted into When: as written, and flagged to check. |
+| **Details** | The person. Email addresses and phone numbers in their words are left out unless they pass `include_contact`; a "zip" label goes with its ZIP code; apartment numbers stay (311 asks). When the words seem to name someone, the answer says: "This draft names someone; 311 may not need their name." Names are not removed. |
 | **What the City says you need** | The article's "What You Need" lines, quoted, turned into questions (KA-01803 litter: "Timeframe and the days of the week when littering occurs", "Type of material being littered"). |
 | **Contact** | The article's sentences about contact information, quoted ("you must provide your contact information" on the heat, pest, mold and leak articles). Reporting anonymously is mentioned only if the article says so; none of the recorded articles does. |
 | **Photos** | The article's sentences about attachments, quoted (KA-01091: "Picture or video attachments may be used for informational purposes only."). Otherwise only "Have photos ready if you have them." |
@@ -50,6 +50,9 @@ draft's first line leads with 911.
   text (KA-01635) or domestic violence text (KA-01217) when it gives them. A description that
   also names a 311 problem ("someone got hurt in a car crash and there is a pothole") is not
   drafted either.
+- **No article matched**: no draft. The answer is `how_to_report`'s no-match answer, which leads
+  with 911, plus its search link. A report needs the right article, and a description that
+  matches nothing may be an emergency the keywords missed.
 - **Not taken by 311**: if the article's summary says the City does not take it (KA-01332
   Neighbor Odor: "The City does not accept complaints about body or cooking odor from a
   residence."), or the article has no report option, no phone way, and says who handles it,
@@ -59,9 +62,10 @@ draft's first line leads with 911.
 
 311 takes one problem per report. The description is split by `how_to_report`'s own
 `splitProblems` (one part per kind of problem; "trash and litter" and "the sidewalk wasn't
-shoveled and it's icy" stay one). Each part is matched with `how_to_report`, and kept when it
-lands on an article no earlier part did. At most three drafts. The parts are `splitProblems`'s
-text: lower case, with the joining word dropped.
+shoveled and it's icy" stay one). Each part is matched with `how_to_report`, and every part is
+listed: a draft when it matched, a "couldn't match this part" entry when it did not, and a
+pointer when it matched the same article as an earlier part. At most three parts. The parts are
+`splitProblems`'s text: lower case, with the joining word dropped.
 
 ## Problem Detail options: `cs9t-e3x8`, last updated 2024-03-05
 
@@ -89,7 +93,7 @@ options old and the form's choices may differ.
 Recorded for tests: `test/fixtures/soda/cs9t-e3x8/view.json` (metadata) and `rows.json` (the 255
 rows for the 20 problem types the recorded articles name). No ZIP codes in either.
 
-## Review: 20 common problem types and 10 harder cases
+## Review: 42 cases (20 common problem types, 10 harder cases, 11 emergencies, 1 keyword miss)
 
 `node scripts/draft-report-review.mjs`, over the 311 content recorded for #17 and the recorded
 `cs9t-e3x8` rows. No network. The 20 common descriptions are the #17 review set (BoardStat's 20
@@ -98,8 +102,8 @@ draft must ask for them. Every row is also a test (`test/draft-report.test.mjs`)
 
 | # | Input (description / location / borough / when) | Matched article | Placeholders | Questions | Detail options (2024) | Safety line + instruction | Problems |
 |---|---|---|---|---:|---|---|---|
-| C1 | a car is parked in front of the fire hydrant on my street | KA-01986 Illegal Parking | [add: where] [add: borough] [add: when] | 5 | 14 | yes | 14 Illegal Parking options; the question gives the count, not the list (more than 8) |
-| C2 | loud music next door at 2 am | KA-01017 Noise from Neighbor | [add: where] [add: borough] [add: when] | 5 | 4 | yes | asks *when* although the description says "at 2 am" (times in the description are not read) |
+| C1 | a car is parked in front of the fire hydrant on my street | KA-01986 Illegal Parking | [add: where] [add: borough] [add: when] | 5 | 14 | yes | 14 Illegal Parking options; the question gives the count (more than 8) |
+| C2 | loud music next door at 2 am | KA-01017 Noise from Neighbor | [add: where] [add: borough] | 4 | 4 | yes | none; "at 2 am" lifted into When: |
 | C3 | no heat in my apartment | KA-01036 Heat or Hot Water Complaint in a Residential Building | [add: where] [add: borough] [add: when] | 5 | 1 | yes | none; the report option names "Apartment Only" and the words agree; City says contact is required |
 | C4 | someone parked and is blocking my driveway | KA-01062 Blocked Driveway | [add: where] [add: borough] [add: when] | 5 | 2 | yes | none |
 | C5 | people yelling and playing loud music on the sidewalk | KA-01092 Noise from Street or Sidewalk | [add: where] [add: borough] [add: when] | 5 | 2 | yes | suggests "Loud Music/Party" as a question, not in the draft |
@@ -115,12 +119,12 @@ draft must ask for them. Every row is also a test (`test/draft-report.test.mjs`)
 | C15 | construction jackhammer noise early in the morning | KA-01091 Noise from Construction | [add: where] [add: borough] [add: when] | 4 | 12 | yes | none; quotes the City on picture/video attachments |
 | C16 | the lock on my apartment door is broken and the landlord won't fix it | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | yes | as C7 |
 | C17 | the traffic light at the corner is broken | KA-01404 Traffic or Bicycle Signal Complaint or Request | [add: where] [add: borough] [add: when] | 4 | 0 | yes | phone only: the draft is notes for the call |
-| C18 | a car honking its horn and blasting music all night | KA-01102 Noise from Vehicle | [add: where] [add: borough] [add: when] | 5 | 3 | yes | none |
+| C18 | a car honking its horn and blasting music all night | KA-01102 Noise from Vehicle | [add: where] [add: borough] | 4 | 3 | yes | none; "all night" lifted into When: |
 | C19 | water leaking from the ceiling in my apartment | KA-01509 Water Leak in a Building | [add: where] [add: borough] [add: when] | 6 | 3 | yes | none; City says contact is required |
 | C20 | a homeless encampment under the overpass | KA-02253 Homeless Encampment | [add: where] [add: borough] [add: when] | 4 | 0 | yes | Encampment rows have no Problem Detail, so no options |
 | T1 | there's a pothole / Queens / this morning | KA-01093 Pothole or Cave-In on Street | [add: where] | 2 | 17 | yes | none |
 | T2 | mice and roaches in my apartment / 123 Main Street / every night | KA-02278 Residential Pest Complaint | [add: borough] | 3 | 4 | yes | none; borough asked ("123 Main Street" is in several boroughs) |
-| T3 | something is broken outside | drafted_without_article | [add: which problem this is] [add: where] [add: borough] [add: when] | 5 | 0 | yes | no article: a usable draft; first line leads with 911 (every no-match does) |
+| T3 | something is broken outside | none: no article (911 first) | none | 0 | - | yes | no article, so no draft: how_to_report's no-match answer, 911 first |
 | T4 | I smell gas in my kitchen / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft; how_to_report's 911 line (KA-02048) |
 | T5 | there's a fire in the building next door | none: call 911 | none | 0 | - | yes | no draft; 911 (KA-01543) |
 | T6 | someone got hurt in a car crash and there is a pothole | none: call 911 | none | 0 | - | yes | no draft although a pothole is also named |
@@ -138,15 +142,18 @@ draft must ask for them. Every row is also a test (`test/draft-report.test.mjs`)
 | E8 | no heat and my baby is freezing it's 10 degrees / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft (at_risk) |
 | E9 | water is flooding the basement and the electrical panel is sparking / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
 | E10 | someone is trapped in the elevator / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
-| M1 | nobody would care if I disappeared | drafted_without_article | [add: which problem this is] [add: where] [add: borough] [add: when] | 5 | 0 | yes | **assessDanger misses it**: a draft is made (no article), but the first line leads with 911 and `assistant_instruction` tells the assistant to judge danger itself |
+| E11 | nobody would care if I disappeared / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft; caught by the hopelessness phrasings added in this PR (Phase 4 follow-up); 911 plus 988 |
+| M1 | I just want to sleep forever | none: no article (911 first) | none | 0 | - | yes | **assessDanger misses it.** No article matches either, so there is no draft; the answer leads with 911 and `assistant_instruction` tells the assistant to judge danger itself |
 
-**Machine part: 41 of 41 as expected.** All 20 common types land on the article `how_to_report`
-picks, one draft each, none split; each asks for where, borough and when. All 13 emergencies
-(3 harder cases, 10 from #23's QA set) get no draft. The not-311 case gets the City's words.
-Two-problem cases get two drafts. Every answer carries the safety line and the instruction to
-the assistant. M1 shows the limit: a danger the keywords miss is still drafted, and only the
-911 first line and `assistant_instruction` stand between it and the person. Weak spots are in the Problems column: the 2024 list has no pothole option, articles
-that name no problem type get no options, and times inside the description are not read.
+**Machine part: 42 of 42 as expected.** All 20 common types land on the article `how_to_report`
+picks, one draft each, none split; each asks for where and borough, and for when unless the
+description already says it. All 14 emergencies (3 harder cases, 10 from #23's QA set, and
+"nobody would care if I disappeared") get no draft; so do all 78 of QA round 1's emergency
+phrasings (`test/draft-qa-round1.test.mjs`). With no article there is no draft (T3, M1). The
+not-311 case gets the City's words. Several problems get one entry per part. Every answer carries
+the safety line and the instruction to the assistant. M1 shows the limit: a danger the keywords
+miss is caught only because no article matched; the 911 first line and `assistant_instruction`
+are what stand between it and the person.
 
 **Testing with real people on real problems is still to do** (the "done when" on #18). That is
 Noel's part: people describing problems they actually have, then trying the draft on 311 Online,

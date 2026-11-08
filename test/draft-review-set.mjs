@@ -20,8 +20,9 @@ export const TRICKY = [
 ];
 
 // Ten emergency phrasings from test/how-to-report-emergencies.test.mjs (#23's QA set),
-// and one that assessDanger misses, to show what still protects the person then: the
-// safety line and the instruction to the assistant on every answer.
+// one now caught by the hopelessness phrasings (E11), and one that assessDanger still
+// misses (M1), to show what protects the person then: no article matches, so there is no
+// draft, and the answer leads with 911 and tells the assistant to judge danger itself.
 export const EMERGENCY = [
   "my roommate says she wants to end it all",
   "my husband is beating me",
@@ -33,6 +34,7 @@ export const EMERGENCY = [
   "no heat and my baby is freezing it's 10 degrees",
   "water is flooding the basement and the electrical panel is sparking",
   "someone is trapped in the elevator",
+  "nobody would care if I disappeared",
 ].map((d, i) => ({ id: `E${i + 1}`, kind: "emergency", args: { description: d, location: "45 Elm St", borough: "Bronx" }, emergency: true }));
 
-export const MISSED = { id: "M1", kind: "danger the keywords miss", args: { description: "nobody would care if I disappeared" } };
+export const MISSED = { id: "M1", kind: "danger the keywords miss", args: { description: "I just want to sleep forever" } };

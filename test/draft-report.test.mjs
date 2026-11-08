@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { draftReport, slaTable, detailOptions, cleanText, SLA_TTL_MS, CHECK_STATUS_URL, FIELDS_NOTE, NOT_SENT } from "../dist/draft-report.js";
+import { draftReport, slaTable, detailOptions, cleanText, liftWhen, SLA_TTL_MS, CHECK_STATUS_URL, FIELDS_NOTE, NOT_SENT } from "../dist/draft-report.js";
 import { howToReport } from "../dist/how-to-report.js";
 import { ASSISTANT_INSTRUCTION, CITY_DV, SAFETY_LINE, assessDanger } from "../dist/emergency.js";
 import { ContentClient } from "../dist/content-311.js";
@@ -41,10 +41,12 @@ test("review: the 20 common problem types each get one draft on the article how_
     assert.equal(r.report_at.ka_number, h.best_match.ka_number);
     assert.equal(r.report_at.portal_url, `https://portal.311.nyc.gov/article/?kanumber=${c.expect_ka}`);
     assert.ok(r.paste_text.includes(`What I saw: ${c.args.description}`), c.id);
-    // Nothing given but the description, so where, borough and when are asked, not made up.
-    assert.deepEqual(r.placeholders, ["[add: where]", "[add: borough]", "[add: when]"], c.id);
+    // Nothing given but the description, so where, borough and when are asked, not made
+    // up; a time plain in the description ("at 2 am") goes into When: as written.
+    const lifted = liftWhen(c.args.description);
+    assert.deepEqual(r.placeholders, ["[add: where]", "[add: borough]", ...(lifted ? [] : ["[add: when]"])], c.id);
     assert.match(r.paste_text, /Where: \[add: where[^\]]*\], \[add: borough\]/);
-    assert.match(r.paste_text, /When: \[add: when/);
+    assert.match(r.paste_text, lifted ? new RegExp(`When: ${lifted}\n`) : /When: \[add: when/);
     assert.ok(r.questions_to_ask.some((q) => /^Where exactly/.test(q)));
     assert.match(r.what_happens_next.after_you_report, /get_service_request/);
     assert.ok(out.caveats.includes(FIELDS_NOTE));
@@ -67,10 +69,11 @@ test("review: the 10 harder cases", async () => {
   }
   // T1: borough and time given, so only where is asked.
   assert.match(by.T1.out.reports[0].paste_text, /Where: \[add: where[^\]]*\], Queens\nWhen: this morning\. It is still happening\./);
-  // T3: no article, still a draft, and the assistant is told how to find one.
-  assert.equal(by.T3.out.reports[0].status, "drafted_without_article");
-  assert.equal(by.T3.out.reports[0].report_at, null);
-  assert.match(by.T3.out.reports[0].paste_text, /^Problem: \[add: which problem/);
+  // T3: no article, so no draft: how_to_report's no-match answer, 911 first (QA round 1 on #24).
+  assert.equal(by.T3.out.drafted, false);
+  assert.deepEqual(by.T3.out.reports, []);
+  assert.ok(by.T3.out.first_line.startsWith(SAFETY_LINE));
+  assert.ok(by.T3.out.no_match.portal_search_url);
   // T7: the City's own summary says it does not take this: no draft, City words.
   const odor = by.T7.out.reports[0];
   assert.equal(odor.status, "not_a_311_report");
@@ -355,10 +358,12 @@ test("danger in one split part only stops the draft", async () => {
   }
 });
 
-test(`review ${MISSED.id}: danger assessDanger misses still gets the safety line and the instruction to the assistant`, async () => {
+test(`review ${MISSED.id}: danger assessDanger misses gets no draft, 911 first, and the instruction to the assistant`, async () => {
   const { draft } = await setup();
   assert.deepEqual(assessDanger(MISSED.args.description).kinds, [], "the keyword miss this row documents");
   const out = await draft(MISSED.args);
+  assert.equal(out.drafted, false);
+  assert.deepEqual(out.reports, []);
   assert.equal(out.safety_line, SAFETY_LINE);
   assert.equal(out.assistant_instruction, ASSISTANT_INSTRUCTION);
   assert.ok(out.first_line.startsWith("If anyone is in danger right now, call 911."), out.first_line);

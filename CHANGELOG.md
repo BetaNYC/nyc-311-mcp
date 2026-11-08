@@ -30,8 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   metadata; a stale copy answers when the portal is down, and without one the draft is made
   without options. A Problem Detail goes into the draft only when the article's report
   option and the person's words both name it; a guess from the words is a question.
+- No draft when no article matches: how_to_report's no-match answer, 911 first. Every part of
+  a several-problem description is listed (a draft, or "couldn't match this part").
 - Privacy: email addresses and phone numbers in the person's words are left out unless they
-  pass `include_contact`; any ZIP code is left out; nothing is stored or logged.
+  pass `include_contact`; any ZIP code is left out with its "zip" label; a note when the
+  words seem to name someone; nothing is stored or logged.
+- A time or recurrence plain in the description ("at 2 am", "every night") goes into When:.
+- Phase 4 follow-up: hopelessness phrasings ("if I disappeared", "better off without me",
+  "nobody would miss me", "can't go on") lead with 911 and the City's 988 text.
 - Reviewed on the 20 common problem types and 10 harder cases (`docs/draft-a-report.md`,
   `scripts/draft-report-review.mjs`). Testing with real people is still to do.
 

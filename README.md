@@ -10,7 +10,7 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ## What it does
 
-Exposes 20 tools over MCP. Seven use the NYC 311 Public API (they need an API key):
+Exposes 21 tools over MCP. Seven use the NYC 311 Public API (they need an API key):
 
 | Tool | Description |
 |---|---|
