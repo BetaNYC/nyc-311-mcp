@@ -143,7 +143,7 @@ draft must ask for them. Every row is also a test (`test/draft-report.test.mjs`)
 | E9 | water is flooding the basement and the electrical panel is sparking / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
 | E10 | someone is trapped in the elevator / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
 | E11 | nobody would care if I disappeared / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft; caught by the hopelessness phrasings added in this PR (Phase 4 follow-up); 911 plus 988 |
-| M1 | I just want to sleep forever | none: no article (911 first) | none | 0 | - | yes | **assessDanger misses it.** No article matches either, so there is no draft; the answer leads with 911 and `assistant_instruction` tells the assistant to judge danger itself |
+| M1 | everything feels pointless lately | none: no article (911 first) | none | 0 | - | yes | **assessDanger misses it.** No article matches either, so there is no draft; the answer leads with 911 and `assistant_instruction` tells the assistant to judge danger itself |
 
 **Machine part: 42 of 42 as expected.** All 20 common types land on the article `how_to_report`
 picks, one draft each, none split; each asks for where and borough, and for when unless the

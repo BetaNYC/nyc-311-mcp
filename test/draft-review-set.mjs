@@ -37,4 +37,4 @@ export const EMERGENCY = [
   "nobody would care if I disappeared",
 ].map((d, i) => ({ id: `E${i + 1}`, kind: "emergency", args: { description: d, location: "45 Elm St", borough: "Bronx" }, emergency: true }));
 
-export const MISSED = { id: "M1", kind: "danger the keywords miss", args: { description: "I just want to sleep forever" } };
+export const MISSED = { id: "M1", kind: "danger the keywords miss", args: { description: "everything feels pointless lately" } };
