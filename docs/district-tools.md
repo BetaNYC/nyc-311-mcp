@@ -139,7 +139,8 @@ case). One address string can be in several boroughs, so all matches are returne
 dropped whether or not a comma comes first ("350 5th Ave New York NY 10118",
 "350 5th Ave Manhattan"). They are matched only at the end, so `QUEENS BOULEVARD` and
 `NEW YORK AVENUE` keep them. A borough named there narrows the match, unless nothing is in
-that borough. Then: `src/address-spelling.ts` ports BoardStat's own address
+that borough. "New York" or "NY, NY" as the city counts as Manhattan, its postal name, unless
+a borough is also named; "New York City" and "NYC" mean all five boroughs. Then: `src/address-spelling.ts` ports BoardStat's own address
 search (`v2/site/js/index.js`, `normalizeAddress`), so this server and the BoardStat page find
 the same addresses: upper case, periods removed, everything after the first comma dropped, a
 trailing ZIP code dropped and never used, ordinal endings dropped (`5TH` to `5`), `E/W/N/S`
@@ -149,6 +150,8 @@ itself: most numbered streets are digits (`1000 5 AVENUE`), but some buildings a
 with the word (`1295 FIFTH AVENUE`), and some both ways (`350 5 AVENUE` and
 `350 FIFTH AVENUE`). Numbered streets from FIRST to TWELFTH are tried both ways, and the answer
 lists each spelling found. Aliases (`AVENUE OF THE AMERICAS` = `6 AVENUE`) are not attempted.
+An address with no street left once a ZIP code or city is set aside (only a house
+number, as in the City's junk value `730 11363`) is refused rather than looked up.
 When nothing matches, the answer says so and suggests City spellings with the same house
 number and street initial, skipping placeholders such as `-999 …` and `*** …`.
 
@@ -176,7 +179,7 @@ Still open:
 
 **One address, two districts.** BoardStat places each request by its own point, so an
 address can straddle a district line (`1501 UNDERCLIFF AVENUE`, Bronx: 4,025 requests in
-CD 5, 1 in CD 4). `address_history` uses the district with the most requests, names the
+CD 5, 1 in CD 4, in the BoardStat build of 2026-11-07T10:36:39Z). `address_history` uses the district with the most requests, names the
 others with their exact counts in a caveat, and takes `community_district` to choose
 another.
 
@@ -184,9 +187,9 @@ another.
 an answer never mixes two nightly builds. If BoardStat publishes a new build while a call is
 reading, the call fails and says to ask again, rather than combining the two.
 
-**Cost.** Every number comes from the district's detail file, as on the page. A question
-over all the data (2020 on) for the largest district, Council District 11 (940,801
-requests), takes 1 to 2 seconds and peaks at about 700 MB of memory. A one-year question
+**Cost.** Every number comes from the district's detail file, as on the page. Measured on
+the BoardStat build of 2026-11-07T10:36:39Z (Node 26, macOS arm64): a question over all the
+data (2020 on) for the largest district, Council District 11 (940,801 requests), takes 1 to 2 seconds and peaks at about 700 MB of memory. A one-year question
 there peaks at about 330 MB. The descriptor column is read only when a description filter
 needs it.
 | `boardstat_link` | the manifest; the month file to check problem names | the page's own default |

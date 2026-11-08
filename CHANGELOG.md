@@ -25,8 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parallel tool calls on a cold cache no longer race on `manifest-state.json` (ENOENT on
   rename, seen in CI on Node 20 and 22): one manifest refresh is shared, and each state
   write uses its own temporary name.
-- ZIP codes in free text (agency resolution text, City addresses) are removed before an
-  answer leaves, and every string in an answer is checked for one.
+- Five-digit numbers that look like ZIP codes in free text (agency resolution text, City
+  addresses) are removed before an answer leaves, and every string in an answer is checked
+  for one. A lookup left with only a house number is refused, and "New York" or "NY, NY"
+  after the street is read as Manhattan.
 - `find_district` / `address_history` accept a city, borough, state or ZIP after the street
   without a comma; a named borough narrows the match.
 - `address_history` no longer stops when one address straddles two districts: it uses the

@@ -517,7 +517,7 @@ const LIMIT_JSON = (def: number, max: number) => ({
 
 // Plain-language sentence shared by every description.
 const ABOUT =
-  "From BoardStat (BetaNYC's nightly copy of NYC 311 data, 2020 on), so the numbers match the BoardStat page it links to. It is not an official City report. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
+  "Read from files built nightly from NYC Open Data by BoardStat (BetaNYC; 311 requests from 2020 on), so the numbers match the BoardStat page it links to. It is not an official City report. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
 
 // ─── 1. find_district ─────────────────────────────────────────────────────────
 
@@ -530,6 +530,11 @@ type AddressHit = { address: string; borough: string; cd: number; cc: number; re
 
 async function findAddress(data: Reader, address: string, borough?: string) {
   const sp = citySpellings(address);
+  if (!sp.spellings.length) {
+    throw new Error(
+      "That address has no street name once a ZIP code or city is set aside, only a house number. Give the street too, for example '350 5th Ave'."
+    );
+  }
   const { rows, manifest } = await data.readParquet("addresses.parquet", {
     columns: ["address", "cd", "cc", "borough", "n"],
     filter: { address: { $in: sp.spellings } },

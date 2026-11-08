@@ -283,7 +283,7 @@ Once connected, you can ask your AI assistant things like:
 
 ## Notes & limitations
 
-- **`get_service_request` looks up by number only.** The 311 API resolves a known SR number (`311-XXXXXXXX`); it does not search by address, agency, or area. For questions by district, address, agency or problem, use the district tools above (`top_problems`, `address_history`, `agency_response` and the rest), which read BoardStat's nightly copy of the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).
+- **`get_service_request` looks up by number only.** The 311 API resolves a known SR number (`311-XXXXXXXX`); it does not search by address, agency, or area. For questions by district, address, agency or problem, use the district tools above (`top_problems`, `address_history`, `agency_response` and the rest), which read files built nightly from NYC Open Data by BoardStat, from the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).
 - **Calendar range cap.** `get_calendar` accepts a span of up to 90 days; longer ranges are rejected before the request is sent.
 - **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. The status and service-request endpoints are returned as the API's raw JSON — their exact field set is defined by the upstream API and is passed through unchanged.
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.

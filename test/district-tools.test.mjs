@@ -200,13 +200,17 @@ test("citySpellings: BoardStat's own rules, plus digits and words for numbered s
 });
 
 test("find_district: typed form to City spelling, every spelling and borough found, no ZIP in the answer", async () => {
-  const { env, data } = await run("find_district", { address: "350 Fifth Ave., New York, NY 10118" });
+  const { env, data } = await run("find_district", { address: "350 Fifth Ave. 10118" });
   assert.equal(data.found, true);
   assert.deepEqual(new Set(data.matches.map((m) => m.address)), new Set(["350 5 AVENUE", "350 FIFTH AVENUE"]));
   assert.deepEqual(new Set(data.matches.map((m) => m.borough)), new Set(["Manhattan", "Brooklyn"]));
   assert.match(data.message, /Give a borough/);
   assert.ok(!JSON.stringify(env).includes("10118"));
   assert.match(env.caveats.join(" "), /ZIP code was ignored/);
+  // "New York, NY" as the city is Manhattan.
+  const ny = await run("find_district", { address: "350 Fifth Ave., New York, NY 10118" });
+  assert.deepEqual([...new Set(ny.data.matches.map((x) => x.borough))], ["Manhattan"]);
+  assert.ok(!JSON.stringify(ny.env).includes("10118"));
   const m = await run("find_district", { address: "350 5th avenue", borough: "Manhattan" });
   assert.deepEqual(m.data.matches.map((x) => [x.address, x.community_district.id, x.council_district.id]), [["350 5 AVENUE", 105, 4], ["350 FIFTH AVENUE", 105, 4]]);
   assert.equal(m.env.boardstat_url, "https://www.beta.nyc/boardstat/district.html?geo=cd&id=105");
@@ -296,7 +300,15 @@ test("redactZip: ZIP codes in free text are removed; house numbers and other num
   assert.equal(redactZip("NY 10010-1234"), "NY [ZIP code removed]");
   assert.equal(redactZip("730 11363"), "730 [ZIP code removed]", "a junk address whose street is a ZIP");
   assert.equal(redactZip("10001 4 AVENUE"), "10001 4 AVENUE");
-  assert.equal(redactZip("Building 12345 was inspected"), "Building 12345 was inspected");
+  // Not followed by a street in capitals, so not a house number: treated as a ZIP code.
+  assert.equal(redactZip("Building 12345 was inspected"), "Building [ZIP code removed] was inspected");
+  assert.equal(redactZip("the ZIP code 10010 is wrong"), "the ZIP code [ZIP code removed] is wrong");
+  assert.equal(redactZip("Brooklyn 11201 residents"), "Brooklyn [ZIP code removed] residents");
+  assert.equal(redactZip("Zip: 11222 per caller"), "Zip: [ZIP code removed] per caller");
+  assert.equal(redactZip("zip#10001"), "zip#[ZIP code removed]");
+  assert.equal(redactZip("BROOKLYN 11201 RESIDENTS"), "BROOKLYN [ZIP code removed] RESIDENTS", "after a borough, even in capitals");
+  // A house number that starts an address is kept, wherever the address sits in the text.
+  assert.equal(redactZip("Found as 10001 4 AVENUE and 10001 FOURTH AVENUE."), "Found as 10001 4 AVENUE and 10001 FOURTH AVENUE.");
   assert.equal(redactZip("SR 311-12345678"), "SR 311-12345678");
   assert.equal(redactZip(null), null);
 });
@@ -379,4 +391,16 @@ test("nycLocal: the build time in New York local time, across daylight saving", 
   assert.equal(nycLocal("2026-07-01T10:00:00Z"), "2026-07-01 06:00:00", "EDT, UTC-4");
   assert.equal(nycLocal("2026-03-08T07:30:00Z"), "2026-03-08 03:30:00", "just after the spring change");
   assert.equal(nycLocal("2026-11-01T05:30:00Z"), "2026-11-01 01:30:00", "the repeated hour, first pass");
+});
+
+test("citySpellings: only a house number left is refused; 'New York' / 'NY, NY' as the city means Manhattan", async () => {
+  assert.deepEqual(citySpellings("730 11363").spellings, []);
+  await assert.rejects(run("find_district", { address: "730 11363" }), /only a house number/);
+  await assert.rejects(run("address_history", { address: "730 11363" }), /only a house number/);
+  assert.equal(citySpellings("1 Broadway New York").borough_hint, "Manhattan");
+  assert.equal(citySpellings("1 Broadway, NY, NY").borough_hint, "Manhattan");
+  assert.equal(citySpellings("350 5th Ave, Brooklyn, New York").borough_hint, "Brooklyn", "a named borough wins");
+  assert.equal(citySpellings("1 Broadway NYC").borough_hint, null, "NYC is all five boroughs");
+  assert.equal(citySpellings("1 Broadway New York City").borough_hint, null);
+  assert.equal(citySpellings("1 Broadway, NY").borough_hint, null, "NY alone is the state");
 });

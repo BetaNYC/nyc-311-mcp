@@ -42,7 +42,7 @@ const WORD_TO_NUMBER = new Map(ORDINAL_WORDS.map((w, i) => [w, String(i + 1)]));
 const NUMBER_TO_WORD = new Map(ORDINAL_WORDS.map((w, i) => [String(i + 1), w]));
 
 export type CitySpelling = {
-  /** Spellings to look up, the BoardStat-style one first. */
+  /** Spellings to look up, the BoardStat-style one first. Empty when no street is left (only a house number). */
   spellings: string[];
   /** Text that was dropped: after the first comma, and trailing city, borough or state words. ZIP codes removed. */
   ignored_text: string | null;
@@ -77,6 +77,11 @@ function boroughsIn(text: string): Borough[] {
   const t = ` ${text.replace(/[^A-Z ]/g, " ").replace(/\s+/g, " ")} `;
   const found = new Set<Borough>();
   for (const p of PLACE_WORDS) if (p.borough && t.includes(` ${p.words.join(" ")} `)) found.add(p.borough);
+  // "New York" or "NY, NY" as the city is Manhattan's postal name. Only when no borough
+  // is named ("…, Brooklyn, New York" is Brooklyn), and not "New York City" or "NYC",
+  // which mean all five boroughs.
+  if (!found.size && / NEW YORK (?!CITY )/.test(t.replace(/ NEW YORK CITY /g, " "))) found.add("Manhattan");
+  if (!found.size && / NY NY /.test(t)) found.add("Manhattan");
   return [...found];
 }
 
@@ -155,6 +160,11 @@ function numberedStreetIndex(words: string[]): number {
 export function citySpellings(input: string): CitySpelling {
   const { words, base, ignored, droppedZip, boroughHint } = boardstatSpelling(input);
   const spellings: string[] = [];
+  // Nothing but a house number left ("730 11363" once the ZIP is removed): a lookup
+  // would match stray records with no street, so there is nothing to look up.
+  if (!words.some((w) => !/^[\d-]+$/.test(w))) {
+    return { spellings, ignored_text: ignored, dropped_zip: droppedZip, borough_hint: boroughHint };
+  }
   const add = (s: string) => {
     if (s && !spellings.includes(s)) spellings.push(s);
   };

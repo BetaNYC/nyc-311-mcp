@@ -72,28 +72,38 @@ export type DistrictEnvelope<T> = {
 
 const ZIP_KEY = /zip/i;
 
-// A ZIP code inside text: five digits (optionally +4) standing alone, that either follow
-// a state ("NY 10010", "New York, NY 10010") or are not followed by more of an address.
-// A house number is five digits followed by the street ("10001 4 AVENUE"), so it is kept.
+// Five-digit numbers that look like ZIP codes, inside text: five digits (optionally +4)
+// standing alone that follow a state ("NY 10010"), a borough or "New York"
+// ("Brooklyn 11201"), or the word ZIP ("zip code 10010", "Zip: 11222") — or that are
+// anything other than a house number. A house number starts an address: it is followed
+// by the street in the City's capitals ("10001 4 AVENUE"), so it is kept.
 // Found in City data: agency boilerplate "…, New York, NY 10010." in resolution text,
 // and junk addresses such as "730 11363".
 const ZIP_IN_TEXT = /(?<![\d-])(\d{5})(?:-\d{4})?(?![\d-])/g;
-const STATE_BEFORE = /\b(?:N\.?\s?Y\.?|NEW YORK|N\.?\s?J\.?|NEW JERSEY|C\.?\s?T\.?)\s*,?\s*$/i;
-const ADDRESS_AFTER = /^\s+[A-Za-z0-9]/;
+const ZIP_CONTEXT_BEFORE = new RegExp(
+  [
+    "\\b(?:N\\.?\\s?Y\\.?|NEW YORK|N\\.?\\s?J\\.?|NEW JERSEY|C\\.?\\s?T\\.?)\\s*,?\\s*$", // a state
+    "\\b(?:MANHATTAN|BROOKLYN|BRONX|QUEENS|STATEN ISLAND)\\s*,?\\s*$", // a borough
+    "\\bZIP(?:\\s*CODE)?\\s*[:#]?\\s*$", // the word ZIP
+  ].join("|"),
+  "i"
+);
+// The next word in capitals, as the City writes a street: "4 AVENUE", "WEST 42 STREET".
+const STREET_AFTER = /^\s+[A-Z0-9][A-Z0-9'&.-]*(?=\s|$)/;
 
 function zipSpans(text: string): Array<[number, number]> {
   const spans: Array<[number, number]> = [];
   for (const m of text.matchAll(ZIP_IN_TEXT)) {
     const start = m.index as number;
     const end = start + m[0].length;
-    const afterState = STATE_BEFORE.test(text.slice(Math.max(0, start - 20), start));
-    const houseNumber = ADDRESS_AFTER.test(text.slice(end)) && !afterState;
+    const afterContext = ZIP_CONTEXT_BEFORE.test(text.slice(Math.max(0, start - 24), start));
+    const houseNumber = !afterContext && STREET_AFTER.test(text.slice(end));
     if (!houseNumber) spans.push([start, end]);
   }
   return spans;
 }
 
-/** Text with every ZIP code replaced by "[ZIP code removed]". Used on every free-text field a tool returns. */
+/** Text with five-digit numbers that look like ZIP codes replaced by "[ZIP code removed]". Used on every free-text field a tool returns. */
 export function redactZip(text: string): string;
 export function redactZip(text: string | null): string | null;
 export function redactZip(text: string | null): string | null {
