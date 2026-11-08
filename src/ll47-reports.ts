@@ -711,7 +711,7 @@ const CB_SHAPE = {
   data_as_of: z.string().optional(),
 };
 
-const CB_COLUMNS = ["section", "sr_number", "created", "closed", "category", "description", "agency", "agency_name", "status", "address"] as const;
+const CB_COLUMNS = ["section", "unique_key", "created", "closed", "category", "description", "agency", "agency_name", "status", "address"] as const;
 type CbRow = Record<(typeof CB_COLUMNS)[number], string | null>;
 
 const DETAIL_COLS = ["unique_key", "created_date", "closed_date", "complaint_type_raw", "descriptor", "agency", "agency_name", "status", "incident_address", "intersection_street_1", "intersection_street_2"];
@@ -760,7 +760,7 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
 
   const toRow = (section: string) => (r: Row): CbRow => ({
     section,
-    sr_number: String(r.unique_key),
+    unique_key: String(r.unique_key),
     created: fmtLocal(r.created_date),
     closed: fmtLocal(r.closed_date),
     category: r.complaint_type_raw == null ? null : redactZip(String(r.complaint_type_raw)),
@@ -813,7 +813,7 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
       "\"new_this_month\" is every request created in the month. \"unresolved_from_prior_months\" is every request created earlier (2020 on) that is still not closed. \"unresolved_at_month_end_now_closed\" is every request created earlier that was closed after the month ended, so it was unresolved at the month's end, by its own created and closed dates.",
       older ? asOf : `Status is the current status, as of when this data was built (${m.generated_at}), which is what § 1075(d)(3) asks for.`,
       "Unresolved means any status other than Closed (Open, In Progress, Pending, Assigned, Started, Unspecified, or none). Closed does not mean fixed.",
-      "Category is the City's complaint type; description is the City's descriptor. The 311 number (sr_number) is the City's Open Data unique_key. Addresses are as the City wrote them.",
+      "Category is the City's complaint type; description is the City's descriptor. unique_key is NYC Open Data's id for the request; it is not the 311 number (311-XXXXXXXX) the person who reported was given. Addresses are as the City wrote them.",
       "To page, pass next_page.offset and next_page.data_as_of. A page asked for with an older data_as_of is refused, so a list is never stitched from two builds.",
       ...(d.jia ? ["A Joint Interest Area has no community board of its own; § 1075(d) lists go to community boards."] : []),
     ],

@@ -128,7 +128,7 @@ month other than the newest complete one the answer says so plainly (`status_not
 caveat): "unresolved" is as of `status_as_of` (the build), and the City's § 1075(d) list would
 show the status when it was sent. The third part is what can be rebuilt of the month-end view.
 
-Each row: `section`, `sr_number`, `created`, `closed`, `category`, `description`, `agency`,
+Each row: `section`, `unique_key` (NYC Open Data's id, not the 311 number), `created`, `closed`, `category`, `description`, `agency`,
 `agency_name`, `status` (current, as of the build, which is what § 1075(d)(3) asks), `address`
 (as the City wrote it, ZIP codes removed). Ordered by created time, then number, within each
 part. `limit` (up to 1,000) and `offset`; the answer gives `next_page` (`offset` and

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
+
+- `find_requests`: every request in a community or council district, any status, newest
+  first, with `limit`/`offset`/`next_offset`. Filters: problems, descriptions, agency,
+  `status` (`closed`/`not_closed`) and `statuses` (the City's own values, such as `Pending`).
+  `by_status` counts each status with a plain-language `meaning`. Checked against DuckDB
+  (`Oracle.find_requests`, `expected-lookup.json`).
+- `address_history` takes `offset` and returns `next_offset`; it, `still_open` and
+  `find_requests` return status meanings.
+- `get_service_request` / `get_service_request_list`: additive `plain_language` block per
+  request (status label from the API's documented codes, meaning, resolution, submitted time,
+  the address to pass to `address_history`); the list adds `not_found`, since the API leaves
+  out unknown numbers silently. A 404 explains that an Open Data id is not a 311 number.
+- `src/service-requests.ts`; evidence and status tables in `docs/service-requests.md`.
+
+### Changed (Phase 3, #16)
+
+- **The 311 number is not Open Data's `unique_key`** (two live lookups, docs/service-requests.md).
+  District tools and `cb_monthly_list` now call the id `unique_key` instead of `sr_number`
+  (unreleased; Phases 1 and 2 only), and their caveats say it is not the 311 number.
+- **ZIP codes are now removed from the 311 API answers too** (`Address.FullAddress` ended in
+  one). Values only; no field is dropped except a key naming a ZIP code.
+
 ### Added: the three Local Law 47 of 2005 reports (Phase 2, #15)
 
 - `ll47_service_request_report` (former Charter § 1075(b)), `ll47_directory_assistance_report`

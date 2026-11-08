@@ -78,6 +78,7 @@ const VALID_ARGS = {
   still_open: { community_district: 484 },
   top_addresses: { community_district: 484, problems: ["Illegal Parking"] },
   address_history: { address: "JACOB RIIS PARK", borough: "Queens" },
+  find_requests: { community_district: 484, statuses: ["pending"] },
   boardstat_link: { community_district: 101 },
   boardstat_status: {},
   ll47_service_request_report: { community_district: 484, month: "2025-10" },

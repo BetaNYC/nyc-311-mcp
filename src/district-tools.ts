@@ -23,6 +23,7 @@ import { z } from "zod";
 import { BoardStatData, dataWindow, type BoardStatManifest, type ManifestResult, type PinnedBoardStat } from "./boardstat-data.js";
 import { citySpellings, isPlaceholderAddress } from "./address-spelling.js";
 import { districtEnvelope, redactZip, type BoardStatLinkFilters, type DistrictEnvelope } from "./envelope.js";
+import { SR_NUMBER_NOTE, explainStatus, statusMeanings } from "./service-requests.js";
 import { PERIOD_ARG_SHAPE, PERIOD_JSON_PROPERTIES, resolvePeriod, type Period } from "./fiscal-year.js";
 
 // ─── The data client ──────────────────────────────────────────────────────────
@@ -515,6 +516,8 @@ export const LIMIT_JSON = (def: number, max: number) => ({
   description: `How many rows to list (default ${def}, at most ${max}). The answer says when more were left out.`,
 });
 
+const OFFSET_JSON = { type: "integer", minimum: 0, description: "How many rows to skip, for the next page (default 0). The answer gives next_offset." } as const;
+
 // Plain-language sentence shared by every description.
 const ABOUT =
   "Read from files built nightly from NYC Open Data by BoardStat (BetaNYC; 311 requests from 2020 on), so the numbers match the BoardStat page it links to. It is not an official City report. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
@@ -992,7 +995,7 @@ export async function stillOpen(src: Source, args: z.infer<z.ZodObject<typeof OP
     .sort((a, b) => b.not_closed - a.not_closed || byText(a.agency, b.agency));
   const list = capped(
     open.map((r) => ({
-      sr_number: String(r.unique_key),
+      unique_key: String(r.unique_key),
       created: fmtLocal(r.created_date),
       problem: String(r.complaint_type),
       description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
@@ -1014,12 +1017,13 @@ export async function stillOpen(src: Source, args: z.infer<z.ZodObject<typeof OP
       by_agency: byAgency,
       oldest_first: list.items,
       truncated: list.truncated,
+      status_meanings: statusMeanings(open.map((r) => (r.status == null ? null : String(r.status)))),
     },
     extraCaveats: [
       ...p.notes,
       ...districtCaveats(d, m),
       `Not closed means any status other than Closed (Open, In Progress, Pending, Assigned, Started, or none), as BoardStat's "Not yet closed". Days open are counted to when this data was built (${m.generated_at}), not to today.`,
-      "Requests created in the period that are still not closed. The 311 number (sr_number) is the City's Open Data unique_key.",
+      "Requests created in the period that are still not closed. unique_key is NYC Open Data's id for the request; it is not the 311 number (311-XXXXXXXX) the person who reported was given, and get_service_request cannot look it up.",
     ],
   });
 }
@@ -1099,6 +1103,7 @@ const HISTORY_SHAPE = {
   problems: FILTER_SHAPE.problems,
   status: FILTER_SHAPE.status,
   limit: LIMIT(200),
+  offset: z.number().int().min(0).optional(),
 };
 
 export async function addressHistory(src: Source, args: z.infer<z.ZodObject<typeof HISTORY_SHAPE>>) {
@@ -1152,9 +1157,10 @@ export async function addressHistory(src: Source, args: z.infer<z.ZodObject<type
   const byProblem = [...countBy(matched, (r) => String(r.complaint_type))]
     .map(([problem, rs]) => ({ problem, requests: rs.length, not_closed: rs.filter((r) => !isClosed(r)).length }))
     .sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem));
+  const historyOffset = args.offset ?? 0;
   const list = capped(
-    matched.map((r) => ({
-      sr_number: String(r.unique_key),
+    matched.slice(historyOffset).map((r) => ({
+      unique_key: String(r.unique_key),
       created: fmtLocal(r.created_date),
       closed: fmtLocal(r.closed_date),
       problem: String(r.complaint_type),
@@ -1172,6 +1178,7 @@ export async function addressHistory(src: Source, args: z.infer<z.ZodObject<type
     ...p.notes,
     "Only requests whose address matches exactly, as the City spelled it, in this address's community district. Requests that gave only a cross street are not included.",
     "The resolution is the agency's own words. It says what the agency recorded, not whether the problem was fixed.",
+    "unique_key is NYC Open Data's id for each request, not the 311 number (311-XXXXXXXX) the person who reported was given.",
     "Talk about the address, not the people who reported: 311 data does not say who called, and this server does not try to.",
     "The BoardStat link opens the district page; to see this one address on BoardStat, search for it on BoardStat's home page.",
   ];
@@ -1208,6 +1215,121 @@ export async function addressHistory(src: Source, args: z.infer<z.ZodObject<type
       by_problem: byProblem,
       newest_first: list.items,
       truncated: list.truncated,
+      offset: historyOffset,
+      next_offset: list.truncated ? historyOffset + list.items.length : null,
+      status_meanings: statusMeanings(matched.map((r) => (r.status == null ? null : String(r.status)))),
+    },
+    extraCaveats: extra,
+  });
+}
+
+// ─── 11. find_requests ────────────────────────────────────────────────────────
+// The request list for a district (#16). still_open lists only requests not yet closed,
+// and address_history only one address; this is the one list of every request in a
+// district, with any status, paged. For one address, address_history stays the tool.
+
+const FIND_REQUESTS_SHAPE = {
+  ...DISTRICT_SHAPE,
+  ...DISTRICT_PERIOD_SHAPE,
+  ...FILTER_SHAPE,
+  statuses: z.array(z.string().min(1)).max(10).optional(),
+  limit: LIMIT(200),
+  offset: z.number().int().min(0).optional(),
+};
+
+/** Map each requested City status to the exact value in the rows read (case-insensitive), or fail listing the values there. */
+function canonicalStatuses(rows: Row[], asked: string[] | undefined): string[] | undefined {
+  if (!asked?.length) return undefined;
+  const present = [...new Set(rows.map((r) => (r.status == null ? "(none)" : String(r.status))))].sort(byText);
+  const out: string[] = [];
+  for (const a of asked) {
+    const hit = present.find((p) => p.toLowerCase() === a.trim().toLowerCase());
+    if (!hit) {
+      throw new Error(
+        `No request in this district and period has the status '${a}'. Statuses here: ${present.map((p) => `'${p}'`).join(", ")}. ` +
+          "For every status other than Closed at once, use status: 'not_closed'."
+      );
+    }
+    if (!out.includes(hit)) out.push(hit);
+  }
+  return out;
+}
+
+export async function findRequests(src: Source, args: z.infer<z.ZodObject<typeof FIND_REQUESTS_SHAPE>>) {
+  const data = await pin(src);
+  const m = (await data.manifest()).manifest;
+  const d = resolveDistrict(m, args);
+  const p = toolPeriod(args, m, "view");
+  const problems = await canonicalProblems(data, args.problems);
+  const { rows, manifest } = await readDetail(
+    data,
+    d,
+    [
+      "unique_key", "created_date", "closed_date", "agency", "complaint_type", "descriptor", "status", "days_to_close",
+      "resolution_description", "incident_address", "intersection_street_1", "intersection_street_2",
+    ],
+    { from: localAsDate(p.start), toExclusive: localAsDate(addDays(p.end, 1)) }
+  );
+  const f: Filters = {
+    problems,
+    descriptions: canonicalDescriptions(rows, { problems, descriptions: args.descriptions }),
+    exclude_descriptions: args.exclude_descriptions,
+    agency: canonicalAgency(rows, args.agency),
+    status: args.status,
+  };
+  const statuses = canonicalStatuses(rows, args.statuses);
+  const keepFilters = rowMatcher(f);
+  const statusSet = statuses ? new Set(statuses) : null;
+  const matched = rows
+    .filter((r) => keepFilters(r) && (!statusSet || statusSet.has(r.status == null ? "(none)" : String(r.status))))
+    .sort((a, b) => (b.created_date as Date).getTime() - (a.created_date as Date).getTime() || byText(String(a.unique_key), String(b.unique_key)));
+  const asOf = localAsDate(nycLocal(m.generated_at)).getTime();
+  const offset = args.offset ?? 0;
+  const limit = args.limit ?? 25;
+  const page = matched.slice(offset, offset + limit);
+  const byStatus = [...countBy(matched, (r) => (r.status == null ? "(none)" : String(r.status)))]
+    .map(([status, rs]) => {
+      const ex = explainStatus(status === "(none)" ? null : status);
+      return { status, requests: rs.length, closed: ex.closed, meaning: ex.meaning };
+    })
+    .sort((a, b) => b.requests - a.requests || byText(a.status, b.status));
+  const link = linkFilters(d, p, f);
+  // BoardStat's page takes one status; with exactly one City status asked for, pass it on.
+  if (statuses?.length === 1 && !f.status && statuses[0] !== "(none)") link.status = statuses[0];
+  const extra = [
+    ...p.notes,
+    ...districtCaveats(d, m),
+    "Newest first. Each request's status is the City's current one; status meanings are in by_status. The resolution is the agency's own words, not proof the problem was fixed.",
+    `unique_key is NYC Open Data's id for each request, not the 311 number (311-XXXXXXXX) the person who reported was given. ${SR_NUMBER_NOTE}`,
+    "For every request at one address, use address_history.",
+  ];
+  if (statuses && statuses.length > 1) extra.push("BoardStat's page filters on one status at a time, so the link does not carry the statuses asked for.");
+  return districtEnvelope({
+    manifest,
+    siteUrl: data.siteUrl,
+    link,
+    data: {
+      district: districtOut(d),
+      period: periodOut(p),
+      filters: { problems: f.problems ?? null, descriptions: f.descriptions ?? null, exclude_descriptions: f.exclude_descriptions ?? null, agency: f.agency ?? null, status: f.status ?? null, statuses: statuses ?? null },
+      requests: matched.length,
+      by_status: byStatus,
+      offset,
+      limit,
+      next_offset: offset + limit < matched.length ? offset + limit : null,
+      newest_first: page.map((r) => ({
+        unique_key: String(r.unique_key),
+        created: fmtLocal(r.created_date),
+        closed: fmtLocal(r.closed_date),
+        problem: String(r.complaint_type),
+        description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
+        agency: String(r.agency),
+        status: r.status == null ? null : String(r.status),
+        days_to_close: days1(closedDays(r)),
+        days_open: isClosed(r) ? null : Number((Math.max(0, asOf - (r.created_date as Date).getTime()) / DAY).toFixed(1)),
+        address: redactZip(addressOf(r)),
+        resolution: redactZip(r.resolution_description == null ? null : String(r.resolution_description)),
+      })),
     },
     extraCaveats: extra,
   });
@@ -1397,9 +1519,27 @@ export const DISTRICT_TOOLS = [
         problems: FILTER_JSON.problems,
         status: FILTER_JSON.status,
         limit: LIMIT_JSON(50, 200),
+        offset: OFFSET_JSON,
       },
       ["address"]
     ),
+  },
+  {
+    name: "find_requests",
+    description:
+      "List the requests in a community or council district, newest first, with any status, paged with limit and offset. Each has its status, days to close or days open, address and the agency's resolution text; by_status counts each status and says in plain words what it means. Filters: problems, descriptions, agency, status ('closed' / 'not_closed'), or statuses (the City's own values, such as 'Pending' or 'Assigned'). With no dates, BoardStat's opening view (about the last year). For one address use address_history; for only what is still open, still_open. " + PERIOD_DESC + " " + ABOUT,
+    inputSchema: obj({
+      ...DISTRICT_JSON,
+      ...DISTRICT_PERIOD_JSON,
+      ...FILTER_JSON,
+      statuses: {
+        type: "array",
+        items: { type: "string" },
+        description: "The City's status values to keep, e.g. ['Pending', 'Assigned']. Values seen: Closed, Open, In Progress, Pending, Assigned, Started, Unspecified. Matched without regard to case; a value no request has is refused with the list of values present.",
+      },
+      limit: LIMIT_JSON(25, 200),
+      offset: OFFSET_JSON,
+    }),
   },
   {
     name: "boardstat_link",
@@ -1424,6 +1564,7 @@ export const DISTRICT_ARG_SHAPES = {
   still_open: OPEN_SHAPE,
   top_addresses: ADDR_SHAPE,
   address_history: HISTORY_SHAPE,
+  find_requests: FIND_REQUESTS_SHAPE,
   boardstat_link: LINK_SHAPE,
   boardstat_status: {},
 };
@@ -1448,6 +1589,8 @@ export async function runDistrictTool(name: DistrictToolName, args: Record<strin
       return topAddresses(data, args as never);
     case "address_history":
       return addressHistory(data, args as never);
+    case "find_requests":
+      return findRequests(data, args as never);
     case "boardstat_link":
       return boardstatLink(data, args as never);
     case "boardstat_status":

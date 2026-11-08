@@ -131,7 +131,7 @@ class Oracle:
             SELECT agency, count(*)::INTEGER AS not_closed, strftime(min(created_date), '%Y-%m-%d') AS oldest_created
             FROM {t} WHERE {w} GROUP BY 1 ORDER BY 2 DESC, 1""")
         oldest = self.q(f"""
-            SELECT unique_key AS sr_number, strftime(created_date, '%Y-%m-%d %H:%M:%S') AS created,
+            SELECT unique_key, strftime(created_date, '%Y-%m-%d %H:%M:%S') AS created,
                    round(greatest(0, epoch(CAST({lit(self.as_of)} AS TIMESTAMP)) - epoch(created_date)) / 86400.0, 1) AS days_open
             FROM {t} WHERE {w} ORDER BY created_date, unique_key LIMIT {int(limit)}""")
         total = sum(r["not_closed"] for r in by_agency)
@@ -155,8 +155,24 @@ class Oracle:
             SELECT complaint_type AS problem, count(*)::INTEGER AS requests,
                    count(*) FILTER (WHERE status IS DISTINCT FROM 'Closed')::INTEGER AS not_closed
             FROM {t} WHERE {w} GROUP BY 1 ORDER BY 2 DESC, 1""")
-        newest = self.q(f"SELECT unique_key AS sr_number FROM {t} WHERE {w} ORDER BY created_date DESC, unique_key LIMIT 5")
-        return {"requests": sum(r["requests"] for r in by), "by_problem": by, "newest_sr_numbers": [r["sr_number"] for r in newest]}
+        newest = self.q(f"SELECT unique_key FROM {t} WHERE {w} ORDER BY created_date DESC, unique_key LIMIT 5")
+        return {"requests": sum(r["requests"] for r in by), "by_problem": by, "newest_unique_keys": [r["unique_key"] for r in newest]}
+
+    def find_requests(self, geo, gid, start, end, limit=25, offset=0, statuses=None, status=None, types=None, agency=None) -> dict[str, Any]:
+        """find_requests (#16): every request in the period and filters, newest first, paged."""
+        f = self.filters(types=types, agency=agency, status=status)
+        if statuses:
+            f += f" AND coalesce(status, '(none)') IN ({', '.join(map(lit, statuses))})"
+        t = self.detail(geo, gid)
+        w = f"{self.dates(start, end)} AND {f}"
+        by = self.q(f"""
+            SELECT coalesce(status, '(none)') AS status, count(*)::INTEGER AS requests
+            FROM {t} WHERE {w} GROUP BY 1 ORDER BY 2 DESC, 1""")
+        page = self.q(f"""
+            SELECT unique_key, status, {self.CLOSED_DAYS} AS days_to_close FROM {t} WHERE {w}
+            ORDER BY created_date DESC, unique_key LIMIT {int(limit)} OFFSET {int(offset)}""")
+        return {"requests": sum(r["requests"] for r in by), "by_status": by,
+                "newest_first": [{**r, "days_to_close": r1(r["days_to_close"])} for r in page]}
 
     def problem_trend(self, geo, gid, start, end, types, descs=None) -> dict[str, Any]:
         f = self.filters(types=types, descs=descs)

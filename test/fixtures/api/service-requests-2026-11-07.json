@@ -1,0 +1,117 @@
+{
+  "_about": "Recorded from the NYC 311 Public API (api.nyc.gov/public/api) on 2026-11-07 by the Phase 3 build (#16): three read-only calls. Sanitized: the ZIP code at the end of each Address.FullAddress was replaced with the placeholder 99999 (not a real NYC ZIP), so the ZIP-removal path is still exercised. No key or header is recorded.",
+  "responses": {
+    "get_70999528": {
+      "request": {
+        "operation": "GetServiceRequest",
+        "sr_numbers": [
+          "311-70999528"
+        ]
+      },
+      "http_status": 404,
+      "body": {
+        "Error": {
+          "Code": "NotFound",
+          "Message": "SR with Number 311-70999528 wasn't found!"
+        }
+      }
+    },
+    "get_17323508": {
+      "request": {
+        "operation": "GetServiceRequest",
+        "sr_numbers": [
+          "311-17323508"
+        ]
+      },
+      "http_status": 200,
+      "body": {
+        "SRNumber": "311-17323508",
+        "Agency": "Department of Sanitation",
+        "Problem": "Snow or Ice",
+        "ProblemDetails": "Sidewalk",
+        "AdditionalDetails": "N/A",
+        "ResolutionActionUpdatedDate": "2024-01-20T20:44:17",
+        "Status": "614110003",
+        "DateTimeSubmitted": "2024-01-18T14:38:16",
+        "ResolutionAction": "The Department of Sanitation investigated this complaint and issued a Notice of Violation.",
+        "Address": {
+          "Borough": "MANHATTAN",
+          "FullAddress": "180 EAST   94 STREET, MANHATTAN (NEW YORK), NY, 99999"
+        }
+      }
+    },
+    "list_17323508_17323514_70999528": {
+      "request": {
+        "operation": "GetServiceRequestList",
+        "sr_numbers": [
+          "311-17323508",
+          "311-17323514",
+          "311-70999528"
+        ]
+      },
+      "http_status": 200,
+      "body": {
+        "SRResponses": [
+          {
+            "SRNumber": "311-17323514",
+            "Agency": "Department of Sanitation",
+            "Problem": "Snow or Ice",
+            "ProblemDetails": "Sidewalk",
+            "AdditionalDetails": "N/A",
+            "ResolutionActionUpdatedDate": "2024-01-20T13:17:09",
+            "Status": "614110003",
+            "DateTimeSubmitted": "2024-01-18T14:38:53",
+            "ResolutionAction": "The Department of Sanitation investigated this complaint and found no violation at the location.",
+            "Address": {
+              "Borough": "MANHATTAN",
+              "FullAddress": "165 EAST   94 STREET, MANHATTAN (NEW YORK), NY, 99999"
+            }
+          },
+          {
+            "SRNumber": "311-17323508",
+            "Agency": "Department of Sanitation",
+            "Problem": "Snow or Ice",
+            "ProblemDetails": "Sidewalk",
+            "AdditionalDetails": "N/A",
+            "ResolutionActionUpdatedDate": "2024-01-20T20:44:17",
+            "Status": "614110003",
+            "DateTimeSubmitted": "2024-01-18T14:38:16",
+            "ResolutionAction": "The Department of Sanitation investigated this complaint and issued a Notice of Violation.",
+            "Address": {
+              "Borough": "MANHATTAN",
+              "FullAddress": "180 EAST   94 STREET, MANHATTAN (NEW YORK), NY, 99999"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "open_data_matches": {
+    "_about": "The same two requests in NYC Open Data erm2-nwe9, found by agency and created_date to the second (SODA, 2026-11-07). Same problem, detail, address and resolution text as the API's; different numbers.",
+    "311-17323508": {
+      "unique_key": "60061097",
+      "created_date": "2024-01-18T14:38:16.000",
+      "agency": "DSNY",
+      "complaint_type": "Snow or Ice",
+      "descriptor": "Sidewalk",
+      "status": "Closed",
+      "incident_address": "180 EAST   94 STREET",
+      "resolution_description": "The Department of Sanitation investigated this complaint and issued a Notice of Violation."
+    },
+    "311-17323514": {
+      "unique_key": "60071726",
+      "created_date": "2024-01-18T14:38:53.000",
+      "agency": "DSNY",
+      "complaint_type": "Snow or Ice",
+      "descriptor": "Sidewalk",
+      "status": "Closed",
+      "incident_address": "165 EAST   94 STREET",
+      "resolution_description": "The Department of Sanitation investigated this complaint and found no violation at the location."
+    },
+    "not_found_in_api": {
+      "unique_key": "70999528",
+      "sr_number_tried": "311-70999528",
+      "http_status": 404
+    }
+  }
+}
