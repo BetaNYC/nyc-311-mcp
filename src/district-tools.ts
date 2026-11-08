@@ -41,17 +41,17 @@ export function setBoardStatData(data: BoardStatData | null): void {
 }
 
 /** What the tools read through: one build, pinned for the whole call (BoardStatData.pinned()). */
-type Reader = PinnedBoardStat;
-type Source = BoardStatData | PinnedBoardStat;
-const pin = async (src: Source): Promise<Reader> => (src instanceof BoardStatData ? src.pinned() : src);
+export type Reader = PinnedBoardStat;
+export type Source = BoardStatData | PinnedBoardStat;
+export const pin = async (src: Source): Promise<Reader> => (src instanceof BoardStatData ? src.pinned() : src);
 
 /** Plain code-unit order, as DuckDB and the BoardStat page sort text (not locale order). */
-const byText = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+export const byText = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
 // ─── Districts ────────────────────────────────────────────────────────────────
 
 export type Geo = "cd" | "cc";
-type DistrictEntry = {
+export type DistrictEntry = {
   id: number;
   rows: number;
   file: string | null;
@@ -61,9 +61,9 @@ type DistrictEntry = {
 };
 export type District = { geo: Geo; id: number; label: string; borough: string | null; file: string; jia: boolean };
 
-const BOROUGHS = ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"] as const;
+export const BOROUGHS = ["Manhattan", "Bronx", "Brooklyn", "Queens", "Staten Island"] as const;
 
-function manifestDistricts(m: BoardStatManifest): { cd: DistrictEntry[]; cc: DistrictEntry[] } {
+export function manifestDistricts(m: BoardStatManifest): { cd: DistrictEntry[]; cc: DistrictEntry[] } {
   const d = m.districts as { cd?: DistrictEntry[]; cc?: DistrictEntry[] } | undefined;
   if (!d || !Array.isArray(d.cd) || !Array.isArray(d.cc)) {
     throw new Error("BoardStat's manifest.json has no district list (districts.cd / districts.cc), so district tools cannot run.");
@@ -105,7 +105,7 @@ export function resolveDistrict(
   return { geo, id, label: entry.label, borough: entry.borough ?? null, file: entry.file, jia: Boolean(entry.jia) };
 }
 
-function districtOut(d: District) {
+export function districtOut(d: District) {
   return {
     kind: d.geo === "cd" ? (d.jia ? "joint interest area" : "community district") : "council district",
     id: d.id,
@@ -114,7 +114,7 @@ function districtOut(d: District) {
   };
 }
 
-function districtCaveats(d: District, m: BoardStatManifest): string[] {
+export function districtCaveats(d: District, m: BoardStatManifest): string[] {
   const out: string[] = [];
   if (d.jia) out.push(`${d.label} is a Joint Interest Area (a park or other area outside every community district), not a community district.`);
   if (d.geo === "cc") {
@@ -136,7 +136,7 @@ function districtCaveats(d: District, m: BoardStatManifest): string[] {
 
 const DAY = 86_400_000;
 
-function addDays(iso: string, n: number): string {
+export function addDays(iso: string, n: number): string {
   return new Date(Date.parse(`${iso}T00:00:00Z`) + n * DAY).toISOString().slice(0, 10);
 }
 
@@ -152,11 +152,11 @@ export function shiftMonths(ts: string, months: number): string {
 }
 
 /** A New York local date or timestamp as the Date hyparquet returns for BoardStat's zone-less TIMESTAMP. */
-function localAsDate(ts: string): Date {
+export function localAsDate(ts: string): Date {
   return new Date(ts.length === 10 ? `${ts}T00:00:00Z` : `${ts.replace(" ", "T")}Z`);
 }
 
-function fmtLocal(d: unknown): string | null {
+export function fmtLocal(d: unknown): string | null {
   return d instanceof Date && !Number.isNaN(d.getTime()) ? d.toISOString().slice(0, 19).replace("T", " ") : null;
 }
 
@@ -171,7 +171,7 @@ export function nycLocal(iso: string): string {
 }
 
 /** The last calendar day with data: the newest request's date, or the window end (district.js lastDataDay). */
-function lastDataDay(m: BoardStatManifest): string {
+export function lastDataDay(m: BoardStatManifest): string {
   const lc = m.window.last_created;
   const d = lc ? lc.slice(0, 10) : m.window.end;
   return d < m.window.end ? d : m.window.end;
@@ -234,7 +234,7 @@ export function toolPeriod(args: PeriodInput, m: BoardStatManifest, fallback: "v
   return period;
 }
 
-function periodOut(p: Period) {
+export function periodOut(p: Period) {
   return { start: p.start, end: p.end, label: p.label, ...(p.fiscal_year !== undefined ? { fiscal_year: p.fiscal_year } : {}) };
 }
 
@@ -251,7 +251,7 @@ type Filters = {
   status?: Status;
 };
 
-type Row = Record<string, unknown>;
+export type Row = Record<string, unknown>;
 
 const isClosed = (r: Row) => r.status === "Closed";
 const descOf = (r: Row) => (r.descriptor == null ? "(none)" : String(r.descriptor));
@@ -383,7 +383,7 @@ async function readDetail(
 /** The descriptor column only when a description filter needs it: it is the widest text read. */
 const descCol = (args: { descriptions?: string[] }) => (args.descriptions?.length ? ["descriptor"] : []);
 
-function closedDays(r: Row): number | null {
+export function closedDays(r: Row): number | null {
   return isClosed(r) && typeof r.days_to_close === "number" ? r.days_to_close : null;
 }
 
@@ -395,12 +395,12 @@ export function median(values: number[]): number | null {
   return s.length % 2 ? s[mid] : s[mid - 1] + (s[mid] - s[mid - 1]) / 2;
 }
 
-function mean(values: number[]): number | null {
+export function mean(values: number[]): number | null {
   return values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
 }
 
 /** Days with one decimal, as the BoardStat page shows them (toFixed(1)). */
-function days1(v: number | null): number | null {
+export function days1(v: number | null): number | null {
   return v == null ? null : Number(v.toFixed(1));
 }
 
@@ -458,17 +458,17 @@ function countBy<T extends string>(rows: Row[], key: (r: Row) => T): Map<T, Row[
 }
 
 /** List cap: `limit`, and whether more rows were left out. */
-function capped<T>(items: T[], limit: number) {
+export function capped<T>(items: T[], limit: number) {
   return { items: items.slice(0, limit), truncated: items.length > limit, total_items: items.length };
 }
 
 // ─── Shared argument shapes ───────────────────────────────────────────────────
 
-const DISTRICT_SHAPE = {
+export const DISTRICT_SHAPE = {
   community_district: z.union([z.number().int(), z.string()]).optional(),
   council_district: z.union([z.number().int(), z.string()]).optional(),
 };
-const DISTRICT_JSON = {
+export const DISTRICT_JSON = {
   community_district: {
     type: ["integer", "string"],
     description:
@@ -507,8 +507,8 @@ const FILTER_JSON = {
   },
 } as const;
 
-const LIMIT = (max: number) => z.number().int().min(1).max(max).optional();
-const LIMIT_JSON = (def: number, max: number) => ({
+export const LIMIT = (max: number) => z.number().int().min(1).max(max).optional();
+export const LIMIT_JSON = (def: number, max: number) => ({
   type: "integer",
   minimum: 1,
   maximum: max,
@@ -804,7 +804,7 @@ const TREND_SHAPE = {
   status: FILTER_SHAPE.status,
 };
 
-function lastOfMonth(ym: string): string {
+export function lastOfMonth(ym: string): string {
   const d = new Date(Date.UTC(Number(ym.slice(0, 4)), Number(ym.slice(5, 7)), 0)).getUTCDate();
   return `${ym}-${String(d).padStart(2, "0")}`;
 }
@@ -952,7 +952,7 @@ const OPEN_SHAPE = {
   limit: LIMIT(200),
 };
 
-function addressOf(r: Row): string | null {
+export function addressOf(r: Row): string | null {
   if (r.incident_address) return String(r.incident_address);
   if (r.intersection_street_1 && r.intersection_street_2) return `${r.intersection_street_1} & ${r.intersection_street_2}`;
   return null;
@@ -1297,7 +1297,7 @@ export async function boardstatStatus(from: Source, now: number = Date.now()) {
 
 // ─── Tool table ───────────────────────────────────────────────────────────────
 
-const obj = (properties: Record<string, unknown>, required: string[] = []) => ({
+export const obj = (properties: Record<string, unknown>, required: string[] = []) => ({
   type: "object" as const,
   additionalProperties: false,
   properties,

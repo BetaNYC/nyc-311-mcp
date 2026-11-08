@@ -1,0 +1,826 @@
+// Phase 2 (#15, epic #12): BetaNYC rebuilds of the three monthly reports that Local Law 47
+// of 2005 (Int 0174-2004, Gale A. Brewer) put in Charter § 1075.
+//
+//   ll47_service_request_report       former § 1075(b), repealed by Local Law 69 of 2023
+//   ll47_directory_assistance_report  former § 1075(c), repealed by Local Law 69 of 2023
+//   cb_monthly_list                   § 1075(d), current law
+//
+// The service-request report and the community board list read BoardStat's published
+// files, through the Phase 0/1 modules (boardstat-data.ts, district-tools.ts, envelope.ts,
+// fiscal-year.ts), so they count exactly as BoardStat does:
+//   - a request belongs to a month by its created_date (New York local time);
+//   - "closed" means status = 'Closed'; every other status, or none, is "not closed";
+//   - days to close count only Closed requests with a usable close date (days_to_close);
+//   - a request is in a district by BoardStat's own placement (current boundary lines);
+//     requests with no usable location are in no district file.
+// The category is the City's own complaint type as published (complaint_type_raw), because
+// that is what the law and the City's dashboards count. BoardStat's grouped problem names
+// are used only where only its month file is read, and are labeled so.
+//
+// The directory-assistance report reads the 311 Call Center Inquiry dataset (wewp-mm3p)
+// through soda.ts: one $group query per month, cached until the dataset changes.
+
+import { z } from "zod";
+import type { BoardStatManifest } from "./boardstat-data.js";
+import {
+  addDays,
+  addressOf,
+  BOROUGHS,
+  boardstatData,
+  byText,
+  capped,
+  days1,
+  DISTRICT_JSON,
+  DISTRICT_SHAPE,
+  districtCaveats,
+  districtOut,
+  fmtLocal,
+  lastDataDay,
+  lastOfMonth,
+  LIMIT,
+  localAsDate,
+  manifestDistricts,
+  mean,
+  median,
+  obj,
+  pin,
+  resolveDistrict,
+  type District,
+  type DistrictEntry,
+  type Reader,
+  type Row,
+  type Source,
+} from "./district-tools.js";
+import { assertNoZip, assertNoZipValues, boardstatUrl, districtEnvelope, redactZip, type DistrictEnvelope } from "./envelope.js";
+import { DATA_START, fiscalYearOf, fiscalYearRange, parseFiscalYear, resolvePeriod, type Period } from "./fiscal-year.js";
+import { CALL_CENTER_DATASET, sodaClient, type SodaClient, type SodaMetadata } from "./soda.js";
+
+// ─── The mandate block every report carries ───────────────────────────────────
+
+const NOT_OFFICIAL =
+  "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.";
+
+const OMISSIONS = [
+  "ZIP code breakdown: omitted by BetaNYC's decision. ZIP codes are a poor way to organize NYC data, so this server does not use them anywhere.",
+  "Data before 2020-01-01 is not included. The law counted from April 1, 2004.",
+];
+
+export type Mandate = {
+  charter_section: string;
+  rebuilds: string;
+  law: string;
+  status: "current" | "repealed";
+  repealed_by?: string;
+  text: string;
+  note: string;
+  omissions: string[];
+};
+
+export const MANDATES = {
+  service_requests: {
+    charter_section: "Charter § 1075(b) (former)",
+    rebuilds: "The monthly report on requests for service",
+    law: "Local Law 47 of 2005 (Int 0174-2004, Gale A. Brewer), https://intro.nyc/0174-2004",
+    status: "repealed",
+    repealed_by: "Local Law 69 of 2023 (Int 1004-2023), § 4, https://intro.nyc/1004-2023. § 1075(b) now reads \"Reserved.\"",
+    text:
+      "A monthly report on requests for service, \"disaggregated on a month-by-month and fiscal year-by-year basis\": totals by category and agency; totals by resolution status; \"the average resolution time for each request for service category by the agency\"; \"provided citywide and disaggregated by zip code, community district, council district and borough.\"",
+    note: NOT_OFFICIAL,
+    omissions: OMISSIONS,
+  },
+  directory_assistance: {
+    charter_section: "Charter § 1075(c) (former)",
+    rebuilds: "The monthly report on directory assistance calls",
+    law: "Local Law 47 of 2005 (Int 0174-2004, Gale A. Brewer), https://intro.nyc/0174-2004",
+    status: "repealed",
+    repealed_by: "Local Law 69 of 2023 (Int 1004-2023), § 4, https://intro.nyc/1004-2023. § 1075(c) now reads \"Reserved.\"",
+    text:
+      "The same monthly report for directory assistance calls, by category and agency. § 1075(a) defines a directory assistance call as \"any call received by the 311 citizen service center that is entered into the 311 computer system in the directory assistance category.\"",
+    note: NOT_OFFICIAL,
+    omissions: OMISSIONS,
+  },
+  cb_list: {
+    charter_section: "Charter § 1075(d)",
+    rebuilds: "The monthly list to each community board",
+    law: "Local Law 47 of 2005 (Int 0174-2004, Gale A. Brewer), https://intro.nyc/0174-2004; amended by Local Law 69 of 2023",
+    status: "current",
+    text:
+      "\"Within seven business days from the end of each month, the department shall submit in electronic format to each community board a list setting forth all requests for service that were identified to have occurred in the respective community district received by the 311 citizen service center during the immediately preceding month, as well as all unresolved requests for service from prior months.\" For each: \"(1) the request for service category; (2) the agency or agencies to which the request for service was directed; and, (3) the current status of the request for service\".",
+    note: NOT_OFFICIAL,
+    omissions: OMISSIONS,
+  },
+} satisfies Record<string, Mandate>;
+
+export type ReportEnvelope<T> = DistrictEnvelope<T> & { mandate: Mandate };
+
+/** Adds the mandate and re-runs both ZIP checks over the finished answer. */
+function withMandate<T>(env: DistrictEnvelope<T>, mandate: Mandate): ReportEnvelope<T> {
+  const out = { ...env, mandate };
+  assertNoZip(out);
+  assertNoZipValues(out);
+  return out;
+}
+
+// ─── Report months ────────────────────────────────────────────────────────────
+
+const MONTH = /^(\d{4})-(\d{2})$/;
+
+export function parseMonth(s: string): string {
+  const m = MONTH.exec(s.trim());
+  if (!m || Number(m[2]) < 1 || Number(m[2]) > 12) throw new Error(`Invalid month '${s}': expected YYYY-MM, e.g. 2026-10.`);
+  return `${m[1]}-${m[2]}`;
+}
+
+function prevMonth(ym: string): string {
+  const y = Number(ym.slice(0, 4));
+  const mo = Number(ym.slice(5, 7));
+  return mo === 1 ? `${y - 1}-12` : `${y}-${String(mo - 1).padStart(2, "0")}`;
+}
+
+/** The newest calendar month that is complete in data ending on `lastDay`. */
+export function lastCompleteMonth(lastDay: string): string {
+  const ym = lastDay.slice(0, 7);
+  return lastDay === lastOfMonth(ym) ? ym : prevMonth(ym);
+}
+
+export type ReportPeriods = {
+  /** The calendar month, when the report is for a month. */
+  month: (Period & { month: string }) | null;
+  /** The fiscal year to date through the month's end, or the fiscal year asked for. */
+  fiscal_year: Period;
+  notes: string[];
+};
+
+/**
+ * A month (and its fiscal year to date) or a fiscal year, inside `window`. With neither,
+ * the newest complete month. The FY to date runs from July 1 to the end of the month,
+ * as the 2005 law's "fiscal year-by-year basis" and the City's own FYTD columns do.
+ */
+export function reportPeriods(
+  args: { month?: string; fiscal_year?: number | string },
+  window: { start: string; end: string },
+  defaultMonth: string
+): ReportPeriods {
+  if (args.month !== undefined && args.fiscal_year !== undefined) {
+    throw new Error("Give month or fiscal_year, not both. A month's answer already includes its fiscal year to date.");
+  }
+  const notes: string[] = [];
+  if (args.fiscal_year !== undefined) {
+    const fy = parseFiscalYear(args.fiscal_year);
+    const p = resolvePeriod({ fiscal_year: fy }, window);
+    return { month: null, fiscal_year: p, notes: [...p.notes] };
+  }
+  const ym = args.month !== undefined ? parseMonth(args.month) : defaultMonth;
+  if (args.month === undefined) notes.push(`No month was given, so this is the newest complete month in the data, ${ym}.`);
+  const first = `${ym}-01`;
+  const last = lastOfMonth(ym);
+  if (last < DATA_START) throw new Error(`${ym} is before the data begins (${DATA_START}). This rebuild covers 2020 on.`);
+  const m = resolvePeriod({ from_date: first, to_date: last }, window);
+  const fy = fiscalYearOf(first);
+  const fyr = fiscalYearRange(fy);
+  const f = resolvePeriod({ from_date: fyr.start, to_date: last }, window);
+  f.fiscal_year = fy;
+  f.label = `FY${fy} to date (${f.start} to ${f.end})`;
+  if (m.end !== last) notes.push(`${ym} is not complete in the data: it runs to ${m.end}.`);
+  notes.push(...m.notes.filter((n) => !notes.includes(n)));
+  for (const n of f.notes) if (!notes.includes(n)) notes.push(n);
+  return { month: { ...m, month: ym, label: `${ym} (${m.start} to ${m.end})` }, fiscal_year: f, notes };
+}
+
+const periodOut = (p: Period) => ({ start: p.start, end: p.end, label: p.label, ...(p.fiscal_year !== undefined ? { fiscal_year: p.fiscal_year } : {}) });
+
+// ─── 1. ll47_service_request_report (former § 1075(b)) ────────────────────────
+
+const GEO_KINDS = ["community_district", "council_district", "borough"] as const;
+
+const SR_SHAPE = {
+  month: z.string().optional(),
+  fiscal_year: z.union([z.number().int(), z.string()]).optional(),
+  ...DISTRICT_SHAPE,
+  borough: z.enum(BOROUGHS).optional(),
+  by_district: z.enum(GEO_KINDS).optional(),
+  read_every_district: z.boolean().optional(),
+  limit: LIMIT(1000),
+};
+
+const SR_COLUMNS = ["created_date", "complaint_type_raw", "agency", "agency_name", "status", "days_to_close"];
+
+type CatAgency = { category: string; agency: string; requests: number; closed: number; days: number[] };
+
+/** Running totals for one period, filled one district file at a time. */
+class Tally {
+  requests = 0;
+  byCategory = new Map<string, number>();
+  byAgency = new Map<string, { name: string | null; n: number }>();
+  byStatus = new Map<string, number>();
+  byCatAgency = new Map<string, CatAgency>();
+  closedDays: number[] = [];
+
+  add(r: Row) {
+    const cat = r.complaint_type_raw == null ? "(none)" : String(r.complaint_type_raw);
+    const agency = r.agency == null ? "(none)" : String(r.agency);
+    const status = r.status == null ? "(none)" : String(r.status);
+    this.requests += 1;
+    this.byCategory.set(cat, (this.byCategory.get(cat) ?? 0) + 1);
+    const a = this.byAgency.get(agency);
+    if (a) {
+      a.n += 1;
+      if (!a.name && r.agency_name) a.name = String(r.agency_name);
+    } else this.byAgency.set(agency, { name: r.agency_name ? String(r.agency_name) : null, n: 1 });
+    this.byStatus.set(status, (this.byStatus.get(status) ?? 0) + 1);
+    const key = `${cat}\u0000${agency}`;
+    let ca = this.byCatAgency.get(key);
+    if (!ca) this.byCatAgency.set(key, (ca = { category: cat, agency, requests: 0, closed: 0, days: [] }));
+    ca.requests += 1;
+    if (r.status === "Closed") {
+      ca.closed += 1;
+      if (typeof r.days_to_close === "number") {
+        ca.days.push(r.days_to_close);
+        this.closedDays.push(r.days_to_close);
+      }
+    }
+  }
+
+  out(limit: number) {
+    const desc = <T extends { requests: number }>(k: (x: T) => string) => (a: T, b: T) => b.requests - a.requests || byText(k(a), k(b));
+    const cats = capped(
+      [...this.byCategory].map(([category, requests]) => ({ category: redactZip(category), requests })).sort(desc((x) => x.category)),
+      limit
+    );
+    const agencies = [...this.byAgency]
+      .map(([agency, v]) => ({ agency, agency_name: v.name, requests: v.n }))
+      .sort(desc((x) => x.agency));
+    const statuses = [...this.byStatus].map(([status, requests]) => ({ status, requests })).sort(desc((x) => x.status));
+    const rt = capped(
+      [...this.byCatAgency.values()]
+        .map((c) => ({
+          category: redactZip(c.category),
+          agency: c.agency,
+          requests: c.requests,
+          closed: c.closed,
+          average_days_to_close: days1(mean(c.days)),
+          median_days_to_close: days1(median(c.days)),
+        }))
+        .sort((a, b) => b.requests - a.requests || byText(a.category, b.category) || byText(a.agency, b.agency)),
+      limit
+    );
+    return {
+      requests: this.requests,
+      closed: this.byStatus.get("Closed") ?? 0,
+      not_closed: this.requests - (this.byStatus.get("Closed") ?? 0),
+      average_days_to_close: days1(mean(this.closedDays)),
+      median_days_to_close: days1(median(this.closedDays)),
+      by_category: cats.items,
+      by_category_truncated: cats.truncated,
+      category_count: cats.total_items,
+      by_agency: agencies,
+      by_status: statuses,
+      resolution_time_by_category_and_agency: rt.items,
+      resolution_time_truncated: rt.truncated,
+      category_agency_pairs: rt.total_items,
+    };
+  }
+}
+
+type Scope =
+  | { kind: "citywide" }
+  | { kind: "borough"; borough: (typeof BOROUGHS)[number] }
+  | { kind: "district"; district: District };
+
+function scopeOf(m: BoardStatManifest, args: z.infer<z.ZodObject<typeof SR_SHAPE>>): Scope {
+  const given = [args.community_district, args.council_district, args.borough].filter((v) => v !== undefined).length;
+  if (given > 1) throw new Error("Give at most one of community_district, council_district or borough. With none, the report is citywide.");
+  if (args.borough) return { kind: "borough", borough: args.borough };
+  if (args.community_district !== undefined || args.council_district !== undefined) return { kind: "district", district: resolveDistrict(m, args) };
+  return { kind: "citywide" };
+}
+
+/** The community-district files that make up the city or one borough (Joint Interest Areas included). */
+function filesFor(m: BoardStatManifest, scope: Scope): DistrictEntry[] {
+  return manifestDistricts(m).cd.filter((e) => e.file && (scope.kind === "citywide" || (scope.kind === "borough" && e.borough === scope.borough)));
+}
+
+function mb(bytes: number) {
+  return Math.round(bytes / 1e6);
+}
+
+/** Month-file counts (BoardStat's grouped problem names) by geo_id for the given months. */
+async function aggByGeo(data: Reader, kind: string, months: { from: string; to: string }, geoId?: string) {
+  const filter: Record<string, unknown> = { geo_kind: { $eq: kind }, year_month: { $gte: months.from, $lte: months.to } };
+  if (geoId !== undefined) filter.geo_id = { $eq: geoId };
+  const { rows } = await data.readParquet("agg/month_type.parquet", { columns: ["geo_kind", "geo_id", "year_month", "complaint_type", "n"], filter });
+  return rows;
+}
+
+function sumTypes(rows: Row[], ym?: string) {
+  const m = new Map<string, number>();
+  for (const r of rows) if (!ym || r.year_month === ym) m.set(String(r.complaint_type), (m.get(String(r.complaint_type)) ?? 0) + Number(r.n));
+  return m;
+}
+
+const ymOf = (p: Period) => ({ from: p.start.slice(0, 7), to: p.end.slice(0, 7) });
+
+export async function serviceRequestReport(src: Source, args: z.infer<z.ZodObject<typeof SR_SHAPE>>) {
+  const data = await pin(src);
+  const mr = await data.manifest();
+  const m = mr.manifest;
+  const window = { start: m.window.start, end: lastDataDay(m) };
+  const periods = reportPeriods(args, window, lastCompleteMonth(lastDataDay(m)));
+  const limit = args.limit ?? 50;
+  const list = periods.month ? [periods.month, periods.fiscal_year] : [periods.fiscal_year];
+  const caveats = [
+    ...periods.notes,
+    "A request is counted in the month it was created (New York time). Its status and close date are as of when this data was built, not as of the month's end.",
+    "Category is the City's own complaint type, as written on each request. Average and median days to close count only requests marked Closed with a usable close date; the median is a BetaNYC addition, not in the law.",
+    "Only requests with a usable location are in BoardStat's district files, so totals here leave out requests the City could not place. The City's own dashboards count those too.",
+  ];
+
+  // The table of every district: BoardStat's month file, which is small.
+  if (args.by_district) {
+    if (args.community_district !== undefined || args.council_district !== undefined) {
+      throw new Error("by_district lists every district, so it cannot be combined with community_district or council_district. borough may narrow it.");
+    }
+    if (args.read_every_district) throw new Error("by_district always uses BoardStat's month file; read_every_district does not apply.");
+    const kind = args.by_district === "community_district" ? "cd" : args.by_district === "council_district" ? "cc" : "borough";
+    const fy = periods.fiscal_year;
+    const rows = await aggByGeo(data, kind, ymOf(fy));
+    const entries =
+      kind === "borough"
+        ? BOROUGHS.map((b) => ({ id: b as string | number, label: b as string, borough: b as string | null }))
+        : manifestDistricts(m)[kind as "cd" | "cc"].map((e) => ({ id: e.id as string | number, label: e.label, borough: e.borough }));
+    const table = entries
+      .filter((e) => !args.borough || e.borough === args.borough)
+      .map((e) => {
+        const mine = rows.filter((r) => String(r.geo_id) === String(e.id));
+        const monthTypes = periods.month ? sumTypes(mine, periods.month.month) : null;
+        const fyTypes = sumTypes(mine);
+        const top = [...(monthTypes ?? fyTypes)].sort((a, b) => b[1] - a[1] || byText(a[0], b[0]))[0];
+        const total = (x: Map<string, number>) => [...x.values()].reduce((a, b) => a + b, 0);
+        return {
+          id: e.id,
+          label: e.label,
+          borough: e.borough,
+          ...(monthTypes ? { requests_month: total(monthTypes) } : {}),
+          requests_fiscal_year: total(fyTypes),
+          top_problem: top ? { problem: top[0], requests: top[1] } : null,
+        };
+      });
+    const out = capped(table, Math.min(limit, 100));
+    const env = districtEnvelope({
+      manifest: mr,
+      siteUrl: data.siteUrl,
+      data: {
+        geography: `every ${args.by_district.replace("_", " ")}${args.borough ? ` in ${args.borough}` : ""}`,
+        month: periods.month ? periodOut(periods.month) : null,
+        fiscal_year: periodOut(fy),
+        districts: out.items,
+        truncated: out.truncated,
+        district_count: out.total_items,
+      },
+      extraCaveats: [
+        ...caveats,
+        "This table comes from BoardStat's month file: whole months, and BoardStat's grouped problem names (top_problem), which have not yet been reviewed. Ask for one district to get agencies, statuses and days to close.",
+        ...(kind === "cc" ? ["Council districts are placed by BoardStat, by where each request happened and today's Council lines."] : []),
+      ],
+    });
+    return withMandate(env, MANDATES.service_requests);
+  }
+
+  const scope = scopeOf(m, args);
+  const geography =
+    scope.kind === "citywide"
+      ? { kind: "citywide", label: "New York City" }
+      : scope.kind === "borough"
+        ? { kind: "borough", label: scope.borough }
+        : districtOut(scope.district);
+  const extra = scope.kind === "district" ? districtCaveats(scope.district, m) : [];
+
+  // Citywide or one borough, without reading every district file: totals by problem from the month file.
+  if (scope.kind !== "district" && !args.read_every_district) {
+    const files = filesFor(m, scope);
+    const bytes = files.reduce((a, e) => a + (m.files[e.file as string] ?? 0), 0);
+    const rows = await aggByGeo(data, scope.kind === "citywide" ? "city" : "borough", ymOf(periods.fiscal_year), scope.kind === "borough" ? scope.borough : undefined);
+    const section = (ym?: string) => {
+      const t = sumTypes(rows, ym);
+      const list = capped(
+        [...t].map(([problem, requests]) => ({ problem, requests })).sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem)),
+        limit
+      );
+      return {
+        requests: [...t.values()].reduce((a, b) => a + b, 0),
+        by_problem: list.items,
+        by_problem_truncated: list.truncated,
+        problem_count: list.total_items,
+        by_agency: null,
+        by_status: null,
+        resolution_time_by_category_and_agency: null,
+      };
+    };
+    const env = districtEnvelope({
+      manifest: mr,
+      siteUrl: data.siteUrl,
+      data: {
+        geography,
+        complete: false,
+        how_to_get_the_rest: `Totals by agency, by status and days to close need every ${scope.kind === "citywide" ? "" : `${scope.borough} `}community district file: ${files.length} files, about ${mb(bytes)} MB, downloaded once per nightly build and kept in the cache. Ask again with read_every_district: true, or ask for one community or council district.`,
+        month: periods.month ? { ...periodOut(periods.month), ...section(periods.month.month) } : null,
+        fiscal_year: { ...periodOut(periods.fiscal_year), ...section() },
+      },
+      extraCaveats: [
+        ...caveats,
+        "This answer comes from BoardStat's month file: whole months, and BoardStat's grouped problem names (not the City's exact complaint types), which have not yet been reviewed.",
+      ],
+    });
+    return withMandate(env, MANDATES.service_requests);
+  }
+
+  // Full report: read the district file(s), one at a time, and tally each period.
+  const files = scope.kind === "district" ? [scope.district.file] : filesFor(m, scope).map((e) => e.file as string);
+  const from = list.reduce((a, p) => (p.start < a ? p.start : a), list[0].start);
+  const to = list.reduce((a, p) => (p.end > a ? p.end : a), list[0].end);
+  const tallies = list.map(() => new Tally());
+  const bounds = list.map((p) => [localAsDate(p.start).getTime(), localAsDate(addDays(p.end, 1)).getTime()] as const);
+  for (const file of files) {
+    const { rows } = await data.readParquet(file, {
+      columns: SR_COLUMNS,
+      filter: { created_date: { $gte: localAsDate(from), $lt: localAsDate(addDays(to, 1)) } },
+    });
+    for (const r of rows) {
+      const t = (r.created_date as Date).getTime();
+      bounds.forEach(([a, b], i) => {
+        if (t >= a && t < b) tallies[i].add(r);
+      });
+    }
+  }
+  const section = (i: number) => ({ ...periodOut(list[i]), ...tallies[i].out(limit) });
+  const env = districtEnvelope({
+    manifest: mr,
+    siteUrl: data.siteUrl,
+    link: scope.kind === "district" ? { geo: scope.district.geo, id: scope.district.id, start: list[0].start, end: list[0].end } : {},
+    data: {
+      geography,
+      complete: true,
+      ...(scope.kind !== "district" ? { district_files_read: files.length } : {}),
+      month: periods.month ? section(0) : null,
+      fiscal_year: section(periods.month ? 1 : 0),
+    },
+    extraCaveats: [...caveats, ...extra],
+  });
+  return withMandate(env, MANDATES.service_requests);
+}
+
+// ─── 2. ll47_directory_assistance_report (former § 1075(c)) ───────────────────
+
+const DA_SHAPE = {
+  month: z.string().optional(),
+  fiscal_year: z.union([z.number().int(), z.string()]).optional(),
+  limit: LIMIT(2000),
+};
+
+/** One month's calls, grouped server-side. Missing keys are blanks (Socrata leaves nulls out). */
+export type CallGroup = { inquiry_name: string; agency: string | null; agency_name: string | null; call_resolution: string | null; n: number };
+
+function monthQuery(ym: string): Record<string, string> {
+  const next = ym.endsWith("-12") ? `${Number(ym.slice(0, 4)) + 1}-01` : `${ym.slice(0, 5)}${String(Number(ym.slice(5, 7)) + 1).padStart(2, "0")}`;
+  return {
+    $select: "inquiry_name, agency, agency_name, call_resolution, count(*) AS n",
+    $where: `date >= '${ym}-01T00:00:00' AND date < '${next}-01T00:00:00'`,
+    $group: "inquiry_name, agency, agency_name, call_resolution",
+    $order: "inquiry_name, agency, agency_name, call_resolution",
+  };
+}
+
+function toGroup(r: Record<string, unknown>): CallGroup {
+  const s = (v: unknown) => (typeof v === "string" && v.trim() ? v : null);
+  const n = Number(r.n);
+  if (!Number.isFinite(n)) throw new Error("NYC Open Data returned a call count that is not a number.");
+  return { inquiry_name: s(r.inquiry_name) ?? "(none)", agency: s(r.agency), agency_name: s(r.agency_name), call_resolution: s(r.call_resolution), n };
+}
+
+async function monthCalls(soda: SodaClient, meta: SodaMetadata, ym: string) {
+  return soda.cached(`${CALL_CENTER_DATASET}/${ym}`, meta.rowsUpdatedAt, async () =>
+    (await soda.queryAll(CALL_CENTER_DATASET, monthQuery(ym))).map(toGroup)
+  );
+}
+
+/** Today in New York, YYYY-MM-DD. */
+function nycToday(now: number): string {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" })
+      .formatToParts(new Date(now))
+      .map((x) => [x.type, x.value])
+  );
+  return `${p.year}-${p.month}-${p.day}`;
+}
+
+function monthsBetween(start: string, end: string): string[] {
+  const out: string[] = [];
+  for (let ym = start.slice(0, 7); ym <= end.slice(0, 7); ) {
+    out.push(ym);
+    ym = ym.endsWith("-12") ? `${Number(ym.slice(0, 4)) + 1}-01` : `${ym.slice(0, 5)}${String(Number(ym.slice(5, 7)) + 1).padStart(2, "0")}`;
+  }
+  return out;
+}
+
+export function callSection(groups: CallGroup[], limit: number) {
+  const byName = new Map<string, number>();
+  const byAgency = new Map<string, { name: string | null; n: number }>();
+  const byRes = new Map<string, number>();
+  let total = 0;
+  for (const g of groups) {
+    total += g.n;
+    byName.set(g.inquiry_name, (byName.get(g.inquiry_name) ?? 0) + g.n);
+    const a = g.agency ?? "(blank)";
+    const prev = byAgency.get(a);
+    if (prev) prev.n += g.n;
+    else byAgency.set(a, { name: g.agency_name, n: g.n });
+    const r = g.call_resolution ?? "(blank)";
+    byRes.set(r, (byRes.get(r) ?? 0) + g.n);
+  }
+  const cats = capped(
+    [...byName].map(([category, calls]) => ({ category: redactZip(category), calls })).sort((a, b) => b.calls - a.calls || byText(a.category, b.category)),
+    limit
+  );
+  const blankAgency = byAgency.get("(blank)")?.n ?? 0;
+  const blankRes = byRes.get("(blank)") ?? 0;
+  const da = byName.get("Directory Assistance") ?? 0;
+  return {
+    calls: total,
+    by_category: cats.items,
+    by_category_truncated: cats.truncated,
+    category_count: cats.total_items,
+    directory_assistance_topic_calls: da,
+    by_agency:
+      blankAgency === total
+        ? null
+        : [...byAgency].map(([agency, v]) => ({ agency, agency_name: v.name, calls: v.n })).sort((a, b) => b.calls - a.calls || byText(a.agency, b.agency)),
+    calls_with_blank_agency: blankAgency,
+    by_call_resolution:
+      blankRes === total ? null : [...byRes].map(([call_resolution, calls]) => ({ call_resolution, calls })).sort((a, b) => b.calls - a.calls),
+    calls_with_blank_call_resolution: blankRes,
+  };
+}
+
+export async function directoryAssistanceReport(
+  args: z.infer<z.ZodObject<typeof DA_SHAPE>>,
+  soda: SodaClient = sodaClient(),
+  now: number = Date.now()
+) {
+  const meta = await soda.metadata(CALL_CENTER_DATASET);
+  const today = nycToday(now);
+  // The dataset is published daily, through yesterday at best.
+  const window = { start: DATA_START, end: addDays(today, -1) };
+  const periods = reportPeriods(args, window, lastCompleteMonth(window.end));
+  const limit = args.limit ?? 50;
+  const list = periods.month ? [periods.month, periods.fiscal_year] : [periods.fiscal_year];
+  const months = monthsBetween(periods.fiscal_year.start, periods.fiscal_year.end);
+  const perMonth = new Map<string, CallGroup[]>();
+  let fromCache = 0;
+  for (const ym of months) {
+    const { value, cached } = await monthCalls(soda, meta, ym);
+    if (cached) fromCache += 1;
+    perMonth.set(ym, value);
+  }
+  const groupsFor = (p: Period) => monthsBetween(p.start, p.end).flatMap((ym) => perMonth.get(ym) ?? []);
+  const sections = list.map((p) => ({ ...periodOut(p), ...callSection(groupsFor(p), limit) }));
+  const col = (f: string) => meta.columns.find((c) => c.fieldName === f);
+  const allBlank = sections.every((s) => s.by_agency === null);
+  const limitedReasons = [
+    "The dataset has no field that says which calls were entered \"in the directory assistance category\", the law's definition. It holds every agent-handled call, so this report counts all of them, by topic (inquiry_name), and shows the one topic named \"Directory Assistance\" separately.",
+    ...(allBlank
+      ? [
+          `The agency column is blank for every call in this period (and in every month checked back to January 2022), so there is no breakdown by agency. The column exists: ${col("agency")?.non_null?.toLocaleString("en-US") ?? "some"} older calls have one.`,
+        ]
+      : []),
+    ...(sections.every((s) => s.by_call_resolution === null)
+      ? ["The call_resolution column (how the call ended: information provided, transferred, service request created, and so on) is blank for every call in this period, so calls that only got information cannot be told apart from calls that became service requests."]
+      : []),
+    "The dataset's own description says that since March 2020 it \"does not fully represent the agent-handled calls to 311. The actual calls handled are higher.\" It counts agent-handled calls only, not every call to 311.",
+  ];
+  const env = {
+    data_as_of: meta.rowsUpdatedAt_iso,
+    latest_request: null,
+    boardstat_url: null,
+    caveats: [
+      ...periods.notes,
+      "Calls are counted by the date they were received (New York time). The topic is the one the 311 representative used to answer the call.",
+    ],
+    source: {
+      name: "NYC Open Data, 311 Call Center Inquiry (wewp-mm3p), read by BetaNYC",
+      url: `https://data.cityofnewyork.us/d/${CALL_CENTER_DATASET}`,
+      dataset: { id: CALL_CENTER_DATASET, name: meta.name, url: `https://data.cityofnewyork.us/d/${CALL_CENTER_DATASET}`, updated: meta.rowsUpdatedAt_iso },
+    },
+    data: {
+      limited: true,
+      limited_because: limitedReasons,
+      month: periods.month ? sections[0] : null,
+      fiscal_year: sections[periods.month ? 1 : 0],
+      months_queried: months.length - fromCache,
+      months_from_cache: fromCache,
+    },
+    mandate: MANDATES.directory_assistance,
+  };
+  assertNoZip(env);
+  assertNoZipValues(env);
+  return env;
+}
+
+// ─── 3. cb_monthly_list (§ 1075(d), current law) ──────────────────────────────
+
+const CB_SHAPE = {
+  community_district: z.union([z.number().int(), z.string()]),
+  month: z.string().optional(),
+  part: z.enum(["all", "new_this_month", "unresolved_from_prior_months"]).optional(),
+  limit: LIMIT(1000),
+  offset: z.number().int().min(0).optional(),
+  format: z.enum(["rows", "csv"]).optional(),
+};
+
+const CB_COLUMNS = ["section", "sr_number", "created", "category", "description", "agency", "agency_name", "status", "address"] as const;
+type CbRow = Record<(typeof CB_COLUMNS)[number], string | null>;
+
+const DETAIL_COLS = ["unique_key", "created_date", "complaint_type_raw", "descriptor", "agency", "agency_name", "status", "incident_address", "intersection_street_1", "intersection_street_2"];
+
+export function toCsv(columns: readonly string[], rows: Record<string, string | null>[]): string {
+  const cell = (v: string | null) => (v == null ? "" : /[",\r\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
+  return [columns.join(","), ...rows.map((r) => columns.map((c) => cell(r[c])).join(","))].join("\r\n") + "\r\n";
+}
+
+const sortCreated = (a: Row, b: Row) =>
+  (a.created_date as Date).getTime() - (b.created_date as Date).getTime() || byText(String(a.unique_key), String(b.unique_key));
+
+export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeof CB_SHAPE>>) {
+  const data = await pin(src);
+  const mr = await data.manifest();
+  const m = mr.manifest;
+  const d = resolveDistrict(m, { community_district: args.community_district });
+  const window = { start: m.window.start, end: lastDataDay(m) };
+  const periods = reportPeriods({ month: args.month }, window, lastCompleteMonth(lastDataDay(m)));
+  const month = periods.month as Period & { month: string };
+  const part = args.part ?? "all";
+  const limit = args.limit ?? 100;
+  const offset = args.offset ?? 0;
+  const monthStart = localAsDate(month.start);
+
+  const fresh =
+    part === "unresolved_from_prior_months"
+      ? []
+      : (
+          await data.readParquet(d.file, {
+            columns: DETAIL_COLS,
+            filter: { created_date: { $gte: monthStart, $lt: localAsDate(addDays(month.end, 1)) } },
+          })
+        ).rows.sort(sortCreated);
+  const prior =
+    part === "new_this_month" || month.start <= m.window.start
+      ? []
+      : (
+          await data.readParquet(d.file, {
+            columns: [...DETAIL_COLS, "is_closed"],
+            filter: { created_date: { $gte: localAsDate(m.window.start), $lt: monthStart }, is_closed: { $eq: false } },
+          })
+        ).rows.sort(sortCreated);
+
+  const toRow = (section: string) => (r: Row): CbRow => ({
+    section,
+    sr_number: String(r.unique_key),
+    created: fmtLocal(r.created_date),
+    category: r.complaint_type_raw == null ? null : redactZip(String(r.complaint_type_raw)),
+    description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
+    agency: r.agency == null ? null : String(r.agency),
+    agency_name: r.agency_name == null ? null : String(r.agency_name),
+    status: r.status == null ? null : String(r.status),
+    address: redactZip(addressOf(r)),
+  });
+  const all = [...fresh.map(toRow("new_this_month")), ...prior.map(toRow("unresolved_from_prior_months"))];
+  const page = all.slice(offset, offset + limit);
+  const next = offset + limit < all.length ? offset + limit : null;
+  const unresolvedLink = boardstatUrl(data.siteUrl, { geo: "cd", id: d.id, start: m.window.start, end: addDays(month.start, -1), status: "not_closed" });
+
+  const env = districtEnvelope({
+    manifest: mr,
+    siteUrl: data.siteUrl,
+    link: { geo: "cd", id: d.id, start: month.start, end: month.end },
+    data: {
+      district: districtOut(d),
+      month: periodOut(month),
+      part,
+      counts: {
+        new_this_month: part === "unresolved_from_prior_months" ? null : fresh.length,
+        unresolved_from_prior_months: part === "new_this_month" ? null : prior.length,
+        rows: all.length,
+      },
+      offset,
+      limit,
+      next_offset: next,
+      unresolved_boardstat_url: part === "new_this_month" ? null : unresolvedLink,
+      columns: [...CB_COLUMNS],
+      ...(args.format === "csv" ? { csv: toCsv(CB_COLUMNS, page) } : { rows: page }),
+    },
+    extraCaveats: [
+      ...periods.notes,
+      ...districtCaveats(d, m),
+      "\"new_this_month\" is every request created in the month. \"unresolved_from_prior_months\" is every request created earlier (2020 on) that is still not closed. Status is the current status, as of when this data was built, which is what § 1075(d)(3) asks for.",
+      "Unresolved means any status other than Closed (Open, In Progress, Pending, Assigned, Started, Unspecified, or none). Closed does not mean fixed.",
+      "Category is the City's complaint type; description is the City's descriptor. The 311 number (sr_number) is the City's Open Data unique_key. Addresses are as the City wrote them.",
+      ...(d.jia ? ["A Joint Interest Area has no community board of its own; § 1075(d) lists go to community boards."] : []),
+    ],
+  });
+  return withMandate(env, MANDATES.cb_list);
+}
+
+// ─── Registration ─────────────────────────────────────────────────────────────
+
+const MONTH_JSON = {
+  type: "string",
+  description: "Calendar month, YYYY-MM (e.g. 2026-10). The answer also covers the City fiscal year to date through that month. Default: the newest complete month in the data. Do not combine with fiscal_year.",
+};
+const FY_JSON = {
+  type: ["integer", "string"],
+  description: "NYC fiscal year, July 1 to June 30, named for the year it ends: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30 (cut to the data if not over). Do not combine with month.",
+};
+const limitJson = (def: number, max: number, what: string) => ({
+  type: "integer",
+  minimum: 1,
+  maximum: max,
+  description: `How many ${what} to list (default ${def}, at most ${max}). The answer says when more were left out.`,
+});
+
+const REBUILD =
+  "A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet § 1075. Leaves out ZIP codes (by decision) and anything before 2020-01-01. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
+
+export const LL47_TOOLS = [
+  {
+    name: "ll47_service_request_report",
+    description:
+      "Rebuilds the monthly 311 service request report of former Charter § 1075(b) (Local Law 47 of 2005; repealed by Local Law 69 of 2023): for a month and the fiscal year to date, totals by category (the City's complaint type) and by agency, totals by status, and the average (and median) days to close for each category and agency. Citywide, one borough, one community district or one council district; or by_district for a table of every district. From BoardStat's nightly files. Citywide and borough answers give totals by problem only, unless read_every_district is true (downloads every community district file, about 860 MB citywide in November 2026, once per nightly build). " +
+      REBUILD,
+    inputSchema: obj({
+      month: MONTH_JSON,
+      fiscal_year: FY_JSON,
+      ...DISTRICT_JSON,
+      borough: { type: "string", enum: BOROUGHS, description: "One borough. Give at most one of borough, community_district, council_district; with none, citywide. With by_district, narrows the table to this borough." },
+      by_district: {
+        type: "string",
+        enum: GEO_KINDS,
+        description: "A table with one row per community district, council district or borough: requests in the month and fiscal year, and the top problem. From BoardStat's small month file.",
+      },
+      read_every_district: {
+        type: "boolean",
+        description: "Citywide or borough only: read every community district file to add agencies, statuses and days to close. Large download (about 860 MB citywide in November 2026), kept in the cache until the next nightly build.",
+      },
+      limit: limitJson(50, 1000, "categories and category-agency rows"),
+    }),
+  },
+  {
+    name: "ll47_directory_assistance_report",
+    description:
+      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). " +
+      REBUILD,
+    inputSchema: obj({ month: MONTH_JSON, fiscal_year: FY_JSON, limit: limitJson(50, 2000, "topics") }),
+  },
+  {
+    name: "cb_monthly_list",
+    description:
+      "The monthly list of Charter § 1075(d), current law: for one community district, every 311 request created in a month (default: the newest complete month) plus every request from earlier months that is still not closed, each with its number, date, category, description, agency, current status and address. Pages with limit and offset; format 'csv' returns the page as CSV text. From BoardStat's nightly files. " +
+      REBUILD,
+    inputSchema: obj(
+      {
+        community_district: DISTRICT_JSON.community_district,
+        month: { type: "string", description: "Calendar month, YYYY-MM. Default: the newest complete month in the data (the 'immediately preceding month' of the law)." },
+        part: {
+          type: "string",
+          enum: ["all", "new_this_month", "unresolved_from_prior_months"],
+          description: "Which part of the list: both (default), only the month's new requests, or only the still-unresolved requests from earlier months.",
+        },
+        limit: limitJson(100, 1000, "rows"),
+        offset: { type: "integer", minimum: 0, description: "Rows to skip, for the next page (the answer gives next_offset)." },
+        format: { type: "string", enum: ["rows", "csv"], description: "'rows' (default): a list of objects. 'csv': the same page as CSV text, columns in the order of 'columns'." },
+      },
+      ["community_district"]
+    ),
+  },
+];
+
+export const LL47_ARG_SHAPES = {
+  ll47_service_request_report: SR_SHAPE,
+  ll47_directory_assistance_report: DA_SHAPE,
+  cb_monthly_list: CB_SHAPE,
+};
+
+export type Ll47ToolName = keyof typeof LL47_ARG_SHAPES;
+
+export async function runLl47Tool(
+  name: Ll47ToolName,
+  args: Record<string, unknown>,
+  deps: { data?: Source; soda?: SodaClient } = {}
+): Promise<unknown> {
+  switch (name) {
+    case "ll47_service_request_report":
+      return serviceRequestReport(deps.data ?? boardstatData(), args as never);
+    case "ll47_directory_assistance_report":
+      return directoryAssistanceReport(args as never, deps.soda ?? sodaClient());
+    case "cb_monthly_list":
+      return cbMonthlyList(deps.data ?? boardstatData(), args as never);
+  }
+}

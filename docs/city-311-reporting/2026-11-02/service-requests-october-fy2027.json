@@ -1,0 +1,1537 @@
+{
+"source": "https://www.nyc.gov/site/311reporting/311-reports/service-requests.page (Power BI: Full Service Request Report - Month and Fiscal Year to Date)",
+"read": "2026-11-07, janus browser, Fiscal Year slicer set to 2027, Month 'Recent Month', all other filters All",
+"dashboard_says": "Data as of Nov-02-2026. Report shows data for October FY2027. SRs Created.",
+"rows": [
+{
+"agency": "DCWP",
+"complaint_type": "Consumer Complaint",
+"month": 2081,
+"fytd": 8165
+},
+{
+"agency": "DCWP",
+"complaint_type": "DCWP Literature Request",
+"month": 54,
+"fytd": 216
+},
+{
+"agency": "DCWP",
+"complaint_type": "Total",
+"month": 2135,
+"fytd": 8381
+},
+{
+"agency": "DEP",
+"complaint_type": "Air Quality",
+"month": 1083,
+"fytd": 4319
+},
+{
+"agency": "DEP",
+"complaint_type": "Asbestos",
+"month": 0,
+"fytd": 65
+},
+{
+"agency": "DEP",
+"complaint_type": "DEP Literature Request",
+"month": 10,
+"fytd": 52
+},
+{
+"agency": "DEP",
+"complaint_type": "Dry Weather Discharge",
+"month": 1,
+"fytd": 7
+},
+{
+"agency": "DEP",
+"complaint_type": "Green Infrastructure",
+"month": 36,
+"fytd": 312
+},
+{
+"agency": "DEP",
+"complaint_type": "Hazardous Material",
+"month": 242,
+"fytd": 852
+},
+{
+"agency": "DEP",
+"complaint_type": "Hazardous Materials",
+"month": 0,
+"fytd": 141
+},
+{
+"agency": "DEP",
+"complaint_type": "Industrial Waste",
+"month": 157,
+"fytd": 569
+},
+{
+"agency": "DEP",
+"complaint_type": "Lead",
+"month": 1408,
+"fytd": 5821
+},
+{
+"agency": "DEP",
+"complaint_type": "Noise",
+"month": 7215,
+"fytd": 21917
+},
+{
+"agency": "DEP",
+"complaint_type": "Plant",
+"month": 0,
+"fytd": 7
+},
+{
+"agency": "DEP",
+"complaint_type": "Sewer",
+"month": 0,
+"fytd": 2988
+},
+{
+"agency": "DEP",
+"complaint_type": "Sewer Maintenance",
+"month": 2096,
+"fytd": 11727
+},
+{
+"agency": "DEP",
+"complaint_type": "Waste Water Treatment Plant",
+"month": 56,
+"fytd": 103
+},
+{
+"agency": "DEP",
+"complaint_type": "Water Conservation",
+"month": 261,
+"fytd": 1531
+},
+{
+"agency": "DEP",
+"complaint_type": "Water Maintenance",
+"month": 5219,
+"fytd": 21684
+},
+{
+"agency": "DEP",
+"complaint_type": "Water Quality",
+"month": 126,
+"fytd": 434
+},
+{
+"agency": "DEP",
+"complaint_type": "Water System",
+"month": 0,
+"fytd": 15994
+},
+{
+"agency": "DEP",
+"complaint_type": "Total",
+"month": 17910,
+"fytd": 88523
+},
+{
+"agency": "DFTA",
+"complaint_type": "Case Management Agency Complaint",
+"month": 3,
+"fytd": 24
+},
+{
+"agency": "DFTA",
+"complaint_type": "Home Delivered Meal - Missed Delivery",
+"month": 19,
+"fytd": 48
+},
+{
+"agency": "DFTA",
+"complaint_type": "Legal Services Provider Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"agency": "DFTA",
+"complaint_type": "Total",
+"month": 23,
+"fytd": 73
+},
+{
+"agency": "DHS",
+"complaint_type": "Encampment",
+"month": 3997,
+"fytd": 7789
+},
+{
+"agency": "DHS",
+"complaint_type": "Homeless Person Assistance",
+"month": 4105,
+"fytd": 13501
+},
+{
+"agency": "DHS",
+"complaint_type": "Total",
+"month": 8102,
+"fytd": 21290
+},
+{
+"agency": "DOB",
+"complaint_type": "AHV Inspection Unit",
+"month": 38,
+"fytd": 135
+},
+{
+"agency": "DOB",
+"complaint_type": "BEST/Site Safety",
+"month": 80,
+"fytd": 246
+},
+{
+"agency": "DOB",
+"complaint_type": "Boilers",
+"month": 415,
+"fytd": 1006
+},
+{
+"agency": "DOB",
+"complaint_type": "Borough Office",
+"month": 235,
+"fytd": 983
+},
+{
+"agency": "DOB",
+"complaint_type": "Building Marshals office",
+"month": 12,
+"fytd": 67
+},
+{
+"agency": "DOB",
+"complaint_type": "Building Marshal's Office",
+"month": 246,
+"fytd": 1191
+},
+{
+"agency": "DOB",
+"complaint_type": "Building/Use",
+"month": 1827,
+"fytd": 10400
+},
+{
+"agency": "DOB",
+"complaint_type": "Construction Safety Enforcement",
+"month": 795,
+"fytd": 3049
+},
+{
+"agency": "DOB",
+"complaint_type": "Cranes and Derricks",
+"month": 7,
+"fytd": 38
+},
+{
+"agency": "DOB",
+"complaint_type": "Dept of Investigations",
+"month": 1,
+"fytd": 6
+},
+{
+"agency": "DOB",
+"complaint_type": "Electrical",
+"month": 215,
+"fytd": 867
+},
+{
+"agency": "DOB",
+"complaint_type": "Elevator",
+"month": 1646,
+"fytd": 9369
+},
+{
+"agency": "DOB",
+"complaint_type": "Emergency Response Team (ERT)",
+"month": 493,
+"fytd": 1510
+},
+{
+"agency": "DOB",
+"complaint_type": "Executive Inspections",
+"month": 99,
+"fytd": 385
+},
+{
+"agency": "DOB",
+"complaint_type": "Facade Insp Safety Pgm",
+"month": 0,
+"fytd": 5
+},
+{
+"agency": "DOB",
+"complaint_type": "Facades",
+"month": 26,
+"fytd": 93
+},
+{
+"agency": "DOB",
+"complaint_type": "Forensic Engineering",
+"month": 82,
+"fytd": 297
+},
+{
+"agency": "DOB",
+"complaint_type": "General Construction/Plumbing",
+"month": 4171,
+"fytd": 16906
+},
+{
+"agency": "DOB",
+"complaint_type": "Investigations and Discipline (IAD)",
+"month": 70,
+"fytd": 272
+},
+{
+"agency": "DOB",
+"complaint_type": "Miscellaneous Categories",
+"month": 1,
+"fytd": 5
+},
+{
+"agency": "DOB",
+"complaint_type": "PLUMBING",
+"month": 403,
+"fytd": 1800
+},
+{
+"agency": "DOB",
+"complaint_type": "Quality of Life",
+"month": 19,
+"fytd": 75
+},
+{
+"agency": "DOB",
+"complaint_type": "Real Time Enforcement",
+"month": 616,
+"fytd": 2599
+},
+{
+"agency": "DOB",
+"complaint_type": "Scaffold Safety",
+"month": 17,
+"fytd": 55
+},
+{
+"agency": "DOB",
+"complaint_type": "Special Natural Area District (SNAD)",
+"month": 5,
+"fytd": 17
+},
+{
+"agency": "DOB",
+"complaint_type": "Special Operations",
+"month": 177,
+"fytd": 641
+},
+{
+"agency": "DOB",
+"complaint_type": "Special Projects Inspection Team (SPIT)",
+"month": 399,
+"fytd": 1533
+},
+{
+"agency": "DOB",
+"complaint_type": "Sustainability Enforcement",
+"month": 121,
+"fytd": 567
+},
+{
+"agency": "DOB",
+"complaint_type": "Total",
+"month": 12216,
+"fytd": 54117
+},
+{
+"agency": "DOF",
+"complaint_type": "Advocate - Other",
+"month": 1,
+"fytd": 6
+},
+{
+"agency": "DOF",
+"complaint_type": "Advocate-Co-opCondo Abatement",
+"month": 0,
+"fytd": 2
+},
+{
+"agency": "DOF",
+"complaint_type": "Advocate-Personal Exemptions",
+"month": 0,
+"fytd": 4
+},
+{
+"agency": "DOF",
+"complaint_type": "Advocate-SCRIE/DRIE",
+"month": 1,
+"fytd": 1
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Literature Request",
+"month": 1550,
+"fytd": 6067
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Parking - Payment Issue",
+"month": 938,
+"fytd": 4091
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Parking - Request Copy",
+"month": 185,
+"fytd": 620
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Parking - Request Status",
+"month": 99,
+"fytd": 277
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - Owner Issue",
+"month": 117,
+"fytd": 640
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - Payment Issue",
+"month": 415,
+"fytd": 2101
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - Property Value",
+"month": 11,
+"fytd": 58
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - Reduction Issue",
+"month": 139,
+"fytd": 322
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - Request Copy",
+"month": 190,
+"fytd": 1068
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - RPIE Issue",
+"month": 18,
+"fytd": 203
+},
+{
+"agency": "DOF",
+"complaint_type": "DOF Property - Update Account",
+"month": 212,
+"fytd": 1104
+},
+{
+"agency": "DOF",
+"complaint_type": "DRIE",
+"month": 16,
+"fytd": 72
+},
+{
+"agency": "DOF",
+"complaint_type": "SCRIE",
+"month": 40,
+"fytd": 202
+},
+{
+"agency": "DOF",
+"complaint_type": "Taxpayer Advocate Inquiry",
+"month": 1,
+"fytd": 6
+},
+{
+"agency": "DOF",
+"complaint_type": "Total",
+"month": 3933,
+"fytd": 16844
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Animal Facility - No Permit",
+"month": 22,
+"fytd": 123
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Asbestos",
+"month": 60,
+"fytd": 230
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Beach/Pool/Sauna Complaint",
+"month": 46,
+"fytd": 156
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Building Drinking Water Tank",
+"month": 3,
+"fytd": 30
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Calorie Labeling",
+"month": 0,
+"fytd": 6
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Construction Lead Dust",
+"month": 104,
+"fytd": 461
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Cooling Tower",
+"month": 5,
+"fytd": 61
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Day Care",
+"month": 170,
+"fytd": 659
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Drinking Water",
+"month": 36,
+"fytd": 132
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Food Establishment",
+"month": 1355,
+"fytd": 5571
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Food Poisoning",
+"month": 296,
+"fytd": 1101
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Harboring Bees/Wasps",
+"month": 77,
+"fytd": 295
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Illegal Animal Kept as Pet",
+"month": 80,
+"fytd": 271
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Illegal Animal Sold",
+"month": 16,
+"fytd": 64
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Indoor Air Quality",
+"month": 968,
+"fytd": 3951
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Indoor Sewage",
+"month": 81,
+"fytd": 297
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Lifeguard",
+"month": 2,
+"fytd": 14
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Mobile Food Vendor",
+"month": 280,
+"fytd": 1047
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Mold",
+"month": 28,
+"fytd": 156
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Mosquitoes",
+"month": 26,
+"fytd": 539
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Non-Residential Heat",
+"month": 51,
+"fytd": 51
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Pet Sale",
+"month": 17,
+"fytd": 98
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Poison Ivy",
+"month": 8,
+"fytd": 76
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Radioactive Material",
+"month": 0,
+"fytd": 8
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Rodent",
+"month": 2725,
+"fytd": 11409
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Smoking or Vaping",
+"month": 654,
+"fytd": 2245
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Standing Water",
+"month": 113,
+"fytd": 1081
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Tanning",
+"month": 0,
+"fytd": 4
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Tattooing",
+"month": 18,
+"fytd": 93
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Tobacco or Non-Tobacco Sale",
+"month": 15,
+"fytd": 65
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Unleashed Dog",
+"month": 193,
+"fytd": 801
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Unsanitary Animal Facility",
+"month": 5,
+"fytd": 28
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Unsanitary Animal Pvt Property",
+"month": 240,
+"fytd": 1110
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Unsanitary Pigeon Condition",
+"month": 172,
+"fytd": 749
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Window Guard",
+"month": 0,
+"fytd": 8
+},
+{
+"agency": "DOHMH",
+"complaint_type": "X-Ray Machine/Equipment",
+"month": 3,
+"fytd": 7
+},
+{
+"agency": "DOHMH",
+"complaint_type": "Total",
+"month": 7869,
+"fytd": 32997
+},
+{
+"agency": "DORIS",
+"complaint_type": "DORIS Literature Request",
+"month": 1,
+"fytd": 4
+},
+{
+"agency": "DORIS",
+"complaint_type": "Total",
+"month": 1,
+"fytd": 4
+},
+{
+"agency": "DOT",
+"complaint_type": "AHW",
+"month": 0,
+"fytd": 1
+},
+{
+"agency": "DOT",
+"complaint_type": "Bench",
+"month": 16,
+"fytd": 71
+},
+{
+"agency": "DOT",
+"complaint_type": "Bike Rack",
+"month": 76,
+"fytd": 307
+},
+{
+"agency": "DOT",
+"complaint_type": "Bridge Condition",
+"month": 28,
+"fytd": 116
+},
+{
+"agency": "DOT",
+"complaint_type": "Broken Parking Meter",
+"month": 291,
+"fytd": 1176
+},
+{
+"agency": "DOT",
+"complaint_type": "Building Condition",
+"month": 0,
+"fytd": 1
+},
+{
+"agency": "DOT",
+"complaint_type": "Bus Stop Shelter Complaint",
+"month": 128,
+"fytd": 461
+},
+{
+"agency": "DOT",
+"complaint_type": "Bus Stop Shelter Placement",
+"month": 33,
+"fytd": 134
+},
+{
+"agency": "DOT",
+"complaint_type": "Curb Condition",
+"month": 780,
+"fytd": 3350
+},
+{
+"agency": "DOT",
+"complaint_type": "DEP Sidewalk Condition",
+"month": 0,
+"fytd": 2
+},
+{
+"agency": "DOT",
+"complaint_type": "DEP Street Condition",
+"month": 1,
+"fytd": 4
+},
+{
+"agency": "DOT",
+"complaint_type": "DOT Literature Request",
+"month": 243,
+"fytd": 1069
+},
+{
+"agency": "DOT",
+"complaint_type": "E-Scooter",
+"month": 48,
+"fytd": 183
+},
+{
+"agency": "DOT",
+"complaint_type": "Ferry Complaint",
+"month": 17,
+"fytd": 82
+},
+{
+"agency": "DOT",
+"complaint_type": "Ferry Inquiry",
+"month": 45,
+"fytd": 149
+},
+{
+"agency": "DOT",
+"complaint_type": "Highway Condition",
+"month": 370,
+"fytd": 1341
+},
+{
+"agency": "DOT",
+"complaint_type": "Highway Sign - Damaged",
+"month": 10,
+"fytd": 28
+},
+{
+"agency": "DOT",
+"complaint_type": "Highway Sign - Dangling",
+"month": 0,
+"fytd": 7
+},
+{
+"agency": "DOT",
+"complaint_type": "Highway Sign - Missing",
+"month": 10,
+"fytd": 25
+},
+{
+"agency": "DOT",
+"complaint_type": "Municipal Parking Facility",
+"month": 7,
+"fytd": 26
+},
+{
+"agency": "DOT",
+"complaint_type": "Outdoor Dining",
+"month": 308,
+"fytd": 1146
+},
+{
+"agency": "DOT",
+"complaint_type": "Public Toilet",
+"month": 6,
+"fytd": 30
+},
+{
+"agency": "DOT",
+"complaint_type": "Sidewalk Condition",
+"month": 2646,
+"fytd": 10267
+},
+{
+"agency": "DOT",
+"complaint_type": "Street Condition",
+"month": 7522,
+"fytd": 35310
+},
+{
+"agency": "DOT",
+"complaint_type": "Street Light Condition",
+"month": 4979,
+"fytd": 16547
+},
+{
+"agency": "DOT",
+"complaint_type": "Street Sign - Damaged",
+"month": 499,
+"fytd": 1807
+},
+{
+"agency": "DOT",
+"complaint_type": "Street Sign - Dangling",
+"month": 327,
+"fytd": 1160
+},
+{
+"agency": "DOT",
+"complaint_type": "Street Sign - Missing",
+"month": 356,
+"fytd": 1195
+},
+{
+"agency": "DOT",
+"complaint_type": "Traffic Signal Condition",
+"month": 3630,
+"fytd": 17477
+},
+{
+"agency": "DOT",
+"complaint_type": "Tunnel Condition",
+"month": 1,
+"fytd": 3
+},
+{
+"agency": "DOT",
+"complaint_type": "Wayfinding",
+"month": 2,
+"fytd": 11
+},
+{
+"agency": "DOT",
+"complaint_type": "Total",
+"month": 22379,
+"fytd": 93486
+},
+{
+"agency": "DPR",
+"complaint_type": "Animal in a Park",
+"month": 471,
+"fytd": 1845
+},
+{
+"agency": "DPR",
+"complaint_type": "Damaged Tree",
+"month": 2421,
+"fytd": 21314
+},
+{
+"agency": "DPR",
+"complaint_type": "Dead/Dying Tree",
+"month": 845,
+"fytd": 5366
+},
+{
+"agency": "DPR",
+"complaint_type": "DPR Internal",
+"month": 87,
+"fytd": 2231
+},
+{
+"agency": "DPR",
+"complaint_type": "DPR Literature Request",
+"month": 37,
+"fytd": 211
+},
+{
+"agency": "DPR",
+"complaint_type": "Illegal Tree Damage",
+"month": 549,
+"fytd": 3582
+},
+{
+"agency": "DPR",
+"complaint_type": "Maintenance or Facility",
+"month": 2427,
+"fytd": 12245
+},
+{
+"agency": "DPR",
+"complaint_type": "New Tree Request",
+"month": 86,
+"fytd": 300
+},
+{
+"agency": "DPR",
+"complaint_type": "Overgrown Tree/Branches",
+"month": 2007,
+"fytd": 12073
+},
+{
+"agency": "DPR",
+"complaint_type": "Root/Sewer/Sidewalk Condition",
+"month": 1042,
+"fytd": 4157
+},
+{
+"agency": "DPR",
+"complaint_type": "Uprooted Stump",
+"month": 37,
+"fytd": 190
+},
+{
+"agency": "DPR",
+"complaint_type": "Violation of Park Rules",
+"month": 362,
+"fytd": 2237
+},
+{
+"agency": "DPR",
+"complaint_type": "Wood Pile Remaining",
+"month": 76,
+"fytd": 896
+},
+{
+"agency": "DPR",
+"complaint_type": "Total",
+"month": 10447,
+"fytd": 66647
+},
+{
+"agency": "DSNY",
+"complaint_type": "Abandoned Bike",
+"month": 196,
+"fytd": 776
+},
+{
+"agency": "DSNY",
+"complaint_type": "CFC Recovery",
+"month": 8437,
+"fytd": 38404
+},
+{
+"agency": "DSNY",
+"complaint_type": "Commercial Disposal Complaint",
+"month": 179,
+"fytd": 659
+},
+{
+"agency": "DSNY",
+"complaint_type": "Dead Animal",
+"month": 1291,
+"fytd": 4629
+},
+{
+"agency": "DSNY",
+"complaint_type": "Derelict Vehicles",
+"month": 2985,
+"fytd": 12349
+},
+{
+"agency": "DSNY",
+"complaint_type": "Dirty Condition",
+"month": 6087,
+"fytd": 27012
+},
+{
+"agency": "DSNY",
+"complaint_type": "DSNY Internal",
+"month": 1,
+"fytd": 1
+},
+{
+"agency": "DSNY",
+"complaint_type": "Dumpster Complaint",
+"month": 162,
+"fytd": 902
+},
+{
+"agency": "DSNY",
+"complaint_type": "Graffiti",
+"month": 1411,
+"fytd": 6174
+},
+{
+"agency": "DSNY",
+"complaint_type": "Highway Condition",
+"month": 68,
+"fytd": 259
+},
+{
+"agency": "DSNY",
+"complaint_type": "Illegal Dumping",
+"month": 3738,
+"fytd": 15947
+},
+{
+"agency": "DSNY",
+"complaint_type": "Illegal Posting",
+"month": 525,
+"fytd": 1897
+},
+{
+"agency": "DSNY",
+"complaint_type": "Incorrect Data",
+"month": 3,
+"fytd": 7
+},
+{
+"agency": "DSNY",
+"complaint_type": "Institution Disposal Complaint",
+"month": 2,
+"fytd": 18
+},
+{
+"agency": "DSNY",
+"complaint_type": "Litter Basket Complaint",
+"month": 163,
+"fytd": 696
+},
+{
+"agency": "DSNY",
+"complaint_type": "Litter Basket Request",
+"month": 359,
+"fytd": 1743
+},
+{
+"agency": "DSNY",
+"complaint_type": "Lot Condition",
+"month": 132,
+"fytd": 837
+},
+{
+"agency": "DSNY",
+"complaint_type": "Missed Collection",
+"month": 3189,
+"fytd": 14079
+},
+{
+"agency": "DSNY",
+"complaint_type": "Obstruction",
+"month": 1876,
+"fytd": 9525
+},
+{
+"agency": "DSNY",
+"complaint_type": "Oil or Gas Spill",
+"month": 0,
+"fytd": 1
+},
+{
+"agency": "DSNY",
+"complaint_type": "Recycling Basket Complaint",
+"month": 8,
+"fytd": 41
+},
+{
+"agency": "DSNY",
+"complaint_type": "Residential Disposal Complaint",
+"month": 1206,
+"fytd": 5196
+},
+{
+"agency": "DSNY",
+"complaint_type": "Sanitation Worker or Vehicle Complaint",
+"month": 295,
+"fytd": 1111
+},
+{
+"agency": "DSNY",
+"complaint_type": "Snow or Ice",
+"month": 0,
+"fytd": 4
+},
+{
+"agency": "DSNY",
+"complaint_type": "Street Sweeping Complaint",
+"month": 1039,
+"fytd": 3304
+},
+{
+"agency": "DSNY",
+"complaint_type": "Transfer Station Complaint",
+"month": 0,
+"fytd": 9
+},
+{
+"agency": "DSNY",
+"complaint_type": "Unspecified",
+"month": 0,
+"fytd": 1
+},
+{
+"agency": "DSNY",
+"complaint_type": "Vendor Enforcement",
+"month": 2350,
+"fytd": 9244
+},
+{
+"agency": "DSNY",
+"complaint_type": "Total",
+"month": 35702,
+"fytd": 154825
+},
+{
+"agency": "EDC",
+"complaint_type": "Noise - Helicopter",
+"month": 526,
+"fytd": 1535
+},
+{
+"agency": "EDC",
+"complaint_type": "Total",
+"month": 526,
+"fytd": 1535
+},
+{
+"agency": "HPD",
+"complaint_type": "APPLIANCE",
+"month": 2716,
+"fytd": 10326
+},
+{
+"agency": "HPD",
+"complaint_type": "DOOR/WINDOW",
+"month": 5359,
+"fytd": 18854
+},
+{
+"agency": "HPD",
+"complaint_type": "ELECTRIC",
+"month": 3422,
+"fytd": 13127
+},
+{
+"agency": "HPD",
+"complaint_type": "Elevator",
+"month": 203,
+"fytd": 941
+},
+{
+"agency": "HPD",
+"complaint_type": "FLOORING/STAIRS",
+"month": 2980,
+"fytd": 11160
+},
+{
+"agency": "HPD",
+"complaint_type": "GENERAL",
+"month": 4922,
+"fytd": 18136
+},
+{
+"agency": "HPD",
+"complaint_type": "HEAT/HOT WATER",
+"month": 26477,
+"fytd": 39381
+},
+{
+"agency": "HPD",
+"complaint_type": "HPD Literature Request",
+"month": 39,
+"fytd": 137
+},
+{
+"agency": "HPD",
+"complaint_type": "OUTSIDE BUILDING",
+"month": 128,
+"fytd": 491
+},
+{
+"agency": "HPD",
+"complaint_type": "PAINT/PLASTER",
+"month": 6664,
+"fytd": 25607
+},
+{
+"agency": "HPD",
+"complaint_type": "PLUMBING",
+"month": 7191,
+"fytd": 28611
+},
+{
+"agency": "HPD",
+"complaint_type": "SAFETY",
+"month": 1498,
+"fytd": 5421
+},
+{
+"agency": "HPD",
+"complaint_type": "UNSANITARY CONDITION",
+"month": 14432,
+"fytd": 56821
+},
+{
+"agency": "HPD",
+"complaint_type": "WATER LEAK",
+"month": 4678,
+"fytd": 19475
+},
+{
+"agency": "HPD",
+"complaint_type": "Total",
+"month": 80709,
+"fytd": 248488
+},
+{
+"agency": "HRA",
+"complaint_type": "Benefit Card Replacement",
+"month": 310,
+"fytd": 1149
+},
+{
+"agency": "HRA",
+"complaint_type": "Total",
+"month": 310,
+"fytd": 1149
+},
+{
+"agency": "NYCEM",
+"complaint_type": "OEM Literature Request",
+"month": 1,
+"fytd": 1
+},
+{
+"agency": "NYCEM",
+"complaint_type": "Total",
+"month": 1,
+"fytd": 1
+},
+{
+"agency": "NYPD",
+"complaint_type": "Abandoned Vehicle",
+"month": 6453,
+"fytd": 26706
+},
+{
+"agency": "NYPD",
+"complaint_type": "Animal-Abuse",
+"month": 1134,
+"fytd": 4307
+},
+{
+"agency": "NYPD",
+"complaint_type": "Bike/Roller/Skate",
+"month": 197,
+"fytd": 865
+},
+{
+"agency": "NYPD",
+"complaint_type": "Blocked Driveway",
+"month": 17440,
+"fytd": 63093
+},
+{
+"agency": "NYPD",
+"complaint_type": "Disorderly Youth",
+"month": 29,
+"fytd": 86
+},
+{
+"agency": "NYPD",
+"complaint_type": "Drinking",
+"month": 475,
+"fytd": 2204
+},
+{
+"agency": "NYPD",
+"complaint_type": "Drug Activity",
+"month": 600,
+"fytd": 3132
+},
+{
+"agency": "NYPD",
+"complaint_type": "Encampment",
+"month": 0,
+"fytd": 11818
+},
+{
+"agency": "NYPD",
+"complaint_type": "Graffiti",
+"month": 92,
+"fytd": 335
+},
+{
+"agency": "NYPD",
+"complaint_type": "Illegal Fireworks",
+"month": 131,
+"fytd": 7904
+},
+{
+"agency": "NYPD",
+"complaint_type": "Illegal Parking",
+"month": 59708,
+"fytd": 213282
+},
+{
+"agency": "NYPD",
+"complaint_type": "Noise - Commercial",
+"month": 6763,
+"fytd": 21955
+},
+{
+"agency": "NYPD",
+"complaint_type": "Noise - House of Worship",
+"month": 117,
+"fytd": 538
+},
+{
+"agency": "NYPD",
+"complaint_type": "Noise - Park",
+"month": 807,
+"fytd": 3914
+},
+{
+"agency": "NYPD",
+"complaint_type": "Noise - Residential",
+"month": 35425,
+"fytd": 127620
+},
+{
+"agency": "NYPD",
+"complaint_type": "Noise - Street/Sidewalk",
+"month": 16813,
+"fytd": 84901
+},
+{
+"agency": "NYPD",
+"complaint_type": "Noise - Vehicle",
+"month": 4955,
+"fytd": 20487
+},
+{
+"agency": "NYPD",
+"complaint_type": "Non-Emergency Police Matter",
+"month": 2145,
+"fytd": 8411
+},
+{
+"agency": "NYPD",
+"complaint_type": "Panhandling",
+"month": 1285,
+"fytd": 4847
+},
+{
+"agency": "NYPD",
+"complaint_type": "Posting Advertisement",
+"month": 13,
+"fytd": 52
+},
+{
+"agency": "NYPD",
+"complaint_type": "Squeegee",
+"month": 0,
+"fytd": 1
+},
+{
+"agency": "NYPD",
+"complaint_type": "Traffic",
+"month": 2756,
+"fytd": 5017
+},
+{
+"agency": "NYPD",
+"complaint_type": "Urinating in Public",
+"month": 161,
+"fytd": 744
+},
+{
+"agency": "NYPD",
+"complaint_type": "Total",
+"month": 157499,
+"fytd": 612219
+},
+{
+"agency": "OOS",
+"complaint_type": "Cannabis Retailer",
+"month": 476,
+"fytd": 1732
+},
+{
+"agency": "OOS",
+"complaint_type": "Total",
+"month": 476,
+"fytd": 1732
+},
+{
+"agency": "OTI",
+"complaint_type": "Cable Complaint",
+"month": 126,
+"fytd": 524
+},
+{
+"agency": "OTI",
+"complaint_type": "LinkNYC",
+"month": 27,
+"fytd": 108
+},
+{
+"agency": "OTI",
+"complaint_type": "Public Payphone Complaint",
+"month": 0,
+"fytd": 1
+},
+{
+"agency": "OTI",
+"complaint_type": "Total",
+"month": 153,
+"fytd": 633
+},
+{
+"agency": "TLC",
+"complaint_type": "FHV Licensee Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"agency": "TLC",
+"complaint_type": "For Hire Vehicle Complaint",
+"month": 1765,
+"fytd": 6427
+},
+{
+"agency": "TLC",
+"complaint_type": "For Hire Vehicle Report",
+"month": 71,
+"fytd": 378
+},
+{
+"agency": "TLC",
+"complaint_type": "Found Property",
+"month": 4,
+"fytd": 19
+},
+{
+"agency": "TLC",
+"complaint_type": "Green Taxi Complaint",
+"month": 26,
+"fytd": 144
+},
+{
+"agency": "TLC",
+"complaint_type": "Green Taxi Report",
+"month": 3,
+"fytd": 10
+},
+{
+"agency": "TLC",
+"complaint_type": "Lost Property",
+"month": 586,
+"fytd": 2248
+},
+{
+"agency": "TLC",
+"complaint_type": "Taxi Complaint",
+"month": 933,
+"fytd": 3449
+},
+{
+"agency": "TLC",
+"complaint_type": "Taxi Compliment",
+"month": 13,
+"fytd": 33
+},
+{
+"agency": "TLC",
+"complaint_type": "Taxi Licensee Complaint",
+"month": 1,
+"fytd": 4
+},
+{
+"agency": "TLC",
+"complaint_type": "Taxi Report",
+"month": 94,
+"fytd": 309
+},
+{
+"agency": "TLC",
+"complaint_type": "Total",
+"month": 3497,
+"fytd": 13022
+},
+{
+"agency": "Total",
+"complaint_type": "",
+"month": 363888,
+"fytd": 1415966
+}
+]
+}

@@ -1,0 +1,3617 @@
+{
+ "sr_484_2025_10": {
+  "month": {
+   "requests": 11,
+   "closed": 9,
+   "not_closed": 2,
+   "average_days_to_close": 1.8,
+   "median_days_to_close": 0.1,
+   "by_category": [
+    {
+     "category": "Illegal Parking",
+     "requests": 3
+    },
+    {
+     "category": "Dead Animal",
+     "requests": 2
+    },
+    {
+     "category": "Animal in a Park",
+     "requests": 1
+    },
+    {
+     "category": "Illegal Posting",
+     "requests": 1
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 1
+    },
+    {
+     "category": "Street Sign - Damaged",
+     "requests": 1
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "NYPD",
+     "requests": 4
+    },
+    {
+     "agency": "DSNY",
+     "requests": 3
+    },
+    {
+     "agency": "DOT",
+     "requests": 2
+    },
+    {
+     "agency": "DPR",
+     "requests": 2
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 9
+    },
+    {
+     "status": "In Progress",
+     "requests": 2
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Dead Animal",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Animal in a Park",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Illegal Posting",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 3.7,
+     "median_days_to_close": 3.7
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 1.9,
+     "median_days_to_close": 1.9
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Street Sign - Damaged",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 10.3,
+     "median_days_to_close": 10.3
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    }
+   ]
+  },
+  "fiscal_year": {
+   "requests": 42,
+   "closed": 37,
+   "not_closed": 5,
+   "average_days_to_close": 31.7,
+   "median_days_to_close": 0.1,
+   "by_category": [
+    {
+     "category": "Illegal Parking",
+     "requests": 12
+    },
+    {
+     "category": "Street Sign - Damaged",
+     "requests": 4
+    },
+    {
+     "category": "Dead Animal",
+     "requests": 3
+    },
+    {
+     "category": "Illegal Posting",
+     "requests": 3
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 3
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 2
+    },
+    {
+     "category": "Animal in a Park",
+     "requests": 1
+    },
+    {
+     "category": "Bus Stop Shelter Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Dirty Condition",
+     "requests": 1
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Illegal Fireworks",
+     "requests": 1
+    },
+    {
+     "category": "Indoor Air Quality",
+     "requests": 1
+    },
+    {
+     "category": "Litter Basket Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Mosquitoes",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Park",
+     "requests": 1
+    },
+    {
+     "category": "Residential Disposal Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Sewer",
+     "requests": 1
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 1
+    },
+    {
+     "category": "Street Sign - Missing",
+     "requests": 1
+    },
+    {
+     "category": "Traffic",
+     "requests": 1
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "NYPD",
+     "requests": 18
+    },
+    {
+     "agency": "DSNY",
+     "requests": 9
+    },
+    {
+     "agency": "DOT",
+     "requests": 8
+    },
+    {
+     "agency": "DPR",
+     "requests": 3
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 2
+    },
+    {
+     "agency": "DEP",
+     "requests": 1
+    },
+    {
+     "agency": "TLC",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 37
+    },
+    {
+     "status": "In Progress",
+     "requests": 5
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 12,
+     "closed": 12,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Street Sign - Damaged",
+     "agency": "DOT",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 89.9,
+     "median_days_to_close": 5.2
+    },
+    {
+     "category": "Dead Animal",
+     "agency": "DSNY",
+     "requests": 3,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Illegal Posting",
+     "agency": "DSNY",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 3.4,
+     "median_days_to_close": 3.6
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.4,
+     "median_days_to_close": 0.3
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "Animal in a Park",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Bus Stop Shelter Complaint",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "Dirty Condition",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 409.7,
+     "median_days_to_close": 409.7
+    },
+    {
+     "category": "Illegal Fireworks",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.3,
+     "median_days_to_close": 0.3
+    },
+    {
+     "category": "Indoor Air Quality",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.7,
+     "median_days_to_close": 0.7
+    },
+    {
+     "category": "Litter Basket Complaint",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Mosquitoes",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Park",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Residential Disposal Complaint",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.8,
+     "median_days_to_close": 0.8
+    },
+    {
+     "category": "Sewer",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 4.9,
+     "median_days_to_close": 4.9
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 209.0,
+     "median_days_to_close": 209.0
+    },
+    {
+     "category": "Street Sign - Missing",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 174.0,
+     "median_days_to_close": 174.0
+    },
+    {
+     "category": "Traffic",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    }
+   ]
+  }
+ },
+ "sr_484_fy2026": {
+  "fiscal_year": {
+   "requests": 104,
+   "closed": 89,
+   "not_closed": 15,
+   "average_days_to_close": 20.4,
+   "median_days_to_close": 0.2,
+   "by_category": [
+    {
+     "category": "Illegal Parking",
+     "requests": 15
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 14
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 11
+    },
+    {
+     "category": "Street Condition",
+     "requests": 9
+    },
+    {
+     "category": "Dead Animal",
+     "requests": 7
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 4
+    },
+    {
+     "category": "Noise - Vehicle",
+     "requests": 4
+    },
+    {
+     "category": "Street Sign - Damaged",
+     "requests": 4
+    },
+    {
+     "category": "Animal in a Park",
+     "requests": 3
+    },
+    {
+     "category": "Illegal Posting",
+     "requests": 3
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 3
+    },
+    {
+     "category": "Consumer Complaint",
+     "requests": 2
+    },
+    {
+     "category": "Dirty Condition",
+     "requests": 2
+    },
+    {
+     "category": "Illegal Fireworks",
+     "requests": 2
+    },
+    {
+     "category": "Sewer",
+     "requests": 2
+    },
+    {
+     "category": "Traffic",
+     "requests": 2
+    },
+    {
+     "category": "Abandoned Vehicle",
+     "requests": 1
+    },
+    {
+     "category": "Bus Stop Shelter Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Curb Condition",
+     "requests": 1
+    },
+    {
+     "category": "Electrical",
+     "requests": 1
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Hazardous Materials",
+     "requests": 1
+    },
+    {
+     "category": "Illegal Dumping",
+     "requests": 1
+    },
+    {
+     "category": "Indoor Air Quality",
+     "requests": 1
+    },
+    {
+     "category": "Litter Basket Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Mosquitoes",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Commercial",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Park",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Residential",
+     "requests": 1
+    },
+    {
+     "category": "Residential Disposal Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Sewer Maintenance",
+     "requests": 1
+    },
+    {
+     "category": "Snow or Ice",
+     "requests": 1
+    },
+    {
+     "category": "Street Sign - Missing",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "DOT",
+     "requests": 41
+    },
+    {
+     "agency": "NYPD",
+     "requests": 30
+    },
+    {
+     "agency": "DSNY",
+     "requests": 16
+    },
+    {
+     "agency": "DPR",
+     "requests": 7
+    },
+    {
+     "agency": "DEP",
+     "requests": 4
+    },
+    {
+     "agency": "DCWP",
+     "requests": 2
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 2
+    },
+    {
+     "agency": "DOB",
+     "requests": 1
+    },
+    {
+     "agency": "TLC",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 89
+    },
+    {
+     "status": "In Progress",
+     "requests": 11
+    },
+    {
+     "status": "Pending",
+     "requests": 2
+    },
+    {
+     "status": "Assigned",
+     "requests": 1
+    },
+    {
+     "status": "Started",
+     "requests": 1
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 15,
+     "closed": 15,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 14,
+     "closed": 14,
+     "average_days_to_close": 23.4,
+     "median_days_to_close": 4.8
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 11,
+     "closed": 10,
+     "average_days_to_close": 4.5,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Street Condition",
+     "agency": "DOT",
+     "requests": 9,
+     "closed": 7,
+     "average_days_to_close": 22.3,
+     "median_days_to_close": 0.3
+    },
+    {
+     "category": "Dead Animal",
+     "agency": "DSNY",
+     "requests": 7,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 4,
+     "closed": 3,
+     "average_days_to_close": 31.0,
+     "median_days_to_close": 1.9
+    },
+    {
+     "category": "Noise - Vehicle",
+     "agency": "NYPD",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Street Sign - Damaged",
+     "agency": "DOT",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 89.9,
+     "median_days_to_close": 5.2
+    },
+    {
+     "category": "Animal in a Park",
+     "agency": "DPR",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Illegal Posting",
+     "agency": "DSNY",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 3.4,
+     "median_days_to_close": 3.6
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.4,
+     "median_days_to_close": 0.3
+    },
+    {
+     "category": "Consumer Complaint",
+     "agency": "DCWP",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 64.2,
+     "median_days_to_close": 64.2
+    },
+    {
+     "category": "Dirty Condition",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 1,
+     "average_days_to_close": 0.3,
+     "median_days_to_close": 0.3
+    },
+    {
+     "category": "Illegal Fireworks",
+     "agency": "NYPD",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Sewer",
+     "agency": "DEP",
+     "requests": 2,
+     "closed": 1,
+     "average_days_to_close": 4.9,
+     "median_days_to_close": 4.9
+    },
+    {
+     "category": "Traffic",
+     "agency": "NYPD",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Abandoned Vehicle",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Bus Stop Shelter Complaint",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "Curb Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 11.4,
+     "median_days_to_close": 11.4
+    },
+    {
+     "category": "Electrical",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 5.6,
+     "median_days_to_close": 5.6
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 409.7,
+     "median_days_to_close": 409.7
+    },
+    {
+     "category": "Hazardous Materials",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Illegal Dumping",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Indoor Air Quality",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.7,
+     "median_days_to_close": 0.7
+    },
+    {
+     "category": "Litter Basket Complaint",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Mosquitoes",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Commercial",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Park",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Residential",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Residential Disposal Complaint",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.8,
+     "median_days_to_close": 0.8
+    },
+    {
+     "category": "Sewer Maintenance",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 83.0,
+     "median_days_to_close": 83.0
+    },
+    {
+     "category": "Snow or Ice",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Street Sign - Missing",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 174.0,
+     "median_days_to_close": 174.0
+    }
+   ]
+  }
+ },
+ "sr_cc1_2020_01": {
+  "month": {
+   "requests": 150,
+   "closed": 150,
+   "not_closed": 0,
+   "average_days_to_close": 3.6,
+   "median_days_to_close": 0.2,
+   "by_category": [
+    {
+     "category": "Panhandling",
+     "requests": 35
+    },
+    {
+     "category": "Noise - Residential",
+     "requests": 23
+    },
+    {
+     "category": "Homeless Encampment",
+     "requests": 12
+    },
+    {
+     "category": "Lost Property",
+     "requests": 8
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 8
+    },
+    {
+     "category": "Noise - Commercial",
+     "requests": 6
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "requests": 5
+    },
+    {
+     "category": "Illegal Parking",
+     "requests": 5
+    },
+    {
+     "category": "PLUMBING",
+     "requests": 5
+    },
+    {
+     "category": "Noise",
+     "requests": 4
+    },
+    {
+     "category": "Vending",
+     "requests": 4
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "requests": 3
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 3
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 3
+    },
+    {
+     "category": "Broken Parking Meter",
+     "requests": 2
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "requests": 2
+    },
+    {
+     "category": "Request Large Bulky Item Collection",
+     "requests": 2
+    },
+    {
+     "category": "Sanitation Condition",
+     "requests": 2
+    },
+    {
+     "category": "Sewer",
+     "requests": 2
+    },
+    {
+     "category": "Street Condition",
+     "requests": 2
+    },
+    {
+     "category": "Abandoned Vehicle",
+     "requests": 1
+    },
+    {
+     "category": "Building/Use",
+     "requests": 1
+    },
+    {
+     "category": "DOOR/WINDOW",
+     "requests": 1
+    },
+    {
+     "category": "Derelict Bicycle",
+     "requests": 1
+    },
+    {
+     "category": "ELECTRIC",
+     "requests": 1
+    },
+    {
+     "category": "GENERAL",
+     "requests": 1
+    },
+    {
+     "category": "Lead",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Vehicle",
+     "requests": 1
+    },
+    {
+     "category": "Other Enforcement",
+     "requests": 1
+    },
+    {
+     "category": "Rodent",
+     "requests": 1
+    },
+    {
+     "category": "Sidewalk Condition",
+     "requests": 1
+    },
+    {
+     "category": "Special Projects Inspection Team (SPIT)",
+     "requests": 1
+    },
+    {
+     "category": "Taxi Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "NYPD",
+     "requests": 95
+    },
+    {
+     "agency": "HPD",
+     "requests": 13
+    },
+    {
+     "agency": "DOT",
+     "requests": 9
+    },
+    {
+     "agency": "TLC",
+     "requests": 9
+    },
+    {
+     "agency": "DEP",
+     "requests": 7
+    },
+    {
+     "agency": "DSNY",
+     "requests": 6
+    },
+    {
+     "agency": "DOB",
+     "requests": 4
+    },
+    {
+     "agency": "DHS",
+     "requests": 3
+    },
+    {
+     "agency": "DPR",
+     "requests": 3
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 150
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Panhandling",
+     "agency": "NYPD",
+     "requests": 35,
+     "closed": 35,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Noise - Residential",
+     "agency": "NYPD",
+     "requests": 23,
+     "closed": 23,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Homeless Encampment",
+     "agency": "NYPD",
+     "requests": 12,
+     "closed": 12,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Lost Property",
+     "agency": "TLC",
+     "requests": 8,
+     "closed": 8,
+     "average_days_to_close": 0.8,
+     "median_days_to_close": 0.9
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 8,
+     "closed": 8,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Noise - Commercial",
+     "agency": "NYPD",
+     "requests": 6,
+     "closed": 6,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "agency": "HPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 2.2,
+     "median_days_to_close": 2.0
+    },
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "PLUMBING",
+     "agency": "HPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 29.5,
+     "median_days_to_close": 29.5
+    },
+    {
+     "category": "Noise",
+     "agency": "DEP",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 2.2,
+     "median_days_to_close": 2.3
+    },
+    {
+     "category": "Vending",
+     "agency": "NYPD",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "agency": "DHS",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 27.1,
+     "median_days_to_close": 32.2
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 1.5,
+     "median_days_to_close": 1.3
+    },
+    {
+     "category": "Broken Parking Meter",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 12.2,
+     "median_days_to_close": 12.2
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "agency": "DOB",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 14.6,
+     "median_days_to_close": 14.6
+    },
+    {
+     "category": "Request Large Bulky Item Collection",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 2.1,
+     "median_days_to_close": 2.1
+    },
+    {
+     "category": "Sanitation Condition",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 2.0,
+     "median_days_to_close": 2.0
+    },
+    {
+     "category": "Sewer",
+     "agency": "DEP",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 16.6,
+     "median_days_to_close": 16.6
+    },
+    {
+     "category": "Street Condition",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 0.5,
+     "median_days_to_close": 0.5
+    },
+    {
+     "category": "Abandoned Vehicle",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Building/Use",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "DOOR/WINDOW",
+     "agency": "HPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 40.5,
+     "median_days_to_close": 40.5
+    },
+    {
+     "category": "Derelict Bicycle",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 6.1,
+     "median_days_to_close": 6.1
+    },
+    {
+     "category": "ELECTRIC",
+     "agency": "HPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 16.0,
+     "median_days_to_close": 16.0
+    },
+    {
+     "category": "GENERAL",
+     "agency": "HPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 13.3,
+     "median_days_to_close": 13.3
+    },
+    {
+     "category": "Lead",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Noise - Vehicle",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.8,
+     "median_days_to_close": 0.8
+    },
+    {
+     "category": "Other Enforcement",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 10.0,
+     "median_days_to_close": 10.0
+    },
+    {
+     "category": "Rodent",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Sidewalk Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 6.6,
+     "median_days_to_close": 6.6
+    },
+    {
+     "category": "Special Projects Inspection Team (SPIT)",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 19.5,
+     "median_days_to_close": 19.5
+    },
+    {
+     "category": "Taxi Complaint",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 49.9,
+     "median_days_to_close": 49.9
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    }
+   ]
+  },
+  "fiscal_year": {
+   "requests": 150,
+   "closed": 150,
+   "not_closed": 0,
+   "average_days_to_close": 3.6,
+   "median_days_to_close": 0.2,
+   "by_category": [
+    {
+     "category": "Panhandling",
+     "requests": 35
+    },
+    {
+     "category": "Noise - Residential",
+     "requests": 23
+    },
+    {
+     "category": "Homeless Encampment",
+     "requests": 12
+    },
+    {
+     "category": "Lost Property",
+     "requests": 8
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 8
+    },
+    {
+     "category": "Noise - Commercial",
+     "requests": 6
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "requests": 5
+    },
+    {
+     "category": "Illegal Parking",
+     "requests": 5
+    },
+    {
+     "category": "PLUMBING",
+     "requests": 5
+    },
+    {
+     "category": "Noise",
+     "requests": 4
+    },
+    {
+     "category": "Vending",
+     "requests": 4
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "requests": 3
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 3
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 3
+    },
+    {
+     "category": "Broken Parking Meter",
+     "requests": 2
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "requests": 2
+    },
+    {
+     "category": "Request Large Bulky Item Collection",
+     "requests": 2
+    },
+    {
+     "category": "Sanitation Condition",
+     "requests": 2
+    },
+    {
+     "category": "Sewer",
+     "requests": 2
+    },
+    {
+     "category": "Street Condition",
+     "requests": 2
+    },
+    {
+     "category": "Abandoned Vehicle",
+     "requests": 1
+    },
+    {
+     "category": "Building/Use",
+     "requests": 1
+    },
+    {
+     "category": "DOOR/WINDOW",
+     "requests": 1
+    },
+    {
+     "category": "Derelict Bicycle",
+     "requests": 1
+    },
+    {
+     "category": "ELECTRIC",
+     "requests": 1
+    },
+    {
+     "category": "GENERAL",
+     "requests": 1
+    },
+    {
+     "category": "Lead",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Vehicle",
+     "requests": 1
+    },
+    {
+     "category": "Other Enforcement",
+     "requests": 1
+    },
+    {
+     "category": "Rodent",
+     "requests": 1
+    },
+    {
+     "category": "Sidewalk Condition",
+     "requests": 1
+    },
+    {
+     "category": "Special Projects Inspection Team (SPIT)",
+     "requests": 1
+    },
+    {
+     "category": "Taxi Complaint",
+     "requests": 1
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "NYPD",
+     "requests": 95
+    },
+    {
+     "agency": "HPD",
+     "requests": 13
+    },
+    {
+     "agency": "DOT",
+     "requests": 9
+    },
+    {
+     "agency": "TLC",
+     "requests": 9
+    },
+    {
+     "agency": "DEP",
+     "requests": 7
+    },
+    {
+     "agency": "DSNY",
+     "requests": 6
+    },
+    {
+     "agency": "DOB",
+     "requests": 4
+    },
+    {
+     "agency": "DHS",
+     "requests": 3
+    },
+    {
+     "agency": "DPR",
+     "requests": 3
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 150
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Panhandling",
+     "agency": "NYPD",
+     "requests": 35,
+     "closed": 35,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Noise - Residential",
+     "agency": "NYPD",
+     "requests": 23,
+     "closed": 23,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Homeless Encampment",
+     "agency": "NYPD",
+     "requests": 12,
+     "closed": 12,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Lost Property",
+     "agency": "TLC",
+     "requests": 8,
+     "closed": 8,
+     "average_days_to_close": 0.8,
+     "median_days_to_close": 0.9
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 8,
+     "closed": 8,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Noise - Commercial",
+     "agency": "NYPD",
+     "requests": 6,
+     "closed": 6,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "agency": "HPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 2.2,
+     "median_days_to_close": 2.0
+    },
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "PLUMBING",
+     "agency": "HPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 29.5,
+     "median_days_to_close": 29.5
+    },
+    {
+     "category": "Noise",
+     "agency": "DEP",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 2.2,
+     "median_days_to_close": 2.3
+    },
+    {
+     "category": "Vending",
+     "agency": "NYPD",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "agency": "DHS",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 27.1,
+     "median_days_to_close": 32.2
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 1.5,
+     "median_days_to_close": 1.3
+    },
+    {
+     "category": "Broken Parking Meter",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 12.2,
+     "median_days_to_close": 12.2
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "agency": "DOB",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 14.6,
+     "median_days_to_close": 14.6
+    },
+    {
+     "category": "Request Large Bulky Item Collection",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 2.1,
+     "median_days_to_close": 2.1
+    },
+    {
+     "category": "Sanitation Condition",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 2.0,
+     "median_days_to_close": 2.0
+    },
+    {
+     "category": "Sewer",
+     "agency": "DEP",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 16.6,
+     "median_days_to_close": 16.6
+    },
+    {
+     "category": "Street Condition",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 0.5,
+     "median_days_to_close": 0.5
+    },
+    {
+     "category": "Abandoned Vehicle",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Building/Use",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "DOOR/WINDOW",
+     "agency": "HPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 40.5,
+     "median_days_to_close": 40.5
+    },
+    {
+     "category": "Derelict Bicycle",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 6.1,
+     "median_days_to_close": 6.1
+    },
+    {
+     "category": "ELECTRIC",
+     "agency": "HPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 16.0,
+     "median_days_to_close": 16.0
+    },
+    {
+     "category": "GENERAL",
+     "agency": "HPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 13.3,
+     "median_days_to_close": 13.3
+    },
+    {
+     "category": "Lead",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Noise - Vehicle",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.8,
+     "median_days_to_close": 0.8
+    },
+    {
+     "category": "Other Enforcement",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 10.0,
+     "median_days_to_close": 10.0
+    },
+    {
+     "category": "Rodent",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Sidewalk Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 6.6,
+     "median_days_to_close": 6.6
+    },
+    {
+     "category": "Special Projects Inspection Team (SPIT)",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 19.5,
+     "median_days_to_close": 19.5
+    },
+    {
+     "category": "Taxi Complaint",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 49.9,
+     "median_days_to_close": 49.9
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    }
+   ]
+  }
+ },
+ "sr_two_files_2026_10": {
+  "month": {
+   "requests": 3,
+   "closed": 3,
+   "not_closed": 0,
+   "average_days_to_close": 3.4,
+   "median_days_to_close": 0.1,
+   "by_category": [
+    {
+     "category": "Illegal Parking",
+     "requests": 2
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "NYPD",
+     "requests": 2
+    },
+    {
+     "agency": "DOT",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 3
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 0.1,
+     "median_days_to_close": 0.1
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 10.0,
+     "median_days_to_close": 10.0
+    }
+   ]
+  },
+  "fiscal_year": {
+   "requests": 24,
+   "closed": 23,
+   "not_closed": 1,
+   "average_days_to_close": 2.2,
+   "median_days_to_close": 0.1,
+   "by_category": [
+    {
+     "category": "Illegal Parking",
+     "requests": 6
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 5
+    },
+    {
+     "category": "Beach/Pool/Sauna Complaint",
+     "requests": 4
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 3
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 2
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 1
+    },
+    {
+     "category": "Mosquitoes",
+     "requests": 1
+    },
+    {
+     "category": "Sewer Maintenance",
+     "requests": 1
+    },
+    {
+     "category": "Street Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "NYPD",
+     "requests": 11
+    },
+    {
+     "agency": "DOT",
+     "requests": 6
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 5
+    },
+    {
+     "agency": "DEP",
+     "requests": 1
+    },
+    {
+     "agency": "DPR",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "Closed",
+     "requests": 23
+    },
+    {
+     "status": "In Progress",
+     "requests": 1
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 6,
+     "closed": 6,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Beach/Pool/Sauna Complaint",
+     "agency": "DOHMH",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 3.4,
+     "median_days_to_close": 3.9
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 16.5,
+     "median_days_to_close": 16.5
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "Mosquitoes",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Sewer Maintenance",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Street Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 2.2,
+     "median_days_to_close": 2.2
+    }
+   ]
+  }
+ },
+ "sr_two_files_2026_11": {
+  "month": {
+   "requests": 50,
+   "closed": 0,
+   "not_closed": 50,
+   "average_days_to_close": null,
+   "median_days_to_close": null,
+   "by_category": [
+    {
+     "category": "Noise",
+     "requests": 19
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "requests": 4
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "requests": 3
+    },
+    {
+     "category": "Consumer Complaint",
+     "requests": 2
+    },
+    {
+     "category": "Dirty Condition",
+     "requests": 2
+    },
+    {
+     "category": "Lead",
+     "requests": 2
+    },
+    {
+     "category": "Street Sign - Dangling",
+     "requests": 2
+    },
+    {
+     "category": "Taxi Complaint",
+     "requests": 2
+    },
+    {
+     "category": "Dead Animal",
+     "requests": 1
+    },
+    {
+     "category": "Food Poisoning",
+     "requests": 1
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "requests": 1
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "requests": 1
+    },
+    {
+     "category": "Illegal Dumping",
+     "requests": 1
+    },
+    {
+     "category": "Indoor Air Quality",
+     "requests": 1
+    },
+    {
+     "category": "Lost Property",
+     "requests": 1
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 1
+    },
+    {
+     "category": "Missed Collection",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Helicopter",
+     "requests": 1
+    },
+    {
+     "category": "Panhandling",
+     "requests": 1
+    },
+    {
+     "category": "Real Time Enforcement",
+     "requests": 1
+    },
+    {
+     "category": "Rodent",
+     "requests": 1
+    },
+    {
+     "category": "Root/Sewer/Sidewalk Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "DEP",
+     "requests": 21
+    },
+    {
+     "agency": "DSNY",
+     "requests": 5
+    },
+    {
+     "agency": "DHS",
+     "requests": 4
+    },
+    {
+     "agency": "TLC",
+     "requests": 4
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 3
+    },
+    {
+     "agency": "HPD",
+     "requests": 3
+    },
+    {
+     "agency": "DCWP",
+     "requests": 2
+    },
+    {
+     "agency": "DOB",
+     "requests": 2
+    },
+    {
+     "agency": "DOT",
+     "requests": 2
+    },
+    {
+     "agency": "DPR",
+     "requests": 2
+    },
+    {
+     "agency": "EDC",
+     "requests": 1
+    },
+    {
+     "agency": "NYPD",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "In Progress",
+     "requests": 45
+    },
+    {
+     "status": "Open",
+     "requests": 5
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Noise",
+     "agency": "DEP",
+     "requests": 19,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "agency": "DHS",
+     "requests": 4,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "agency": "HPD",
+     "requests": 3,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Consumer Complaint",
+     "agency": "DCWP",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Dirty Condition",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Lead",
+     "agency": "DEP",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Street Sign - Dangling",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Taxi Complaint",
+     "agency": "TLC",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Dead Animal",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Food Poisoning",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Illegal Dumping",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Indoor Air Quality",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Lost Property",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Missed Collection",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Noise - Helicopter",
+     "agency": "EDC",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Panhandling",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Real Time Enforcement",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Rodent",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Root/Sewer/Sidewalk Condition",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    }
+   ]
+  },
+  "fiscal_year": {
+   "requests": 74,
+   "closed": 23,
+   "not_closed": 51,
+   "average_days_to_close": 2.2,
+   "median_days_to_close": 0.1,
+   "by_category": [
+    {
+     "category": "Noise",
+     "requests": 19
+    },
+    {
+     "category": "Illegal Parking",
+     "requests": 6
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "requests": 5
+    },
+    {
+     "category": "Beach/Pool/Sauna Complaint",
+     "requests": 4
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "requests": 4
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "requests": 3
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "requests": 3
+    },
+    {
+     "category": "Consumer Complaint",
+     "requests": 2
+    },
+    {
+     "category": "Dirty Condition",
+     "requests": 2
+    },
+    {
+     "category": "Lead",
+     "requests": 2
+    },
+    {
+     "category": "Maintenance or Facility",
+     "requests": 2
+    },
+    {
+     "category": "Street Light Condition",
+     "requests": 2
+    },
+    {
+     "category": "Street Sign - Dangling",
+     "requests": 2
+    },
+    {
+     "category": "Taxi Complaint",
+     "requests": 2
+    },
+    {
+     "category": "Dead Animal",
+     "requests": 1
+    },
+    {
+     "category": "Food Poisoning",
+     "requests": 1
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "requests": 1
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "requests": 1
+    },
+    {
+     "category": "Illegal Dumping",
+     "requests": 1
+    },
+    {
+     "category": "Indoor Air Quality",
+     "requests": 1
+    },
+    {
+     "category": "Lost Property",
+     "requests": 1
+    },
+    {
+     "category": "Missed Collection",
+     "requests": 1
+    },
+    {
+     "category": "Mosquitoes",
+     "requests": 1
+    },
+    {
+     "category": "Noise - Helicopter",
+     "requests": 1
+    },
+    {
+     "category": "Panhandling",
+     "requests": 1
+    },
+    {
+     "category": "Real Time Enforcement",
+     "requests": 1
+    },
+    {
+     "category": "Rodent",
+     "requests": 1
+    },
+    {
+     "category": "Root/Sewer/Sidewalk Condition",
+     "requests": 1
+    },
+    {
+     "category": "Sewer Maintenance",
+     "requests": 1
+    },
+    {
+     "category": "Street Condition",
+     "requests": 1
+    }
+   ],
+   "by_agency": [
+    {
+     "agency": "DEP",
+     "requests": 22
+    },
+    {
+     "agency": "NYPD",
+     "requests": 12
+    },
+    {
+     "agency": "DOHMH",
+     "requests": 8
+    },
+    {
+     "agency": "DOT",
+     "requests": 8
+    },
+    {
+     "agency": "DSNY",
+     "requests": 5
+    },
+    {
+     "agency": "DHS",
+     "requests": 4
+    },
+    {
+     "agency": "TLC",
+     "requests": 4
+    },
+    {
+     "agency": "DPR",
+     "requests": 3
+    },
+    {
+     "agency": "HPD",
+     "requests": 3
+    },
+    {
+     "agency": "DCWP",
+     "requests": 2
+    },
+    {
+     "agency": "DOB",
+     "requests": 2
+    },
+    {
+     "agency": "EDC",
+     "requests": 1
+    }
+   ],
+   "by_status": [
+    {
+     "status": "In Progress",
+     "requests": 46
+    },
+    {
+     "status": "Closed",
+     "requests": 23
+    },
+    {
+     "status": "Open",
+     "requests": 5
+    }
+   ],
+   "resolution_time_by_category_and_agency": [
+    {
+     "category": "Noise",
+     "agency": "DEP",
+     "requests": 19,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Illegal Parking",
+     "agency": "NYPD",
+     "requests": 6,
+     "closed": 6,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Street/Sidewalk",
+     "agency": "NYPD",
+     "requests": 5,
+     "closed": 5,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Beach/Pool/Sauna Complaint",
+     "agency": "DOHMH",
+     "requests": 4,
+     "closed": 4,
+     "average_days_to_close": 3.4,
+     "median_days_to_close": 3.9
+    },
+    {
+     "category": "Homeless Person Assistance",
+     "agency": "DHS",
+     "requests": 4,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "HEAT/HOT WATER",
+     "agency": "HPD",
+     "requests": 3,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Traffic Signal Condition",
+     "agency": "DOT",
+     "requests": 3,
+     "closed": 3,
+     "average_days_to_close": 0.2,
+     "median_days_to_close": 0.2
+    },
+    {
+     "category": "Consumer Complaint",
+     "agency": "DCWP",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Dirty Condition",
+     "agency": "DSNY",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Lead",
+     "agency": "DEP",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Maintenance or Facility",
+     "agency": "DPR",
+     "requests": 2,
+     "closed": 1,
+     "average_days_to_close": 1.0,
+     "median_days_to_close": 1.0
+    },
+    {
+     "category": "Street Light Condition",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 2,
+     "average_days_to_close": 16.5,
+     "median_days_to_close": 16.5
+    },
+    {
+     "category": "Street Sign - Dangling",
+     "agency": "DOT",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Taxi Complaint",
+     "agency": "TLC",
+     "requests": 2,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Dead Animal",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Food Poisoning",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "For Hire Vehicle Complaint",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "General Construction/Plumbing",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Illegal Dumping",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Indoor Air Quality",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Lost Property",
+     "agency": "TLC",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Missed Collection",
+     "agency": "DSNY",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Mosquitoes",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 0.0,
+     "median_days_to_close": 0.0
+    },
+    {
+     "category": "Noise - Helicopter",
+     "agency": "EDC",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Panhandling",
+     "agency": "NYPD",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Real Time Enforcement",
+     "agency": "DOB",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Rodent",
+     "agency": "DOHMH",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Root/Sewer/Sidewalk Condition",
+     "agency": "DPR",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Sewer Maintenance",
+     "agency": "DEP",
+     "requests": 1,
+     "closed": 0,
+     "average_days_to_close": null,
+     "median_days_to_close": null
+    },
+    {
+     "category": "Street Condition",
+     "agency": "DOT",
+     "requests": 1,
+     "closed": 1,
+     "average_days_to_close": 2.2,
+     "median_days_to_close": 2.2
+    }
+   ]
+  }
+ },
+ "agg_city_2026_10": {
+  "month": {
+   "requests": 341965,
+   "by_problem": [
+    {
+     "problem": "Illegal Parking",
+     "requests": 59307
+    },
+    {
+     "problem": "Noise - Residential",
+     "requests": 35364
+    },
+    {
+     "problem": "HEAT/HOT WATER",
+     "requests": 26451
+    },
+    {
+     "problem": "Blocked Driveway",
+     "requests": 17408
+    },
+    {
+     "problem": "Noise - Street/Sidewalk",
+     "requests": 16640
+    },
+    {
+     "problem": "UNSANITARY CONDITION",
+     "requests": 14341
+    },
+    {
+     "problem": "Plumbing",
+     "requests": 7457
+    },
+    {
+     "problem": "Noise",
+     "requests": 7117
+    },
+    {
+     "problem": "Noise - Commercial",
+     "requests": 6746
+    },
+    {
+     "problem": "PAINT/PLASTER",
+     "requests": 6600
+    },
+    {
+     "problem": "Abandoned Vehicle",
+     "requests": 6392
+    },
+    {
+     "problem": "Dirty Condition",
+     "requests": 6018
+    },
+    {
+     "problem": "Street Condition",
+     "requests": 5508
+    },
+    {
+     "problem": "DOOR/WINDOW",
+     "requests": 5324
+    },
+    {
+     "problem": "Water Maintenance",
+     "requests": 5153
+    },
+    {
+     "problem": "GENERAL",
+     "requests": 4893
+    },
+    {
+     "problem": "Noise - Vehicle",
+     "requests": 4861
+    },
+    {
+     "problem": "WATER LEAK",
+     "requests": 4655
+    },
+    {
+     "problem": "Street Light Condition",
+     "requests": 4586
+    },
+    {
+     "problem": "Homeless Person Assistance",
+     "requests": 4085
+    },
+    {
+     "problem": "Encampment",
+     "requests": 3858
+    },
+    {
+     "problem": "General Construction/Plumbing",
+     "requests": 3711
+    },
+    {
+     "problem": "Illegal Dumping",
+     "requests": 3664
+    },
+    {
+     "problem": "ELECTRIC",
+     "requests": 3396
+    },
+    {
+     "problem": "Traffic Signal Condition",
+     "requests": 3377
+    },
+    {
+     "problem": "Missed Collection",
+     "requests": 3189
+    },
+    {
+     "problem": "FLOORING/STAIRS",
+     "requests": 2961
+    },
+    {
+     "problem": "Derelict Vehicles",
+     "requests": 2743
+    },
+    {
+     "problem": "Rodent",
+     "requests": 2714
+    },
+    {
+     "problem": "APPLIANCE",
+     "requests": 2703
+    },
+    {
+     "problem": "Traffic",
+     "requests": 2665
+    },
+    {
+     "problem": "Sidewalk Condition",
+     "requests": 2643
+    },
+    {
+     "problem": "Maintenance or Facility",
+     "requests": 2411
+    },
+    {
+     "problem": "Damaged Tree",
+     "requests": 2397
+    },
+    {
+     "problem": "Vendor Enforcement",
+     "requests": 2340
+    },
+    {
+     "problem": "Non-Emergency Police Matter",
+     "requests": 2127
+    },
+    {
+     "problem": "Sewer Maintenance",
+     "requests": 2070
+    },
+    {
+     "problem": "Consumer Complaint",
+     "requests": 2052
+    },
+    {
+     "problem": "Overgrown Tree/Branches",
+     "requests": 1990
+    },
+    {
+     "problem": "Obstruction",
+     "requests": 1844
+    },
+    {
+     "problem": "Elevator",
+     "requests": 1825
+    },
+    {
+     "problem": "Building/Use",
+     "requests": 1810
+    },
+    {
+     "problem": "For Hire Vehicle Complaint",
+     "requests": 1695
+    },
+    {
+     "problem": "Safety",
+     "requests": 1488
+    },
+    {
+     "problem": "Lead",
+     "requests": 1408
+    },
+    {
+     "problem": "Graffiti",
+     "requests": 1405
+    },
+    {
+     "problem": "Food Establishment",
+     "requests": 1348
+    },
+    {
+     "problem": "Panhandling",
+     "requests": 1285
+    },
+    {
+     "problem": "Dead Animal",
+     "requests": 1234
+    },
+    {
+     "problem": "Residential Disposal Complaint",
+     "requests": 1203
+    }
+   ]
+  },
+  "fiscal_year": {
+   "requests": 1318781,
+   "by_problem": [
+    {
+     "problem": "Illegal Parking",
+     "requests": 211827
+    },
+    {
+     "problem": "Noise - Residential",
+     "requests": 127307
+    },
+    {
+     "problem": "Noise - Street/Sidewalk",
+     "requests": 84206
+    },
+    {
+     "problem": "Blocked Driveway",
+     "requests": 63002
+    },
+    {
+     "problem": "UNSANITARY CONDITION",
+     "requests": 56460
+    },
+    {
+     "problem": "HEAT/HOT WATER",
+     "requests": 39324
+    },
+    {
+     "problem": "Plumbing",
+     "requests": 29911
+    },
+    {
+     "problem": "Dirty Condition",
+     "requests": 26758
+    },
+    {
+     "problem": "Abandoned Vehicle",
+     "requests": 26416
+    },
+    {
+     "problem": "PAINT/PLASTER",
+     "requests": 25455
+    },
+    {
+     "problem": "Street Condition",
+     "requests": 25354
+    },
+    {
+     "problem": "Noise - Commercial",
+     "requests": 21874
+    },
+    {
+     "problem": "Noise",
+     "requests": 21633
+    },
+    {
+     "problem": "Water Maintenance",
+     "requests": 21317
+    },
+    {
+     "problem": "Damaged Tree",
+     "requests": 21097
+    },
+    {
+     "problem": "Noise - Vehicle",
+     "requests": 20167
+    },
+    {
+     "problem": "WATER LEAK",
+     "requests": 19369
+    },
+    {
+     "problem": "Encampment",
+     "requests": 19005
+    },
+    {
+     "problem": "DOOR/WINDOW",
+     "requests": 18724
+    },
+    {
+     "problem": "GENERAL",
+     "requests": 18031
+    },
+    {
+     "problem": "Traffic Signal Condition",
+     "requests": 16155
+    },
+    {
+     "problem": "Illegal Dumping",
+     "requests": 15652
+    },
+    {
+     "problem": "Water System",
+     "requests": 15637
+    },
+    {
+     "problem": "Street Light Condition",
+     "requests": 15356
+    },
+    {
+     "problem": "General Construction/Plumbing",
+     "requests": 15274
+    },
+    {
+     "problem": "Missed Collection",
+     "requests": 14079
+    },
+    {
+     "problem": "Homeless Person Assistance",
+     "requests": 13403
+    },
+    {
+     "problem": "ELECTRIC",
+     "requests": 13047
+    },
+    {
+     "problem": "Maintenance or Facility",
+     "requests": 12186
+    },
+    {
+     "problem": "Overgrown Tree/Branches",
+     "requests": 11979
+    },
+    {
+     "problem": "Sewer Maintenance",
+     "requests": 11585
+    },
+    {
+     "problem": "Rodent",
+     "requests": 11385
+    },
+    {
+     "problem": "Derelict Vehicles",
+     "requests": 11178
+    },
+    {
+     "problem": "FLOORING/STAIRS",
+     "requests": 11093
+    },
+    {
+     "problem": "Building/Use",
+     "requests": 10298
+    },
+    {
+     "problem": "APPLIANCE",
+     "requests": 10255
+    },
+    {
+     "problem": "Sidewalk Condition",
+     "requests": 10250
+    },
+    {
+     "problem": "Elevator",
+     "requests": 10243
+    },
+    {
+     "problem": "Obstruction",
+     "requests": 9343
+    },
+    {
+     "problem": "Vendor Enforcement",
+     "requests": 9193
+    },
+    {
+     "problem": "Non-Emergency Police Matter",
+     "requests": 8348
+    },
+    {
+     "problem": "Consumer Complaint",
+     "requests": 8072
+    },
+    {
+     "problem": "Illegal Fireworks",
+     "requests": 7721
+    },
+    {
+     "problem": "For Hire Vehicle Complaint",
+     "requests": 6237
+    },
+    {
+     "problem": "Graffiti",
+     "requests": 6171
+    },
+    {
+     "problem": "Lead",
+     "requests": 5821
+    },
+    {
+     "problem": "Food Establishment",
+     "requests": 5526
+    },
+    {
+     "problem": "Safety",
+     "requests": 5388
+    },
+    {
+     "problem": "Dead/Dying Tree",
+     "requests": 5286
+    },
+    {
+     "problem": "Residential Disposal Complaint",
+     "requests": 5179
+    }
+   ]
+  }
+ },
+ "agg_queens_2026_10": {
+  "month": {
+   "requests": 78396,
+   "by_problem": [
+    {
+     "problem": "Illegal Parking",
+     "requests": 17431
+    },
+    {
+     "problem": "Blocked Driveway",
+     "requests": 7178
+    },
+    {
+     "problem": "Noise - Residential",
+     "requests": 6774
+    },
+    {
+     "problem": "HEAT/HOT WATER",
+     "requests": 3622
+    },
+    {
+     "problem": "Noise - Street/Sidewalk",
+     "requests": 2761
+    },
+    {
+     "problem": "Abandoned Vehicle",
+     "requests": 2550
+    },
+    {
+     "problem": "Noise - Vehicle",
+     "requests": 2034
+    },
+    {
+     "problem": "UNSANITARY CONDITION",
+     "requests": 1974
+    },
+    {
+     "problem": "Street Condition",
+     "requests": 1682
+    },
+    {
+     "problem": "Noise - Commercial",
+     "requests": 1372
+    },
+    {
+     "problem": "Dirty Condition",
+     "requests": 1353
+    },
+    {
+     "problem": "Noise",
+     "requests": 1194
+    },
+    {
+     "problem": "Water Maintenance",
+     "requests": 1167
+    },
+    {
+     "problem": "GENERAL",
+     "requests": 1085
+    },
+    {
+     "problem": "Illegal Dumping",
+     "requests": 1021
+    },
+    {
+     "problem": "Missed Collection",
+     "requests": 991
+    },
+    {
+     "problem": "Plumbing",
+     "requests": 966
+    },
+    {
+     "problem": "General Construction/Plumbing",
+     "requests": 957
+    },
+    {
+     "problem": "Street Light Condition",
+     "requests": 957
+    },
+    {
+     "problem": "Damaged Tree",
+     "requests": 930
+    },
+    {
+     "problem": "Building/Use",
+     "requests": 894
+    },
+    {
+     "problem": "Derelict Vehicles",
+     "requests": 881
+    },
+    {
+     "problem": "Overgrown Tree/Branches",
+     "requests": 784
+    },
+    {
+     "problem": "Sewer Maintenance",
+     "requests": 772
+    },
+    {
+     "problem": "PAINT/PLASTER",
+     "requests": 748
+    },
+    {
+     "problem": "Traffic Signal Condition",
+     "requests": 740
+    },
+    {
+     "problem": "Sidewalk Condition",
+     "requests": 703
+    },
+    {
+     "problem": "Obstruction",
+     "requests": 624
+    },
+    {
+     "problem": "DOOR/WINDOW",
+     "requests": 591
+    },
+    {
+     "problem": "WATER LEAK",
+     "requests": 550
+    },
+    {
+     "problem": "Maintenance or Facility",
+     "requests": 522
+    },
+    {
+     "problem": "Consumer Complaint",
+     "requests": 515
+    },
+    {
+     "problem": "Non-Emergency Police Matter",
+     "requests": 511
+    },
+    {
+     "problem": "Homeless Person Assistance",
+     "requests": 475
+    },
+    {
+     "problem": "ELECTRIC",
+     "requests": 474
+    },
+    {
+     "problem": "Rodent",
+     "requests": 466
+    },
+    {
+     "problem": "Vendor Enforcement",
+     "requests": 424
+    },
+    {
+     "problem": "Taxi Complaint",
+     "requests": 415
+    },
+    {
+     "problem": "Dead Animal",
+     "requests": 398
+    },
+    {
+     "problem": "Noise - Park",
+     "requests": 383
+    },
+    {
+     "problem": "Encampment",
+     "requests": 365
+    },
+    {
+     "problem": "Root/Sewer/Sidewalk Condition",
+     "requests": 363
+    },
+    {
+     "problem": "For Hire Vehicle Complaint",
+     "requests": 315
+    },
+    {
+     "problem": "Dead/Dying Tree",
+     "requests": 313
+    },
+    {
+     "problem": "Traffic",
+     "requests": 308
+    },
+    {
+     "problem": "FLOORING/STAIRS",
+     "requests": 302
+    },
+    {
+     "problem": "Lead",
+     "requests": 301
+    },
+    {
+     "problem": "Residential Disposal Complaint",
+     "requests": 295
+    },
+    {
+     "problem": "APPLIANCE",
+     "requests": 285
+    },
+    {
+     "problem": "Food Establishment",
+     "requests": 275
+    }
+   ]
+  }
+ },
+ "cb_484_2025_10": {
+  "new_this_month": [
+   "66370289",
+   "66367830",
+   "66376131",
+   "66377264",
+   "66384230",
+   "66428453",
+   "66496361",
+   "66501378",
+   "66552908",
+   "66557939",
+   "66615499"
+  ],
+  "unresolved_from_prior_months": [
+   "45358286",
+   "45788181",
+   "46044896",
+   "46102338",
+   "46385431",
+   "46485276",
+   "47011956",
+   "48324023",
+   "48326329",
+   "48512599",
+   "48582280",
+   "48599885",
+   "49806753",
+   "50254250",
+   "50680452",
+   "50673037",
+   "51130529",
+   "51131879",
+   "51131943",
+   "51479958",
+   "52008237",
+   "52596159",
+   "52592428",
+   "52594806",
+   "52598755",
+   "52598598",
+   "52597380",
+   "52711423",
+   "52791088",
+   "52791424",
+   "52805527",
+   "53022277",
+   "53029430",
+   "53116950",
+   "53165970",
+   "53379979",
+   "53588920",
+   "53581566",
+   "53868573",
+   "53970180",
+   "54042057",
+   "54228850",
+   "54228885",
+   "54484865",
+   "54492732",
+   "54494121",
+   "54559538",
+   "55086311",
+   "55319528",
+   "55424635",
+   "55422963",
+   "55419782",
+   "55419781",
+   "55424634",
+   "55424633",
+   "55419780",
+   "55421350",
+   "55460348",
+   "55504319",
+   "55533874",
+   "55590834",
+   "55599701",
+   "55693238",
+   "55875124",
+   "55875104",
+   "56051932",
+   "56053828",
+   "56054857",
+   "56065897",
+   "56076556",
+   "56242124",
+   "56294963",
+   "56374837",
+   "56499702",
+   "56661009",
+   "56738532",
+   "56766526",
+   "56832225",
+   "56967712",
+   "57217726",
+   "57213083",
+   "57248456",
+   "57275257",
+   "57299354",
+   "57421280",
+   "57418505",
+   "57421305",
+   "57416046",
+   "57422427",
+   "57422428",
+   "57421307",
+   "57418647",
+   "57419900",
+   "57413543",
+   "57421403",
+   "57419982",
+   "57422596",
+   "57413545",
+   "57417353",
+   "57655672",
+   "65795074",
+   "65942078",
+   "66225789"
+  ]
+ },
+ "cb_101_2026_11": {
+  "new_this_month": [
+   "70988342",
+   "70985073",
+   "70988319",
+   "70989509",
+   "70981547",
+   "70984688",
+   "70984687",
+   "70981553",
+   "70987944",
+   "70990697",
+   "70989483",
+   "70978329",
+   "70979742",
+   "70989430",
+   "70986267",
+   "70987951",
+   "70986270",
+   "70994116",
+   "70998775",
+   "71000497",
+   "70993977",
+   "71001181",
+   "71000418",
+   "70994615",
+   "70999078",
+   "70992873",
+   "70993038",
+   "70991357",
+   "70995224",
+   "70993983",
+   "70992217",
+   "70995432",
+   "70996582",
+   "70992076",
+   "70998717",
+   "70991729",
+   "70998779",
+   "70992295",
+   "71000058",
+   "71000067",
+   "70991703",
+   "70997487",
+   "70990991",
+   "70993552",
+   "70993554",
+   "70991705",
+   "70994838",
+   "70996872",
+   "70994273",
+   "70993913"
+  ],
+  "unresolved_from_prior_months": []
+ }
+}

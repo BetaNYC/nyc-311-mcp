@@ -215,3 +215,63 @@ class Oracle:
             "comparison": {"top_problems_by_share": [
                 {kk: (float(v) if kk != "problem" and v is not None else v) for kk, v in r.items()} for r in cmp]},
         }
+
+    # ------------------------------------------------------------------ Local Law 47 reports (#15)
+    #
+    # Written from the 2005 law's list (totals by category and agency, by resolution status,
+    # average resolution time per category per agency) and BoardStat's columns, not from
+    # src/ll47-reports.ts. Category = the City's complaint type (complaint_type_raw).
+
+    def files(self, geo: str, ids: list[int]) -> str:
+        paths = ", ".join(lit(self.dir / "detail" / geo / f"{i}.parquet") for i in ids)
+        return f"read_parquet([{paths}])"
+
+    def sr_report(self, src: str, start: str, end: str, limit: int = 50) -> dict[str, Any]:
+        w = self.dates(start, end)
+        k = self.q(f"""
+            SELECT count(*)::INTEGER AS n, count(*) FILTER (WHERE status = 'Closed')::INTEGER AS closed,
+                   avg({self.CLOSED_DAYS}) AS avg, median({self.CLOSED_DAYS}) AS med
+            FROM {src} WHERE {w}""")[0]
+        cats = self.q(f"""
+            SELECT coalesce(complaint_type_raw, '(none)') AS category, count(*)::INTEGER AS requests
+            FROM {src} WHERE {w} GROUP BY 1 ORDER BY 2 DESC, 1 LIMIT {int(limit)}""")
+        agencies = self.q(f"""
+            SELECT coalesce(agency, '(none)') AS agency, count(*)::INTEGER AS requests
+            FROM {src} WHERE {w} GROUP BY 1 ORDER BY 2 DESC, 1""")
+        statuses = self.q(f"""
+            SELECT coalesce(status, '(none)') AS status, count(*)::INTEGER AS requests
+            FROM {src} WHERE {w} GROUP BY 1 ORDER BY 2 DESC, 1""")
+        rt = self.q(f"""
+            SELECT coalesce(complaint_type_raw, '(none)') AS category, coalesce(agency, '(none)') AS agency,
+                   count(*)::INTEGER AS requests, count(*) FILTER (WHERE status = 'Closed')::INTEGER AS closed,
+                   avg({self.CLOSED_DAYS}) AS avg, median({self.CLOSED_DAYS}) AS med
+            FROM {src} WHERE {w} GROUP BY 1, 2 ORDER BY 3 DESC, 1, 2 LIMIT {int(limit)}""")
+        return {
+            "requests": k["n"], "closed": k["closed"], "not_closed": k["n"] - k["closed"],
+            "average_days_to_close": r1(k["avg"]), "median_days_to_close": r1(k["med"]),
+            "by_category": cats, "by_agency": agencies, "by_status": statuses,
+            "resolution_time_by_category_and_agency": [
+                {"category": r["category"], "agency": r["agency"], "requests": r["requests"], "closed": r["closed"],
+                 "average_days_to_close": r1(r["avg"]), "median_days_to_close": r1(r["med"])} for r in rt],
+        }
+
+    def agg_report(self, kind: str, gid: str | None, ym_start: str, ym_end: str, limit: int = 50) -> dict[str, Any]:
+        idw = "" if gid is None else f" AND geo_id = {lit(gid)}"
+        w = f"geo_kind = {lit(kind)}{idw} AND year_month BETWEEN {lit(ym_start)} AND {lit(ym_end)}"
+        total = self.q(f"SELECT coalesce(sum(n), 0)::BIGINT AS n FROM {self.agg()} WHERE {w}")[0]["n"]
+        rows = self.q(f"""
+            SELECT complaint_type AS problem, sum(n)::BIGINT AS requests FROM {self.agg()} WHERE {w}
+            GROUP BY 1 ORDER BY 2 DESC, 1 LIMIT {int(limit)}""")
+        return {"requests": int(total), "by_problem": [{"problem": r["problem"], "requests": int(r["requests"])} for r in rows]}
+
+    def cb_list(self, cd: int, month_start: str, month_end: str) -> dict[str, Any]:
+        t = self.detail("cd", cd)
+        fresh = self.q(f"""
+            SELECT unique_key FROM {t} WHERE {self.dates(month_start, month_end)}
+            ORDER BY created_date, unique_key""")
+        prior = self.q(f"""
+            SELECT unique_key FROM {t}
+            WHERE created_date >= CAST({lit(self.win_start)} AS DATE) AND created_date < CAST({lit(month_start)} AS DATE)
+              AND status IS DISTINCT FROM 'Closed'
+            ORDER BY created_date, unique_key""")
+        return {"new_this_month": [r["unique_key"] for r in fresh], "unresolved_from_prior_months": [r["unique_key"] for r in prior]}

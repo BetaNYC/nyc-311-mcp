@@ -1,0 +1,406 @@
+// The three Local Law 47 of 2005 reports (#15). No network.
+// BoardStat numbers are checked against test/fixtures/boardstat/expected-ll47.json, which DuckDB
+// computed over the same fixture files with scripts/boardstat_oracle.py (written from the law's
+// list and BoardStat's columns, not from src/ll47-reports.ts). The call-center report replays
+// real responses from NYC Open Data (wewp-mm3p), recorded 2026-11-07 by
+// scripts/run-call-center-report.mjs and trimmed to nine topics.
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { mkdtemp, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  runLl47Tool,
+  reportPeriods,
+  lastCompleteMonth,
+  parseMonth,
+  toCsv,
+  callSection,
+  cbMonthlyList,
+  MANDATES,
+  LL47_TOOLS,
+} from "../dist/ll47-reports.js";
+import { SodaClient, resolveAppToken, assertNoZipSoql } from "../dist/soda.js";
+import { parseToolArgs } from "../dist/tools.js";
+import { BASE, FIX, MANIFEST, fixtureData, pick } from "./district-fixture.mjs";
+
+const EXPECTED = JSON.parse(await readFile(path.join(FIX, "expected-ll47.json"), "utf8"));
+const SODA_FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "soda", "wewp-mm3p");
+
+async function run(name, args, opts) {
+  const { data, requested } = await fixtureData(opts);
+  const env = await runLl47Tool(name, parseToolArgs(name, args), { data });
+  return { env, data: env.data, requested };
+}
+
+/** A manifest whose community districts are cut to the two fixture files, so "every district file" is 101 + 484. */
+const TWO_CD = { ...MANIFEST, districts: { ...MANIFEST.districts, cd: MANIFEST.districts.cd.filter((e) => [101, 484].includes(e.id)) } };
+function serveManifest(manifest, log = []) {
+  return async (url) => {
+    const rel = String(url).slice(BASE.length);
+    log.push(rel);
+    if (rel === "manifest.json") return Response.json(manifest);
+    const bytes = await readFile(path.join(FIX, ...rel.split("/"))).catch(() => null);
+    return bytes ? new Response(bytes) : new Response("not found", { status: 404 });
+  };
+}
+
+// ── ll47_service_request_report: numbers, against DuckDB ─────────────────────
+
+const SR_CASES = [
+  [{ community_district: 484, month: "2025-10" }, "sr_484_2025_10"],
+  [{ community_district: "484", fiscal_year: "FY26" }, "sr_484_fy2026"],
+  [{ council_district: 1, month: "2020-01" }, "sr_cc1_2020_01"],
+];
+for (const [args, key] of SR_CASES) {
+  test(`ll47_service_request_report ${JSON.stringify(args)} matches DuckDB exactly (${key})`, async () => {
+    const { data } = await run("ll47_service_request_report", args);
+    const want = EXPECTED[key];
+    assert.equal(data.complete, true);
+    assert.deepEqual(pick(data, want), want);
+  });
+}
+
+for (const [month, key] of [["2026-10", "sr_two_files_2026_10"], ["2026-11", "sr_two_files_2026_11"]]) {
+  test(`citywide with read_every_district reads every community district file and matches DuckDB (${key})`, async () => {
+    const requested = [];
+    const { data } = await run(
+      "ll47_service_request_report",
+      { month, read_every_district: true, limit: 200 },
+      { fetch: serveManifest(TWO_CD, requested) }
+    );
+    assert.deepEqual(pick(data, EXPECTED[key]), EXPECTED[key]);
+    assert.equal(data.district_files_read, 2);
+    assert.ok(requested.includes("detail/cd/101.parquet") && requested.includes("detail/cd/484.parquet"));
+  });
+}
+
+test("citywide without read_every_district answers from the month file only, says it is incomplete, and how big the rest is", async () => {
+  const { data, requested, env } = await run("ll47_service_request_report", { month: "2026-10" });
+  const want = EXPECTED.agg_city_2026_10;
+  assert.deepEqual(pick(data, want), want);
+  assert.equal(data.complete, false);
+  assert.equal(data.month.by_agency, null);
+  assert.equal(data.month.resolution_time_by_category_and_agency, null);
+  assert.match(data.how_to_get_the_rest, /read_every_district: true/);
+  assert.match(data.how_to_get_the_rest, /71 files, about \d+ MB/);
+  assert.ok(!requested.some((f) => f.startsWith("detail/")), `downloaded district files: ${requested}`);
+  assert.ok(env.caveats.some((c) => /grouped problem names/.test(c)));
+});
+
+test("one borough from the month file matches DuckDB", async () => {
+  const { data } = await run("ll47_service_request_report", { month: "2026-10", borough: "Queens" });
+  assert.deepEqual(pick(data, EXPECTED.agg_queens_2026_10), EXPECTED.agg_queens_2026_10);
+  assert.equal(data.geography.label, "Queens");
+});
+
+test("by_district lists every district from the month file, honors borough and limit, and says when it cut the list", async () => {
+  const { data } = await run("ll47_service_request_report", { by_district: "borough", month: "2026-10" });
+  const queens = data.districts.find((r) => r.id === "Queens");
+  assert.equal(queens.requests_month, EXPECTED.agg_queens_2026_10.month.requests);
+  assert.equal(data.district_count, 5);
+  const cds = await run("ll47_service_request_report", { by_district: "community_district", borough: "Queens", month: "2026-10", limit: 3 });
+  assert.equal(cds.data.districts.length, 3);
+  assert.equal(cds.data.truncated, true);
+  assert.ok(cds.data.districts.every((r) => r.borough === "Queens"));
+  const all = await run("ll47_service_request_report", { by_district: "community_district", month: "2026-10", limit: 100 });
+  assert.equal(all.data.district_count, MANIFEST.districts.cd.length);
+  const r484 = all.data.districts.find((r) => r.id === 484);
+  assert.equal(r484.requests_month, EXPECTED.sr_two_files_2026_10.month.requests, "cd 484 is the only fixture district with October rows");
+});
+
+test("with no month, the report is for the newest complete month, and says so", async () => {
+  const { data, env } = await run("ll47_service_request_report", { community_district: 484 });
+  assert.equal(data.month.start, "2026-10-01");
+  assert.equal(data.fiscal_year.label, "FY2027 to date (2026-07-01 to 2026-10-31)");
+  assert.ok(env.caveats.some((c) => /newest complete month in the data, 2026-10/.test(c)));
+});
+
+test("a month or fiscal year that starts before 2020 is cut to the data, with a note", async () => {
+  const { data, env } = await run("ll47_service_request_report", { council_district: 1, month: "2020-01" });
+  assert.equal(data.fiscal_year.start, "2020-01-01");
+  assert.ok(env.caveats.some((c) => /data begins 2020-01-01/.test(c)), env.caveats.join("\n"));
+});
+
+test("bad and conflicting periods and geographies are refused", async () => {
+  const bad = [
+    [{ month: "2026-10", fiscal_year: 2027 }, /not both/],
+    [{ month: "2026-13" }, /Invalid month/],
+    [{ month: "2019-12" }, /before the data begins/],
+    [{ month: "2026-10", community_district: 101, borough: "Queens" }, /at most one/],
+    [{ by_district: "borough", community_district: 101 }, /cannot be combined/],
+  ];
+  for (const [args, re] of bad) {
+    const { data } = await fixtureData();
+    await assert.rejects(runLl47Tool("ll47_service_request_report", parseToolArgs("ll47_service_request_report", args), { data }), re, JSON.stringify(args));
+  }
+});
+
+// ── The mandate block, the envelope, ZIP codes ───────────────────────────────
+
+test("every report carries the Phase 0 envelope and a mandate block naming the section, its status and what is left out", async () => {
+  const sodaC = await fixtureSoda();
+  const sr = (await run("ll47_service_request_report", { community_district: 484, month: "2025-10" })).env;
+  const cb = (await run("cb_monthly_list", { community_district: 484, month: "2025-10" })).env;
+  const da = await runLl47Tool("ll47_directory_assistance_report", { month: "2026-10" }, { soda: sodaC.soda });
+  for (const [env, section, status] of [
+    [sr, "§ 1075(b)", "repealed"],
+    [da, "§ 1075(c)", "repealed"],
+    [cb, "§ 1075(d)", "current"],
+  ]) {
+    for (const k of ["data_as_of", "latest_request", "boardstat_url", "caveats", "source", "data"]) assert.ok(k in env, `${section}: no ${k}`);
+    assert.ok(env.mandate.charter_section.includes(section));
+    assert.equal(env.mandate.status, status);
+    assert.equal(env.mandate.note, "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.");
+    assert.ok(env.mandate.omissions.some((o) => /ZIP code breakdown: omitted by BetaNYC's decision/.test(o) && /poor way to organize NYC data/.test(o)));
+    assert.ok(env.mandate.omissions.some((o) => /before 2020-01-01/.test(o) && /April 1, 2004/.test(o)));
+    if (status === "repealed") assert.match(env.mandate.repealed_by, /Local Law 69 of 2023/);
+    else assert.equal(env.mandate.repealed_by, undefined);
+    assert.match(env.mandate.law, /Local Law 47 of 2005/);
+    const text = JSON.stringify(env);
+    assert.ok(!/"[^"]*zip[^"]*":/i.test(text), `${section}: a key names a ZIP code`);
+  }
+});
+
+test("tool descriptions say plainly that these are BetaNYC rebuilds, not the City's official reports", () => {
+  for (const t of LL47_TOOLS) {
+    assert.match(t.description, /not the City's official report/);
+    assert.match(t.description, /ZIP codes/);
+    assert.equal(t.inputSchema.additionalProperties, false);
+  }
+  assert.equal(MANDATES.cb_list.status, "current");
+});
+
+// ── cb_monthly_list (§ 1075(d)) ──────────────────────────────────────────────
+
+for (const [cd, month, key] of [[484, "2025-10", "cb_484_2025_10"], [101, "2026-11", "cb_101_2026_11"]]) {
+  test(`cb_monthly_list ${cd} ${month}: the month's requests, then every older unresolved one, in DuckDB's order (${key})`, async () => {
+    const want = EXPECTED[key];
+    const { data } = await run("cb_monthly_list", { community_district: cd, month, limit: 1000 });
+    assert.equal(data.counts.new_this_month, want.new_this_month.length);
+    assert.equal(data.counts.unresolved_from_prior_months, want.unresolved_from_prior_months.length);
+    assert.deepEqual(data.rows.map((r) => r.sr_number), [...want.new_this_month, ...want.unresolved_from_prior_months]);
+    for (const r of data.rows) {
+      assert.deepEqual(Object.keys(r), data.columns);
+      assert.ok(r.category && r.agency && r.created, JSON.stringify(r));
+    }
+    assert.ok(data.rows.filter((r) => r.section === "unresolved_from_prior_months").every((r) => r.status !== "Closed"));
+  });
+}
+
+test("cb_monthly_list pages with offset and limit, and next_offset walks the whole list once", async () => {
+  const want = EXPECTED.cb_484_2025_10;
+  const all = [...want.new_this_month, ...want.unresolved_from_prior_months];
+  const { data: fd } = await fixtureData();
+  const seen = [];
+  let offset = 0;
+  for (let i = 0; i < 50 && offset !== null; i++) {
+    const env = await runLl47Tool("cb_monthly_list", parseToolArgs("cb_monthly_list", { community_district: 484, month: "2025-10", limit: 25, offset }), { data: fd });
+    seen.push(...env.data.rows.map((r) => r.sr_number));
+    offset = env.data.next_offset;
+  }
+  assert.deepEqual(seen, all);
+});
+
+test("cb_monthly_list part= keeps one half; format csv gives the same page as CSV text", async () => {
+  const want = EXPECTED.cb_484_2025_10;
+  const fresh = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "new_this_month" });
+  assert.deepEqual(fresh.data.rows.map((r) => r.sr_number), want.new_this_month);
+  assert.equal(fresh.data.counts.unresolved_from_prior_months, null);
+  const old = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "unresolved_from_prior_months", limit: 5 });
+  assert.deepEqual(old.data.rows.map((r) => r.sr_number), want.unresolved_from_prior_months.slice(0, 5));
+  const csv = await run("cb_monthly_list", { community_district: 484, month: "2025-10", format: "csv", limit: 5 });
+  assert.equal(csv.data.rows, undefined);
+  const lines = csv.data.csv.trimEnd().split("\r\n");
+  assert.equal(lines[0], csv.data.columns.join(","));
+  assert.equal(lines.length, 6);
+  assert.ok(lines[1].includes(want.new_this_month[0]));
+  assert.ok(csv.env.caveats.some((c) => /Joint Interest Area has no community board/.test(c)));
+});
+
+test("cb_monthly_list removes ZIP codes from descriptions and addresses (free text)", async () => {
+  const created = new Date("2026-10-05T10:00:00Z");
+  const reader = {
+    siteUrl: "https://www.beta.nyc/boardstat/",
+    manifest: async () => ({ manifest: MANIFEST, stale: false }),
+    readParquet: async (_file, opts) => ({
+      manifest: { manifest: MANIFEST, stale: false },
+      rows: opts.filter?.is_closed
+        ? []
+        : [
+            {
+              unique_key: "1",
+              created_date: created,
+              complaint_type_raw: "Noise",
+              descriptor: "Reported at 100 Main St, New York, NY 10010",
+              agency: "NYPD",
+              agency_name: "New York City Police Department",
+              status: "Open",
+              incident_address: "730 11363",
+            },
+          ],
+    }),
+  };
+  const env = await cbMonthlyList(reader, { community_district: 101, month: "2026-10" });
+  const r = env.data.rows[0];
+  assert.ok(!/10010/.test(r.description), r.description);
+  assert.ok(!/11363/.test(r.address), r.address);
+  assert.match(r.description, /ZIP code removed/);
+});
+
+test("toCsv quotes commas, quotes and line breaks, and leaves blanks empty", () => {
+  const out = toCsv(["a", "b"], [{ a: 'x, "y"', b: null }, { a: "line\nbreak", b: "z" }]);
+  assert.equal(out, 'a,b\r\n"x, ""y""",\r\n"line\nbreak",z\r\n');
+});
+
+// ── Periods ──────────────────────────────────────────────────────────────────
+
+test("reportPeriods: a month and its fiscal year to date; a fiscal year; the newest complete month", () => {
+  const w = { start: "2020-01-01", end: "2026-11-04" };
+  const p = reportPeriods({ month: "2026-10" }, w, "2026-10");
+  assert.deepEqual([p.month.start, p.month.end, p.fiscal_year.start, p.fiscal_year.end], ["2026-10-01", "2026-10-31", "2026-07-01", "2026-10-31"]);
+  assert.equal(p.fiscal_year.fiscal_year, 2027);
+  const j = reportPeriods({ month: "2027-01" }, { start: "2020-01-01", end: "2027-02-10" }, "x");
+  assert.equal(j.fiscal_year.start, "2026-07-01");
+  const fy = reportPeriods({ fiscal_year: 2027 }, w, "x");
+  assert.equal(fy.month, null);
+  assert.equal(fy.fiscal_year.end, "2026-11-04");
+  const part = reportPeriods({ month: "2026-11" }, w, "x");
+  assert.equal(part.month.end, "2026-11-04");
+  assert.ok(part.notes.some((n) => /not complete/.test(n)));
+  assert.equal(lastCompleteMonth("2026-11-04"), "2026-10");
+  assert.equal(lastCompleteMonth("2026-10-31"), "2026-10");
+  assert.equal(lastCompleteMonth("2026-01-15"), "2025-12");
+  assert.equal(parseMonth(" 2026-03 "), "2026-03");
+  assert.throws(() => parseMonth("2026-3"), /YYYY-MM/);
+});
+
+// ── ll47_directory_assistance_report (wewp-mm3p, recorded responses) ─────────
+
+async function fixtureSoda({ token, respond } = {}) {
+  const requests = [];
+  const sleeps = [];
+  let clock = Date.parse("2026-11-07T12:00:00Z");
+  const fetch = async (url, init) => {
+    const u = new URL(url);
+    requests.push({ url: u, headers: init.headers, at: clock });
+    if (respond) {
+      const r = await respond(u, requests.length);
+      if (r) return r;
+    }
+    if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
+    if (u.pathname === "/resource/wewp-mm3p.json") {
+      const m = /date >= '(\d{4}-\d{2})-01T00:00:00' AND date < '(\d{4}-\d{2})-01T00:00:00'/.exec(u.searchParams.get("$where"));
+      if (!m) return new Response("bad where", { status: 400 });
+      if (u.searchParams.get("$offset") !== "0") return Response.json([]);
+      const body = await readFile(path.join(SODA_FIX, `${m[1]}.json`)).catch(() => null);
+      return body ? new Response(body) : Response.json([]);
+    }
+    return new Response("not found", { status: 404 });
+  };
+  const soda = new SodaClient({
+    fetch,
+    token,
+    logger: () => {},
+    cacheDir: await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-test-")),
+    now: () => clock,
+    sleep: async (ms) => {
+      sleeps.push(ms);
+      clock += ms;
+    },
+  });
+  return { soda, requests, sleeps };
+}
+
+const NOW = Date.parse("2026-11-07T12:00:00Z");
+const monthSum = async (ym, pred = () => true) =>
+  JSON.parse(await readFile(path.join(SODA_FIX, `${ym}.json`), "utf8")).filter(pred).reduce((a, r) => a + Number(r.n), 0);
+
+test("ll47_directory_assistance_report adds up the recorded months, by topic, and marks itself limited", async () => {
+  const { soda } = await fixtureSoda();
+  const env = await runLl47Tool("ll47_directory_assistance_report", parseToolArgs("ll47_directory_assistance_report", { month: "2026-10" }), { soda });
+  const d = env.data;
+  assert.equal(d.month.calls, await monthSum("2026-10"));
+  let fy = 0;
+  for (const ym of ["2026-07", "2026-08", "2026-09", "2026-10"]) fy += await monthSum(ym);
+  assert.equal(d.fiscal_year.calls, fy);
+  assert.equal(d.month.directory_assistance_topic_calls, await monthSum("2026-10", (r) => r.inquiry_name === "Directory Assistance"));
+  assert.equal(d.month.directory_assistance_topic_calls, 2333, "the City's dashboard shows 2,333 for October FY2027");
+  assert.equal(d.month.by_category[0].category, "Heat or Hot Water Complaint in a Residential Building");
+  assert.equal(d.month.by_category[0].calls, 7959);
+  // The recorded rows have no agency or call_resolution (Socrata omits nulls): say so, invent nothing.
+  assert.equal(d.month.by_agency, null);
+  assert.equal(d.month.calls_with_blank_agency, d.month.calls);
+  assert.equal(d.month.by_call_resolution, null);
+  assert.equal(d.limited, true);
+  assert.ok(d.limited_because.some((r) => /agency column is blank/.test(r)));
+  assert.ok(d.limited_because.some((r) => /directory assistance category/.test(r)));
+  assert.equal(env.boardstat_url, null);
+  assert.equal(env.source.dataset.id, "wewp-mm3p");
+  assert.equal(env.mandate.status, "repealed");
+});
+
+test("the call-center report asks one $group query per month, politely, and serves repeats from the cache", async () => {
+  const { soda, requests, sleeps } = await fixtureSoda({ token: "tok123" });
+  await runLl47Tool("ll47_directory_assistance_report", { month: "2026-10" }, { soda });
+  const data = requests.filter((r) => r.url.pathname.startsWith("/resource/"));
+  assert.equal(requests.length, 5, "metadata + four months");
+  assert.equal(data.length, 4);
+  for (const r of data) {
+    const p = r.url.searchParams;
+    assert.match(p.get("$select"), /count\(\*\) AS n/);
+    assert.ok(p.get("$group") && p.get("$order") && p.get("$limit") && p.get("$offset"));
+    assert.ok(![...p.values()].some((v) => /zip/i.test(v)));
+  }
+  for (const r of requests) {
+    assert.equal(r.headers["X-App-Token"], "tok123");
+    assert.match(r.headers["User-Agent"], /nyc-311-mcp/);
+  }
+  for (let i = 1; i < requests.length; i++) assert.ok(requests[i].at - requests[i - 1].at >= 2000, "at least 2 s between requests");
+  assert.ok(sleeps.length >= 4);
+  const again = await runLl47Tool("ll47_directory_assistance_report", { month: "2026-10" }, { soda });
+  assert.equal(requests.length, 5, "the second answer asked nothing new");
+  assert.equal(again.data.months_from_cache, 4);
+});
+
+test("the call-center client honors Retry-After on 429, widens the gap, and does not retry a 400", async () => {
+  let n = 0;
+  const { soda, sleeps } = await fixtureSoda({
+    respond: async (u) => (u.pathname.startsWith("/api/views/") && n++ === 0 ? new Response("slow down", { status: 429, headers: { "Retry-After": "7" } }) : null),
+  });
+  await soda.metadata("wewp-mm3p");
+  assert.ok(sleeps.includes(7000), `slept ${sleeps}`);
+  const bad = await fixtureSoda({ respond: async () => new Response("no", { status: 400 }) });
+  await assert.rejects(bad.soda.getJson("/resource/wewp-mm3p.json", { $limit: "1" }), /HTTP 400/);
+  assert.equal(bad.requests.length, 1);
+});
+
+test("SOCRATA_APP_TOKEN is optional but must not be blank; no query may name a ZIP code", () => {
+  assert.equal(resolveAppToken({}), undefined);
+  assert.equal(resolveAppToken({ SOCRATA_APP_TOKEN: "abc" }), "abc");
+  assert.throws(() => resolveAppToken({ SOCRATA_APP_TOKEN: " " }), /empty or contains spaces/);
+  assert.throws(() => assertNoZipSoql({ $select: "incident_zip, count(*)" }), /ZIP/);
+});
+
+test("with no month, the call-center report is for the newest complete month (New York time)", async () => {
+  const { soda } = await fixtureSoda();
+  const { directoryAssistanceReport } = await import("../dist/ll47-reports.js");
+  const env = await directoryAssistanceReport({}, soda, NOW);
+  assert.equal(env.data.month.start, "2026-10-01");
+});
+
+test("callSection reports agencies and call resolutions when the dataset has them", () => {
+  const s = callSection(
+    [
+      { inquiry_name: "A", agency: "DOF", agency_name: "Department of Finance", call_resolution: "Information Provided", n: 3 },
+      { inquiry_name: "A", agency: null, agency_name: null, call_resolution: null, n: 1 },
+      { inquiry_name: "B", agency: "HPD", agency_name: null, call_resolution: "CSMS SR", n: 2 },
+    ],
+    10
+  );
+  assert.equal(s.calls, 6);
+  assert.deepEqual(s.by_agency.map((a) => [a.agency, a.calls]), [["DOF", 3], ["HPD", 2], ["(blank)", 1]]);
+  assert.equal(s.calls_with_blank_agency, 1);
+  assert.deepEqual(s.by_call_resolution.map((r) => r.call_resolution), ["Information Provided", "CSMS SR", "(blank)"]);
+});

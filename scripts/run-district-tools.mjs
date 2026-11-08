@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Runs district tools against a LOCAL copy of BoardStat's data folder, with no network.
+// Runs district tools (and the BoardStat-based Local Law 47 reports, #15) against a LOCAL copy of BoardStat's data folder, with no network.
 // Used by scripts/accuracy_check.py. Not part of `npm test`.
 //
 //   npm run build && echo '[{"name":"top_problems","args":{...}}]' | node scripts/run-district-tools.mjs <boardstat-data-dir>
@@ -11,6 +11,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { BoardStatData } from "../dist/boardstat-data.js";
 import { runDistrictTool } from "../dist/district-tools.js";
+import { LL47_ARG_SHAPES, runLl47Tool } from "../dist/ll47-reports.js";
 import { parseToolArgs } from "../dist/tools.js";
 
 const dir = process.argv[2];
@@ -36,7 +37,8 @@ const out = [];
 for (const call of JSON.parse(input)) {
   try {
     const args = parseToolArgs(call.name, call.args);
-    out.push({ name: call.name, ok: true, result: await runDistrictTool(call.name, args, data) });
+    const result = call.name in LL47_ARG_SHAPES ? await runLl47Tool(call.name, args, { data }) : await runDistrictTool(call.name, args, data);
+    out.push({ name: call.name, ok: true, result });
   } catch (err) {
     out.push({ name: call.name, ok: false, error: String(err?.message ?? err) });
   }

@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added: the three Local Law 47 of 2005 reports (Phase 2, #15)
+
+- `ll47_service_request_report` (former Charter § 1075(b)), `ll47_directory_assistance_report`
+  (former § 1075(c)) and `cb_monthly_list` (§ 1075(d), current law). Each answer carries the
+  Phase 0 envelope plus a `mandate` block: the section, current or repealed (Local Law 69 of
+  2023), "not the City's official report", and what is left out (ZIP codes, by decision;
+  anything before 2020-01-01).
+- Inputs are a calendar `month` (the answer adds its fiscal year to date) or a `fiscal_year`.
+- Citywide and borough service-request answers come from BoardStat's month file unless
+  `read_every_district: true`, which reads every community district file (about 860 MB).
+- `src/soda.ts`: a polite client for NYC Open Data (one request at a time, 2 s apart, 429 and
+  Retry-After handling, optional `SOCRATA_APP_TOKEN`), used only for `wewp-mm3p`.
+- `scripts/accuracy_check.py` checks the new reports against DuckDB too (L1 to L8);
+  `scripts/run-call-center-report.mjs` runs the call-center report live and records fixtures.
+- Several helpers in `district-tools.ts` are now exported for reuse; their behavior is unchanged.
+
 ### Added: ten district tools (Phase 1, #14; closes #11)
 
 - `find_district`, `district_summary`, `top_problems`, `problem_trend`, `agency_response`,

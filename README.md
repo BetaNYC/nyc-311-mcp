@@ -10,7 +10,7 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ## What it does
 
-Exposes 14 tools over MCP. Four use the NYC 311 Public API (they need an API key):
+Exposes 17 tools over MCP. Four use the NYC 311 Public API (they need an API key):
 
 | Tool | Description |
 |---|---|
@@ -42,6 +42,19 @@ Community District 1, `306` Brooklyn 6) or a Council district (`1` to `51`), and
 `last_days`. Every answer carries `data_as_of`, a `boardstat_url`, plain-language `caveats`
 and its `source`. They are built by BetaNYC from NYC Open Data and are **not an official City report**.
 311 counts are reports, not problems, and "closed" does not mean fixed. No ZIP codes.
+
+Three rebuild the monthly 311 reports that [Local Law 47 of 2005](https://intro.nyc/0174-2004)
+(Gale A. Brewer) put in Charter § 1075. Each answer says which section it rebuilds, whether
+that section is still law ([Local Law 69 of 2023](https://intro.nyc/1004-2023) repealed (b)
+and (c)), and that it is **a BetaNYC rebuild from NYC Open Data, not the City's official
+report**. Details, and a comparison with the City's own 311 Reporting dashboards:
+[docs/local-law-47-reports.md](docs/local-law-47-reports.md).
+
+| Tool | Rebuilds | Reads |
+|---|---|---|
+| `ll47_service_request_report` | Former § 1075(b): for a month and the fiscal year to date, totals by category and agency, by status, and average (and median) days to close per category per agency. Citywide, a borough, a community or Council district, or a table of every district | BoardStat |
+| `ll47_directory_assistance_report` | Former § 1075(c): calls to 311 agents by topic, month and fiscal year to date. **Limited**: the open data cannot pick out directory-assistance calls, and its agency column is blank | NYC Open Data `wewp-mm3p`, one query per month, cached |
+| `cb_monthly_list` | § 1075(d), current law: one community district's requests for a month plus every older one still unresolved, with category, agency and status; pages, or CSV | BoardStat |
 
 ---
 
@@ -169,7 +182,8 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 ## Prerequisites
 
 - Node.js 18 or later
-- An NYC 311 Public API subscription key (free), for the four 311 API tools only. The ten district tools need no key.
+- An NYC 311 Public API subscription key (free), for the four 311 API tools only. The district tools and the Local Law 47 reports need no key.
+- Optional: a Socrata app token as `SOCRATA_APP_TOKEN`, sent as `X-App-Token` by `ll47_directory_assistance_report` (the only tool that queries NYC Open Data). It works without one.
 
 ---
 

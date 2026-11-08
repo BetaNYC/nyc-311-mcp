@@ -1,0 +1,9953 @@
+{
+"source": "https://www.nyc.gov/site/311reporting/311-reports/calls-and-inquiries.page (Power BI: Full Inquiries - Month & Fiscal Year to Date)",
+"read": "2026-11-07, janus browser, Fiscal Year slicer set to 2027, Month 'Previous Month'",
+"dashboard_says": "Data as of Nov-02-2026. Report shows data for October FY2027. Number of Inquiries.",
+"call_volume": {
+"october": 1018589,
+"fiscal_year_to_date": 4419354,
+"total_to_date": 420219852,
+"note": "Call Volume to 311 report, same page"
+},
+"rows": [
+{
+"inquiry_name": "Heat or Hot Water Complaint in a Residential Building",
+"month": 7959,
+"fytd": 12568
+},
+{
+"inquiry_name": "Towed Vehicle",
+"month": 6643,
+"fytd": 22687
+},
+{
+"inquiry_name": "City Agency or Worker Feedback",
+"month": 6359,
+"fytd": 24605
+},
+{
+"inquiry_name": "Service Request Status",
+"month": 6332,
+"fytd": 27783
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Status",
+"month": 5625,
+"fytd": 19678
+},
+{
+"inquiry_name": "Apartment Maintenance Complaint",
+"month": 5608,
+"fytd": 30727
+},
+{
+"inquiry_name": "Noise from Neighbor",
+"month": 5514,
+"fytd": 19399
+},
+{
+"inquiry_name": "Illegal Parking",
+"month": 4393,
+"fytd": 16090
+},
+{
+"inquiry_name": "Legal Assistance",
+"month": 4328,
+"fytd": 16671
+},
+{
+"inquiry_name": "Jail System Complaint",
+"month": 4078,
+"fytd": 15531
+},
+{
+"inquiry_name": "Bulk Item Disposal",
+"month": 3372,
+"fytd": 14194
+},
+{
+"inquiry_name": "Birth Certificate Order",
+"month": 3252,
+"fytd": 8190
+},
+{
+"inquiry_name": "Rent Freeze Program Renewal",
+"month": 3147,
+"fytd": 11504
+},
+{
+"inquiry_name": "Street Light Complaint",
+"month": 3029,
+"fytd": 10102
+},
+{
+"inquiry_name": "Tenant Harassment",
+"month": 2915,
+"fytd": 11503
+},
+{
+"inquiry_name": "Police Precincts and PSAs",
+"month": 2809,
+"fytd": 10677
+},
+{
+"inquiry_name": "Blocked Driveway",
+"month": 2806,
+"fytd": 10170
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Payment",
+"month": 2719,
+"fytd": 8421
+},
+{
+"inquiry_name": "CFC and Freon Removal",
+"month": 2696,
+"fytd": 12709
+},
+{
+"inquiry_name": "Rent Freeze Program Assistance",
+"month": 2679,
+"fytd": 10279
+},
+{
+"inquiry_name": "Grand Total",
+"month": 295683,
+"fytd": 1201730
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Assistance",
+"month": 2617,
+"fytd": 10362
+},
+{
+"inquiry_name": "Property Tax Bill",
+"month": 2517,
+"fytd": 11821
+},
+{
+"inquiry_name": "Homeless Shelter Complaint",
+"month": 2465,
+"fytd": 9978
+},
+{
+"inquiry_name": "Directory Assistance",
+"month": 2333,
+"fytd": 9282
+},
+{
+"inquiry_name": "Buses and Subways",
+"month": 2100,
+"fytd": 7861
+},
+{
+"inquiry_name": "Property Tax Payment",
+"month": 2006,
+"fytd": 7926
+},
+{
+"inquiry_name": "Homeless Shelters",
+"month": 1980,
+"fytd": 8416
+},
+{
+"inquiry_name": "Housing Court for Tenants and Landlords",
+"month": 1865,
+"fytd": 8177
+},
+{
+"inquiry_name": "Senior Citizen Homeowners' Exemption (SCHE) Renewal",
+"month": 1805,
+"fytd": 3632
+},
+{
+"inquiry_name": "Mayor",
+"month": 1769,
+"fytd": 6789
+},
+{
+"inquiry_name": "IDNYC Municipal ID Card",
+"month": 1739,
+"fytd": 7230
+},
+{
+"inquiry_name": "Abandoned Vehicle",
+"month": 1729,
+"fytd": 6973
+},
+{
+"inquiry_name": "Dangerous Location or Situation",
+"month": 1724,
+"fytd": 7152
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Payment Plan",
+"month": 1707,
+"fytd": 5573
+},
+{
+"inquiry_name": "988 Mental Health Support",
+"month": 1693,
+"fytd": 5654
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Dispute",
+"month": 1654,
+"fytd": 5637
+},
+{
+"inquiry_name": "Trash, Recycling, and Compost Bins",
+"month": 1589,
+"fytd": 9907
+},
+{
+"inquiry_name": "Noise from Street or Sidewalk",
+"month": 1587,
+"fytd": 8089
+},
+{
+"inquiry_name": "One Shot Deal (Emergency Cash Help)",
+"month": 1528,
+"fytd": 5700
+},
+{
+"inquiry_name": "Missed Trash, Recycling, or Compost Collection",
+"month": 1509,
+"fytd": 6124
+},
+{
+"inquiry_name": "Building Construction Complaint",
+"month": 1489,
+"fytd": 5944
+},
+{
+"inquiry_name": "Injured or Sick Animal",
+"month": 1459,
+"fytd": 6912
+},
+{
+"inquiry_name": "HPD Building Information and Code Enforcement Borough Service Centers",
+"month": 1456,
+"fytd": 6336
+},
+{
+"inquiry_name": "Trash, Recycling, and Compost Collection Schedule",
+"month": 1454,
+"fytd": 6856
+},
+{
+"inquiry_name": "Department of Finance Business Centers",
+"month": 1450,
+"fytd": 5662
+},
+{
+"inquiry_name": "Non-Primary Residence Property Surcharge",
+"month": 1429,
+"fytd": 5806
+},
+{
+"inquiry_name": "Homeless Outreach Assistance",
+"month": 1420,
+"fytd": 6985
+},
+{
+"inquiry_name": "Manage Your Fair Fares NYC Discount",
+"month": 1394,
+"fytd": 4985
+},
+{
+"inquiry_name": "Early Voting",
+"month": 1389,
+"fytd": 1510
+},
+{
+"inquiry_name": "City-Issued Summons Hearing",
+"month": 1382,
+"fytd": 3962
+},
+{
+"inquiry_name": "Eviction Prevention and Homebase",
+"month": 1351,
+"fytd": 4963
+},
+{
+"inquiry_name": "Traffic or Bicycle Signal Complaint or Request",
+"month": 1336,
+"fytd": 7191
+},
+{
+"inquiry_name": "Fair Fares NYC",
+"month": 1325,
+"fytd": 5304
+},
+{
+"inquiry_name": "Fallen Tree or Branch",
+"month": 1284,
+"fytd": 10026
+},
+{
+"inquiry_name": "Tree Pruning",
+"month": 1250,
+"fytd": 7357
+},
+{
+"inquiry_name": "Illegal Dumping",
+"month": 1241,
+"fytd": 5915
+},
+{
+"inquiry_name": "Property Tax Payment Assistance",
+"month": 1236,
+"fytd": 5783
+},
+{
+"inquiry_name": "Senior Citizen Homeowners' Exemption (SCHE)",
+"month": 1226,
+"fytd": 3721
+},
+{
+"inquiry_name": "Rat or Mouse Complaint",
+"month": 1203,
+"fytd": 6628
+},
+{
+"inquiry_name": "Blocked Sidewalk or Street",
+"month": 1143,
+"fytd": 4782
+},
+{
+"inquiry_name": "City-Issued Summons Payment",
+"month": 1140,
+"fytd": 3160
+},
+{
+"inquiry_name": "Rent Freeze Program for Seniors",
+"month": 1133,
+"fytd": 4694
+},
+{
+"inquiry_name": "Stolen Property",
+"month": 1132,
+"fytd": 4688
+},
+{
+"inquiry_name": "Find an Arrested Person",
+"month": 1123,
+"fytd": 4492
+},
+{
+"inquiry_name": "CityFHEPS Rental Assistance",
+"month": 1094,
+"fytd": 4453
+},
+{
+"inquiry_name": "Stray or Abandoned Animal",
+"month": 1055,
+"fytd": 4267
+},
+{
+"inquiry_name": "Property Tax Bill Assistance",
+"month": 1052,
+"fytd": 4429
+},
+{
+"inquiry_name": "Birth Certificate Change",
+"month": 1036,
+"fytd": 3214
+},
+{
+"inquiry_name": "Property Deed or Record",
+"month": 1019,
+"fytd": 4257
+},
+{
+"inquiry_name": "Recycling Rules",
+"month": 1009,
+"fytd": 4831
+},
+{
+"inquiry_name": "Homeless Encampment",
+"month": 987,
+"fytd": 4064
+},
+{
+"inquiry_name": "NYC311",
+"month": 975,
+"fytd": 3829
+},
+{
+"inquiry_name": "Cash Assistance",
+"month": 965,
+"fytd": 4018
+},
+{
+"inquiry_name": "Special Waste Disposal",
+"month": 952,
+"fytd": 3868
+},
+{
+"inquiry_name": "Dead Animal on Public Property",
+"month": 943,
+"fytd": 3403
+},
+{
+"inquiry_name": "Noise from Construction",
+"month": 903,
+"fytd": 2644
+},
+{
+"inquiry_name": "FDNY Certificate of Fitness",
+"month": 877,
+"fytd": 3225
+},
+{
+"inquiry_name": "SNAP (Food Stamps)",
+"month": 877,
+"fytd": 3642
+},
+{
+"inquiry_name": "Harassment",
+"month": 867,
+"fytd": 3405
+},
+{
+"inquiry_name": "No Water, Low Water Pressure, or Water Temperature Complaint",
+"month": 860,
+"fytd": 5595
+},
+{
+"inquiry_name": "Elevator or Escalator Complaint",
+"month": 830,
+"fytd": 7155
+},
+{
+"inquiry_name": "Incarcerated Person Location and Information",
+"month": 824,
+"fytd": 3045
+},
+{
+"inquiry_name": "Traffic Condition",
+"month": 785,
+"fytd": 2433
+},
+{
+"inquiry_name": "Traffic Ticket",
+"month": 769,
+"fytd": 2612
+},
+{
+"inquiry_name": "Identity Theft",
+"month": 768,
+"fytd": 2818
+},
+{
+"inquiry_name": "Business Tax Assistance",
+"month": 754,
+"fytd": 2438
+},
+{
+"inquiry_name": "Death Certificate Order",
+"month": 754,
+"fytd": 2940
+},
+{
+"inquiry_name": "Vehicle Accident",
+"month": 734,
+"fytd": 2706
+},
+{
+"inquiry_name": "Drinking Water",
+"month": 730,
+"fytd": 2725
+},
+{
+"inquiry_name": "Department of Motor Vehicles (DMV)",
+"month": 720,
+"fytd": 2743
+},
+{
+"inquiry_name": "Mattress or Box Spring Disposal",
+"month": 710,
+"fytd": 3113
+},
+{
+"inquiry_name": "Trespassing",
+"month": 699,
+"fytd": 2827
+},
+{
+"inquiry_name": "Building Conversion or Occupancy Complaint",
+"month": 696,
+"fytd": 3215
+},
+{
+"inquiry_name": "Residential Trash Rules",
+"month": 695,
+"fytd": 2954
+},
+{
+"inquiry_name": "Voter Registration",
+"month": 693,
+"fytd": 997
+},
+{
+"inquiry_name": "Homeless Shelter Resident Assistance",
+"month": 689,
+"fytd": 2968
+},
+{
+"inquiry_name": "EBT Card Assistance",
+"month": 674,
+"fytd": 3044
+},
+{
+"inquiry_name": "Wellness Check",
+"month": 671,
+"fytd": 2693
+},
+{
+"inquiry_name": "Italian Heritage Day/Indigenous Peoples' Day",
+"month": 667,
+"fytd": 667
+},
+{
+"inquiry_name": "Fire Hydrant Complaint",
+"month": 664,
+"fytd": 9383
+},
+{
+"inquiry_name": "Sidewalk Violation and Repair",
+"month": 664,
+"fytd": 2468
+},
+{
+"inquiry_name": "IDNYC Documents Required to Apply",
+"month": 663,
+"fytd": 2712
+},
+{
+"inquiry_name": "Curbside Composting",
+"month": 659,
+"fytd": 2904
+},
+{
+"inquiry_name": "General Corporation Tax",
+"month": 656,
+"fytd": 1750
+},
+{
+"inquiry_name": "Noise from Vehicle",
+"month": 642,
+"fytd": 2967
+},
+{
+"inquiry_name": "Medicaid",
+"month": 639,
+"fytd": 2625
+},
+{
+"inquiry_name": "Police Report",
+"month": 637,
+"fytd": 2546
+},
+{
+"inquiry_name": "Noise from Alarm",
+"month": 631,
+"fytd": 2667
+},
+{
+"inquiry_name": "Date and Time",
+"month": 627,
+"fytd": 2582
+},
+{
+"inquiry_name": "Pedestrian Signal Complaint or Request",
+"month": 623,
+"fytd": 2361
+},
+{
+"inquiry_name": "Surrender a Pet",
+"month": 618,
+"fytd": 2780
+},
+{
+"inquiry_name": "IDNYC Complaints, Status, and Questions",
+"month": 615,
+"fytd": 2778
+},
+{
+"inquiry_name": "Trees and Sidewalks Repair",
+"month": 613,
+"fytd": 2671
+},
+{
+"inquiry_name": "Booted Vehicle",
+"month": 609,
+"fytd": 2205
+},
+{
+"inquiry_name": "New York City Public Schools Feedback",
+"month": 604,
+"fytd": 1494
+},
+{
+"inquiry_name": "Animal Abuse",
+"month": 603,
+"fytd": 2530
+},
+{
+"inquiry_name": "City Claim",
+"month": 602,
+"fytd": 2782
+},
+{
+"inquiry_name": "New York State POWER Check",
+"month": 602,
+"fytd": 725
+},
+{
+"inquiry_name": "Elected Officials",
+"month": 594,
+"fytd": 2182
+},
+{
+"inquiry_name": "Rent Regulated Apartments",
+"month": 592,
+"fytd": 2527
+},
+{
+"inquiry_name": "Street Vendor Complaint",
+"month": 592,
+"fytd": 2367
+},
+{
+"inquiry_name": "Noise Complaints",
+"month": 591,
+"fytd": 1539
+},
+{
+"inquiry_name": "Taxi Lost and Found",
+"month": 588,
+"fytd": 2248
+},
+{
+"inquiry_name": "Social Security",
+"month": 585,
+"fytd": 2144
+},
+{
+"inquiry_name": "Child Care Financial Assistance",
+"month": 581,
+"fytd": 2137
+},
+{
+"inquiry_name": "Driver License",
+"month": 578,
+"fytd": 2170
+},
+{
+"inquiry_name": "NYCHA Public Housing Maintenance Complaint",
+"month": 577,
+"fytd": 3178
+},
+{
+"inquiry_name": "Park Maintenance Complaint",
+"month": 568,
+"fytd": 3984
+},
+{
+"inquiry_name": "Medical Emergency",
+"month": 565,
+"fytd": 2382
+},
+{
+"inquiry_name": "Towed Vehicle Reclaim from Marshal or Sheriff",
+"month": 558,
+"fytd": 2024
+},
+{
+"inquiry_name": "Mediation",
+"month": 556,
+"fytd": 2328
+},
+{
+"inquiry_name": "Trash, Recycling, or Compost Disposal Complaint",
+"month": 556,
+"fytd": 2609
+},
+{
+"inquiry_name": "Non-Driver ID Card",
+"month": 555,
+"fytd": 2205
+},
+{
+"inquiry_name": "Property Tax Exemption Assistance",
+"month": 553,
+"fytd": 1743
+},
+{
+"inquiry_name": "Taxi Complaint",
+"month": 552,
+"fytd": 2169
+},
+{
+"inquiry_name": "Street Sweeping Complaint",
+"month": 546,
+"fytd": 1743
+},
+{
+"inquiry_name": "Co-op and Condo Property Tax Abatement",
+"month": 539,
+"fytd": 2205
+},
+{
+"inquiry_name": "School Tax Relief for Homeowners (STAR)",
+"month": 538,
+"fytd": 2682
+},
+{
+"inquiry_name": "Electronics Disposal",
+"month": 528,
+"fytd": 2219
+},
+{
+"inquiry_name": "Pothole or Cave-In on Street",
+"month": 528,
+"fytd": 3082
+},
+{
+"inquiry_name": "NYCHA Borough Management Office",
+"month": 527,
+"fytd": 2616
+},
+{
+"inquiry_name": "Status of Active Street or Sidewalk Construction Permits",
+"month": 527,
+"fytd": 1963
+},
+{
+"inquiry_name": "Catch Basin Complaint",
+"month": 499,
+"fytd": 3229
+},
+{
+"inquiry_name": "Ambulance Patient Location",
+"month": 490,
+"fytd": 1873
+},
+{
+"inquiry_name": "Poll Sites",
+"month": 489,
+"fytd": 551
+},
+{
+"inquiry_name": "Police Officer Complaint",
+"month": 488,
+"fytd": 2111
+},
+{
+"inquiry_name": "Water and Sewer Bill",
+"month": 486,
+"fytd": 1954
+},
+{
+"inquiry_name": "Parking Signs and Rules",
+"month": 475,
+"fytd": 2271
+},
+{
+"inquiry_name": "Electrical Complaint",
+"month": 473,
+"fytd": 2780
+},
+{
+"inquiry_name": "NYC311 Feedback",
+"month": 473,
+"fytd": 1819
+},
+{
+"inquiry_name": "Debt Demolisher (ECB Amnesty)",
+"month": 472,
+"fytd": 472
+},
+{
+"inquiry_name": "Rent Increases",
+"month": 470,
+"fytd": 1828
+},
+{
+"inquiry_name": "Noise from Bar, Club, or Restaurant",
+"month": 469,
+"fytd": 1346
+},
+{
+"inquiry_name": "Affordable Housing",
+"month": 459,
+"fytd": 1851
+},
+{
+"inquiry_name": "Dirty Sidewalk",
+"month": 458,
+"fytd": 2255
+},
+{
+"inquiry_name": "Food Pantries and Soup Kitchens",
+"month": 457,
+"fytd": 1963
+},
+{
+"inquiry_name": "Illegal Eviction or Lockout",
+"month": 451,
+"fytd": 2004
+},
+{
+"inquiry_name": "Department of Sanitation Signs and Decals",
+"month": 449,
+"fytd": 1947
+},
+{
+"inquiry_name": "Gas Leak",
+"month": 449,
+"fytd": 1428
+},
+{
+"inquiry_name": "Home Delivered Meals for Older Adults",
+"month": 449,
+"fytd": 1844
+},
+{
+"inquiry_name": "Planned Water Shutdowns",
+"month": 449,
+"fytd": 1866
+},
+{
+"inquiry_name": "Housing Options for Older Adults",
+"month": 448,
+"fytd": 1812
+},
+{
+"inquiry_name": "Labor Law",
+"month": 447,
+"fytd": 1812
+},
+{
+"inquiry_name": "Lost or Found Pet",
+"month": 440,
+"fytd": 1691
+},
+{
+"inquiry_name": "Food Protection Course",
+"month": 439,
+"fytd": 1709
+},
+{
+"inquiry_name": "City Agency Record or FOIL Request",
+"month": 435,
+"fytd": 1884
+},
+{
+"inquiry_name": "Hospitals",
+"month": 431,
+"fytd": 1605
+},
+{
+"inquiry_name": "Child Abuse",
+"month": 429,
+"fytd": 1478
+},
+{
+"inquiry_name": "Dead Tree",
+"month": 427,
+"fytd": 2532
+},
+{
+"inquiry_name": "Water Leak in a Building",
+"month": 427,
+"fytd": 2721
+},
+{
+"inquiry_name": "City Parking Permit for People with Disabilities",
+"month": 425,
+"fytd": 1624
+},
+{
+"inquiry_name": "HEAP Energy Assistance",
+"month": 425,
+"fytd": 1160
+},
+{
+"inquiry_name": "Fire Hazard",
+"month": 418,
+"fytd": 1935
+},
+{
+"inquiry_name": "Unstable Building",
+"month": 418,
+"fytd": 1646
+},
+{
+"inquiry_name": "Discrimination",
+"month": 417,
+"fytd": 1935
+},
+{
+"inquiry_name": "Store Complaint",
+"month": 415,
+"fytd": 1783
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Appeal",
+"month": 413,
+"fytd": 1541
+},
+{
+"inquiry_name": "Immigration and Citizenship",
+"month": 402,
+"fytd": 1689
+},
+{
+"inquiry_name": "Adult Protective Services",
+"month": 397,
+"fytd": 1686
+},
+{
+"inquiry_name": "Legal Assistance and Inquiries for Older Adults",
+"month": 397,
+"fytd": 1581
+},
+{
+"inquiry_name": "Disabled Vehicle",
+"month": 392,
+"fytd": 1524
+},
+{
+"inquiry_name": "Lost or Found Property",
+"month": 392,
+"fytd": 1540
+},
+{
+"inquiry_name": "Domestic Violence",
+"month": 390,
+"fytd": 1481
+},
+{
+"inquiry_name": "Telephone Pole or Wire Complaint",
+"month": 387,
+"fytd": 2034
+},
+{
+"inquiry_name": "Board of Elections Offices",
+"month": 386,
+"fytd": 547
+},
+{
+"inquiry_name": "Broken Sidewalk",
+"month": 381,
+"fytd": 1865
+},
+{
+"inquiry_name": "Food Establishment Permit",
+"month": 379,
+"fytd": 1578
+},
+{
+"inquiry_name": "Marriage Record",
+"month": 378,
+"fytd": 1520
+},
+{
+"inquiry_name": "Sewer Backup",
+"month": 378,
+"fytd": 2454
+},
+{
+"inquiry_name": "Postal Service",
+"month": 372,
+"fytd": 1382
+},
+{
+"inquiry_name": "Hospital or Clinic Complaint",
+"month": 369,
+"fytd": 1568
+},
+{
+"inquiry_name": "Incarcerated Person Medical Concern",
+"month": 369,
+"fytd": 1144
+},
+{
+"inquiry_name": "FDNY Permit or Inspection",
+"month": 367,
+"fytd": 1672
+},
+{
+"inquiry_name": "Street Sign Complaint",
+"month": 367,
+"fytd": 1320
+},
+{
+"inquiry_name": "Dead Animal on Private Property",
+"month": 357,
+"fytd": 1537
+},
+{
+"inquiry_name": "DOB NOW",
+"month": 354,
+"fytd": 1349
+},
+{
+"inquiry_name": "Food Safety Complaint",
+"month": 354,
+"fytd": 1756
+},
+{
+"inquiry_name": "Parking Meter Complaint or Request",
+"month": 350,
+"fytd": 1338
+},
+{
+"inquiry_name": "Unincorporated Business Tax",
+"month": 349,
+"fytd": 814
+},
+{
+"inquiry_name": "FDNY Violation",
+"month": 341,
+"fytd": 1520
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Copy",
+"month": 327,
+"fytd": 1194
+},
+{
+"inquiry_name": "Disorderly Person or Group",
+"month": 326,
+"fytd": 1396
+},
+{
+"inquiry_name": "E-ZPass",
+"month": 326,
+"fytd": 1259
+},
+{
+"inquiry_name": "Drug Use",
+"month": 325,
+"fytd": 1318
+},
+{
+"inquiry_name": "People with Disabilities Services",
+"month": 324,
+"fytd": 1320
+},
+{
+"inquiry_name": "Smoking or Vaping Complaint",
+"month": 323,
+"fytd": 1149
+},
+{
+"inquiry_name": "Towed Vehicle Reclaim from NYPD",
+"month": 323,
+"fytd": 1026
+},
+{
+"inquiry_name": "Wild Animal",
+"month": 322,
+"fytd": 1349
+},
+{
+"inquiry_name": "Community Boards",
+"month": 321,
+"fytd": 1351
+},
+{
+"inquiry_name": "Marriage License",
+"month": 320,
+"fytd": 1172
+},
+{
+"inquiry_name": "Bin Reimbursement",
+"month": 310,
+"fytd": 4836
+},
+{
+"inquiry_name": "City Government Jobs",
+"month": 310,
+"fytd": 1216
+},
+{
+"inquiry_name": "Alternate Side Parking and Street Cleaning",
+"month": 308,
+"fytd": 1280
+},
+{
+"inquiry_name": "Rabid Animal",
+"month": 303,
+"fytd": 1082
+},
+{
+"inquiry_name": "Street, Highway, Bridge, and Tunnel Closures",
+"month": 300,
+"fytd": 896
+},
+{
+"inquiry_name": "Water Main Break",
+"month": 299,
+"fytd": 1386
+},
+{
+"inquiry_name": "Car Service Complaint",
+"month": 298,
+"fytd": 1137
+},
+{
+"inquiry_name": "Access-A-Ride",
+"month": 296,
+"fytd": 1025
+},
+{
+"inquiry_name": "Manhole Cover Complaint",
+"month": 296,
+"fytd": 1489
+},
+{
+"inquiry_name": "2026 General Election",
+"month": 294,
+"fytd": 294
+},
+{
+"inquiry_name": "Vehicle Registration or License Plate",
+"month": 289,
+"fytd": 1321
+},
+{
+"inquiry_name": "Missing Person",
+"month": 288,
+"fytd": 1155
+},
+{
+"inquiry_name": "Department of Sanitation Worker or Vehicle Complaint",
+"month": 269,
+"fytd": 1047
+},
+{
+"inquiry_name": "Parks",
+"month": 269,
+"fytd": 1523
+},
+{
+"inquiry_name": "Curb or Driveway Complaint",
+"month": 268,
+"fytd": 1035
+},
+{
+"inquiry_name": "Homeless Drop-In Centers",
+"month": 267,
+"fytd": 1227
+},
+{
+"inquiry_name": "New York City Marathon",
+"month": 267,
+"fytd": 267
+},
+{
+"inquiry_name": "Rent Freeze Program for Tenants with Disabilities",
+"month": 267,
+"fytd": 1147
+},
+{
+"inquiry_name": "Pet Health and Welfare Resources",
+"month": 265,
+"fytd": 965
+},
+{
+"inquiry_name": "Events",
+"month": 263,
+"fytd": 1145
+},
+{
+"inquiry_name": "IDNYC Card Corrections, Changes, and Lost Cards",
+"month": 263,
+"fytd": 1128
+},
+{
+"inquiry_name": "Workforce1 Career Centers",
+"month": 259,
+"fytd": 994
+},
+{
+"inquiry_name": "Borough-Block-Lot (BBL) Lookup",
+"month": 258,
+"fytd": 1049
+},
+{
+"inquiry_name": "Public Benefit Fair Hearing",
+"month": 258,
+"fytd": 1019
+},
+{
+"inquiry_name": "Supportive Housing Assistance",
+"month": 257,
+"fytd": 1226
+},
+{
+"inquiry_name": "Electric Service and Billing",
+"month": 255,
+"fytd": 1139
+},
+{
+"inquiry_name": "Water Leak on Street or Sidewalk",
+"month": 254,
+"fytd": 1155
+},
+{
+"inquiry_name": "Noise from Store or Business",
+"month": 253,
+"fytd": 864
+},
+{
+"inquiry_name": "Criminal Mischief",
+"month": 251,
+"fytd": 967
+},
+{
+"inquiry_name": "Incarcerated Person Property Pickup",
+"month": 251,
+"fytd": 1090
+},
+{
+"inquiry_name": "Dog License",
+"month": 247,
+"fytd": 1006
+},
+{
+"inquiry_name": "Stop Work Order",
+"month": 245,
+"fytd": 968
+},
+{
+"inquiry_name": "Reckless Driving",
+"month": 244,
+"fytd": 852
+},
+{
+"inquiry_name": "Gas Service and Billing",
+"month": 243,
+"fytd": 888
+},
+{
+"inquiry_name": "Tree Planting",
+"month": 241,
+"fytd": 909
+},
+{
+"inquiry_name": "Building Registration",
+"month": 239,
+"fytd": 1125
+},
+{
+"inquiry_name": "Firehouses",
+"month": 239,
+"fytd": 1800
+},
+{
+"inquiry_name": "Indoor Air Quality",
+"month": 236,
+"fytd": 1261
+},
+{
+"inquiry_name": "State Tax",
+"month": 236,
+"fytd": 984
+},
+{
+"inquiry_name": "Raccoon Control",
+"month": 234,
+"fytd": 1141
+},
+{
+"inquiry_name": "Dangerous Animal",
+"month": 233,
+"fytd": 901
+},
+{
+"inquiry_name": "Cash Assistance, SNAP, or Medicaid Fraud",
+"month": 232,
+"fytd": 955
+},
+{
+"inquiry_name": "Lead in Drinking Water",
+"month": 231,
+"fytd": 1056
+},
+{
+"inquiry_name": "Fire Safety Inspection",
+"month": 223,
+"fytd": 911
+},
+{
+"inquiry_name": "Unleashed Dog",
+"month": 218,
+"fytd": 753
+},
+{
+"inquiry_name": "Absentee Voting",
+"month": 215,
+"fytd": 297
+},
+{
+"inquiry_name": "Tow Truck Complaint",
+"month": 214,
+"fytd": 716
+},
+{
+"inquiry_name": "Agency Charges Collected by the Department of Finance",
+"month": 209,
+"fytd": 805
+},
+{
+"inquiry_name": "Residential Waste Containerization",
+"month": 209,
+"fytd": 1293
+},
+{
+"inquiry_name": "Court",
+"month": 208,
+"fytd": 872
+},
+{
+"inquiry_name": "Federal Tax",
+"month": 207,
+"fytd": 796
+},
+{
+"inquiry_name": "Residential Pest Complaint",
+"month": 207,
+"fytd": 1191
+},
+{
+"inquiry_name": "Assault",
+"month": 205,
+"fytd": 681
+},
+{
+"inquiry_name": "Veterans Property Tax Exemption",
+"month": 204,
+"fytd": 660
+},
+{
+"inquiry_name": "Chemical Complaint",
+"month": 203,
+"fytd": 837
+},
+{
+"inquiry_name": "Stolen Vehicle",
+"month": 203,
+"fytd": 797
+},
+{
+"inquiry_name": "Dirty Yard or Alley",
+"month": 202,
+"fytd": 1368
+},
+{
+"inquiry_name": "HRA Rental Assistance Programs for Landlords",
+"month": 198,
+"fytd": 793
+},
+{
+"inquiry_name": "Bees or Wasps Complaint",
+"month": 195,
+"fytd": 1385
+},
+{
+"inquiry_name": "Scaffold or Sidewalk Shed Complaint",
+"month": 194,
+"fytd": 898
+},
+{
+"inquiry_name": "Drug Sale",
+"month": 193,
+"fytd": 766
+},
+{
+"inquiry_name": "NYCHA Public Housing",
+"month": 193,
+"fytd": 817
+},
+{
+"inquiry_name": "Family Court",
+"month": 192,
+"fytd": 778
+},
+{
+"inquiry_name": "HPD Section 8",
+"month": 191,
+"fytd": 777
+},
+{
+"inquiry_name": "Litter Basket Complaint or Request",
+"month": 184,
+"fytd": 815
+},
+{
+"inquiry_name": "Medicare",
+"month": 184,
+"fytd": 679
+},
+{
+"inquiry_name": "State Parking Permit for People with Disabilities",
+"month": 184,
+"fytd": 788
+},
+{
+"inquiry_name": "Developmentally Delayed Infant Services",
+"month": 181,
+"fytd": 695
+},
+{
+"inquiry_name": "Noise from Dog or Other Animal",
+"month": 180,
+"fytd": 553
+},
+{
+"inquiry_name": "Department of State (DOS) Licensed Professional or Business Complaint",
+"month": 179,
+"fytd": 753
+},
+{
+"inquiry_name": "Health Department Online Licensing",
+"month": 179,
+"fytd": 792
+},
+{
+"inquiry_name": "City Agency Commissioners and Mayor's Senior Staff",
+"month": 176,
+"fytd": 762
+},
+{
+"inquiry_name": "Nursing Home Complaint",
+"month": 176,
+"fytd": 663
+},
+{
+"inquiry_name": "ParkNYC Parking Payment",
+"month": 175,
+"fytd": 644
+},
+{
+"inquiry_name": "Animal Bite",
+"month": 173,
+"fytd": 707
+},
+{
+"inquiry_name": "Order of Protection",
+"month": 172,
+"fytd": 738
+},
+{
+"inquiry_name": "Unemployment Insurance",
+"month": 172,
+"fytd": 859
+},
+{
+"inquiry_name": "Wood Disposal",
+"month": 172,
+"fytd": 659
+},
+{
+"inquiry_name": "Access City Agencies as a Person with a Disability",
+"month": 171,
+"fytd": 578
+},
+{
+"inquiry_name": "Gas Company Complaint",
+"month": 171,
+"fytd": 592
+},
+{
+"inquiry_name": "Electronically Stolen Cash Assistance Benefit Replacement",
+"month": 170,
+"fytd": 743
+},
+{
+"inquiry_name": "SNAP Benefit Management",
+"month": 169,
+"fytd": 647
+},
+{
+"inquiry_name": "Elder Abuse",
+"month": 168,
+"fytd": 717
+},
+{
+"inquiry_name": "Case Assistance and Management for Older Adults",
+"month": 167,
+"fytd": 805
+},
+{
+"inquiry_name": "Home Care",
+"month": 165,
+"fytd": 721
+},
+{
+"inquiry_name": "Electric Company Complaint",
+"month": 164,
+"fytd": 737
+},
+{
+"inquiry_name": "Fire or Ambulance Report",
+"month": 164,
+"fytd": 699
+},
+{
+"inquiry_name": "Building Violation",
+"month": 161,
+"fytd": 645
+},
+{
+"inquiry_name": "Lien Sale",
+"month": 161,
+"fytd": 644
+},
+{
+"inquiry_name": "Power Outage",
+"month": 161,
+"fytd": 2401
+},
+{
+"inquiry_name": "Manhattan Resident Parking Tax Exemption",
+"month": 160,
+"fytd": 981
+},
+{
+"inquiry_name": "Trash or Debris in Street",
+"month": 159,
+"fytd": 734
+},
+{
+"inquiry_name": "Mold Complaint",
+"month": 158,
+"fytd": 809
+},
+{
+"inquiry_name": "School Records",
+"month": 158,
+"fytd": 931
+},
+{
+"inquiry_name": "Street Sign Request",
+"month": 156,
+"fytd": 626
+},
+{
+"inquiry_name": "Taxi Driver or Licensee Assistance",
+"month": 155,
+"fytd": 683
+},
+{
+"inquiry_name": "Divorce Record",
+"month": 154,
+"fytd": 605
+},
+{
+"inquiry_name": "Health Insurance",
+"month": 153,
+"fytd": 707
+},
+{
+"inquiry_name": "Overgrown Grass or Weeds",
+"month": 153,
+"fytd": 1582
+},
+{
+"inquiry_name": "Administration for Children's Services Case Status",
+"month": 152,
+"fytd": 539
+},
+{
+"inquiry_name": "Blocked Building Exit or Fire Escape",
+"month": 152,
+"fytd": 744
+},
+{
+"inquiry_name": "Property Tax Payment Plan",
+"month": 152,
+"fytd": 655
+},
+{
+"inquiry_name": "Graffiti",
+"month": 150,
+"fytd": 709
+},
+{
+"inquiry_name": "Street Resurfacing Request",
+"month": 148,
+"fytd": 545
+},
+{
+"inquiry_name": "Fair Housing",
+"month": 147,
+"fytd": 317
+},
+{
+"inquiry_name": "Drug and Alcohol Services",
+"month": 146,
+"fytd": 545
+},
+{
+"inquiry_name": "Suspicious Vehicle",
+"month": 146,
+"fytd": 515
+},
+{
+"inquiry_name": "Tree Work Permit",
+"month": 146,
+"fytd": 750
+},
+{
+"inquiry_name": "Vacate Order",
+"month": 144,
+"fytd": 640
+},
+{
+"inquiry_name": "Housing Rules for Owners and Tenants",
+"month": 143,
+"fytd": 541
+},
+{
+"inquiry_name": "Criminal Court",
+"month": 142,
+"fytd": 571
+},
+{
+"inquiry_name": "Lifeline Program",
+"month": 142,
+"fytd": 666
+},
+{
+"inquiry_name": "Governor",
+"month": 141,
+"fytd": 375
+},
+{
+"inquiry_name": "Dog or Animal Waste",
+"month": 140,
+"fytd": 693
+},
+{
+"inquiry_name": "Sidewalk Construction Permit",
+"month": 140,
+"fytd": 543
+},
+{
+"inquiry_name": "Food Resources",
+"month": 139,
+"fytd": 599
+},
+{
+"inquiry_name": "Passports",
+"month": 139,
+"fytd": 633
+},
+{
+"inquiry_name": "911 Information",
+"month": 138,
+"fytd": 462
+},
+{
+"inquiry_name": "School Bus Complaint",
+"month": 138,
+"fytd": 434
+},
+{
+"inquiry_name": "Disabled Homeowners' Exemption (DHE)",
+"month": 137,
+"fytd": 422
+},
+{
+"inquiry_name": "Immunization Record",
+"month": 137,
+"fytd": 627
+},
+{
+"inquiry_name": "Telemarketing Fraud",
+"month": 137,
+"fytd": 449
+},
+{
+"inquiry_name": "Street Repair Complaint",
+"month": 136,
+"fytd": 612
+},
+{
+"inquiry_name": "Boiler Complaint",
+"month": 135,
+"fytd": 445
+},
+{
+"inquiry_name": "Dust Complaint",
+"month": 135,
+"fytd": 577
+},
+{
+"inquiry_name": "Property Tax Exemption for Non-Profits",
+"month": 135,
+"fytd": 285
+},
+{
+"inquiry_name": "Vehicle Accident Report",
+"month": 135,
+"fytd": 512
+},
+{
+"inquiry_name": "Food Poisoning",
+"month": 134,
+"fytd": 492
+},
+{
+"inquiry_name": "Parking Meters",
+"month": 134,
+"fytd": 485
+},
+{
+"inquiry_name": "Littering",
+"month": 133,
+"fytd": 550
+},
+{
+"inquiry_name": "Public Advocate",
+"month": 130,
+"fytd": 454
+},
+{
+"inquiry_name": "Catch Basin or Sewer Odor",
+"month": 128,
+"fytd": 503
+},
+{
+"inquiry_name": "Property Value and Assessment",
+"month": 128,
+"fytd": 645
+},
+{
+"inquiry_name": "Internet Service or Online Business Complaint",
+"month": 127,
+"fytd": 565
+},
+{
+"inquiry_name": "City Employment Verification",
+"month": 125,
+"fytd": 441
+},
+{
+"inquiry_name": "New York Police Department (NYPD)",
+"month": 125,
+"fytd": 466
+},
+{
+"inquiry_name": "Food Cart Vendor License",
+"month": 124,
+"fytd": 521
+},
+{
+"inquiry_name": "General Vendor License",
+"month": 124,
+"fytd": 408
+},
+{
+"inquiry_name": "Parentage Acknowledgment",
+"month": 124,
+"fytd": 330
+},
+{
+"inquiry_name": "Chained Bike",
+"month": 121,
+"fytd": 468
+},
+{
+"inquiry_name": "Incarcerated Person Visit",
+"month": 121,
+"fytd": 463
+},
+{
+"inquiry_name": "Child Care Permit and Operation",
+"month": 119,
+"fytd": 412
+},
+{
+"inquiry_name": "SNAP Recertification",
+"month": 119,
+"fytd": 674
+},
+{
+"inquiry_name": "Consulate or Embassy",
+"month": 118,
+"fytd": 482
+},
+{
+"inquiry_name": "HPD Section 8 for Tenants",
+"month": 118,
+"fytd": 471
+},
+{
+"inquiry_name": "Home Care Complaint",
+"month": 117,
+"fytd": 555
+},
+{
+"inquiry_name": "Idling Vehicle",
+"month": 117,
+"fytd": 529
+},
+{
+"inquiry_name": "Family Justice Centers",
+"month": 114,
+"fytd": 445
+},
+{
+"inquiry_name": "Smoke or Fumes",
+"month": 114,
+"fytd": 339
+},
+{
+"inquiry_name": "Bank Complaint",
+"month": 112,
+"fytd": 437
+},
+{
+"inquiry_name": "Building Permit Status",
+"month": 112,
+"fytd": 451
+},
+{
+"inquiry_name": "Domestic Partnership",
+"month": 112,
+"fytd": 438
+},
+{
+"inquiry_name": "Secondhand Smoke",
+"month": 112,
+"fytd": 386
+},
+{
+"inquiry_name": "Serving Legal Papers",
+"month": 112,
+"fytd": 390
+},
+{
+"inquiry_name": "Phone Complaint",
+"month": 111,
+"fytd": 474
+},
+{
+"inquiry_name": "Small Claims Court for Disputes Up to $10,000",
+"month": 111,
+"fytd": 411
+},
+{
+"inquiry_name": "Speed Reducer Request",
+"month": 110,
+"fytd": 436
+},
+{
+"inquiry_name": "Verizon Telephone, Internet, and Cable Service",
+"month": 109,
+"fytd": 439
+},
+{
+"inquiry_name": "City Jail System Facilities",
+"month": 107,
+"fytd": 423
+},
+{
+"inquiry_name": "Food Cart Vendor Permit",
+"month": 107,
+"fytd": 508
+},
+{
+"inquiry_name": "Child Care Complaint",
+"month": 106,
+"fytd": 373
+},
+{
+"inquiry_name": "Insurance Complaint",
+"month": 106,
+"fytd": 423
+},
+{
+"inquiry_name": "Building Demolition Complaint",
+"month": 105,
+"fytd": 381
+},
+{
+"inquiry_name": "City Worker or Retiree Benefits",
+"month": 105,
+"fytd": 396
+},
+{
+"inquiry_name": "Snow Removal Employment",
+"month": 105,
+"fytd": 233
+},
+{
+"inquiry_name": "ACCESS HRA Website and Mobile App",
+"month": 104,
+"fytd": 390
+},
+{
+"inquiry_name": "Alcohol Drinking Complaint",
+"month": 104,
+"fytd": 488
+},
+{
+"inquiry_name": "Donate Goods",
+"month": 104,
+"fytd": 504
+},
+{
+"inquiry_name": "Flu Shot and Prevention",
+"month": 104,
+"fytd": 194
+},
+{
+"inquiry_name": "Home Repair Assistance for Seniors",
+"month": 104,
+"fytd": 443
+},
+{
+"inquiry_name": "Name Change",
+"month": 104,
+"fytd": 397
+},
+{
+"inquiry_name": "Lithium-Ion Battery Safety and Complaint",
+"month": 103,
+"fytd": 401
+},
+{
+"inquiry_name": "Tattoo License",
+"month": 102,
+"fytd": 431
+},
+{
+"inquiry_name": "Building Ownership",
+"month": 101,
+"fytd": 501
+},
+{
+"inquiry_name": "Homeless Person or Family Contact",
+"month": 101,
+"fytd": 474
+},
+{
+"inquiry_name": "HPD Violation Removal for Property Owners",
+"month": 101,
+"fytd": 413
+},
+{
+"inquiry_name": "Cannabis Retail Sale Complaint",
+"month": 100,
+"fytd": 523
+},
+{
+"inquiry_name": "City Worker or Contractor Corruption or Criminal Misconduct",
+"month": 100,
+"fytd": 381
+},
+{
+"inquiry_name": "Housing Resources for People with Disabilities",
+"month": 100,
+"fytd": 397
+},
+{
+"inquiry_name": "Libraries",
+"month": 100,
+"fytd": 417
+},
+{
+"inquiry_name": "Water Meter",
+"month": 99,
+"fytd": 403
+},
+{
+"inquiry_name": "Family Homelessness and Eviction Prevention Supplement (FHEPS)",
+"month": 98,
+"fytd": 344
+},
+{
+"inquiry_name": "Residential Construction Tax Benefit Programs",
+"month": 98,
+"fytd": 412
+},
+{
+"inquiry_name": "Disabled Homeowners' Exemption (DHE) Renewal",
+"month": 97,
+"fytd": 215
+},
+{
+"inquiry_name": "Medical Waste Disposal",
+"month": 97,
+"fytd": 403
+},
+{
+"inquiry_name": "Restaurant Inspection",
+"month": 97,
+"fytd": 306
+},
+{
+"inquiry_name": "Child Support",
+"month": 96,
+"fytd": 370
+},
+{
+"inquiry_name": "Park Event Permit",
+"month": 96,
+"fytd": 1031
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Advocate",
+"month": 96,
+"fytd": 325
+},
+{
+"inquiry_name": "Citi Bike",
+"month": 95,
+"fytd": 426
+},
+{
+"inquiry_name": "Civil Court for Disputes Up to $50,000",
+"month": 95,
+"fytd": 387
+},
+{
+"inquiry_name": "Congestion Pricing Program",
+"month": 93,
+"fytd": 402
+},
+{
+"inquiry_name": "Noise from Park",
+"month": 93,
+"fytd": 556
+},
+{
+"inquiry_name": "Water Meter Complaint",
+"month": 93,
+"fytd": 535
+},
+{
+"inquiry_name": "Cable Complaint",
+"month": 92,
+"fytd": 440
+},
+{
+"inquiry_name": "Child Care",
+"month": 92,
+"fytd": 386
+},
+{
+"inquiry_name": "Con Edison Worksites",
+"month": 92,
+"fytd": 403
+},
+{
+"inquiry_name": "Pavement Marking Complaint or Request",
+"month": 92,
+"fytd": 338
+},
+{
+"inquiry_name": "Oral and Dental Health",
+"month": 91,
+"fytd": 337
+},
+{
+"inquiry_name": "Property Deed or Record Theft",
+"month": 91,
+"fytd": 409
+},
+{
+"inquiry_name": "School Transportation",
+"month": 91,
+"fytd": 410
+},
+{
+"inquiry_name": "Special Education",
+"month": 90,
+"fytd": 390
+},
+{
+"inquiry_name": "Foul Odor from Unknown Source",
+"month": 89,
+"fytd": 435
+},
+{
+"inquiry_name": "NYC Health Department Literature",
+"month": 89,
+"fytd": 367
+},
+{
+"inquiry_name": "Restaurant Complaint",
+"month": 89,
+"fytd": 450
+},
+{
+"inquiry_name": "Bail Refund",
+"month": 88,
+"fytd": 177
+},
+{
+"inquiry_name": "Death Certificate Change",
+"month": 88,
+"fytd": 299
+},
+{
+"inquiry_name": "NYCHA Section 8 Waitlist",
+"month": 88,
+"fytd": 411
+},
+{
+"inquiry_name": "Transit Violation",
+"month": 88,
+"fytd": 261
+},
+{
+"inquiry_name": "Water and Sewer Bill Payment",
+"month": 88,
+"fytd": 328
+},
+{
+"inquiry_name": "Bridges",
+"month": 87,
+"fytd": 326
+},
+{
+"inquiry_name": "Electronic Benefit Theft and Scams",
+"month": 87,
+"fytd": 383
+},
+{
+"inquiry_name": "Sewage Leak or Odor Indoors",
+"month": 87,
+"fytd": 458
+},
+{
+"inquiry_name": "Suicide",
+"month": 87,
+"fytd": 241
+},
+{
+"inquiry_name": "Certificate of Occupancy and Letter of No Objection",
+"month": 86,
+"fytd": 279
+},
+{
+"inquiry_name": "County Clerk",
+"month": 86,
+"fytd": 383
+},
+{
+"inquiry_name": "Manhole Flooding",
+"month": 86,
+"fytd": 531
+},
+{
+"inquiry_name": "Medical Transportation for Medicaid Clients",
+"month": 86,
+"fytd": 300
+},
+{
+"inquiry_name": "Taxpayer Advocate",
+"month": 86,
+"fytd": 303
+},
+{
+"inquiry_name": "New York State Professional or Business License or Permit",
+"month": 85,
+"fytd": 423
+},
+{
+"inquiry_name": "Rent Freeze Program for Landlords",
+"month": 84,
+"fytd": 327
+},
+{
+"inquiry_name": "Trash, Recycling, or Compost Storage Complaint",
+"month": 84,
+"fytd": 496
+},
+{
+"inquiry_name": "Business Background Check",
+"month": 83,
+"fytd": 349
+},
+{
+"inquiry_name": "Car Dealer Complaint",
+"month": 83,
+"fytd": 280
+},
+{
+"inquiry_name": "Fence Complaint",
+"month": 83,
+"fytd": 384
+},
+{
+"inquiry_name": "Illegal Animal",
+"month": 83,
+"fytd": 280
+},
+{
+"inquiry_name": "Tree Stump",
+"month": 83,
+"fytd": 424
+},
+{
+"inquiry_name": "Arrest Warrant",
+"month": 82,
+"fytd": 328
+},
+{
+"inquiry_name": "Charter Schools",
+"month": 82,
+"fytd": 284
+},
+{
+"inquiry_name": "Find a Doctor",
+"month": 82,
+"fytd": 286
+},
+{
+"inquiry_name": "Janitor or Super Not Available",
+"month": 82,
+"fytd": 405
+},
+{
+"inquiry_name": "Street Plate Complaint",
+"month": 82,
+"fytd": 252
+},
+{
+"inquiry_name": "DOB Proof of Compliance for OATH Violation",
+"month": 81,
+"fytd": 294
+},
+{
+"inquiry_name": "Unpaid Wage Recovery",
+"month": 81,
+"fytd": 310
+},
+{
+"inquiry_name": "Good Cause Eviction",
+"month": 80,
+"fytd": 294
+},
+{
+"inquiry_name": "Carbon Monoxide",
+"month": 79,
+"fytd": 308
+},
+{
+"inquiry_name": "Natural Gas Detectors",
+"month": 79,
+"fytd": 144
+},
+{
+"inquiry_name": "Service Requests",
+"month": 79,
+"fytd": 351
+},
+{
+"inquiry_name": "Older Adult Centers",
+"month": 78,
+"fytd": 387
+},
+{
+"inquiry_name": "Pathway Home Program",
+"month": 78,
+"fytd": 265
+},
+{
+"inquiry_name": "Poison Control Center",
+"month": 77,
+"fytd": 361
+},
+{
+"inquiry_name": "Biking, Rollerblading, or Skating Complaint",
+"month": 76,
+"fytd": 321
+},
+{
+"inquiry_name": "Home Water Assistance Program",
+"month": 76,
+"fytd": 242
+},
+{
+"inquiry_name": "Lawyer Complaint",
+"month": 76,
+"fytd": 327
+},
+{
+"inquiry_name": "Asbestos Complaint",
+"month": 75,
+"fytd": 450
+},
+{
+"inquiry_name": "Building Construction or Alteration Permit",
+"month": 75,
+"fytd": 326
+},
+{
+"inquiry_name": "Commercial Motor Vehicle Tax",
+"month": 75,
+"fytd": 510
+},
+{
+"inquiry_name": "Daylight Saving Time",
+"month": 75,
+"fytd": 120
+},
+{
+"inquiry_name": "Fire Safety",
+"month": 75,
+"fytd": 393
+},
+{
+"inquiry_name": "Ready to Rent",
+"month": 75,
+"fytd": 335
+},
+{
+"inquiry_name": "School Calendar and Closures",
+"month": 75,
+"fytd": 933
+},
+{
+"inquiry_name": "Financial Counseling",
+"month": 74,
+"fytd": 316
+},
+{
+"inquiry_name": "Undocumented Immigrant New Yorkers",
+"month": 74,
+"fytd": 263
+},
+{
+"inquiry_name": "Fire Incident and Investigation Records",
+"month": 73,
+"fytd": 264
+},
+{
+"inquiry_name": "Pothole or Cave-In on Highway",
+"month": 73,
+"fytd": 317
+},
+{
+"inquiry_name": "Tree Destruction",
+"month": 73,
+"fytd": 368
+},
+{
+"inquiry_name": "Waste Disposal for Businesses",
+"month": 73,
+"fytd": 371
+},
+{
+"inquiry_name": "NYC Ferry",
+"month": 72,
+"fytd": 397
+},
+{
+"inquiry_name": "Parking Permit",
+"month": 72,
+"fytd": 337
+},
+{
+"inquiry_name": "Assisted Living Facility or Adult Home Complaint",
+"month": 71,
+"fytd": 216
+},
+{
+"inquiry_name": "Bus Lane and MTA Bus Cameras",
+"month": 71,
+"fytd": 234
+},
+{
+"inquiry_name": "IDNYC Benefits",
+"month": 71,
+"fytd": 263
+},
+{
+"inquiry_name": "Noise from Business Equipment",
+"month": 71,
+"fytd": 182
+},
+{
+"inquiry_name": "Taxis",
+"month": 71,
+"fytd": 249
+},
+{
+"inquiry_name": "Home Improvement Contractor Complaint",
+"month": 70,
+"fytd": 228
+},
+{
+"inquiry_name": "Real Property Transfer Tax",
+"month": 70,
+"fytd": 207
+},
+{
+"inquiry_name": "Street Flooding",
+"month": 70,
+"fytd": 633
+},
+{
+"inquiry_name": "Auto Repair Complaint",
+"month": 69,
+"fytd": 293
+},
+{
+"inquiry_name": "Divorce and Separation",
+"month": 69,
+"fytd": 286
+},
+{
+"inquiry_name": "Food Protection Certificate Replacement",
+"month": 69,
+"fytd": 272
+},
+{
+"inquiry_name": "Ventilation or Exhaust System Complaint",
+"month": 69,
+"fytd": 424
+},
+{
+"inquiry_name": "Water and Sewer Bill Dispute",
+"month": 69,
+"fytd": 198
+},
+{
+"inquiry_name": "Building or Public Space Accessibility Complaint",
+"month": 68,
+"fytd": 290
+},
+{
+"inquiry_name": "Buildings Information System (BIS)",
+"month": 68,
+"fytd": 258
+},
+{
+"inquiry_name": "Death Investigation",
+"month": 67,
+"fytd": 235
+},
+{
+"inquiry_name": "GED and Literacy",
+"month": 67,
+"fytd": 320
+},
+{
+"inquiry_name": "Immunization Information",
+"month": 67,
+"fytd": 168
+},
+{
+"inquiry_name": "Rent Security Deposits and Interest",
+"month": 67,
+"fytd": 309
+},
+{
+"inquiry_name": "Transportation for Older Adults",
+"month": 67,
+"fytd": 229
+},
+{
+"inquiry_name": "Barbecuing",
+"month": 66,
+"fytd": 696
+},
+{
+"inquiry_name": "Bed Bug Complaint",
+"month": 66,
+"fytd": 475
+},
+{
+"inquiry_name": "Car Service Lost and Found",
+"month": 66,
+"fytd": 216
+},
+{
+"inquiry_name": "Crime Victim Support",
+"month": 66,
+"fytd": 269
+},
+{
+"inquiry_name": "Medicaid Complaint",
+"month": 66,
+"fytd": 243
+},
+{
+"inquiry_name": "Noise from Air Conditioner or Ventilation Equipment",
+"month": 66,
+"fytd": 238
+},
+{
+"inquiry_name": "Vacant Building Complaint",
+"month": 66,
+"fytd": 329
+},
+{
+"inquiry_name": "Ambulance Complaint",
+"month": 65,
+"fytd": 259
+},
+{
+"inquiry_name": "Doctor Complaint",
+"month": 65,
+"fytd": 344
+},
+{
+"inquiry_name": "Lead Service Line Replacement Program",
+"month": 65,
+"fytd": 299
+},
+{
+"inquiry_name": "Breaking Park Rules",
+"month": 64,
+"fytd": 361
+},
+{
+"inquiry_name": "City Employee Payroll Assistance",
+"month": 64,
+"fytd": 278
+},
+{
+"inquiry_name": "FDNY Ambulance Billing",
+"month": 64,
+"fytd": 288
+},
+{
+"inquiry_name": "Property or Vacant Land Description Update",
+"month": 64,
+"fytd": 248
+},
+{
+"inquiry_name": "Homeowner Repair Grants and Loans",
+"month": 63,
+"fytd": 278
+},
+{
+"inquiry_name": "Water and Sewer Service Line Protection Program",
+"month": 63,
+"fytd": 264
+},
+{
+"inquiry_name": "Commercial Rent Tax",
+"month": 62,
+"fytd": 474
+},
+{
+"inquiry_name": "Lead Paint",
+"month": 62,
+"fytd": 335
+},
+{
+"inquiry_name": "Private Garage or Parking Lot Complaint",
+"month": 62,
+"fytd": 302
+},
+{
+"inquiry_name": "Runaway or Homeless Youth Shelter and Support",
+"month": 62,
+"fytd": 307
+},
+{
+"inquiry_name": "Seized Vehicle",
+"month": 62,
+"fytd": 220
+},
+{
+"inquiry_name": "Speed Cameras",
+"month": 62,
+"fytd": 224
+},
+{
+"inquiry_name": "Tow Truck Driver License",
+"month": 62,
+"fytd": 144
+},
+{
+"inquiry_name": "Jury Duty",
+"month": 61,
+"fytd": 254
+},
+{
+"inquiry_name": "Medical Record",
+"month": 61,
+"fytd": 236
+},
+{
+"inquiry_name": "Personal Property Tax Exemption Appeals",
+"month": 61,
+"fytd": 239
+},
+{
+"inquiry_name": "Pigeon Droppings or Odor",
+"month": 60,
+"fytd": 341
+},
+{
+"inquiry_name": "School Crossing Guard Request",
+"month": 60,
+"fytd": 133
+},
+{
+"inquiry_name": "School Immunization Requirements",
+"month": 60,
+"fytd": 135
+},
+{
+"inquiry_name": "Vacant Lot Complaint",
+"month": 60,
+"fytd": 428
+},
+{
+"inquiry_name": "Dumpster Complaint",
+"month": 59,
+"fytd": 371
+},
+{
+"inquiry_name": "HEAP Heating Equipment Repair or Replacement (HERR) Benefit",
+"month": 59,
+"fytd": 114
+},
+{
+"inquiry_name": "Theft of Service",
+"month": 59,
+"fytd": 203
+},
+{
+"inquiry_name": "Children and Youth with Special Health Care Needs",
+"month": 58,
+"fytd": 219
+},
+{
+"inquiry_name": "Historic Birth, Death, or Marriage Record",
+"month": 58,
+"fytd": 204
+},
+{
+"inquiry_name": "Water Drainage Complaint",
+"month": 58,
+"fytd": 396
+},
+{
+"inquiry_name": "Fire Code",
+"month": 57,
+"fytd": 249
+},
+{
+"inquiry_name": "Smoke Alarm Installation",
+"month": 57,
+"fytd": 177
+},
+{
+"inquiry_name": "Surrogate Court",
+"month": 57,
+"fytd": 203
+},
+{
+"inquiry_name": "Animal Odor",
+"month": 56,
+"fytd": 324
+},
+{
+"inquiry_name": "Apostille Document Authentication",
+"month": 56,
+"fytd": 204
+},
+{
+"inquiry_name": "NYC Health Department Clinics",
+"month": 56,
+"fytd": 173
+},
+{
+"inquiry_name": "School Finder",
+"month": 56,
+"fytd": 394
+},
+{
+"inquiry_name": "Social Care Networks (SCNs)",
+"month": 56,
+"fytd": 180
+},
+{
+"inquiry_name": "Accessible Taxi Dispatch",
+"month": 55,
+"fytd": 198
+},
+{
+"inquiry_name": "Airports",
+"month": 55,
+"fytd": 293
+},
+{
+"inquiry_name": "Certificate of Occupancy Complaint",
+"month": 55,
+"fytd": 259
+},
+{
+"inquiry_name": "Funeral Financial Assistance",
+"month": 55,
+"fytd": 215
+},
+{
+"inquiry_name": "Home Improvement Contractor License",
+"month": 55,
+"fytd": 194
+},
+{
+"inquiry_name": "Poster or Sticker Complaint",
+"month": 55,
+"fytd": 159
+},
+{
+"inquiry_name": "Bus Stop Shelters",
+"month": 54,
+"fytd": 239
+},
+{
+"inquiry_name": "Drag Racing",
+"month": 54,
+"fytd": 235
+},
+{
+"inquiry_name": "Marriage Ceremony",
+"month": 54,
+"fytd": 226
+},
+{
+"inquiry_name": "Poll Worker Assistance",
+"month": 54,
+"fytd": 74
+},
+{
+"inquiry_name": "Tax Preparation",
+"month": 54,
+"fytd": 193
+},
+{
+"inquiry_name": "Child Safety",
+"month": 53,
+"fytd": 140
+},
+{
+"inquiry_name": "Film or Television Production Complaint",
+"month": 53,
+"fytd": 147
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Clearance",
+"month": 53,
+"fytd": 180
+},
+{
+"inquiry_name": "Property Tax Payment Deferral",
+"month": 53,
+"fytd": 238
+},
+{
+"inquiry_name": "Public Urination or Defecation",
+"month": 53,
+"fytd": 288
+},
+{
+"inquiry_name": "Street Construction Permit",
+"month": 53,
+"fytd": 220
+},
+{
+"inquiry_name": "Gas Piping or Hookup Complaint",
+"month": 52,
+"fytd": 190
+},
+{
+"inquiry_name": "High School Enrollment",
+"month": 52,
+"fytd": 286
+},
+{
+"inquiry_name": "Immigration and Customs Enforcement (ICE) Raids",
+"month": 52,
+"fytd": 196
+},
+{
+"inquiry_name": "Pet Vaccination",
+"month": 52,
+"fytd": 197
+},
+{
+"inquiry_name": "Temporary Food Service Establishment Permit",
+"month": 52,
+"fytd": 287
+},
+{
+"inquiry_name": "Unlicensed Contractor",
+"month": 52,
+"fytd": 180
+},
+{
+"inquiry_name": "Goods or Services Delivery Complaint",
+"month": 51,
+"fytd": 170
+},
+{
+"inquiry_name": "Loose Syringes",
+"month": 51,
+"fytd": 222
+},
+{
+"inquiry_name": "Quit Smoking or Vaping",
+"month": 51,
+"fytd": 167
+},
+{
+"inquiry_name": "School Zones",
+"month": 51,
+"fytd": 286
+},
+{
+"inquiry_name": "Street Light Installation or Relocation Request",
+"month": 51,
+"fytd": 161
+},
+{
+"inquiry_name": "Dentist Complaint",
+"month": 50,
+"fytd": 185
+},
+{
+"inquiry_name": "Department of Consumer and Worker Protection Violation Business Assistance",
+"month": 50,
+"fytd": 243
+},
+{
+"inquiry_name": "Gas Piping System Inspection Certification",
+"month": 50,
+"fytd": 149
+},
+{
+"inquiry_name": "Lost Item in Sidewalk Grating",
+"month": 50,
+"fytd": 174
+},
+{
+"inquiry_name": "Parenting Support",
+"month": 50,
+"fytd": 207
+},
+{
+"inquiry_name": "City Worker Nonresident Tax Form NYC-1127",
+"month": 49,
+"fytd": 476
+},
+{
+"inquiry_name": "Noise Code",
+"month": 49,
+"fytd": 215
+},
+{
+"inquiry_name": "NYC Schools Account",
+"month": 49,
+"fytd": 223
+},
+{
+"inquiry_name": "Pre-Kindergarten Enrollment",
+"month": 49,
+"fytd": 305
+},
+{
+"inquiry_name": "Service Dogs",
+"month": 49,
+"fytd": 179
+},
+{
+"inquiry_name": "Adult Education",
+"month": 48,
+"fytd": 192
+},
+{
+"inquiry_name": "Homeowner Help Desk",
+"month": 48,
+"fytd": 185
+},
+{
+"inquiry_name": "Protected Time Off",
+"month": 48,
+"fytd": 171
+},
+{
+"inquiry_name": "School Districts",
+"month": 48,
+"fytd": 294
+},
+{
+"inquiry_name": "Shared E-Scooter Program",
+"month": 48,
+"fytd": 202
+},
+{
+"inquiry_name": "Taxi Driver License",
+"month": 48,
+"fytd": 216
+},
+{
+"inquiry_name": "Workers' Bill of Rights",
+"month": 48,
+"fytd": 198
+},
+{
+"inquiry_name": "Cross Streets",
+"month": 47,
+"fytd": 266
+},
+{
+"inquiry_name": "Department of Consumer and Worker Protection Online Licensing",
+"month": 47,
+"fytd": 200
+},
+{
+"inquiry_name": "Dumping in Catch Basin",
+"month": 47,
+"fytd": 209
+},
+{
+"inquiry_name": "Lost Item in Trash",
+"month": 47,
+"fytd": 201
+},
+{
+"inquiry_name": "Older Adults Support",
+"month": 47,
+"fytd": 202
+},
+{
+"inquiry_name": "Real Property Income and Expense (RPIE)",
+"month": 47,
+"fytd": 624
+},
+{
+"inquiry_name": "Restaurant and Mobile Food Letter Grading",
+"month": 47,
+"fytd": 193
+},
+{
+"inquiry_name": "Youth Services and Counseling",
+"month": 47,
+"fytd": 164
+},
+{
+"inquiry_name": "3-K Enrollment",
+"month": 46,
+"fytd": 280
+},
+{
+"inquiry_name": "Blindness and Low Vision Support",
+"month": 46,
+"fytd": 223
+},
+{
+"inquiry_name": "Election Day",
+"month": 46,
+"fytd": 46
+},
+{
+"inquiry_name": "Outdoor Dining Complaint",
+"month": 46,
+"fytd": 160
+},
+{
+"inquiry_name": "Coronavirus (COVID-19) Vaccine",
+"month": 45,
+"fytd": 96
+},
+{
+"inquiry_name": "NYC Business Solutions Center",
+"month": 45,
+"fytd": 169
+},
+{
+"inquiry_name": "Broker Fees",
+"month": 44,
+"fytd": 226
+},
+{
+"inquiry_name": "Car Wash Complaint",
+"month": 44,
+"fytd": 180
+},
+{
+"inquiry_name": "City Planning and Zoning",
+"month": 44,
+"fytd": 169
+},
+{
+"inquiry_name": "Construction Site Safety",
+"month": 44,
+"fytd": 166
+},
+{
+"inquiry_name": "Cribs for Families in Need",
+"month": 44,
+"fytd": 175
+},
+{
+"inquiry_name": "Donate Organs or Tissue",
+"month": 44,
+"fytd": 153
+},
+{
+"inquiry_name": "Health Insurance for Seniors",
+"month": 44,
+"fytd": 205
+},
+{
+"inquiry_name": "Housing Used for Short-Term Rental (Vacation Rentals or Illegal Home-Sharing)",
+"month": 44,
+"fytd": 209
+},
+{
+"inquiry_name": "School Transfer",
+"month": 44,
+"fytd": 318
+},
+{
+"inquiry_name": "Domestic Violence Shelter Complaint",
+"month": 43,
+"fytd": 186
+},
+{
+"inquiry_name": "Legionnaires' Disease",
+"month": 43,
+"fytd": 462
+},
+{
+"inquiry_name": "Litter on Highway",
+"month": 43,
+"fytd": 212
+},
+{
+"inquiry_name": "Paid Care Worker or Employer Assistance",
+"month": 43,
+"fytd": 166
+},
+{
+"inquiry_name": "Workers' Compensation",
+"month": 43,
+"fytd": 180
+},
+{
+"inquiry_name": "Delivery App Complaint",
+"month": 42,
+"fytd": 107
+},
+{
+"inquiry_name": "Gun Permit",
+"month": 42,
+"fytd": 187
+},
+{
+"inquiry_name": "Mitchell-Lama Housing",
+"month": 42,
+"fytd": 177
+},
+{
+"inquiry_name": "Oil Spill",
+"month": 42,
+"fytd": 156
+},
+{
+"inquiry_name": "Police Officer Impersonation",
+"month": 42,
+"fytd": 127
+},
+{
+"inquiry_name": "Telemarketing Do Not Call Registration",
+"month": 42,
+"fytd": 169
+},
+{
+"inquiry_name": "After School Program",
+"month": 41,
+"fytd": 227
+},
+{
+"inquiry_name": "Commercial Driving Training",
+"month": 41,
+"fytd": 187
+},
+{
+"inquiry_name": "Enhanced Energy Affordability Program (EEAP)",
+"month": 41,
+"fytd": 135
+},
+{
+"inquiry_name": "Fair Fares NYC Complaint",
+"month": 41,
+"fytd": 149
+},
+{
+"inquiry_name": "Film, Video, or Photography Permit",
+"month": 41,
+"fytd": 107
+},
+{
+"inquiry_name": "Gambling",
+"month": 41,
+"fytd": 120
+},
+{
+"inquiry_name": "Marriage Officiant Registration",
+"month": 41,
+"fytd": 176
+},
+{
+"inquiry_name": "Police Barricade Request",
+"month": 41,
+"fytd": 161
+},
+{
+"inquiry_name": "School Safety Complaint",
+"month": 41,
+"fytd": 86
+},
+{
+"inquiry_name": "Staten Island Ferry",
+"month": 41,
+"fytd": 215
+},
+{
+"inquiry_name": "Vehicle Stored on Residential Property or Vacant Lot",
+"month": 41,
+"fytd": 135
+},
+{
+"inquiry_name": "Become a Poll Worker",
+"month": 40,
+"fytd": 71
+},
+{
+"inquiry_name": "Family Welcome Centers",
+"month": 40,
+"fytd": 324
+},
+{
+"inquiry_name": "Lewd Act",
+"month": 40,
+"fytd": 248
+},
+{
+"inquiry_name": "Noise from Lawn Equipment",
+"month": 40,
+"fytd": 85
+},
+{
+"inquiry_name": "School Bullying",
+"month": 40,
+"fytd": 73
+},
+{
+"inquiry_name": "School Special Education Complaint",
+"month": 40,
+"fytd": 131
+},
+{
+"inquiry_name": "Street or Sidewalk Utility Markings",
+"month": 40,
+"fytd": 142
+},
+{
+"inquiry_name": "Swimming Lesson",
+"month": 40,
+"fytd": 297
+},
+{
+"inquiry_name": "Water Service",
+"month": 40,
+"fytd": 171
+},
+{
+"inquiry_name": "Dumpster Permit",
+"month": 39,
+"fytd": 132
+},
+{
+"inquiry_name": "Building Floor Plan",
+"month": 38,
+"fytd": 198
+},
+{
+"inquiry_name": "Cash Assistance Work Requirement, Job Training and Placement",
+"month": 38,
+"fytd": 120
+},
+{
+"inquiry_name": "Delivery App Worker Assistance",
+"month": 38,
+"fytd": 88
+},
+{
+"inquiry_name": "Fire Alarm Box Complaint",
+"month": 38,
+"fytd": 123
+},
+{
+"inquiry_name": "Grow a Small Business",
+"month": 38,
+"fytd": 139
+},
+{
+"inquiry_name": "Incarcerated Person Jail Release Services",
+"month": 38,
+"fytd": 141
+},
+{
+"inquiry_name": "Judge Complaint",
+"month": 38,
+"fytd": 146
+},
+{
+"inquiry_name": "NYSED Licensed Professional or Business Complaint",
+"month": 38,
+"fytd": 142
+},
+{
+"inquiry_name": "Sexual and Reproductive Health",
+"month": 38,
+"fytd": 104
+},
+{
+"inquiry_name": "Standing Water",
+"month": 38,
+"fytd": 445
+},
+{
+"inquiry_name": "Tobacco Product Sale Complaint",
+"month": 38,
+"fytd": 189
+},
+{
+"inquiry_name": "Adoption and Foster Care",
+"month": 37,
+"fytd": 144
+},
+{
+"inquiry_name": "Advertising Sign Complaint",
+"month": 37,
+"fytd": 97
+},
+{
+"inquiry_name": "Block Party, Street Fair, or Event Permit",
+"month": 37,
+"fytd": 295
+},
+{
+"inquiry_name": "Building Sign Complaint",
+"month": 37,
+"fytd": 102
+},
+{
+"inquiry_name": "City Agency Language Access Feedback",
+"month": 37,
+"fytd": 111
+},
+{
+"inquiry_name": "City University of New York (CUNY)",
+"month": 37,
+"fytd": 129
+},
+{
+"inquiry_name": "Department of Sanitation Vehicle Accident",
+"month": 37,
+"fytd": 181
+},
+{
+"inquiry_name": "Public Garages and Parking Lots",
+"month": 37,
+"fytd": 188
+},
+{
+"inquiry_name": "Sidewalk Utility Hardware Complaint",
+"month": 37,
+"fytd": 167
+},
+{
+"inquiry_name": "CityPay",
+"month": 36,
+"fytd": 157
+},
+{
+"inquiry_name": "Health Insurance Application Assistance",
+"month": 36,
+"fytd": 113
+},
+{
+"inquiry_name": "Heat Complaint in a Commercial Building",
+"month": 36,
+"fytd": 49
+},
+{
+"inquiry_name": "Neighbor Odor",
+"month": 36,
+"fytd": 153
+},
+{
+"inquiry_name": "Older Adult Center Complaint",
+"month": 36,
+"fytd": 154
+},
+{
+"inquiry_name": "Poll Site Complaint",
+"month": 36,
+"fytd": 37
+},
+{
+"inquiry_name": "SNAP Complaint",
+"month": 36,
+"fytd": 152
+},
+{
+"inquiry_name": "Big Apple Connect",
+"month": 35,
+"fytd": 176
+},
+{
+"inquiry_name": "Criminal Record",
+"month": 35,
+"fytd": 170
+},
+{
+"inquiry_name": "Hate Crime",
+"month": 35,
+"fytd": 135
+},
+{
+"inquiry_name": "Noise from Garbage Truck",
+"month": 35,
+"fytd": 106
+},
+{
+"inquiry_name": "Street Utility Hardware Complaint",
+"month": 35,
+"fytd": 104
+},
+{
+"inquiry_name": "Suspicious Package",
+"month": 35,
+"fytd": 170
+},
+{
+"inquiry_name": "Tree Guard",
+"month": 35,
+"fytd": 227
+},
+{
+"inquiry_name": "Bike Rack Complaint",
+"month": 34,
+"fytd": 157
+},
+{
+"inquiry_name": "Long Island Rail Road",
+"month": 34,
+"fytd": 133
+},
+{
+"inquiry_name": "NYCHA Public Housing Section 8 Fraud",
+"month": 34,
+"fytd": 121
+},
+{
+"inquiry_name": "Reclaim Property from NYPD",
+"month": 34,
+"fytd": 109
+},
+{
+"inquiry_name": "Sexual Assault",
+"month": 34,
+"fytd": 118
+},
+{
+"inquiry_name": "The Green Book",
+"month": 34,
+"fytd": 142
+},
+{
+"inquiry_name": "Zombie Homes Initiative",
+"month": 34,
+"fytd": 204
+},
+{
+"inquiry_name": "Alcohol Sale Complaint",
+"month": 33,
+"fytd": 138
+},
+{
+"inquiry_name": "Barber Shop or Salon Complaint",
+"month": 33,
+"fytd": 151
+},
+{
+"inquiry_name": "Coronavirus (COVID-19) Testing",
+"month": 33,
+"fytd": 104
+},
+{
+"inquiry_name": "Foreclosure Prevention",
+"month": 33,
+"fytd": 125
+},
+{
+"inquiry_name": "New Family Home Visits",
+"month": 33,
+"fytd": 129
+},
+{
+"inquiry_name": "Prostitution",
+"month": 33,
+"fytd": 195
+},
+{
+"inquiry_name": "Summer EBT",
+"month": 33,
+"fytd": 811
+},
+{
+"inquiry_name": "Child Health Clinics",
+"month": 32,
+"fytd": 83
+},
+{
+"inquiry_name": "Crime Stoppers Tip",
+"month": 32,
+"fytd": 131
+},
+{
+"inquiry_name": "Essential Service Interruption Notice Not Posted",
+"month": 32,
+"fytd": 141
+},
+{
+"inquiry_name": "Gas Station Complaint",
+"month": 32,
+"fytd": 134
+},
+{
+"inquiry_name": "Health Academy Registration Assistance",
+"month": 32,
+"fytd": 106
+},
+{
+"inquiry_name": "Liquor License Tax",
+"month": 32,
+"fytd": 302
+},
+{
+"inquiry_name": "Non-Profit Assistance",
+"month": 32,
+"fytd": 89
+},
+{
+"inquiry_name": "NYC Care",
+"month": 32,
+"fytd": 141
+},
+{
+"inquiry_name": "Pest Control Guidance",
+"month": 32,
+"fytd": 173
+},
+{
+"inquiry_name": "Prevailing Wage Complaint",
+"month": 32,
+"fytd": 82
+},
+{
+"inquiry_name": "Property Tax Benefits for Homeowners",
+"month": 32,
+"fytd": 129
+},
+{
+"inquiry_name": "Safe Construction for Tenants",
+"month": 32,
+"fytd": 177
+},
+{
+"inquiry_name": "Scale Inspection",
+"month": 32,
+"fytd": 76
+},
+{
+"inquiry_name": "Staten Island Ferry Lost and Found",
+"month": 32,
+"fytd": 96
+},
+{
+"inquiry_name": "Car Seats for Families in Need",
+"month": 31,
+"fytd": 128
+},
+{
+"inquiry_name": "City Marshals",
+"month": 31,
+"fytd": 119
+},
+{
+"inquiry_name": "Fireworks Complaint",
+"month": 31,
+"fytd": 1052
+},
+{
+"inquiry_name": "Incarcerated Person Account",
+"month": 31,
+"fytd": 110
+},
+{
+"inquiry_name": "Job Training and Placement for Older Adults",
+"month": 31,
+"fytd": 108
+},
+{
+"inquiry_name": "Radiation Equipment Permit",
+"month": 31,
+"fytd": 120
+},
+{
+"inquiry_name": "Social Security Fraud",
+"month": 31,
+"fytd": 129
+},
+{
+"inquiry_name": "Assistance for Immigrant New Yorkers",
+"month": 30,
+"fytd": 165
+},
+{
+"inquiry_name": "Bail",
+"month": 30,
+"fytd": 129
+},
+{
+"inquiry_name": "Boiler Inspection",
+"month": 30,
+"fytd": 131
+},
+{
+"inquiry_name": "Bus Arrival Sign",
+"month": 30,
+"fytd": 71
+},
+{
+"inquiry_name": "Chemical Spill",
+"month": 30,
+"fytd": 131
+},
+{
+"inquiry_name": "City Contracts for New Vendors",
+"month": 30,
+"fytd": 127
+},
+{
+"inquiry_name": "Exchange, Refund, or Return Complaint",
+"month": 30,
+"fytd": 98
+},
+{
+"inquiry_name": "Family Assessment Program (FAP)",
+"month": 30,
+"fytd": 95
+},
+{
+"inquiry_name": "HIV and AIDS Services",
+"month": 30,
+"fytd": 142
+},
+{
+"inquiry_name": "Older Adult-Kinship Caregiving Support",
+"month": 30,
+"fytd": 154
+},
+{
+"inquiry_name": "School Maintenance Complaint",
+"month": 30,
+"fytd": 134
+},
+{
+"inquiry_name": "Unlicensed Business",
+"month": 30,
+"fytd": 146
+},
+{
+"inquiry_name": "Coronavirus (COVID-19)",
+"month": 29,
+"fytd": 80
+},
+{
+"inquiry_name": "Letter of Incarceration",
+"month": 29,
+"fytd": 96
+},
+{
+"inquiry_name": "Polio",
+"month": 29,
+"fytd": 72
+},
+{
+"inquiry_name": "Credit Report",
+"month": 28,
+"fytd": 108
+},
+{
+"inquiry_name": "Hotel Complaint",
+"month": 28,
+"fytd": 139
+},
+{
+"inquiry_name": "HPD Section 8 Fraud",
+"month": 28,
+"fytd": 113
+},
+{
+"inquiry_name": "Overcharge",
+"month": 28,
+"fytd": 129
+},
+{
+"inquiry_name": "Pedestrian Ramp Complaint",
+"month": 28,
+"fytd": 115
+},
+{
+"inquiry_name": "2-K Enrollment",
+"month": 27,
+"fytd": 134
+},
+{
+"inquiry_name": "Bar or Club Complaint",
+"month": 27,
+"fytd": 74
+},
+{
+"inquiry_name": "Clergy Property Tax Exemption",
+"month": 27,
+"fytd": 74
+},
+{
+"inquiry_name": "Fair Workweek Law",
+"month": 27,
+"fytd": 92
+},
+{
+"inquiry_name": "Food for Women, Infants, and Children (WIC)",
+"month": 27,
+"fytd": 133
+},
+{
+"inquiry_name": "Home Improvement Contractor License Check",
+"month": 27,
+"fytd": 111
+},
+{
+"inquiry_name": "Job Training",
+"month": 27,
+"fytd": 149
+},
+{
+"inquiry_name": "Light from Parking Lot Complaint",
+"month": 27,
+"fytd": 113
+},
+{
+"inquiry_name": "NY Connects Long Term Care",
+"month": 27,
+"fytd": 90
+},
+{
+"inquiry_name": "Private Carter Complaint",
+"month": 27,
+"fytd": 83
+},
+{
+"inquiry_name": "Sales Tax",
+"month": 27,
+"fytd": 95
+},
+{
+"inquiry_name": "Spotted Lanternfly",
+"month": 27,
+"fytd": 183
+},
+{
+"inquiry_name": "Unclaimed Funds",
+"month": 27,
+"fytd": 130
+},
+{
+"inquiry_name": "Battery Recycling",
+"month": 26,
+"fytd": 120
+},
+{
+"inquiry_name": "Bed Bug Annual Report",
+"month": 26,
+"fytd": 163
+},
+{
+"inquiry_name": "Choking Poster",
+"month": 26,
+"fytd": 102
+},
+{
+"inquiry_name": "Department of Design and Construction (DDC) Services and Projects",
+"month": 26,
+"fytd": 98
+},
+{
+"inquiry_name": "Emergency HEAP Benefit",
+"month": 26,
+"fytd": 91
+},
+{
+"inquiry_name": "Port Authority Buses",
+"month": 26,
+"fytd": 82
+},
+{
+"inquiry_name": "Recreation Centers",
+"month": 26,
+"fytd": 143
+},
+{
+"inquiry_name": "Sale to Minor Complaint",
+"month": 26,
+"fytd": 105
+},
+{
+"inquiry_name": "Sports Field or Court Permit",
+"month": 26,
+"fytd": 122
+},
+{
+"inquiry_name": "Tree Bed Care",
+"month": 26,
+"fytd": 175
+},
+{
+"inquiry_name": "Awning, Canopy, Marquee, or Storm Enclosure Complaint",
+"month": 25,
+"fytd": 66
+},
+{
+"inquiry_name": "Counterfeit Item Sale",
+"month": 25,
+"fytd": 61
+},
+{
+"inquiry_name": "Department of Buildings (DOB) After Hours Sessions",
+"month": 25,
+"fytd": 87
+},
+{
+"inquiry_name": "Fingerprinting",
+"month": 25,
+"fytd": 124
+},
+{
+"inquiry_name": "HEAP Cooling Assistance",
+"month": 25,
+"fytd": 2211
+},
+{
+"inquiry_name": "Laundromat Complaint",
+"month": 25,
+"fytd": 123
+},
+{
+"inquiry_name": "Pharmacist Complaint",
+"month": 25,
+"fytd": 100
+},
+{
+"inquiry_name": "Restaurant Odor",
+"month": 25,
+"fytd": 100
+},
+{
+"inquiry_name": "Truck Traffic Rules and Routes",
+"month": 25,
+"fytd": 94
+},
+{
+"inquiry_name": "Veteran Legal Assistance",
+"month": 25,
+"fytd": 97
+},
+{
+"inquiry_name": "Business Name or Address Change",
+"month": 24,
+"fytd": 104
+},
+{
+"inquiry_name": "Cell Phone Purchase Complaint",
+"month": 24,
+"fytd": 87
+},
+{
+"inquiry_name": "Electrician or Plumber Complaint",
+"month": 24,
+"fytd": 74
+},
+{
+"inquiry_name": "Human Trafficking",
+"month": 24,
+"fytd": 81
+},
+{
+"inquiry_name": "LinkNYC",
+"month": 24,
+"fytd": 116
+},
+{
+"inquiry_name": "Middle School Enrollment",
+"month": 24,
+"fytd": 133
+},
+{
+"inquiry_name": "Property Value Appeal",
+"month": 24,
+"fytd": 82
+},
+{
+"inquiry_name": "Tow Truck Company License",
+"month": 24,
+"fytd": 63
+},
+{
+"inquiry_name": "Water and Sewer Rate",
+"month": 24,
+"fytd": 84
+},
+{
+"inquiry_name": "Assistive Technology and Devices for People with Disabilities",
+"month": 23,
+"fytd": 85
+},
+{
+"inquiry_name": "Crash Barrier Complaint",
+"month": 23,
+"fytd": 68
+},
+{
+"inquiry_name": "Drones",
+"month": 23,
+"fytd": 77
+},
+{
+"inquiry_name": "Invite the Mayor to an Event",
+"month": 23,
+"fytd": 102
+},
+{
+"inquiry_name": "Landmark Building Complaint",
+"month": 23,
+"fytd": 64
+},
+{
+"inquiry_name": "Noise from Helicopter",
+"month": 23,
+"fytd": 96
+},
+{
+"inquiry_name": "Non-Residential Building Maintenance Complaint",
+"month": 23,
+"fytd": 256
+},
+{
+"inquiry_name": "NYCHA Fees, Charges, and Parking",
+"month": 23,
+"fytd": 75
+},
+{
+"inquiry_name": "Open Streets",
+"month": 23,
+"fytd": 77
+},
+{
+"inquiry_name": "Parole",
+"month": 23,
+"fytd": 80
+},
+{
+"inquiry_name": "Plumbing Complaint in a Commercial Building",
+"month": 23,
+"fytd": 136
+},
+{
+"inquiry_name": "Propane Tank Storage and Disposal",
+"month": 23,
+"fytd": 121
+},
+{
+"inquiry_name": "Public Official Threat",
+"month": 23,
+"fytd": 84
+},
+{
+"inquiry_name": "School Parent Support (P311)",
+"month": 23,
+"fytd": 81
+},
+{
+"inquiry_name": "Tattoo Artist Infection Control Course",
+"month": 23,
+"fytd": 84
+},
+{
+"inquiry_name": "Tax Fraud",
+"month": 23,
+"fytd": 137
+},
+{
+"inquiry_name": "Water Meter Inspector Check",
+"month": 23,
+"fytd": 60
+},
+{
+"inquiry_name": "Become a Firefighter, Emergency Medical Technician (EMT), or Paramedic",
+"month": 22,
+"fytd": 76
+},
+{
+"inquiry_name": "Birth Certificate from Puerto Rico",
+"month": 22,
+"fytd": 61
+},
+{
+"inquiry_name": "Broken Sewer Line",
+"month": 22,
+"fytd": 127
+},
+{
+"inquiry_name": "Emergency Housing Voucher Program",
+"month": 22,
+"fytd": 90
+},
+{
+"inquiry_name": "Food and Nutrition for Older Adults",
+"month": 22,
+"fytd": 69
+},
+{
+"inquiry_name": "HUD-Owned Buildings",
+"month": 22,
+"fytd": 89
+},
+{
+"inquiry_name": "Metro-North Railroad",
+"month": 22,
+"fytd": 64
+},
+{
+"inquiry_name": "NYCHA Emergency Transfer",
+"month": 22,
+"fytd": 93
+},
+{
+"inquiry_name": "NYCHA Rent Payment",
+"month": 22,
+"fytd": 106
+},
+{
+"inquiry_name": "Obscured License Plate Complaint",
+"month": 22,
+"fytd": 84
+},
+{
+"inquiry_name": "Private and Parochial Schools",
+"month": 22,
+"fytd": 80
+},
+{
+"inquiry_name": "Sidewalk Cleaning",
+"month": 22,
+"fytd": 69
+},
+{
+"inquiry_name": "Broadband Access",
+"month": 21,
+"fytd": 91
+},
+{
+"inquiry_name": "Certificate of Disposition",
+"month": 21,
+"fytd": 96
+},
+{
+"inquiry_name": "Commercial Construction Tax Benefit Programs",
+"month": 21,
+"fytd": 51
+},
+{
+"inquiry_name": "Electronics License",
+"month": 21,
+"fytd": 33
+},
+{
+"inquiry_name": "Fire Emergency",
+"month": 21,
+"fytd": 77
+},
+{
+"inquiry_name": "Garbage Truck Spill",
+"month": 21,
+"fytd": 130
+},
+{
+"inquiry_name": "Gas Appliance or Pipe Permit",
+"month": 21,
+"fytd": 64
+},
+{
+"inquiry_name": "General Contractor Registration",
+"month": 21,
+"fytd": 101
+},
+{
+"inquiry_name": "Greenmarkets and Farmers Markets",
+"month": 21,
+"fytd": 140
+},
+{
+"inquiry_name": "Hotel Room Occupancy Tax",
+"month": 21,
+"fytd": 64
+},
+{
+"inquiry_name": "Immigration Fraud",
+"month": 21,
+"fytd": 59
+},
+{
+"inquiry_name": "Lead Safety",
+"month": 21,
+"fytd": 129
+},
+{
+"inquiry_name": "Traffic Safety",
+"month": 21,
+"fytd": 88
+},
+{
+"inquiry_name": "Bottle Refund",
+"month": 20,
+"fytd": 68
+},
+{
+"inquiry_name": "Cash Assistance Rent Payment for Landlords",
+"month": 20,
+"fytd": 58
+},
+{
+"inquiry_name": "City Marshal Complaint",
+"month": 20,
+"fytd": 67
+},
+{
+"inquiry_name": "Electronics Store Complaint",
+"month": 20,
+"fytd": 88
+},
+{
+"inquiry_name": "Emergency Rental Assistance Program (ERAP)",
+"month": 20,
+"fytd": 71
+},
+{
+"inquiry_name": "Head Start",
+"month": 20,
+"fytd": 85
+},
+{
+"inquiry_name": "Health Insurance for Children",
+"month": 20,
+"fytd": 89
+},
+{
+"inquiry_name": "New York City Housing and Vacancy Survey (NYCHVS)",
+"month": 20,
+"fytd": 37
+},
+{
+"inquiry_name": "Nursing Jobs",
+"month": 20,
+"fytd": 77
+},
+{
+"inquiry_name": "Outdoor Air Quality",
+"month": 20,
+"fytd": 144
+},
+{
+"inquiry_name": "Plumbing Work Without Permit",
+"month": 20,
+"fytd": 103
+},
+{
+"inquiry_name": "Vehicle Auction",
+"month": 20,
+"fytd": 86
+},
+{
+"inquiry_name": "Adult Probation Supervision",
+"month": 19,
+"fytd": 68
+},
+{
+"inquiry_name": "Autopsy Report",
+"month": 19,
+"fytd": 65
+},
+{
+"inquiry_name": "Become a Police Officer",
+"month": 19,
+"fytd": 54
+},
+{
+"inquiry_name": "City Contracts for Existing Vendors",
+"month": 19,
+"fytd": 117
+},
+{
+"inquiry_name": "Clothing Disposal",
+"month": 19,
+"fytd": 97
+},
+{
+"inquiry_name": "Health Services for Women",
+"month": 19,
+"fytd": 43
+},
+{
+"inquiry_name": "Home Instruction and Schooling",
+"month": 19,
+"fytd": 81
+},
+{
+"inquiry_name": "HPD Section 8 Housing Quality Standards (HQS) Inspections",
+"month": 19,
+"fytd": 87
+},
+{
+"inquiry_name": "Lead Law",
+"month": 19,
+"fytd": 94
+},
+{
+"inquiry_name": "NYC311 Accounts",
+"month": 19,
+"fytd": 68
+},
+{
+"inquiry_name": "Privately Owned Public Space (POPS) Complaint",
+"month": 19,
+"fytd": 66
+},
+{
+"inquiry_name": "Short-Term Rental Registration",
+"month": 19,
+"fytd": 63
+},
+{
+"inquiry_name": "Solar Panels and Green Roofs",
+"month": 19,
+"fytd": 74
+},
+{
+"inquiry_name": "State Court",
+"month": 19,
+"fytd": 70
+},
+{
+"inquiry_name": "Vehicle Disposal",
+"month": 19,
+"fytd": 68
+},
+{
+"inquiry_name": "Wall Complaint",
+"month": 19,
+"fytd": 82
+},
+{
+"inquiry_name": "WeCARE Services for Cash Assistance Clients",
+"month": 19,
+"fytd": 79
+},
+{
+"inquiry_name": "3-Day or 10-Day Water Notice",
+"month": 18,
+"fytd": 69
+},
+{
+"inquiry_name": "Adopt an Animal",
+"month": 18,
+"fytd": 93
+},
+{
+"inquiry_name": "Animal Abuse Registry",
+"month": 18,
+"fytd": 53
+},
+{
+"inquiry_name": "Bike Lane",
+"month": 18,
+"fytd": 66
+},
+{
+"inquiry_name": "Corporation Dissolution",
+"month": 18,
+"fytd": 82
+},
+{
+"inquiry_name": "Elementary School Enrollment",
+"month": 18,
+"fytd": 200
+},
+{
+"inquiry_name": "Excavation Undermining Nearby Building",
+"month": 18,
+"fytd": 63
+},
+{
+"inquiry_name": "Flammable Liquid Disposal",
+"month": 18,
+"fytd": 82
+},
+{
+"inquiry_name": "Food Allergy Poster",
+"month": 18,
+"fytd": 66
+},
+{
+"inquiry_name": "Gas Leak Notice",
+"month": 18,
+"fytd": 90
+},
+{
+"inquiry_name": "Healthy Homes",
+"month": 18,
+"fytd": 102
+},
+{
+"inquiry_name": "Immigration or Naturalization Record",
+"month": 18,
+"fytd": 75
+},
+{
+"inquiry_name": "Marijuana Use by a Minor",
+"month": 18,
+"fytd": 60
+},
+{
+"inquiry_name": "Mosquitoes",
+"month": 18,
+"fytd": 878
+},
+{
+"inquiry_name": "MyCity Business",
+"month": 18,
+"fytd": 77
+},
+{
+"inquiry_name": "NYC Visitor Information",
+"month": 18,
+"fytd": 112
+},
+{
+"inquiry_name": "Panhandling",
+"month": 18,
+"fytd": 120
+},
+{
+"inquiry_name": "Paternity Test",
+"month": 18,
+"fytd": 87
+},
+{
+"inquiry_name": "Place of Assembly Permit",
+"month": 18,
+"fytd": 56
+},
+{
+"inquiry_name": "Rain Garden",
+"month": 18,
+"fytd": 231
+},
+{
+"inquiry_name": "Restaurant Bathroom Rules",
+"month": 18,
+"fytd": 77
+},
+{
+"inquiry_name": "Special One-Time Assistance (SOTA) for Tenants",
+"month": 18,
+"fytd": 61
+},
+{
+"inquiry_name": "Towing Guide",
+"month": 18,
+"fytd": 56
+},
+{
+"inquiry_name": "Worker Safety",
+"month": 18,
+"fytd": 138
+},
+{
+"inquiry_name": "ACCESS NYC",
+"month": 17,
+"fytd": 63
+},
+{
+"inquiry_name": "Become a Teacher",
+"month": 17,
+"fytd": 66
+},
+{
+"inquiry_name": "Credit Card Complaint",
+"month": 17,
+"fytd": 81
+},
+{
+"inquiry_name": "Curb Cut Permit",
+"month": 17,
+"fytd": 99
+},
+{
+"inquiry_name": "Furniture Store Complaint",
+"month": 17,
+"fytd": 85
+},
+{
+"inquiry_name": "HASA Broker Fee Assistance",
+"month": 17,
+"fytd": 58
+},
+{
+"inquiry_name": "Incarcerated Person Item Delivery",
+"month": 17,
+"fytd": 55
+},
+{
+"inquiry_name": "Mental Health Patient Not Following Treatment Plan",
+"month": 17,
+"fytd": 89
+},
+{
+"inquiry_name": "Pedestrian Bridges",
+"month": 17,
+"fytd": 85
+},
+{
+"inquiry_name": "Pool or Sauna Complaint",
+"month": 17,
+"fytd": 159
+},
+{
+"inquiry_name": "Storage Warehouse Complaint",
+"month": 17,
+"fytd": 102
+},
+{
+"inquiry_name": "Traffic Rules",
+"month": 17,
+"fytd": 99
+},
+{
+"inquiry_name": "Trash and Recycling Collection Request for Residence or Non-Profit",
+"month": 17,
+"fytd": 80
+},
+{
+"inquiry_name": "Bike Rules and Safety",
+"month": 16,
+"fytd": 74
+},
+{
+"inquiry_name": "Burning Garbage",
+"month": 16,
+"fytd": 52
+},
+{
+"inquiry_name": "Child Care Provider Payment",
+"month": 16,
+"fytd": 80
+},
+{
+"inquiry_name": "Cigarette Sale Complaint",
+"month": 16,
+"fytd": 57
+},
+{
+"inquiry_name": "City Vehicle Complaint",
+"month": 16,
+"fytd": 74
+},
+{
+"inquiry_name": "Department of Environmental Protection Public Outreach",
+"month": 16,
+"fytd": 44
+},
+{
+"inquiry_name": "Drop-Off Composting",
+"month": 16,
+"fytd": 77
+},
+{
+"inquiry_name": "Fence Permit",
+"month": 16,
+"fytd": 58
+},
+{
+"inquiry_name": "Higher Education Complaint",
+"month": 16,
+"fytd": 55
+},
+{
+"inquiry_name": "Minority and Women-Owned Business Enterprise (M/WBE) Program",
+"month": 16,
+"fytd": 44
+},
+{
+"inquiry_name": "Pesticide Application Without Notice",
+"month": 16,
+"fytd": 52
+},
+{
+"inquiry_name": "Property Lot Size Change",
+"month": 16,
+"fytd": 58
+},
+{
+"inquiry_name": "Student Attendance and Absence",
+"month": 16,
+"fytd": 24
+},
+{
+"inquiry_name": "Adult Day Care",
+"month": 15,
+"fytd": 54
+},
+{
+"inquiry_name": "Alzheimer's Care",
+"month": 15,
+"fytd": 48
+},
+{
+"inquiry_name": "Amtrak Trains",
+"month": 15,
+"fytd": 50
+},
+{
+"inquiry_name": "Billboard, Building Sign, or Awning Permit",
+"month": 15,
+"fytd": 61
+},
+{
+"inquiry_name": "Cash for Guns Program",
+"month": 15,
+"fytd": 34
+},
+{
+"inquiry_name": "City Comptroller Complaint",
+"month": 15,
+"fytd": 72
+},
+{
+"inquiry_name": "Condoms and Safer Sex Products",
+"month": 15,
+"fytd": 58
+},
+{
+"inquiry_name": "Debt Collection Agency Complaint",
+"month": 15,
+"fytd": 52
+},
+{
+"inquiry_name": "Health Insurance for People with Disabilities",
+"month": 15,
+"fytd": 62
+},
+{
+"inquiry_name": "Noise from Large Party or Crowd",
+"month": 15,
+"fytd": 58
+},
+{
+"inquiry_name": "Student Educational Support",
+"month": 15,
+"fytd": 36
+},
+{
+"inquiry_name": "Tunnels",
+"month": 15,
+"fytd": 66
+},
+{
+"inquiry_name": "Water and Sewer Lien Sale",
+"month": 15,
+"fytd": 41
+},
+{
+"inquiry_name": "Back Home NYC",
+"month": 14,
+"fytd": 80
+},
+{
+"inquiry_name": "Bike Rack Request",
+"month": 14,
+"fytd": 57
+},
+{
+"inquiry_name": "Credit Card Surcharge",
+"month": 14,
+"fytd": 44
+},
+{
+"inquiry_name": "Delayed Birth Registration",
+"month": 14,
+"fytd": 36
+},
+{
+"inquiry_name": "Department of Buildings Notice Defaced",
+"month": 14,
+"fytd": 45
+},
+{
+"inquiry_name": "Gym or Health Spa Membership Complaint",
+"month": 14,
+"fytd": 49
+},
+{
+"inquiry_name": "Highway Sign Complaint",
+"month": 14,
+"fytd": 58
+},
+{
+"inquiry_name": "Home Improvement Permit",
+"month": 14,
+"fytd": 43
+},
+{
+"inquiry_name": "Marriage Registration",
+"month": 14,
+"fytd": 41
+},
+{
+"inquiry_name": "New York Waterway Ferry",
+"month": 14,
+"fytd": 84
+},
+{
+"inquiry_name": "Organized Crime",
+"month": 14,
+"fytd": 64
+},
+{
+"inquiry_name": "Severe Weather",
+"month": 14,
+"fytd": 165
+},
+{
+"inquiry_name": "Sexual Assault Victim Support",
+"month": 14,
+"fytd": 50
+},
+{
+"inquiry_name": "Sidewalk Collapsed",
+"month": 14,
+"fytd": 59
+},
+{
+"inquiry_name": "Taxi or Car Service Insurance Information",
+"month": 14,
+"fytd": 60
+},
+{
+"inquiry_name": "Terrorism",
+"month": 14,
+"fytd": 40
+},
+{
+"inquiry_name": "Tobacco Retail Dealer License",
+"month": 14,
+"fytd": 52
+},
+{
+"inquiry_name": "Truck Route Complaint",
+"month": 14,
+"fytd": 39
+},
+{
+"inquiry_name": "Tuberculosis",
+"month": 14,
+"fytd": 54
+},
+{
+"inquiry_name": "Benchmarking and Energy Grading Requirements",
+"month": 13,
+"fytd": 23
+},
+{
+"inquiry_name": "Bus Stop Request",
+"month": 13,
+"fytd": 44
+},
+{
+"inquiry_name": "Business Financial Assistance",
+"month": 13,
+"fytd": 79
+},
+{
+"inquiry_name": "Chimney or Ventilation Smoke",
+"month": 13,
+"fytd": 65
+},
+{
+"inquiry_name": "City Hall Tours",
+"month": 13,
+"fytd": 45
+},
+{
+"inquiry_name": "City Laws",
+"month": 13,
+"fytd": 57
+},
+{
+"inquiry_name": "Department of Consumer and Worker Protection Public Outreach",
+"month": 13,
+"fytd": 37
+},
+{
+"inquiry_name": "Food Cart Rules",
+"month": 13,
+"fytd": 41
+},
+{
+"inquiry_name": "Foster Care Agency Complaint",
+"month": 13,
+"fytd": 65
+},
+{
+"inquiry_name": "Garage or Driveway Permit",
+"month": 13,
+"fytd": 91
+},
+{
+"inquiry_name": "Gun Laws",
+"month": 13,
+"fytd": 43
+},
+{
+"inquiry_name": "HEAP Clean and Tune Benefit",
+"month": 13,
+"fytd": 17
+},
+{
+"inquiry_name": "HPD Section 8 for Property Owners",
+"month": 13,
+"fytd": 59
+},
+{
+"inquiry_name": "Offensive Sexual Material",
+"month": 13,
+"fytd": 29
+},
+{
+"inquiry_name": "Outdoor Dining Information and Application",
+"month": 13,
+"fytd": 57
+},
+{
+"inquiry_name": "Out-of-School Youth Job Training and Placement",
+"month": 13,
+"fytd": 34
+},
+{
+"inquiry_name": "Paper License Plate Complaint",
+"month": 13,
+"fytd": 70
+},
+{
+"inquiry_name": "Pedestrian Ramp Request",
+"month": 13,
+"fytd": 64
+},
+{
+"inquiry_name": "Police Stops",
+"month": 13,
+"fytd": 38
+},
+{
+"inquiry_name": "September 11th Victim Compensation",
+"month": 13,
+"fytd": 65
+},
+{
+"inquiry_name": "Smoking Policy",
+"month": 13,
+"fytd": 42
+},
+{
+"inquiry_name": "Stop Unwanted Mail",
+"month": 13,
+"fytd": 46
+},
+{
+"inquiry_name": "Taxi Driver Compliment",
+"month": 13,
+"fytd": 28
+},
+{
+"inquiry_name": "Traveling Abroad",
+"month": 13,
+"fytd": 54
+},
+{
+"inquiry_name": "Truck or Commercial Vehicle Permit",
+"month": 13,
+"fytd": 47
+},
+{
+"inquiry_name": "Unsafe New Building Structure",
+"month": 13,
+"fytd": 42
+},
+{
+"inquiry_name": "Volunteer in Parks",
+"month": 13,
+"fytd": 49
+},
+{
+"inquiry_name": "Warming Centers",
+"month": 13,
+"fytd": 17
+},
+{
+"inquiry_name": "Window Guard Complaint",
+"month": 13,
+"fytd": 92
+},
+{
+"inquiry_name": "Access NYC311 as a Person with a Disability",
+"month": 12,
+"fytd": 28
+},
+{
+"inquiry_name": "Accident with Injury",
+"month": 12,
+"fytd": 51
+},
+{
+"inquiry_name": "Asbestos Work Notification",
+"month": 12,
+"fytd": 44
+},
+{
+"inquiry_name": "Asthma",
+"month": 12,
+"fytd": 48
+},
+{
+"inquiry_name": "Boiler Permits and Registration",
+"month": 12,
+"fytd": 37
+},
+{
+"inquiry_name": "Business Complaint Against Another Business",
+"month": 12,
+"fytd": 62
+},
+{
+"inquiry_name": "Business Fine Payment",
+"month": 12,
+"fytd": 64
+},
+{
+"inquiry_name": "Cannabis Legalization",
+"month": 12,
+"fytd": 50
+},
+{
+"inquiry_name": "Coat Drive",
+"month": 12,
+"fytd": 19
+},
+{
+"inquiry_name": "Crane or Derrick Complaint",
+"month": 12,
+"fytd": 36
+},
+{
+"inquiry_name": "Crisis Support for Veterans",
+"month": 12,
+"fytd": 35
+},
+{
+"inquiry_name": "Elevator or Escalator Inspection",
+"month": 12,
+"fytd": 47
+},
+{
+"inquiry_name": "Health Department Violation Correction",
+"month": 12,
+"fytd": 60
+},
+{
+"inquiry_name": "Kindergarten Enrollment",
+"month": 12,
+"fytd": 93
+},
+{
+"inquiry_name": "Modular Public Restrooms Pilot",
+"month": 12,
+"fytd": 13
+},
+{
+"inquiry_name": "Notify NYC",
+"month": 12,
+"fytd": 215
+},
+{
+"inquiry_name": "NYC Teenspace",
+"month": 12,
+"fytd": 29
+},
+{
+"inquiry_name": "Opioid Overdose Prevention",
+"month": 12,
+"fytd": 90
+},
+{
+"inquiry_name": "Power of Attorney for Department of Finance",
+"month": 12,
+"fytd": 56
+},
+{
+"inquiry_name": "Self-Storage Facility Complaint",
+"month": 12,
+"fytd": 21
+},
+{
+"inquiry_name": "Sewage or Flood Clean-Up",
+"month": 12,
+"fytd": 100
+},
+{
+"inquiry_name": "Small Business Compliance Consultation",
+"month": 12,
+"fytd": 49
+},
+{
+"inquiry_name": "Speed Camera Complaint",
+"month": 12,
+"fytd": 24
+},
+{
+"inquiry_name": "Tire Disposal",
+"month": 12,
+"fytd": 60
+},
+{
+"inquiry_name": "Wasting Water",
+"month": 12,
+"fytd": 41
+},
+{
+"inquiry_name": "Animal Care and Handling Course",
+"month": 11,
+"fytd": 31
+},
+{
+"inquiry_name": "Barber Shop Permit",
+"month": 11,
+"fytd": 25
+},
+{
+"inquiry_name": "Become a Food Provider",
+"month": 11,
+"fytd": 17
+},
+{
+"inquiry_name": "Cash Payment Refusal",
+"month": 11,
+"fytd": 29
+},
+{
+"inquiry_name": "Commercial Vehicle Parked in Residential Driveway",
+"month": 11,
+"fytd": 42
+},
+{
+"inquiry_name": "Commissioner of Deeds Registration",
+"month": 11,
+"fytd": 24
+},
+{
+"inquiry_name": "Co-Op or Condo Sponsor Information Complaint",
+"month": 11,
+"fytd": 48
+},
+{
+"inquiry_name": "Cross Connection and Water Backflow Prevention",
+"month": 11,
+"fytd": 45
+},
+{
+"inquiry_name": "CUNY and SUNY Free Tuition",
+"month": 11,
+"fytd": 34
+},
+{
+"inquiry_name": "Dirty Gutter",
+"month": 11,
+"fytd": 75
+},
+{
+"inquiry_name": "Family-Type Homes for Adults (FTHA)",
+"month": 11,
+"fytd": 39
+},
+{
+"inquiry_name": "Home Ownership",
+"month": 11,
+"fytd": 50
+},
+{
+"inquiry_name": "Housing Code Enforcement Notices for Residential Property Owners",
+"month": 11,
+"fytd": 32
+},
+{
+"inquiry_name": "Human Rights Outreach",
+"month": 11,
+"fytd": 46
+},
+{
+"inquiry_name": "Lease or Buy City Property",
+"month": 11,
+"fytd": 49
+},
+{
+"inquiry_name": "Mediating Establishment and Neighbor Disputes (MEND) NYC",
+"month": 11,
+"fytd": 33
+},
+{
+"inquiry_name": "Medicare Fraud or Abuse",
+"month": 11,
+"fytd": 33
+},
+{
+"inquiry_name": "Non-Retail Food Processing Establishment Permit",
+"month": 11,
+"fytd": 22
+},
+{
+"inquiry_name": "Online or Mail Order Complaint",
+"month": 11,
+"fytd": 39
+},
+{
+"inquiry_name": "Press and Media Inquiries",
+"month": 11,
+"fytd": 35
+},
+{
+"inquiry_name": "Public Health Vending Machines",
+"month": 11,
+"fytd": 43
+},
+{
+"inquiry_name": "Red Light Cameras",
+"month": 11,
+"fytd": 35
+},
+{
+"inquiry_name": "School Construction",
+"month": 11,
+"fytd": 47
+},
+{
+"inquiry_name": "Sidewalk Grating Complaint",
+"month": 11,
+"fytd": 60
+},
+{
+"inquiry_name": "Street Health Outreach and Wellness (SHOW)",
+"month": 11,
+"fytd": 37
+},
+{
+"inquiry_name": "Traffic Lane Separator Complaint",
+"month": 11,
+"fytd": 47
+},
+{
+"inquiry_name": "Trauma Scene Cleanup",
+"month": 11,
+"fytd": 69
+},
+{
+"inquiry_name": "Veteran Assistance",
+"month": 11,
+"fytd": 11
+},
+{
+"inquiry_name": "Weatherization Assistance Program",
+"month": 11,
+"fytd": 20
+},
+{
+"inquiry_name": "Automobile Spray Paint Odor",
+"month": 10,
+"fytd": 59
+},
+{
+"inquiry_name": "Bike Map",
+"month": 10,
+"fytd": 35
+},
+{
+"inquiry_name": "Boiler Inspection Violation",
+"month": 10,
+"fytd": 36
+},
+{
+"inquiry_name": "Car Services",
+"month": 10,
+"fytd": 38
+},
+{
+"inquiry_name": "Click to Cancel Complaint",
+"month": 10,
+"fytd": 10
+},
+{
+"inquiry_name": "Counterfeit Money",
+"month": 10,
+"fytd": 37
+},
+{
+"inquiry_name": "Estate Administration",
+"month": 10,
+"fytd": 63
+},
+{
+"inquiry_name": "False Advertising",
+"month": 10,
+"fytd": 53
+},
+{
+"inquiry_name": "Governors Island",
+"month": 10,
+"fytd": 37
+},
+{
+"inquiry_name": "Hart Island Cemetery",
+"month": 10,
+"fytd": 44
+},
+{
+"inquiry_name": "Homeowner and Mortgage Relief Scams",
+"month": 10,
+"fytd": 36
+},
+{
+"inquiry_name": "Internet Scam Guide",
+"month": 10,
+"fytd": 38
+},
+{
+"inquiry_name": "Medical Alert Device for Older Adults",
+"month": 10,
+"fytd": 37
+},
+{
+"inquiry_name": "MyCity",
+"month": 10,
+"fytd": 44
+},
+{
+"inquiry_name": "New Jersey Transit",
+"month": 10,
+"fytd": 37
+},
+{
+"inquiry_name": "Newborn Home Visit",
+"month": 10,
+"fytd": 37
+},
+{
+"inquiry_name": "NYCHA Public Housing Section 8 for Landlords",
+"month": 10,
+"fytd": 39
+},
+{
+"inquiry_name": "Oxygen or Acetylene Tank Disposal",
+"month": 10,
+"fytd": 52
+},
+{
+"inquiry_name": "Parade or Sound Permit",
+"month": 10,
+"fytd": 62
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Programs for Businesses",
+"month": 10,
+"fytd": 67
+},
+{
+"inquiry_name": "Pedicab Business or Driver Complaint",
+"month": 10,
+"fytd": 38
+},
+{
+"inquiry_name": "Property Card",
+"month": 10,
+"fytd": 25
+},
+{
+"inquiry_name": "Property Tax Rebate",
+"month": 10,
+"fytd": 21
+},
+{
+"inquiry_name": "Public Auction",
+"month": 10,
+"fytd": 29
+},
+{
+"inquiry_name": "School Health Complaint",
+"month": 10,
+"fytd": 18
+},
+{
+"inquiry_name": "Secondhand Dealer General License",
+"month": 10,
+"fytd": 52
+},
+{
+"inquiry_name": "Service Request Map",
+"month": 10,
+"fytd": 34
+},
+{
+"inquiry_name": "Temporary Street Fair Vendor Permit",
+"month": 10,
+"fytd": 54
+},
+{
+"inquiry_name": "Volunteering",
+"month": 10,
+"fytd": 35
+},
+{
+"inquiry_name": "Window Guard",
+"month": 10,
+"fytd": 44
+},
+{
+"inquiry_name": "Air Conditioner in Danger of Falling",
+"month": 9,
+"fytd": 91
+},
+{
+"inquiry_name": "Alternative Enforcement Program (AEP)",
+"month": 9,
+"fytd": 30
+},
+{
+"inquiry_name": "Basement Apartment Conversion Pilot Program (BACPP)",
+"month": 9,
+"fytd": 36
+},
+{
+"inquiry_name": "Car Rental Complaint",
+"month": 9,
+"fytd": 48
+},
+{
+"inquiry_name": "Census",
+"month": 9,
+"fytd": 30
+},
+{
+"inquiry_name": "Check Cashing Business Complaint",
+"month": 9,
+"fytd": 56
+},
+{
+"inquiry_name": "City Council Member Complaint",
+"month": 9,
+"fytd": 37
+},
+{
+"inquiry_name": "Commercial Lease Assistance",
+"month": 9,
+"fytd": 39
+},
+{
+"inquiry_name": "Cooking Oil and Grease Disposal",
+"month": 9,
+"fytd": 59
+},
+{
+"inquiry_name": "Deaf and Hard of Hearing Services",
+"month": 9,
+"fytd": 35
+},
+{
+"inquiry_name": "Department of Buildings ID or Job Penalization Status",
+"month": 9,
+"fytd": 29
+},
+{
+"inquiry_name": "Department of Sanitation Public Outreach",
+"month": 9,
+"fytd": 35
+},
+{
+"inquiry_name": "Dogs in Restaurants",
+"month": 9,
+"fytd": 21
+},
+{
+"inquiry_name": "Electrical Wiring Installation Permit",
+"month": 9,
+"fytd": 35
+},
+{
+"inquiry_name": "Federal Employer ID Number (EIN)",
+"month": 9,
+"fytd": 43
+},
+{
+"inquiry_name": "Fire Alarm and Suppression System Installation",
+"month": 9,
+"fytd": 48
+},
+{
+"inquiry_name": "Fire Alarm Inspection",
+"month": 9,
+"fytd": 62
+},
+{
+"inquiry_name": "Green Cart Permit",
+"month": 9,
+"fytd": 39
+},
+{
+"inquiry_name": "Health Care Proxy",
+"month": 9,
+"fytd": 48
+},
+{
+"inquiry_name": "HIV Test and Treatment",
+"month": 9,
+"fytd": 42
+},
+{
+"inquiry_name": "Medical Debt Relief",
+"month": 9,
+"fytd": 28
+},
+{
+"inquiry_name": "Mortgage or Loan Company Complaint",
+"month": 9,
+"fytd": 58
+},
+{
+"inquiry_name": "Noise from Ice Cream Truck",
+"month": 9,
+"fytd": 30
+},
+{
+"inquiry_name": "NYC311 Satisfaction Surveys",
+"month": 9,
+"fytd": 26
+},
+{
+"inquiry_name": "NYSED Licensed Professional or Business",
+"month": 9,
+"fytd": 40
+},
+{
+"inquiry_name": "Parking Space Request",
+"month": 9,
+"fytd": 26
+},
+{
+"inquiry_name": "Pigeon Trapping or Netting",
+"month": 9,
+"fytd": 39
+},
+{
+"inquiry_name": "Place of Assembly Inspection",
+"month": 9,
+"fytd": 36
+},
+{
+"inquiry_name": "Plus One Accessory Dwelling Unit (ADU) Program",
+"month": 9,
+"fytd": 22
+},
+{
+"inquiry_name": "Property Grade Change Complaint",
+"month": 9,
+"fytd": 57
+},
+{
+"inquiry_name": "Property Market Value Review",
+"month": 9,
+"fytd": 37
+},
+{
+"inquiry_name": "Range Hood or Micro Switch Inspection",
+"month": 9,
+"fytd": 40
+},
+{
+"inquiry_name": "Residential Sprinkler System Test",
+"month": 9,
+"fytd": 46
+},
+{
+"inquiry_name": "School Food Complaint",
+"month": 9,
+"fytd": 34
+},
+{
+"inquiry_name": "Septic or Cesspool Complaint",
+"month": 9,
+"fytd": 30
+},
+{
+"inquiry_name": "Sexually Transmitted Infection Test",
+"month": 9,
+"fytd": 54
+},
+{
+"inquiry_name": "Smoke Free Air Act Complaint",
+"month": 9,
+"fytd": 33
+},
+{
+"inquiry_name": "Taxi and Limousine Commission's Website",
+"month": 9,
+"fytd": 26
+},
+{
+"inquiry_name": "Voluntary Placement of a Child in Foster Care",
+"month": 9,
+"fytd": 52
+},
+{
+"inquiry_name": "Wastewater Treatment Plant Complaint",
+"month": 9,
+"fytd": 22
+},
+{
+"inquiry_name": "Abandoned Property",
+"month": 8,
+"fytd": 32
+},
+{
+"inquiry_name": "Alcohol License Check",
+"month": 8,
+"fytd": 22
+},
+{
+"inquiry_name": "Animal Facility Complaint",
+"month": 8,
+"fytd": 38
+},
+{
+"inquiry_name": "Asbestos Handler Certification",
+"month": 8,
+"fytd": 24
+},
+{
+"inquiry_name": "Automatic Public Toilets",
+"month": 8,
+"fytd": 30
+},
+{
+"inquiry_name": "Bed Bug Prevention and Control",
+"month": 8,
+"fytd": 77
+},
+{
+"inquiry_name": "Building Facade Inspection",
+"month": 8,
+"fytd": 41
+},
+{
+"inquiry_name": "Christmas Tree Disposal",
+"month": 8,
+"fytd": 29
+},
+{
+"inquiry_name": "City Archive Photograph",
+"month": 8,
+"fytd": 16
+},
+{
+"inquiry_name": "CPR and AED Training",
+"month": 8,
+"fytd": 58
+},
+{
+"inquiry_name": "Culture Pass",
+"month": 8,
+"fytd": 18
+},
+{
+"inquiry_name": "Department for the Aging Presentation or Training",
+"month": 8,
+"fytd": 58
+},
+{
+"inquiry_name": "Emergency Preparedness",
+"month": 8,
+"fytd": 47
+},
+{
+"inquiry_name": "Employment Programs for People with Disabilities",
+"month": 8,
+"fytd": 53
+},
+{
+"inquiry_name": "Essential Service Interruption Notice Rules",
+"month": 8,
+"fytd": 42
+},
+{
+"inquiry_name": "Hazardous Materials",
+"month": 8,
+"fytd": 50
+},
+{
+"inquiry_name": "Health Care Provider Assistance",
+"month": 8,
+"fytd": 46
+},
+{
+"inquiry_name": "Health Screenings",
+"month": 8,
+"fytd": 28
+},
+{
+"inquiry_name": "Highway Resurfacing Request",
+"month": 8,
+"fytd": 25
+},
+{
+"inquiry_name": "HOME Tenant-Based Rental Assistance Program (TBRA)",
+"month": 8,
+"fytd": 30
+},
+{
+"inquiry_name": "Homeless Shelter Aftercare",
+"month": 8,
+"fytd": 23
+},
+{
+"inquiry_name": "Landmarks",
+"month": 8,
+"fytd": 30
+},
+{
+"inquiry_name": "LGBTQ Services and Resources",
+"month": 8,
+"fytd": 40
+},
+{
+"inquiry_name": "Moving Company Complaint",
+"month": 8,
+"fytd": 31
+},
+{
+"inquiry_name": "NYC Health Department Public Outreach",
+"month": 8,
+"fytd": 26
+},
+{
+"inquiry_name": "Plastic Bag Ban and Paper Bag Fee",
+"month": 8,
+"fytd": 25
+},
+{
+"inquiry_name": "Scaffolding Permit",
+"month": 8,
+"fytd": 35
+},
+{
+"inquiry_name": "Sidewalk Seating",
+"month": 8,
+"fytd": 69
+},
+{
+"inquiry_name": "Sidewalk Valve Cover Complaint",
+"month": 8,
+"fytd": 31
+},
+{
+"inquiry_name": "Smoke Free Air Act",
+"month": 8,
+"fytd": 31
+},
+{
+"inquiry_name": "Tractor-Trailer Parking Rules",
+"month": 8,
+"fytd": 26
+},
+{
+"inquiry_name": "Veteran Housing Incentives for Landlords",
+"month": 8,
+"fytd": 23
+},
+{
+"inquiry_name": "Voluntary Disclosure of Taxes Owed and Compliance (VDCP)",
+"month": 8,
+"fytd": 26
+},
+{
+"inquiry_name": "Water Tap Permit or Sewer Pipe Map",
+"month": 8,
+"fytd": 34
+},
+{
+"inquiry_name": "Youth Employment Working Papers",
+"month": 8,
+"fytd": 75
+},
+{
+"inquiry_name": "Adoption Records",
+"month": 7,
+"fytd": 49
+},
+{
+"inquiry_name": "Alcohol License",
+"month": 7,
+"fytd": 50
+},
+{
+"inquiry_name": "Asbestos Health Effects",
+"month": 7,
+"fytd": 33
+},
+{
+"inquiry_name": "Beach Complaint",
+"month": 7,
+"fytd": 119
+},
+{
+"inquiry_name": "Beaches",
+"month": 7,
+"fytd": 459
+},
+{
+"inquiry_name": "Booting Company Complaint",
+"month": 7,
+"fytd": 29
+},
+{
+"inquiry_name": "Business Legal Assistance",
+"month": 7,
+"fytd": 63
+},
+{
+"inquiry_name": "Business Registration",
+"month": 7,
+"fytd": 42
+},
+{
+"inquiry_name": "Commercial Range Hood Rules",
+"month": 7,
+"fytd": 25
+},
+{
+"inquiry_name": "Communicable Disease Information and Reporting for Health Care Providers",
+"month": 7,
+"fytd": 28
+},
+{
+"inquiry_name": "Debt Collection Agency License",
+"month": 7,
+"fytd": 13
+},
+{
+"inquiry_name": "Debt Management",
+"month": 7,
+"fytd": 21
+},
+{
+"inquiry_name": "Department of Consumer and Worker Protection License Replacement",
+"month": 7,
+"fytd": 44
+},
+{
+"inquiry_name": "Donate Blood",
+"month": 7,
+"fytd": 31
+},
+{
+"inquiry_name": "ElectrifyNYC",
+"month": 7,
+"fytd": 16
+},
+{
+"inquiry_name": "Essential Plan Cooling Program",
+"month": 7,
+"fytd": 2061
+},
+{
+"inquiry_name": "Excavation or Demolition Permit",
+"month": 7,
+"fytd": 29
+},
+{
+"inquiry_name": "Federal Tax for Businesses",
+"month": 7,
+"fytd": 21
+},
+{
+"inquiry_name": "Fire Hydrant Request",
+"month": 7,
+"fytd": 678
+},
+{
+"inquiry_name": "Fireworks Displays",
+"month": 7,
+"fytd": 96
+},
+{
+"inquiry_name": "Fitness Program",
+"month": 7,
+"fytd": 19
+},
+{
+"inquiry_name": "Friendly Visiting Program for Older Adults",
+"month": 7,
+"fytd": 34
+},
+{
+"inquiry_name": "HCR NYC 2026 Section 8 Voucher Waitlist Lottery",
+"month": 7,
+"fytd": 194
+},
+{
+"inquiry_name": "International Affairs Community Assistance",
+"month": 7,
+"fytd": 20
+},
+{
+"inquiry_name": "Job Corps",
+"month": 7,
+"fytd": 20
+},
+{
+"inquiry_name": "Job Training Grants for Workers",
+"month": 7,
+"fytd": 27
+},
+{
+"inquiry_name": "Juvenile Detention",
+"month": 7,
+"fytd": 24
+},
+{
+"inquiry_name": "Marriage in a Foreign Country",
+"month": 7,
+"fytd": 20
+},
+{
+"inquiry_name": "Measles",
+"month": 7,
+"fytd": 13
+},
+{
+"inquiry_name": "No Penalty Inspection Programs",
+"month": 7,
+"fytd": 43
+},
+{
+"inquiry_name": "Noise from House of Worship",
+"month": 7,
+"fytd": 42
+},
+{
+"inquiry_name": "NYC Radio and Television",
+"month": 7,
+"fytd": 26
+},
+{
+"inquiry_name": "NYC311 App",
+"month": 7,
+"fytd": 19
+},
+{
+"inquiry_name": "Pedestrian Safety",
+"month": 7,
+"fytd": 29
+},
+{
+"inquiry_name": "Playgrounds",
+"month": 7,
+"fytd": 69
+},
+{
+"inquiry_name": "Pool, Sauna, Hot Tub, Steam Room, or Spray Ground Permit",
+"month": 7,
+"fytd": 27
+},
+{
+"inquiry_name": "Process Server Individual License",
+"month": 7,
+"fytd": 30
+},
+{
+"inquiry_name": "Second Avenue Subway Construction",
+"month": 7,
+"fytd": 20
+},
+{
+"inquiry_name": "Sidewalk Cellar Door Complaint",
+"month": 7,
+"fytd": 23
+},
+{
+"inquiry_name": "Sightseeing Guide License",
+"month": 7,
+"fytd": 20
+},
+{
+"inquiry_name": "Specialized High Schools",
+"month": 7,
+"fytd": 21
+},
+{
+"inquiry_name": "Sprinkler System Complaint",
+"month": 7,
+"fytd": 31
+},
+{
+"inquiry_name": "Statue of Liberty",
+"month": 7,
+"fytd": 36
+},
+{
+"inquiry_name": "Stoop Line Stand License",
+"month": 7,
+"fytd": 28
+},
+{
+"inquiry_name": "Swimming Pools",
+"month": 7,
+"fytd": 679
+},
+{
+"inquiry_name": "Tax Preparation Services Complaint",
+"month": 7,
+"fytd": 19
+},
+{
+"inquiry_name": "Technology Job Training",
+"month": 7,
+"fytd": 21
+},
+{
+"inquiry_name": "Tennis Permit",
+"month": 7,
+"fytd": 61
+},
+{
+"inquiry_name": "Vehicle Exhaust",
+"month": 7,
+"fytd": 26
+},
+{
+"inquiry_name": "Vital Records EVERS System",
+"month": 7,
+"fytd": 28
+},
+{
+"inquiry_name": "Welder License",
+"month": 7,
+"fytd": 20
+},
+{
+"inquiry_name": "Bankruptcy Court",
+"month": 6,
+"fytd": 33
+},
+{
+"inquiry_name": "Blocked or Clogged Culvert",
+"month": 6,
+"fytd": 54
+},
+{
+"inquiry_name": "Botanical Gardens",
+"month": 6,
+"fytd": 14
+},
+{
+"inquiry_name": "Building Not Registered Complaint",
+"month": 6,
+"fytd": 33
+},
+{
+"inquiry_name": "Car Seat Inspection",
+"month": 6,
+"fytd": 27
+},
+{
+"inquiry_name": "Certified Asbestos Investigator",
+"month": 6,
+"fytd": 29
+},
+{
+"inquiry_name": "City-Owned Property",
+"month": 6,
+"fytd": 20
+},
+{
+"inquiry_name": "Community Health Program",
+"month": 6,
+"fytd": 24
+},
+{
+"inquiry_name": "Construction Superintendent Registration",
+"month": 6,
+"fytd": 14
+},
+{
+"inquiry_name": "Donate to New York City",
+"month": 6,
+"fytd": 32
+},
+{
+"inquiry_name": "Eating Healthy",
+"month": 6,
+"fytd": 25
+},
+{
+"inquiry_name": "Elevator or Escalator Code and Permit",
+"month": 6,
+"fytd": 46
+},
+{
+"inquiry_name": "Green Thumb Garden Program",
+"month": 6,
+"fytd": 25
+},
+{
+"inquiry_name": "Heating or Ventilation System Permit",
+"month": 6,
+"fytd": 24
+},
+{
+"inquiry_name": "Highway Plate Complaint",
+"month": 6,
+"fytd": 18
+},
+{
+"inquiry_name": "Landscaper Waste Requirements",
+"month": 6,
+"fytd": 47
+},
+{
+"inquiry_name": "Learning Disabilities",
+"month": 6,
+"fytd": 18
+},
+{
+"inquiry_name": "Medical Records for Currently or Formerly Incarcerated People",
+"month": 6,
+"fytd": 22
+},
+{
+"inquiry_name": "Meningitis",
+"month": 6,
+"fytd": 17
+},
+{
+"inquiry_name": "Mental Health Services for Older Adults",
+"month": 6,
+"fytd": 44
+},
+{
+"inquiry_name": "Military Draft Registration",
+"month": 6,
+"fytd": 21
+},
+{
+"inquiry_name": "Money Transmitter Complaint",
+"month": 6,
+"fytd": 31
+},
+{
+"inquiry_name": "Musician or Performer Permit",
+"month": 6,
+"fytd": 25
+},
+{
+"inquiry_name": "No Smoking Sign",
+"month": 6,
+"fytd": 17
+},
+{
+"inquiry_name": "Noise from Airplane",
+"month": 6,
+"fytd": 25
+},
+{
+"inquiry_name": "Nurses for Pregnant People and Teens",
+"month": 6,
+"fytd": 19
+},
+{
+"inquiry_name": "NYPD Quality of Life Division",
+"month": 6,
+"fytd": 48
+},
+{
+"inquiry_name": "Pawnbroker Complaint",
+"month": 6,
+"fytd": 22
+},
+{
+"inquiry_name": "Plastic Bag Recycling",
+"month": 6,
+"fytd": 25
+},
+{
+"inquiry_name": "Plumber License",
+"month": 6,
+"fytd": 20
+},
+{
+"inquiry_name": "Poison Ivy",
+"month": 6,
+"fytd": 60
+},
+{
+"inquiry_name": "Pregnancy Support",
+"month": 6,
+"fytd": 30
+},
+{
+"inquiry_name": "Sales Tax Vendor Registration",
+"month": 6,
+"fytd": 31
+},
+{
+"inquiry_name": "School Discipline or Suspension Complaint",
+"month": 6,
+"fytd": 14
+},
+{
+"inquiry_name": "School Registration Complaint",
+"month": 6,
+"fytd": 38
+},
+{
+"inquiry_name": "Sex Offender Registry",
+"month": 6,
+"fytd": 29
+},
+{
+"inquiry_name": "Sidewalk Washing Complaint",
+"month": 6,
+"fytd": 15
+},
+{
+"inquiry_name": "Staten Island Bluebelt",
+"month": 6,
+"fytd": 24
+},
+{
+"inquiry_name": "Tax Clearance Certificate",
+"month": 6,
+"fytd": 11
+},
+{
+"inquiry_name": "Trademarks and Patents",
+"month": 6,
+"fytd": 17
+},
+{
+"inquiry_name": "Unlocked Park or Playground",
+"month": 6,
+"fytd": 27
+},
+{
+"inquiry_name": "Unsafe Highway Construction",
+"month": 6,
+"fytd": 14
+},
+{
+"inquiry_name": "Unwanted Ad or Menu",
+"month": 6,
+"fytd": 34
+},
+{
+"inquiry_name": "Volunteer in Emergencies",
+"month": 6,
+"fytd": 16
+},
+{
+"inquiry_name": "Waterway Complaint",
+"month": 6,
+"fytd": 34
+},
+{
+"inquiry_name": "Worker Protection Survey",
+"month": 6,
+"fytd": 12
+},
+{
+"inquiry_name": "Youth Employment",
+"month": 6,
+"fytd": 142
+},
+{
+"inquiry_name": "Zoos and Aquariums",
+"month": 6,
+"fytd": 62
+},
+{
+"inquiry_name": "ATM Complaint",
+"month": 5,
+"fytd": 26
+},
+{
+"inquiry_name": "Bagel",
+"month": 5,
+"fytd": 5
+},
+{
+"inquiry_name": "Become a Correction Officer",
+"month": 5,
+"fytd": 11
+},
+{
+"inquiry_name": "Become a Crossing Guard",
+"month": 5,
+"fytd": 26
+},
+{
+"inquiry_name": "Better Buses Program",
+"month": 5,
+"fytd": 8
+},
+{
+"inquiry_name": "Building Parapet Observations",
+"month": 5,
+"fytd": 23
+},
+{
+"inquiry_name": "Cargo Drone Complaint",
+"month": 5,
+"fytd": 8
+},
+{
+"inquiry_name": "Certificate of Conduct",
+"month": 5,
+"fytd": 64
+},
+{
+"inquiry_name": "City Contract Equal Employment Opportunity Compliance",
+"month": 5,
+"fytd": 12
+},
+{
+"inquiry_name": "Cooling Tower Complaint",
+"month": 5,
+"fytd": 35
+},
+{
+"inquiry_name": "Crash Barrier Request",
+"month": 5,
+"fytd": 12
+},
+{
+"inquiry_name": "Department of Buildings Document Fraud",
+"month": 5,
+"fytd": 24
+},
+{
+"inquiry_name": "Department of Citywide Administrative Services Building Security Complaint",
+"month": 5,
+"fytd": 23
+},
+{
+"inquiry_name": "Diabetes",
+"month": 5,
+"fytd": 19
+},
+{
+"inquiry_name": "Dry Cleaner Complaint",
+"month": 5,
+"fytd": 18
+},
+{
+"inquiry_name": "E-Cigarette Sale Complaint",
+"month": 5,
+"fytd": 31
+},
+{
+"inquiry_name": "Electronics or Appliance Repair Complaint",
+"month": 5,
+"fytd": 24
+},
+{
+"inquiry_name": "Federal Government Jobs",
+"month": 5,
+"fytd": 27
+},
+{
+"inquiry_name": "First Course NYC",
+"month": 5,
+"fytd": 24
+},
+{
+"inquiry_name": "Freelance Worker and Hiring Party Assistance",
+"month": 5,
+"fytd": 34
+},
+{
+"inquiry_name": "Garage or Parking Lot License",
+"month": 5,
+"fytd": 18
+},
+{
+"inquiry_name": "HIV Prevention",
+"month": 5,
+"fytd": 15
+},
+{
+"inquiry_name": "Home Heating Oil Company Complaint",
+"month": 5,
+"fytd": 7
+},
+{
+"inquiry_name": "Independent Living Centers",
+"month": 5,
+"fytd": 30
+},
+{
+"inquiry_name": "Invasive Plant Species",
+"month": 5,
+"fytd": 46
+},
+{
+"inquiry_name": "Landmark Building Alteration Permit",
+"month": 5,
+"fytd": 32
+},
+{
+"inquiry_name": "Loft Complaint",
+"month": 5,
+"fytd": 21
+},
+{
+"inquiry_name": "Monkeypox (Mpox)",
+"month": 5,
+"fytd": 15
+},
+{
+"inquiry_name": "MTA Bridges and Tunnels Work Zone Speed Cameras",
+"month": 5,
+"fytd": 27
+},
+{
+"inquiry_name": "Museums",
+"month": 5,
+"fytd": 27
+},
+{
+"inquiry_name": "Nail Salon Odor",
+"month": 5,
+"fytd": 13
+},
+{
+"inquiry_name": "Noise from Boat",
+"month": 5,
+"fytd": 106
+},
+{
+"inquiry_name": "Notary Public Tips",
+"month": 5,
+"fytd": 19
+},
+{
+"inquiry_name": "NYC CoolRoofs Job Training and Placement",
+"month": 5,
+"fytd": 25
+},
+{
+"inquiry_name": "NYCHA Pet Policy",
+"month": 5,
+"fytd": 12
+},
+{
+"inquiry_name": "Rat Poison Sign",
+"month": 5,
+"fytd": 29
+},
+{
+"inquiry_name": "Receipt Complaint",
+"month": 5,
+"fytd": 8
+},
+{
+"inquiry_name": "Residential Building Owner Resources",
+"month": 5,
+"fytd": 21
+},
+{
+"inquiry_name": "Roof Tank Leak or Overflow",
+"month": 5,
+"fytd": 33
+},
+{
+"inquiry_name": "School Document Translation",
+"month": 5,
+"fytd": 10
+},
+{
+"inquiry_name": "Sidewalk Staircase Complaint",
+"month": 5,
+"fytd": 26
+},
+{
+"inquiry_name": "SNAP for Retailers",
+"month": 5,
+"fytd": 23
+},
+{
+"inquiry_name": "Staten Island Railway",
+"month": 5,
+"fytd": 25
+},
+{
+"inquiry_name": "Stop Sexual Harassment Act (SSHA)",
+"month": 5,
+"fytd": 34
+},
+{
+"inquiry_name": "Street and Highway Construction Rules",
+"month": 5,
+"fytd": 10
+},
+{
+"inquiry_name": "Street Traffic Flow Change",
+"month": 5,
+"fytd": 15
+},
+{
+"inquiry_name": "Vandalism in a Park",
+"month": 5,
+"fytd": 25
+},
+{
+"inquiry_name": "Volunteer to Prepare Taxes",
+"month": 5,
+"fytd": 9
+},
+{
+"inquiry_name": "Volunteer with Older Adults",
+"month": 5,
+"fytd": 26
+},
+{
+"inquiry_name": "Voter Rights",
+"month": 5,
+"fytd": 5
+},
+{
+"inquiry_name": "Water Saving Kit",
+"month": 5,
+"fytd": 17
+},
+{
+"inquiry_name": "Air Conditioner Installation Guidelines",
+"month": 4,
+"fytd": 48
+},
+{
+"inquiry_name": "Airline Complaint",
+"month": 4,
+"fytd": 16
+},
+{
+"inquiry_name": "Asylum Seekers",
+"month": 4,
+"fytd": 31
+},
+{
+"inquiry_name": "Bilingual Education",
+"month": 4,
+"fytd": 22
+},
+{
+"inquiry_name": "Camp",
+"month": 4,
+"fytd": 131
+},
+{
+"inquiry_name": "Camp License and Operation",
+"month": 4,
+"fytd": 17
+},
+{
+"inquiry_name": "Carshare",
+"month": 4,
+"fytd": 27
+},
+{
+"inquiry_name": "Certification of No Harassment",
+"month": 4,
+"fytd": 5
+},
+{
+"inquiry_name": "City Agency Study or Report",
+"month": 4,
+"fytd": 10
+},
+{
+"inquiry_name": "City Government Spending",
+"month": 4,
+"fytd": 8
+},
+{
+"inquiry_name": "Clean Energy Systems Exemption",
+"month": 4,
+"fytd": 16
+},
+{
+"inquiry_name": "College Application Preparation",
+"month": 4,
+"fytd": 15
+},
+{
+"inquiry_name": "Community Action Program",
+"month": 4,
+"fytd": 11
+},
+{
+"inquiry_name": "Community Emergency Response Team (CERT) Program",
+"month": 4,
+"fytd": 15
+},
+{
+"inquiry_name": "Crosswalk Request",
+"month": 4,
+"fytd": 24
+},
+{
+"inquiry_name": "Department of Buildings Filing Representative Complaint",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Digital Learning Devices",
+"month": 4,
+"fytd": 11
+},
+{
+"inquiry_name": "Donate to Disaster Relief",
+"month": 4,
+"fytd": 26
+},
+{
+"inquiry_name": "Elderly Pharmaceutical Insurance Coverage (EPIC) Program",
+"month": 4,
+"fytd": 10
+},
+{
+"inquiry_name": "Electric Bike, Scooter, or Storage Battery Sale Complaint",
+"month": 4,
+"fytd": 34
+},
+{
+"inquiry_name": "Electric Vehicle",
+"month": 4,
+"fytd": 37
+},
+{
+"inquiry_name": "Employment Agency Complaint",
+"month": 4,
+"fytd": 29
+},
+{
+"inquiry_name": "Employment Agency License",
+"month": 4,
+"fytd": 18
+},
+{
+"inquiry_name": "Federal Student Loan Forgiveness",
+"month": 4,
+"fytd": 22
+},
+{
+"inquiry_name": "Fuel Oil Tank Installation Permit",
+"month": 4,
+"fytd": 10
+},
+{
+"inquiry_name": "Funding for Artists",
+"month": 4,
+"fytd": 4
+},
+{
+"inquiry_name": "Gridlock Alert Days",
+"month": 4,
+"fytd": 32
+},
+{
+"inquiry_name": "Gun Tip",
+"month": 4,
+"fytd": 16
+},
+{
+"inquiry_name": "Gunshot",
+"month": 4,
+"fytd": 35
+},
+{
+"inquiry_name": "Gynecologist",
+"month": 4,
+"fytd": 11
+},
+{
+"inquiry_name": "Heating Company Complaint",
+"month": 4,
+"fytd": 6
+},
+{
+"inquiry_name": "Hepatitis",
+"month": 4,
+"fytd": 17
+},
+{
+"inquiry_name": "Hoisting and Rigging Permit",
+"month": 4,
+"fytd": 7
+},
+{
+"inquiry_name": "Housing Information Guide Notice",
+"month": 4,
+"fytd": 13
+},
+{
+"inquiry_name": "HOV Lanes",
+"month": 4,
+"fytd": 12
+},
+{
+"inquiry_name": "Hunting and Fishing License",
+"month": 4,
+"fytd": 38
+},
+{
+"inquiry_name": "In Rem Foreclosure",
+"month": 4,
+"fytd": 18
+},
+{
+"inquiry_name": "Incarcerated Person Enrollment or Student Record",
+"month": 4,
+"fytd": 16
+},
+{
+"inquiry_name": "Job Training and Placement for Foreign-Born New Yorkers",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Mobile Behavioral Health Treatment and Care Coordination Services",
+"month": 4,
+"fytd": 27
+},
+{
+"inquiry_name": "Multifamily Building Capital Improvement Loans",
+"month": 4,
+"fytd": 8
+},
+{
+"inquiry_name": "NYC OpenData",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Off-Hour Delivery Program",
+"month": 4,
+"fytd": 15
+},
+{
+"inquiry_name": "Other Ways to Graduate High School",
+"month": 4,
+"fytd": 10
+},
+{
+"inquiry_name": "Parking Ticket or Camera Violation Dispute for Businesses",
+"month": 4,
+"fytd": 17
+},
+{
+"inquiry_name": "PATH Trains",
+"month": 4,
+"fytd": 15
+},
+{
+"inquiry_name": "Pedicab Business License",
+"month": 4,
+"fytd": 9
+},
+{
+"inquiry_name": "Pet Sale Complaint",
+"month": 4,
+"fytd": 37
+},
+{
+"inquiry_name": "Phone Card Complaint",
+"month": 4,
+"fytd": 4
+},
+{
+"inquiry_name": "Place of Assembly Without Permit Complaint",
+"month": 4,
+"fytd": 11
+},
+{
+"inquiry_name": "Police Officer for Private Duty",
+"month": 4,
+"fytd": 17
+},
+{
+"inquiry_name": "Portable Fire Extinguisher Recognition",
+"month": 4,
+"fytd": 20
+},
+{
+"inquiry_name": "Public Improvement or Mechanic's Lien",
+"month": 4,
+"fytd": 16
+},
+{
+"inquiry_name": "Public Recycling Bin Complaint",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Public Restrooms",
+"month": 4,
+"fytd": 17
+},
+{
+"inquiry_name": "Red Light Camera Complaint",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Sales Tax Complaint",
+"month": 4,
+"fytd": 21
+},
+{
+"inquiry_name": "Scale Complaint",
+"month": 4,
+"fytd": 6
+},
+{
+"inquiry_name": "Sidewalk Installation",
+"month": 4,
+"fytd": 23
+},
+{
+"inquiry_name": "Sidewalk Repair Payment Plan",
+"month": 4,
+"fytd": 27
+},
+{
+"inquiry_name": "Sidewalk Repair Protest",
+"month": 4,
+"fytd": 20
+},
+{
+"inquiry_name": "Sidewalk Shed Permit",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Smoke-Free Housing",
+"month": 4,
+"fytd": 7
+},
+{
+"inquiry_name": "SNAP Nutrition Incentives",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Snow Removal Resources for Community Organizations",
+"month": 4,
+"fytd": 9
+},
+{
+"inquiry_name": "Solar or Green Roof Non-Compliance",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Speed Limits",
+"month": 4,
+"fytd": 26
+},
+{
+"inquiry_name": "Sprinklers",
+"month": 4,
+"fytd": 130
+},
+{
+"inquiry_name": "Start an Adult Day Care",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Street Event Cleanup",
+"month": 4,
+"fytd": 27
+},
+{
+"inquiry_name": "Students with Disabilities",
+"month": 4,
+"fytd": 10
+},
+{
+"inquiry_name": "Telecom Equipment",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Telemarketing Texting Complaint",
+"month": 4,
+"fytd": 14
+},
+{
+"inquiry_name": "Used Car Guide",
+"month": 4,
+"fytd": 13
+},
+{
+"inquiry_name": "Volunteer in Homeless Shelters or Food Pantries",
+"month": 4,
+"fytd": 8
+},
+{
+"inquiry_name": "Welder Complaint",
+"month": 4,
+"fytd": 5
+},
+{
+"inquiry_name": "Wi-Fi",
+"month": 4,
+"fytd": 11
+},
+{
+"inquiry_name": "Abortion",
+"month": 3,
+"fytd": 31
+},
+{
+"inquiry_name": "Affordable Housing Fee Fraud",
+"month": 3,
+"fytd": 9
+},
+{
+"inquiry_name": "Alcohol and Pregnancy Warning Poster",
+"month": 3,
+"fytd": 11
+},
+{
+"inquiry_name": "Become a School Safety Agent",
+"month": 3,
+"fytd": 20
+},
+{
+"inquiry_name": "Become an Auxiliary Police Officer",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Benefits Guide for Older Adults",
+"month": 3,
+"fytd": 16
+},
+{
+"inquiry_name": "Bird Flu Information",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "Breastfeeding",
+"month": 3,
+"fytd": 20
+},
+{
+"inquiry_name": "Broadcast Television Rescan",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Building Plan Exam",
+"month": 3,
+"fytd": 30
+},
+{
+"inquiry_name": "Building Planting Regulations",
+"month": 3,
+"fytd": 24
+},
+{
+"inquiry_name": "Cannabis Sale Outside",
+"month": 3,
+"fytd": 31
+},
+{
+"inquiry_name": "Car Service Driver Compliment",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Catch Basin Installation",
+"month": 3,
+"fytd": 42
+},
+{
+"inquiry_name": "Charity Background Check or Complaint",
+"month": 3,
+"fytd": 26
+},
+{
+"inquiry_name": "Child Care Performance Card",
+"month": 3,
+"fytd": 9
+},
+{
+"inquiry_name": "Child Eye Exam",
+"month": 3,
+"fytd": 11
+},
+{
+"inquiry_name": "City Souvenirs and Books",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "City Vehicles",
+"month": 3,
+"fytd": 7
+},
+{
+"inquiry_name": "Citywide Training Center",
+"month": 3,
+"fytd": 19
+},
+{
+"inquiry_name": "Construction Site Sign Requirements",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "Correctional Facility Pass for Attorneys",
+"month": 3,
+"fytd": 4
+},
+{
+"inquiry_name": "Crime Victim Property Tax Exemption",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "CUNY Prep",
+"month": 3,
+"fytd": 5
+},
+{
+"inquiry_name": "Damaged or Defective Goods",
+"month": 3,
+"fytd": 14
+},
+{
+"inquiry_name": "David N. Dinkins Building Visit",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Department of Consumer and Worker Protection License and Complaint Sign",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Department of Finance Public Events",
+"month": 3,
+"fytd": 13
+},
+{
+"inquiry_name": "Department of Transportation Document Translation",
+"month": 3,
+"fytd": 5
+},
+{
+"inquiry_name": "Doing Business Search",
+"month": 3,
+"fytd": 5
+},
+{
+"inquiry_name": "Earned Income Tax Credit (EITC)",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "E-Bike Battery Swapping and Charging Cabinets",
+"month": 3,
+"fytd": 11
+},
+{
+"inquiry_name": "Electrical Inspection",
+"month": 3,
+"fytd": 20
+},
+{
+"inquiry_name": "Electronic and Home Appliance Service Dealer License",
+"month": 3,
+"fytd": 15
+},
+{
+"inquiry_name": "Electronic Cigarette Retail Dealer License",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "Environmental Business Assistance",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Fire Hydrant Commercial Use Permit",
+"month": 3,
+"fytd": 75
+},
+{
+"inquiry_name": "Fire Hydrant Flow Test",
+"month": 3,
+"fytd": 14
+},
+{
+"inquiry_name": "Fire Safety Director On-Site Test",
+"month": 3,
+"fytd": 22
+},
+{
+"inquiry_name": "Fireworks Permit",
+"month": 3,
+"fytd": 15
+},
+{
+"inquiry_name": "Flood Zones",
+"month": 3,
+"fytd": 15
+},
+{
+"inquiry_name": "Gracie Mansion Tour",
+"month": 3,
+"fytd": 9
+},
+{
+"inquiry_name": "High Blood Pressure",
+"month": 3,
+"fytd": 14
+},
+{
+"inquiry_name": "Highway Fence Complaint",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Home Improvement Tips",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "Home Support Unit",
+"month": 3,
+"fytd": 17
+},
+{
+"inquiry_name": "Horse Drawn Cab Business Complaint",
+"month": 3,
+"fytd": 17
+},
+{
+"inquiry_name": "Hurricane Preparedness",
+"month": 3,
+"fytd": 31
+},
+{
+"inquiry_name": "Internship",
+"month": 3,
+"fytd": 23
+},
+{
+"inquiry_name": "IRS Impersonation",
+"month": 3,
+"fytd": 13
+},
+{
+"inquiry_name": "Lead Paint Repair Grant",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Mammogram",
+"month": 3,
+"fytd": 9
+},
+{
+"inquiry_name": "Medical Payment Product Complaint",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "Metal Detector Permit",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "Mobility Management Guide",
+"month": 3,
+"fytd": 7
+},
+{
+"inquiry_name": "Mold Cleaning and Health Guidelines",
+"month": 3,
+"fytd": 29
+},
+{
+"inquiry_name": "Motor Vehicle Inspection License",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "New York City Counties",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Newspaper Box Complaint",
+"month": 3,
+"fytd": 13
+},
+{
+"inquiry_name": "NYC Accelerator",
+"month": 3,
+"fytd": 18
+},
+{
+"inquiry_name": "NYC Health Department Clinic Feedback",
+"month": 3,
+"fytd": 13
+},
+{
+"inquiry_name": "Oath of Office",
+"month": 3,
+"fytd": 24
+},
+{
+"inquiry_name": "Overdose",
+"month": 3,
+"fytd": 17
+},
+{
+"inquiry_name": "Payment in Lieu of Taxes (PILOT) Program",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Pet Grooming Permit",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "Pet Store Permit",
+"month": 3,
+"fytd": 5
+},
+{
+"inquiry_name": "Pharmacy Without Naloxone",
+"month": 3,
+"fytd": 14
+},
+{
+"inquiry_name": "Prenatal Care",
+"month": 3,
+"fytd": 17
+},
+{
+"inquiry_name": "Price Not Posted or Inaccurate",
+"month": 3,
+"fytd": 22
+},
+{
+"inquiry_name": "Private Sewer or Water Main Permit",
+"month": 3,
+"fytd": 21
+},
+{
+"inquiry_name": "Process Server Complaint",
+"month": 3,
+"fytd": 7
+},
+{
+"inquiry_name": "Property Tax Photograph",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Rainfall Ready NYC",
+"month": 3,
+"fytd": 37
+},
+{
+"inquiry_name": "Refund Policy Rules",
+"month": 3,
+"fytd": 9
+},
+{
+"inquiry_name": "Restaurant CPR Rules",
+"month": 3,
+"fytd": 24
+},
+{
+"inquiry_name": "Roosevelt Island Tramway",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "School Leadership Team (SLT)",
+"month": 3,
+"fytd": 4
+},
+{
+"inquiry_name": "School Tax Credit",
+"month": 3,
+"fytd": 15
+},
+{
+"inquiry_name": "School Teaching and Learning Complaint",
+"month": 3,
+"fytd": 22
+},
+{
+"inquiry_name": "Security Survey",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Snow or Ice on Sidewalk",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "Special Natural Area District (SNAD) Complaint",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Spray Booth Permit",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "Sprinkler System and Standpipe Permit",
+"month": 3,
+"fytd": 11
+},
+{
+"inquiry_name": "Stillbirth or Miscarriage Certificate",
+"month": 3,
+"fytd": 16
+},
+{
+"inquiry_name": "Student Loan Scams",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "Sweepstakes Complaint",
+"month": 3,
+"fytd": 11
+},
+{
+"inquiry_name": "Taxi Receipt Copy",
+"month": 3,
+"fytd": 15
+},
+{
+"inquiry_name": "Ticket Seller Complaint",
+"month": 3,
+"fytd": 18
+},
+{
+"inquiry_name": "Tour Bus Complaint",
+"month": 3,
+"fytd": 6
+},
+{
+"inquiry_name": "Traffic Trends",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "Used Goods Dealer Complaint",
+"month": 3,
+"fytd": 12
+},
+{
+"inquiry_name": "Utility Tax",
+"month": 3,
+"fytd": 9
+},
+{
+"inquiry_name": "Veteran Health Care",
+"month": 3,
+"fytd": 30
+},
+{
+"inquiry_name": "Volunteer with Young People",
+"month": 3,
+"fytd": 10
+},
+{
+"inquiry_name": "Water Meter Permit",
+"month": 3,
+"fytd": 8
+},
+{
+"inquiry_name": "World Trade Center Health Program",
+"month": 3,
+"fytd": 22
+},
+{
+"inquiry_name": "911 Surcharge",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Abandoned Baby Prevention",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "APEX Accelerator",
+"month": 2,
+"fytd": 2
+},
+{
+"inquiry_name": "ApprenticeNYC for Advanced Manufacturing",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Architect or Engineer Complaint",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Bail Bond Agent Complaint",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Banking Corporation Tax",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Become a NYC Ferry Captain or Deckhand",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Become a Parks Mounted Auxiliary Officer",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Boiler Operator Engineer Complaint",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Boiler Operator Engineer License",
+"month": 2,
+"fytd": 10
+},
+{
+"inquiry_name": "BQE Vehicle Weigh-In-Motion (WIM) Program",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Building Demolition Rat Extermination Certificate",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Bus Lane Camera Complaint",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Business Courses",
+"month": 2,
+"fytd": 13
+},
+{
+"inquiry_name": "Campaign Finance Disclosure",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Cannabis Licensing",
+"month": 2,
+"fytd": 24
+},
+{
+"inquiry_name": "Car Wash License",
+"month": 2,
+"fytd": 12
+},
+{
+"inquiry_name": "Career Discovery NYC",
+"month": 2,
+"fytd": 12
+},
+{
+"inquiry_name": "Child Tax Credits",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "City Claim Fraud",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "City University of New York (CUNY) Admissions Complaint",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "Clean Syringes",
+"month": 2,
+"fytd": 19
+},
+{
+"inquiry_name": "College Savings Programs",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "Community Cleanup Tool Loan Program",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "Construction Site No Smoking Sign Complaint",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Consumer Tips for Seniors",
+"month": 2,
+"fytd": 10
+},
+{
+"inquiry_name": "Cool Culture Family Pass",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Cooling Tower Registration and Maintenance",
+"month": 2,
+"fytd": 20
+},
+{
+"inquiry_name": "Crane and Derrick Permit",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Cultural Program Grant",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Cultural Project Funding",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "CUNY Special Programs",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "DCAS Event Space for Rent",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Dealer in Products for Disabilities Complaint",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Deck and Porch Permit",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Deferred Action for Childhood Arrivals (DACA)",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Department of Consumer and Worker Protection License Authority to Act Withdrawal",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Donate to Schools",
+"month": 2,
+"fytd": 17
+},
+{
+"inquiry_name": "Donate to the New York Police Department",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Drywells",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Economic Development Corporation Construction Projects",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "Electronic Bus Arrival Sign",
+"month": 2,
+"fytd": 2
+},
+{
+"inquiry_name": "Electronics Store License",
+"month": 2,
+"fytd": 14
+},
+{
+"inquiry_name": "Elevate You Youth Behavioral Health Clinics",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Employment Agency Law Poster",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Environmental Protection Agency Research Programs",
+"month": 2,
+"fytd": 14
+},
+{
+"inquiry_name": "Family Camping with the Urban Park Rangers",
+"month": 2,
+"fytd": 10
+},
+{
+"inquiry_name": "FEMA Registration Number",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Fire Premiums Tax",
+"month": 2,
+"fytd": 19
+},
+{
+"inquiry_name": "Food or Medicine Recall",
+"month": 2,
+"fytd": 25
+},
+{
+"inquiry_name": "Games of Chance License",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Green Energy Training",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Group Meals for Older Adults",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Highway Flooding",
+"month": 2,
+"fytd": 21
+},
+{
+"inquiry_name": "Hiring Services",
+"month": 2,
+"fytd": 10
+},
+{
+"inquiry_name": "Homeless Outreach Population Estimate (HOPE)",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Horse Drawn Cab License",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Horse Drawn Carriage Handling Course",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Hotel License",
+"month": 2,
+"fytd": 13
+},
+{
+"inquiry_name": "Hurricane Evacuation",
+"month": 2,
+"fytd": 18
+},
+{
+"inquiry_name": "Immigration Service Provider Complaint",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Incarcerated Person Notification or Visit for Family Illness or Death",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "Jeweler Complaint",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Job Placement and Training for NYCHA Residents",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Land Use and Development Appeal",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Landmark Application",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Lead Safety for Landlords and Construction Professionals",
+"month": 2,
+"fytd": 10
+},
+{
+"inquiry_name": "Lobbyist Registration",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Locksmith Complaint",
+"month": 2,
+"fytd": 22
+},
+{
+"inquiry_name": "Locksmith License",
+"month": 2,
+"fytd": 14
+},
+{
+"inquiry_name": "Mandatory Downspout Disconnection",
+"month": 2,
+"fytd": 17
+},
+{
+"inquiry_name": "Metropolitan Opera Ticket Lottery",
+"month": 2,
+"fytd": 2
+},
+{
+"inquiry_name": "Military Discharge or Separation Documents",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Military Family Emergency Communication",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "Neighborhood Tech Help",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "New York Police Department Youth Program",
+"month": 2,
+"fytd": 14
+},
+{
+"inquiry_name": "Newsstand License",
+"month": 2,
+"fytd": 23
+},
+{
+"inquiry_name": "NYC Parks Stewardship Program",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "NYCHA Community Service Requirement",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Organize NYC",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Payday Loan Tips",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Pharmacy Home Delivery Program",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Pigeon Droppings Health Effects",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Pregnancy Test",
+"month": 2,
+"fytd": 8
+},
+{
+"inquiry_name": "Process Serving Agency License",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Public Event Seating Complaint",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "PUREsoil NYC",
+"month": 2,
+"fytd": 10
+},
+{
+"inquiry_name": "Radiation",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Recycling Theft",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Respiratory Syncytial Virus (RSV)",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Restaurant Meals for SNAP Recipients",
+"month": 2,
+"fytd": 13
+},
+{
+"inquiry_name": "Revocable Consent Application",
+"month": 2,
+"fytd": 14
+},
+{
+"inquiry_name": "School Food",
+"month": 2,
+"fytd": 12
+},
+{
+"inquiry_name": "School Parent Leadership Complaint",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "School Sexual Misconduct",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "School Testing",
+"month": 2,
+"fytd": 34
+},
+{
+"inquiry_name": "School Transfer Complaint",
+"month": 2,
+"fytd": 30
+},
+{
+"inquiry_name": "Self Certification of Plumbing Inspection",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "September 11 Memorial and Museum",
+"month": 2,
+"fytd": 49
+},
+{
+"inquiry_name": "Social Club Safety Complaint",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Start an After School Program",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Storefront Registration",
+"month": 2,
+"fytd": 62
+},
+{
+"inquiry_name": "Swimming Pool Installation Rules",
+"month": 2,
+"fytd": 19
+},
+{
+"inquiry_name": "Tattoo Parlor Complaint",
+"month": 2,
+"fytd": 18
+},
+{
+"inquiry_name": "Taxi and For-Hire Vehicle Congestion Surcharge",
+"month": 2,
+"fytd": 15
+},
+{
+"inquiry_name": "Tenant Interim Lease (TIL) Program",
+"month": 2,
+"fytd": 5
+},
+{
+"inquiry_name": "Therapeutic Radiation Equipment Permit",
+"month": 2,
+"fytd": 11
+},
+{
+"inquiry_name": "Third-Party Food Delivery Service License",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Three Quarter Housing",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Ticket Scalping",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Tobacco Laws",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Traffic Median Pedestrian Fence Complaint",
+"month": 2,
+"fytd": 16
+},
+{
+"inquiry_name": "Travel Agency Complaint",
+"month": 2,
+"fytd": 13
+},
+{
+"inquiry_name": "United Nations General Assembly",
+"month": 2,
+"fytd": 45
+},
+{
+"inquiry_name": "Unsafe Construction Material Storage",
+"month": 2,
+"fytd": 18
+},
+{
+"inquiry_name": "Visiting Inspector Program (VIP)",
+"month": 2,
+"fytd": 3
+},
+{
+"inquiry_name": "Vital Record Verification",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Vital Records Attorney Request",
+"month": 2,
+"fytd": 6
+},
+{
+"inquiry_name": "Volunteer Program Management",
+"month": 2,
+"fytd": 4
+},
+{
+"inquiry_name": "Volunteer Screening for Non-Profits",
+"month": 2,
+"fytd": 9
+},
+{
+"inquiry_name": "Workers' Compensation Fraud",
+"month": 2,
+"fytd": 7
+},
+{
+"inquiry_name": "World Trade Center DNA Sample",
+"month": 2,
+"fytd": 2
+},
+{
+"inquiry_name": "Added Sugars Warning",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Adult Establishment Zoning Complaint",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Alternative Schools and Programs",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Animal Shelter Permit",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Arcade Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Art Supplies",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Artist Certification",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Baby Care and Safety",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Behavioral Health and the Criminal Justice System Task Force",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Bike Helmet",
+"month": 1,
+"fytd": 13
+},
+{
+"inquiry_name": "Boat Pump Out",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Bottled Water Complaint",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Business Improvement District (BID) Guide",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "Business Incentives",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "Cancer",
+"month": 1,
+"fytd": 17
+},
+{
+"inquiry_name": "Canopy Permit",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "Car Repair Shop License",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Catering Establishment License",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Cell Phone Number Portability",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Cemetery Complaint",
+"month": 1,
+"fytd": 10
+},
+{
+"inquiry_name": "Certificate of Residency",
+"month": 1,
+"fytd": 21
+},
+{
+"inquiry_name": "Charity Registration",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Childcare Center Abatement",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Cigarette Wholesaler License",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "City Council Transcript",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "City Flag Status",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "City Record Newspaper",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "City Worker Conflict of Interest",
+"month": 1,
+"fytd": 14
+},
+{
+"inquiry_name": "Click to Cancel",
+"month": 1,
+"fytd": 14
+},
+{
+"inquiry_name": "Colon Cancer",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Commercial Bicycling Laws",
+"month": 1,
+"fytd": 12
+},
+{
+"inquiry_name": "Community Retrofit NYC Program",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Commuter Benefits Law",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Cool It! NYC",
+"month": 1,
+"fytd": 19
+},
+{
+"inquiry_name": "Cosmetics Complaint",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Cremation",
+"month": 1,
+"fytd": 23
+},
+{
+"inquiry_name": "CUNY Accelerated Study in Associate Programs (ASAP)",
+"month": 1,
+"fytd": 9
+},
+{
+"inquiry_name": "CUNY Start",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Cyclosporiasis Information",
+"month": 1,
+"fytd": 19
+},
+{
+"inquiry_name": "Dealer in Products for the Disabled License",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Debt Relief for Military Service Members",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "Depression Health Bulletin",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Development or Zoning Challenge",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Domestic Violence Offender Counseling",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Donate Art Supplies",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Donate to School Gardens",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Donate to the Department for the Aging",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Donate to the Summer Youth Employment Program",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Donation Collection Bin Complaint",
+"month": 1,
+"fytd": 13
+},
+{
+"inquiry_name": "Door-to-Door Sales Complaint",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Drought",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Drug Abuse Resistance Education (DARE)",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Dust Collector Permit",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Earthquake",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "E-Designation Approval Letter",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Education Councils",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Electric Space Heater Sale Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Electronic Benefit Transfer (EBT) Card Reader Assistance for Retailers",
+"month": 1,
+"fytd": 11
+},
+{
+"inquiry_name": "Elevator or Escalator Inspection License",
+"month": 1,
+"fytd": 10
+},
+{
+"inquiry_name": "Emergency Contraception",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Empire State Building",
+"month": 1,
+"fytd": 16
+},
+{
+"inquiry_name": "Environmental Assessment Statement Form",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Excessive Drinking",
+"month": 1,
+"fytd": 7
+},
+{
+"inquiry_name": "Exhaust System Permit",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Expedited Partner Therapy (EPT)",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Exporting and Importing Goods",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Family Development Credential (FDC) Program",
+"month": 1,
+"fytd": 11
+},
+{
+"inquiry_name": "Federal Contracts",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Fentanyl Poster and Flyer",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Fire Suppression Contractor Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Flood Insurance and Flood Risk Assessment",
+"month": 1,
+"fytd": 34
+},
+{
+"inquiry_name": "Flu Literature",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Food Cart Inspection Report",
+"month": 1,
+"fytd": 17
+},
+{
+"inquiry_name": "Funeral Home Complaint",
+"month": 1,
+"fytd": 14
+},
+{
+"inquiry_name": "Games of Chance Complaint",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "General Vendor Distributor License",
+"month": 1,
+"fytd": 7
+},
+{
+"inquiry_name": "Gifted and Talented Program",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Health Code Public Hearings",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Health Survey 50",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "HIV and AIDS Report",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Hoisting Machine Operator License",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Horse Drawn Cab Driver License",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Horseback Riding Trails",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Housing Information Classes",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Hoverboard",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Industrial Laundry Delivery License",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Interim Flood Protection Measures Program",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "K2 (Synthetic Cannabinoids)",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "LGBTQ Runaway and Homeless Youth Report",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Licensed Home Improvement Contractor Bumper Sticker",
+"month": 1,
+"fytd": 9
+},
+{
+"inquiry_name": "Local, State, and Federal Emergency Alerts",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Locksmith Apprentice License",
+"month": 1,
+"fytd": 9
+},
+{
+"inquiry_name": "Made In New York Production Assistant Program",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Marinas",
+"month": 1,
+"fytd": 11
+},
+{
+"inquiry_name": "Mayor's Management Report (MMR)",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Medical Device Complaint",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Medical Facility Vital Event Registration",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Mental Health Care for Formerly Incarcerated People",
+"month": 1,
+"fytd": 7
+},
+{
+"inquiry_name": "Movie Theater Complaint",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Multi-family Water Assistance Program (MWAP)",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Municipal Water Finance Authority",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Nature Centers",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Neighborhood Area Maps",
+"month": 1,
+"fytd": 11
+},
+{
+"inquiry_name": "Neighborhood Challenge Innovation Grant",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "New York City Tourism + Conventions Business Membership",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "New York State DREAM Act",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Newsstand Complaint",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "Newtown Creek",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Non-Tobacco Hookah Permit",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "NYC Business Express Service Team (BEST)",
+"month": 1,
+"fytd": 10
+},
+{
+"inquiry_name": "NYC Community Health Survey",
+"month": 1,
+"fytd": 7
+},
+{
+"inquiry_name": "NYC Secure Mobile App",
+"month": 1,
+"fytd": 11
+},
+{
+"inquiry_name": "Open Grid Security Gates",
+"month": 1,
+"fytd": 19
+},
+{
+"inquiry_name": "Park Art Vendor Rules",
+"month": 1,
+"fytd": 7
+},
+{
+"inquiry_name": "Pawnbroker License",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Pedestrian Plazas",
+"month": 1,
+"fytd": 16
+},
+{
+"inquiry_name": "Pet Kennel Permit",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Plastic Straw Rules",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Political Campaign Complaint",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Portable Amusement Ride Relocation Inspection",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Pregnant Student Support",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Probation Warrant Enforcement",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Property Management and Maintenance Resources",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Public Charge Rule",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Public Recycling",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Public Solicitation License",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Relocation and Employment Assistance Program (REAP)",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Residential Building Emergency Notices",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Retail Store License",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Salary Transparency Law",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Same Sex Marriage",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Sanitation Sign Request",
+"month": 1,
+"fytd": 17
+},
+{
+"inquiry_name": "Saturday Night Lights",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Scattering Ashes and Cremated Remains in Parks",
+"month": 1,
+"fytd": 16
+},
+{
+"inquiry_name": "School Cell Phone Policy",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "School Eligibility",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "School Internet Access",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "School Parent Associations",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "School Rules and Policies",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "School Uniforms",
+"month": 1,
+"fytd": 9
+},
+{
+"inquiry_name": "Scrap Metal Processor Complaint",
+"month": 1,
+"fytd": 7
+},
+{
+"inquiry_name": "Secondhand Dealer Auto License",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Sewer Connection Permit",
+"month": 1,
+"fytd": 17
+},
+{
+"inquiry_name": "Sexual and Reproductive Justice",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Sheltered Bike Parking",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Sign Hanger Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Single Occupancy Bathroom Complaint",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Site Safety Manager Complaint",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Skip the Stuff",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Solid Waste Transfer Station Complaint",
+"month": 1,
+"fytd": 10
+},
+{
+"inquiry_name": "Special Sale License",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Store Air Conditioning Complaint",
+"month": 1,
+"fytd": 88
+},
+{
+"inquiry_name": "Street Conditions Observation Unit Team (SCOUT)",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Street Design Manual",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Street Naming",
+"month": 1,
+"fytd": 12
+},
+{
+"inquiry_name": "Street Ownership",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Street Vendor Property Redemption",
+"month": 1,
+"fytd": 10
+},
+{
+"inquiry_name": "Student in Temporary Housing",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Student Promotion",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Tanning Health Risk Poster and Fact Sheet",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Temporary Holiday Lighting",
+"month": 1,
+"fytd": 4
+},
+{
+"inquiry_name": "Theaters and Performing Arts Centers",
+"month": 1,
+"fytd": 8
+},
+{
+"inquiry_name": "Ticket Seller Individual License",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Toy Gun Sale",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Trade Waste License and Registration",
+"month": 1,
+"fytd": 12
+},
+{
+"inquiry_name": "Uniform Land Use Review Procedure Application",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Unsafe Product",
+"month": 1,
+"fytd": 16
+},
+{
+"inquiry_name": "VIN Etching",
+"month": 1,
+"fytd": 6
+},
+{
+"inquiry_name": "Volunteer as a Medicare Counselor",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "Volunteer Firefighter Background Check",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Wastewater Guidelines for Businesses",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Water Potability Certificate",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "Watershed Recreation and Access Permit",
+"month": 1,
+"fytd": 9
+},
+{
+"inquiry_name": "Wheelchair Friendly Decal",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Wholesale Foods Distributor License",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Wild Animal Exhibition Permit",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Winter Weather Safety",
+"month": 1,
+"fytd": 3
+},
+{
+"inquiry_name": "Women Entrepreneurs NYC (WE NYC)",
+"month": 1,
+"fytd": 5
+},
+{
+"inquiry_name": "Women NYC",
+"month": 1,
+"fytd": 1
+},
+{
+"inquiry_name": "X-Ray Machine Complaint",
+"month": 1,
+"fytd": 2
+},
+{
+"inquiry_name": "A School Without Walls",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Add Chemicals to Water Supply Permit",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Adolescent Literacy Program",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Adopt a Highway",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Adult Vaccination and Immunization",
+"month": 0,
+"fytd": 96
+},
+{
+"inquiry_name": "Adult Vaccination Poster",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Amusement Ride License or Permit",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Arson Tips",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Automated Employment Decision Tools",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Beacon Community Centers",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Become a City Marshal",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Become a Lifeguard",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Beekeeping",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Bike Share Feedback",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Bikes in Office Buildings",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Bingo License",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Birth Control",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Breastfeeding Welcome Sign and Toolkit",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Brownfields",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Brush Fire Risk",
+"month": 0,
+"fytd": 10
+},
+{
+"inquiry_name": "Building Code",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Cabaret License",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Cable Installation Training",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Carpet and Flooring Business Complaint",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Carpool or RideMatch",
+"month": 0,
+"fytd": 13
+},
+{
+"inquiry_name": "Catering Establishment Complaint",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Central Park",
+"month": 0,
+"fytd": 13
+},
+{
+"inquiry_name": "Cesspool Permit",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Charity Fraud",
+"month": 0,
+"fytd": 9
+},
+{
+"inquiry_name": "Child Development",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Child Health Plus Complaint",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Child Immunization Clinic or School Medical Exam",
+"month": 0,
+"fytd": 24
+},
+{
+"inquiry_name": "Child Pornography",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Child Proof Stove Knob Covers Complaint",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Chlamydia Treatment for Partners",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Cigarette Tax",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "City Budget",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "City Budget Cut Feedback",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "City Environmental Quality Review",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "City Health Information (CHI) for Health Care Providers",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "City Marshal Bonds",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "City Service Access for American Sign Language (ASL) Users",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Citywide Performance Reporting",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Civic Engagement Commission",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "CleaNYC Sidewalk Cleaning",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Coast Guard",
+"month": 0,
+"fytd": 7
+},
+{
+"inquiry_name": "College Program for COMPASS and Beacon Staff",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Combined Sewage Overflow (CSO) Waterbody Advisory",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Community Camera Sharing Program",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Community Health Profile",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Community Mental Health Plan",
+"month": 0,
+"fytd": 10
+},
+{
+"inquiry_name": "Composting Site Permit",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Concrete Testing Laboratory License",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Construction Labor Provider Complaint",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Construction Labor Provider License",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Cooling Centers",
+"month": 0,
+"fytd": 708
+},
+{
+"inquiry_name": "Cooling Outreach Vans",
+"month": 0,
+"fytd": 52
+},
+{
+"inquiry_name": "Court and Trust Fund Claim",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Dating Service Complaint",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Dirt Bikes and All-Terrain Vehicle (ATV) Storage Complaint",
+"month": 0,
+"fytd": 9
+},
+{
+"inquiry_name": "Disaster Preparedness and Recovery for Businesses",
+"month": 0,
+"fytd": 7
+},
+{
+"inquiry_name": "Donate to Animal Shelters",
+"month": 0,
+"fytd": 15
+},
+{
+"inquiry_name": "Dry Cleaning Odor",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Dry Weather Sewage Discharge Complaint",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "E-Bike Trade-in Pilot Program",
+"month": 0,
+"fytd": 7
+},
+{
+"inquiry_name": "Electrician License",
+"month": 0,
+"fytd": 9
+},
+{
+"inquiry_name": "Ellis Island",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Emergency Action Plan (EAP) Director On-Site Test",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Emergency Notification",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Emerging Business Enterprise Program",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Emotionally Disturbed Person",
+"month": 0,
+"fytd": 51
+},
+{
+"inquiry_name": "Environmental Education",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Environmental Question",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "FAIRER (Fines and Interest Reduction Enabling Recovery) Program",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Fellowship Programs",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "FEMA Wireless Emergency Alert System Tests",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "FIFA World Cup 2026",
+"month": 0,
+"fytd": 42
+},
+{
+"inquiry_name": "Films Produced Last Year",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Financial Literacy for Youth",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Fire Suppression Contractor License",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Flea Markets",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Floatable Trash in Waterway Boom or Net Containments",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Floor Varnish Safety",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Foam Ban",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Foster Child Assistance",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Frozen Dessert Manufacturer Permit",
+"month": 0,
+"fytd": 14
+},
+{
+"inquiry_name": "Fruit and Vegetable License",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Fuel Truck Inspection",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Funeral Director Complaint",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Funeral Planning Guide",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Gang Resistance Education and Training (GREAT)",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Gas Station Discharge Line Inspection",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Golf Courses",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Good Choice Healthy Food Program for Distributors",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Gowanus Canal Construction Project",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Greenstreets Program",
+"month": 0,
+"fytd": 9
+},
+{
+"inquiry_name": "Grocery Store Sale Requirements",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Groundwater Discharge Permit",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Growing Up NYC",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Guard Dog Registration",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Hantavirus Information",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Hazard Analysis Critical Control Point Plan",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "HCR NYC 2021 Section 8 Waitlist Status",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Health Research Training Program",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Housing Information Guide Notice Not Posted",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Human Papillomavirus (HPV)",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Ice Skating Rinks",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Immigrant Business Services",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Independence Day",
+"month": 0,
+"fytd": 2162
+},
+{
+"inquiry_name": "Industrial and Manufacturing Business Assistance",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Industrial Laundry License",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Industrial Work or Air Pollution Control Equipment Permit or Certificate",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Inflation Refund",
+"month": 0,
+"fytd": 114
+},
+{
+"inquiry_name": "Job Training Grants for Businesses",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Juneteenth",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Juvenile Probation Supervision",
+"month": 0,
+"fytd": 7
+},
+{
+"inquiry_name": "Know Before You Enroll Tips",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Know Your Zone",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Labor Day",
+"month": 0,
+"fytd": 755
+},
+{
+"inquiry_name": "Learn & Earn Program",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Leptospirosis",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Lifeguard Complaint",
+"month": 0,
+"fytd": 42
+},
+{
+"inquiry_name": "LockerNYC Pilot",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Loft Law Enforcement",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Love Your Local Program",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Macy's Fourth of July Fireworks",
+"month": 0,
+"fytd": 212
+},
+{
+"inquiry_name": "Made in New York Incentive Program",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Managed Care Complaint",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Material and Equipment Acceptance Application",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Mayor's Scholarship Program",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Mechanical Sprinkler or Standpipe Inspection",
+"month": 0,
+"fytd": 9
+},
+{
+"inquiry_name": "Mobile Recreation Van",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "National Gas Price Trends",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "National Night Out Against Crime",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "National Service Program",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Naturally Occurring Retirement Community (NORC) Complaints",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "New York Mets",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "New York Yankees",
+"month": 0,
+"fytd": 12
+},
+{
+"inquiry_name": "Noise from Intercity or Interstate Bus",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Nurse Licensing Exam Preparation for Immigrant Nurses",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "NYC Food Standards",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "NYC Green Infrastructure Plan",
+"month": 0,
+"fytd": 19
+},
+{
+"inquiry_name": "NYC Grocery Stores",
+"month": 0,
+"fytd": 26
+},
+{
+"inquiry_name": "NYC Small Business Support Center",
+"month": 0,
+"fytd": 15
+},
+{
+"inquiry_name": "NYC311 Content API",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Oil Burning Equipment Installer Complaint",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Open Flame Inspection",
+"month": 0,
+"fytd": 23
+},
+{
+"inquiry_name": "Parent Coordinator",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Pay Phone Complaint",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Pedicab Driver License",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Pedicab Timer Inspection",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Petting Zoo Permit",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Pregnancy Services Center Complaint",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Pre-Qualified Certified Public Accountants",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Prescription Formula Preparation Permit",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Prescription Preparedness",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Private Elevator or Escalator Inspector Complaint",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Probation Restitution",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Project Labor Agreement",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Prospect Park",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Public Service Corps",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Purchase a Street Sign",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Radioactive Materials Complaint",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Radioactive Materials License",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Ranked Choice Voting",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Refrigeration Equipment Permit",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Rent Stabilization Notice Not Posted",
+"month": 0,
+"fytd": 20
+},
+{
+"inquiry_name": "Rental Ripoff Hearings",
+"month": 0,
+"fytd": 9
+},
+{
+"inquiry_name": "Residential Rental Agency Complaint",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Restaurant Allergy Poster Complaint",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Retail and Restaurant Business Assistance",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Retail Laundry License",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Rigger Complaint",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Rigger License",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Right Turn on Red in Staten Island",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Rooftop Detention",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Rosh Hashanah",
+"month": 0,
+"fytd": 16
+},
+{
+"inquiry_name": "Run for City Public Office",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Safe Locations During Severe Weather",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Safe Overnight Locations During Severe Weather",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Sail4th 250",
+"month": 0,
+"fytd": 21
+},
+{
+"inquiry_name": "Satellite Provider Complaint",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Scaffold Safety Class",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Scaffold Site Safety Inspection",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Scale Dealer or Repairer License",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "School Curriculum",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "School Health and Wellness",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "School Metal Detectors",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "School Performance",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "School Shopping Tips",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Scrap Metal Processor License",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Seastreak Ferry",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Self-Storage Facility License",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Sell Goods to the City",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Septic Tank Cleaning",
+"month": 0,
+"fytd": 7
+},
+{
+"inquiry_name": "Share Your Space Survey",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Shut the Front Door",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Site Safety Manager Certificate",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Small Animal Slaughterhouse License",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Small Business First",
+"month": 0,
+"fytd": 10
+},
+{
+"inquiry_name": "Smart City Testbed Program",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "SNAP",
+"month": 0,
+"fytd": 478
+},
+{
+"inquiry_name": "Snow",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Snow or Ice on Building",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Snow or Ice on Street or Highway",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Snow Removal City Contracts",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Sodium Warning Rules",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "South Brooklyn Marine Terminal Wind Project",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Special One-Time Assistance (SOTA) for Landlords",
+"month": 0,
+"fytd": 7
+},
+{
+"inquiry_name": "Start a Small Business",
+"month": 0,
+"fytd": 15
+},
+{
+"inquiry_name": "Starter Savings Account",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "State University of New York (SUNY)",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Storage Warehouse License",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Store Air Conditioning Law",
+"month": 0,
+"fytd": 34
+},
+{
+"inquiry_name": "Street Con Game",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Street Light Banner Permit",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Student Graduation Requirements",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Subway Pass for Youth Organizations",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Summer Heat Health Tips",
+"month": 0,
+"fytd": 17
+},
+{
+"inquiry_name": "Summer Meals for Children",
+"month": 0,
+"fytd": 94
+},
+{
+"inquiry_name": "Summer Rising",
+"month": 0,
+"fytd": 119
+},
+{
+"inquiry_name": "Summer Streets",
+"month": 0,
+"fytd": 107
+},
+{
+"inquiry_name": "Supermarket Savings Guide",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Sweet Odor from Unknown Source",
+"month": 0,
+"fytd": 5
+},
+{
+"inquiry_name": "Swimming Pool Operation Technology Course",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Syringe Service Programs Guide",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Tanning Establishment Complaint",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Tanning Establishment Permit",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Ten Things Every Consumer Should Know Pocket Guide",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "THX1138",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Ticket Seller Business License",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Ticks",
+"month": 0,
+"fytd": 12
+},
+{
+"inquiry_name": "Tobacco or Electronic Cigarette Shop Registration",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Tour Guide Complaint",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Transitional Finance Authority Bond",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Unstable High-Rise Building in Manhattan",
+"month": 0,
+"fytd": 13
+},
+{
+"inquiry_name": "US Open Discounted Tickets",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Vacant Lot Cleaning Bill",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Volatile Organic Compound (VOC) Carpet Rules",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Volunteer Opportunities for Businesses",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Waste Management Plan",
+"month": 0,
+"fytd": 1
+},
+{
+"inquiry_name": "Water Backflow Permit",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "Water Hardness",
+"month": 0,
+"fytd": 8
+},
+{
+"inquiry_name": "Water Sampling Station Complaint",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Water Tunnel No. 3 Construction",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Water Well Permit",
+"month": 0,
+"fytd": 4
+},
+{
+"inquiry_name": "Waterfront Permit",
+"month": 0,
+"fytd": 3
+},
+{
+"inquiry_name": "West Indian American Day Carnival and Parade",
+"month": 0,
+"fytd": 60
+},
+{
+"inquiry_name": "West Nile Virus",
+"month": 0,
+"fytd": 17
+},
+{
+"inquiry_name": "Wildfire Air Quality Alert",
+"month": 0,
+"fytd": 230
+},
+{
+"inquiry_name": "Workers' Compensation for Businesses",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Working Horse License",
+"month": 0,
+"fytd": 2
+},
+{
+"inquiry_name": "Working Horse Rules",
+"month": 0,
+"fytd": 6
+},
+{
+"inquiry_name": "Yom Kippur",
+"month": 0,
+"fytd": 1376
+},
+{
+"inquiry_name": "Youth Baseball and Defibrillators (AEDs)",
+"month": 0,
+"fytd": 1
+}
+]
+}

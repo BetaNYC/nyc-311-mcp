@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { TOOLS, callTool } from "../dist/tools.js";
 import { setBoardStatData } from "../dist/district-tools.js";
 import { fixtureData } from "./district-fixture.mjs";
+import { SodaClient, setSodaClient } from "../dist/soda.js";
 
 // These tests never touch the live 311 API. A key is set so getApiKey() does not
 // short-circuit, and fetch is stubbed so anything that escapes argument
@@ -55,6 +56,18 @@ test("get_status still rejects a missing required type", async () => {
 // without an entry fails here instead of going untested.
 // The district tools read the BoardStat fixtures instead of beta.nyc.
 setBoardStatData((await fixtureData()).data);
+// The call-center report gets a client that answers locally (an empty dataset), never data.cityofnewyork.us.
+setSodaClient(
+  new SodaClient({
+    fetch: async (url) =>
+      String(url).includes("/api/views/")
+        ? Response.json({ name: "311 Call Center Inquiry", rowsUpdatedAt: 1794103577, columns: [] })
+        : Response.json([]),
+    logger: () => {},
+    minIntervalMs: 0,
+    cacheDir: (await import("node:fs")).mkdtempSync((await import("node:path")).join((await import("node:os")).tmpdir(), "nyc-311-mcp-strict-")),
+  })
+);
 
 const VALID_ARGS = {
   find_district: { address: "350 5th Ave" },
@@ -67,6 +80,9 @@ const VALID_ARGS = {
   address_history: { address: "JACOB RIIS PARK", borough: "Queens" },
   boardstat_link: { community_district: 101 },
   boardstat_status: {},
+  ll47_service_request_report: { community_district: 484, month: "2025-10" },
+  ll47_directory_assistance_report: { month: "2026-10" },
+  cb_monthly_list: { community_district: 484 },
   get_calendar: { date: "2026-07-04" },
   get_status: { type: "CodeBlue" },
   get_service_request: { sr_number: "311-17323508" },
