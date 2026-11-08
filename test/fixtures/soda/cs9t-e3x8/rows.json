@@ -1,0 +1,1755 @@
+[
+{
+"agency": "New York City Police Department",
+"problem": "Abandoned Vehicle",
+"problem_details": "With License Plate",
+"sla_days": "8 hours"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Abandoned Vehicle",
+"problem_details": "Without License Plate",
+"additional_details": "N/A",
+"sla_days": "3 days"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Blocked Driveway",
+"problem_details": "No Access",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Blocked Driveway",
+"problem_details": "Partial Access",
+"sla_days": "8 hours"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Broken Glass",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Damaged Bench",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Damaged Leg or Pole Bent",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Damaged or Leaking Roof",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Damaged or Missing Ad Box",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Damaged Other",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Dirty/Graffiti",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Lighting",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Sign Missing or Defective",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Bus Stop Shelter Complaint",
+"problem_details": "Snow Removal Requested",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Broken Glass",
+"additional_details": "N/A",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Debris from Car Accident",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Dirt or Gravel",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Dog Waste",
+"additional_details": "Not Cleaned by Property Owner",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Dog Waste",
+"additional_details": "Not Picked Up by Dog Owner",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Syringes",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Trash",
+"additional_details": "Littering",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Dirty Condition",
+"problem_details": "Trash",
+"additional_details": "Not Cleaned by Property Owner",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Homeless Services",
+"problem": "Encampment",
+"problem_details": "N/A",
+"additional_details": "N/A",
+"sla_days": "SLA Not Managed by 311"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Encampment",
+"problem_details": "N/A",
+"sla_days": "4 hours"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Heat/Hot Water",
+"problem_details": "Apartment Only",
+"additional_details": "No Heat",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Heat/Hot Water",
+"problem_details": "Apartment Only",
+"additional_details": "No Heat and No Hot Water",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Heat/Hot Water",
+"problem_details": "Apartment Only",
+"additional_details": "No Hot Water",
+"sla_days": "3 days"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Blocked Bike Lane",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Blocked Crosswalk",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Blocked Hydrant",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Blocked Sidewalk",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Commercial Overnight Parking",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Detached Trailer",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Double Parked Blocking Traffic",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Double Parked Blocking Vehicle",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "License Plate Obscured",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Overnight Commercial Storage",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Paper License Plates",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Blocking Driveway",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Double Parked",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked At Bus Stop",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked In Bike Lane",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked In Bus Lane",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked In Crosswalk",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked In Front Of Fire Hydrant",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked In 'No Standing' Area",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked In 'No Stopping' Area",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Parking Permit Improper Use",
+"additional_details": "Parked On Sidewalk",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Posted Parking Sign Violation",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Illegal Parking",
+"problem_details": "Unauthorized Bus Layover",
+"sla_days": "8 hours"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Ball Field/Court",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Beach - Sand",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Decorative Fountain",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Drinking Fountain",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Lawn",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Monument/Statue",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Other",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Path",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Playground Equipment",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Pool",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Restrooms/Showers",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Broken Glass",
+"additional_details": "Sprinkler/Spray shower",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Full Trash Bag Not Picked Up",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Medical Waste",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Other Litter",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Overflowing Trash Can",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Overturned Trash Can",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Garbage or Litter",
+"additional_details": "Request Trash Receptacle",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Ball Field/Court",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Bench",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Decorative Fountain",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Drinking Fountain",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Fence",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Gate",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Inside of Park Building",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Monument/Statue",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Natural Structure - Rocks",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Other",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Outside of Park Building",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Picnic Table",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Playground Equipment",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Restroom/Comfort Station",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Sign",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Graffiti or Vandalism",
+"additional_details": "Sprinkler/Spray shower",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Grass - Brown/Burned",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Grass - Needs to be Cut",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Grass - Sparse/Needs Reseeding",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Other",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Weeds - Overgrown Lawn",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Weeds - Paths",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Grass/Weeds",
+"additional_details": "Weeds - Playing Field",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Hours of Operation",
+"additional_details": "Park Not Open",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Hours of Operation",
+"additional_details": "Pool Not Open",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Hours of Operation",
+"additional_details": "Request New Hours of Operation",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Air Conditioning/Heating",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Computer Center",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Elevator",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Fitness Equipment",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Gymnasium",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Indoor Pool",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Lockers",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Other",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Restroom/Shower",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Recreation Center",
+"additional_details": "Window",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Rodent Sighting",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Rodent Sighting",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Ball Field/Court",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Field",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Other",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Path",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Playground",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Sidewalk",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Snow or Ice",
+"additional_details": "Steps",
+"sla_days": "7 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Indoors",
+"additional_details": "Door",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Indoors",
+"additional_details": "Lighting",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Indoors",
+"additional_details": "Other",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Indoors",
+"additional_details": "Wall",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Indoors",
+"additional_details": "Window",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Artificial turf",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Ball Field/Court Lighting",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Ball Fields & Equipment",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Bench",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Boardwalk",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Decorative Fountain",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Drinking Fountain",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Fence",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Flag",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Gate",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Hard Court Surface/Equipment",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Lawn",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Monument/Statue",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Other",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Path",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Picnic Table",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Playground Equipment",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Pool",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Restroom/Comfort Station",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Sign",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Sprinkler/Spray shower",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Structure - Outdoors",
+"additional_details": "Stairway",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Unsecured Facility",
+"additional_details": "Bike Path/Greenways",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Unsecured Facility",
+"additional_details": "Building/Facility Unlocked",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Unsecured Facility",
+"additional_details": "Other",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Parks and Recreation",
+"problem": "Maintenance or Facility",
+"problem_details": "Unsecured Facility",
+"additional_details": "Park/Playground Unlocked",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Health and Mental Hygiene",
+"problem": "Mold",
+"problem_details": "Loft Building",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Health and Mental Hygiene",
+"problem": "Mold",
+"problem_details": "Public Complaint - Comm Location",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Health and Mental Hygiene",
+"problem": "Mold",
+"problem_details": "Workplace - 10 or Less Staff",
+"additional_details": "N/A",
+"sla_days": "45 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Air Conditioner/Ventilation",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Alarm",
+"additional_details": "Chronic",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Animal Other Than Dog",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Boat",
+"additional_details": "Engine/Music/Excessive Horn",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Construction",
+"additional_details": "Before/After Hours",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Construction Equipment",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Dog",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Ice Cream Truck",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Jackhammer",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Lawn Care Equipment",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Manufacturing Business/Plant",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Noise",
+"problem_details": "Private Garbage Truck",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Commercial",
+"problem_details": "Banging/Pounding",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Commercial",
+"problem_details": "Car/Truck Horn",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Commercial",
+"problem_details": "Car/Truck Music",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Commercial",
+"problem_details": "Loud Music/Party",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Commercial",
+"problem_details": "Loud Talking",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Commercial",
+"problem_details": "Loud Television",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Residential",
+"problem_details": "Banging/Pounding",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Residential",
+"problem_details": "Loud Music/Party",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Residential",
+"problem_details": "Loud Talking",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Residential",
+"problem_details": "Loud Television",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Street/Sidewalk",
+"problem_details": "Loud Music/Party",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Street/Sidewalk",
+"problem_details": "Loud Talking",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Vehicle",
+"problem_details": "Car/Truck Horn",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Vehicle",
+"problem_details": "Car/Truck Music",
+"sla_days": "8 hours"
+},
+{
+"agency": "New York City Police Department",
+"problem": "Noise - Vehicle",
+"problem_details": "Engine Idling",
+"sla_days": "8 hours"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Bike Lane",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Pedestrian Feature",
+"additional_details": "Crosswalk",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Pedestrian Feature",
+"additional_details": "Pedestrian Center Median Crossing",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Pedestrian Feature",
+"additional_details": "Pedestrian Overpass/Underpass",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Pedestrian Feature",
+"additional_details": "Street in Front of Bus Stop",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Roadway",
+"additional_details": "Ice Patch",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Roadway",
+"additional_details": "Plowing",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Roadway",
+"additional_details": "Replowing",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Sidewalk",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Sanitation",
+"problem": "Snow or Ice",
+"problem_details": "Snow Tracking",
+"additional_details": "N/A",
+"sla_days": "SLA Not Managed by 311"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Blocked - Construction",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Cave-in",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Crash Cushion Defect",
+"additional_details": "N/A",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Defacement",
+"additional_details": "Advertisement",
+"sla_days": "60 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Defacement",
+"additional_details": "Graffiti",
+"sla_days": "60 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Defacement",
+"additional_details": "N/A",
+"sla_days": "60 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Defacement",
+"additional_details": "Other",
+"sla_days": "60 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Defective Hardware",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Dumpster - Causing Damage",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Dumpster - Construction Waste",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Failed Street Repair",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Guard Rail - Street",
+"additional_details": "N/A",
+"sla_days": "120 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Line/Marking - After Repaving",
+"additional_details": "N/A",
+"sla_days": "30 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Line/Marking - Faded",
+"additional_details": "N/A",
+"sla_days": "30 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Plate Condition - Anti-Skid",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Plate Condition - Noisy",
+"additional_details": "N/A",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Plate Condition - Open",
+"additional_details": "N/A",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Plate Condition - Shifted",
+"additional_details": "N/A",
+"sla_days": "10 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Rough, Pitted or Cracked Roads",
+"additional_details": "N/A",
+"sla_days": "90 days"
+},
+{
+"agency": "Department of Transportation",
+"problem": "Street Condition",
+"problem_details": "Unsafe Worksite",
+"additional_details": "N/A",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Garbage/Recycling Storage",
+"additional_details": "Accumulation",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Garbage/Recycling Storage",
+"additional_details": "Missing or Inadequate Cans/Lid",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Mold",
+"additional_details": "N/A",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Bed Bugs - In Apt",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Bed Bugs - In Public Area",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Fleas",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Flies",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Mice",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Other",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Roaches",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Pests",
+"additional_details": "Termites",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Sewage",
+"additional_details": "Broken/Blocked Sewage Pipe",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Unsanitary Condition",
+"problem_details": "Sewage",
+"additional_details": "Raw Sewage Accumulation",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Air Conditioning",
+"additional_details": "During Drought",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Fire Hydrant",
+"additional_details": "Illegal Use",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Fountain",
+"additional_details": "During Drought",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Hose",
+"additional_details": "Illegal Use",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Lawn Watering",
+"additional_details": "During Drought",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Roof Tank",
+"additional_details": "Leak/Overflow",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Water Meter Broken/Leaking",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Water Meter Missing/Stolen",
+"additional_details": "N/A",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Water Serving",
+"additional_details": "During Drought",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Conservation",
+"problem_details": "Water Waste",
+"additional_details": "Plumbing Fixture",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Water Leak",
+"problem_details": "Damp Spot",
+"additional_details": "From Wall or Ceiling",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Water Leak",
+"problem_details": "Heavy Flow",
+"additional_details": "Affecting Structural Stability",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Water Leak",
+"problem_details": "Heavy Flow",
+"additional_details": "At Wall or Ceiling",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Water Leak",
+"problem_details": "Heavy Flow",
+"additional_details": "From Wall or Ceiling",
+"sla_days": "3 days"
+},
+{
+"agency": "Department of Housing Preservation and Development",
+"problem": "Water Leak",
+"problem_details": "Slow Leak",
+"additional_details": "At Wall or Ceiling",
+"sla_days": "8 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Dirty Water",
+"additional_details": "N/A",
+"sla_days": "2 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Defective",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Emergency",
+"additional_details": "N/A",
+"sla_days": "SLA Not Managed by 311"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Fender Request",
+"additional_details": "N/A",
+"sla_days": "40 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Leaking",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Leaning/Missing",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Lock Installation",
+"additional_details": "N/A",
+"sla_days": "14 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Lock Removal",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Open Request",
+"additional_details": "N/A",
+"sla_days": "5 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Running",
+"additional_details": "N/A",
+"sla_days": "2 days"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Running Full",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Fire Hydrant Valve Box",
+"additional_details": "Cover Missing",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "High Water Pressure",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Leak",
+"additional_details": "N/A",
+"sla_days": "16 hours"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Low Pressure",
+"additional_details": "N/A",
+"sla_days": "1 day"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "No Water",
+"additional_details": "N/A",
+"sla_days": "8 hours"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Water in Basement",
+"additional_details": "N/A",
+"sla_days": "6 hours"
+},
+{
+"agency": "Department of Environmental Protection",
+"problem": "Water Maintenance",
+"problem_details": "Water Main Break",
+"additional_details": "N/A",
+"sla_days": "8 hours"
+}
+]

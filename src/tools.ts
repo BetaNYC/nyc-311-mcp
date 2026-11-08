@@ -9,6 +9,7 @@ import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictTool
 import { describeServiceRequest, describeServiceRequestList, NOT_FOUND_HINT } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
+import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -89,6 +90,8 @@ export const TOOLS = [
   ...LL47_TOOLS,
   // Help reporting a problem: which 311 article, agency and problem type fit (#17).
   ...REPORT_TOOLS,
+  // A ready-to-paste 311 report the person files themselves (#18).
+  ...DRAFT_TOOLS,
 ];
 
 const ARG_SHAPES = {
@@ -103,6 +106,7 @@ const ARG_SHAPES = {
   ...DISTRICT_ARG_SHAPES,
   ...LL47_ARG_SHAPES,
   ...REPORT_ARG_SHAPES,
+  ...DRAFT_ARG_SHAPES,
 };
 
 /**
@@ -167,6 +171,11 @@ export async function callTool(name: string, args: unknown) {
       }
 
       default:
+        if (name in DRAFT_ARG_SHAPES) {
+          const parsed = parseToolArgs(name as DraftToolName, args) as Record<string, unknown>;
+          const result = await runDraftTool(name as DraftToolName, parsed);
+          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+        }
         if (name in REPORT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as ReportToolName, args) as Record<string, unknown>;
           const result = await runReportTool(name as ReportToolName, parsed);
