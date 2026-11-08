@@ -117,7 +117,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "suicide",
     label: "suicide or self-harm",
-    when: /\b(suicid\w*|kill (my|him|her|them)sel(f|ves)|self[- ]harm\w*|hurt(ing)? (my|him|her|them)sel(f|ves)|end (my|his|her|their) li(fe|ves)|want(s)? to die|quitarse la vida)\b/,
+    when: /\b(suicid\w*|kill(ing)? (my|him|her|them|your)sel(f|ves)|self[- ]harm\w*|hurt(ing)? (my|him|her|them)sel(f|ves)|cutting (my|him|her|them)sel(f|ves)|(is|been|keeps|started|am|i'?m) cutting\b|end (it all|(my|his|her|their) li(fe|ves))|ending it all|want(s)? to die|(do(es)?n'?t|do(es)? not) want to (live|be alive|be here anymore|wake up)|better off dead|jump(ing)? off (a |the |of )?(bridge|roof|building|ledge)|overdos\w* on purpose|say(ing)? goodbye forever|no reason to live|nothing to live for|quitarse la vida)\b/,
     city: /^Suicide$/,
     terms: ["suicide"],
   },

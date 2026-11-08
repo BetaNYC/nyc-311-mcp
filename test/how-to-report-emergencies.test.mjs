@@ -32,7 +32,7 @@ const LOOK_ALIKES = [
 "there was a fight in the park last week","my car was broken into last night","the gas station is overcharging","my stove's gas burner won't light",
 "someone stole my package yesterday","the elevator has been broken for a week","a dead tree that might fall someday","the ceiling has a small crack",
 "loud music shooting video on my street","the bar is killing it with loud music","fireworks noise every night","the heat is too high in my apartment",
-"water drips from the AC unit above onto the sidewalk","my landlord threatened to evict me","a dog is chained up outside all day","my ex keeps calling me"
+"water drips from the AC unit above onto the sidewalk","my landlord threatened to evict me","a dog is chained up outside all day","my ex keeps calling me", "this traffic is killing me", "I'm dying to know when the street fair is", "I'm dead tired of the noise"
 ];
 
 const { client } = await fixtureContent();
@@ -107,3 +107,18 @@ test("several problems: no hot water and a broken elevator give one match each",
   assert.equal(out.best_match.ka_number, "KA-01036");
   assert.deepEqual(out.other_problems.map((x) => x.best_match.ka_number), ["KA-02015"]);
 });
+
+for (const d of [
+  "my roommate says she wants to end it all", "he said he wants to end his life", "she doesn't want to live anymore", "I don't want to be alive",
+  "he says everyone would be better off dead", "my brother says he will kill himself", "she wants to kill herself", "I want to hurt myself",
+  "my daughter is cutting herself", "he's going to jump off the bridge", "she says she will jump off the roof", "he took pills to overdose on purpose",
+  "my friend texted to say goodbye forever", "he says there is no reason to live",
+]) {
+  test(`suicide or self-harm leads with 911 and the City's 988 text: ${d}`, async () => {
+    const out = await howToReport({ description: d }, client);
+    assert.ok(out.emergency, `no 911 lead: ${out.first_line}`);
+    assert.match(out.first_line, /call 911/i);
+    assert.equal(out.emergency.also_988?.ka_number, "KA-01635", "988 text from KA-01635");
+    assert.match(out.emergency.also_988.text, /call, text, or chat 988/);
+  });
+}

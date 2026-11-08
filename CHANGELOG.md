@@ -42,7 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   first field of every answer and starts every error; every no-match answer leads with 911.
   Much wider patterns (medical, smoke and outlets, gas smell, structural, violence and
   threats, people at risk, domestic violence quoting KA-01217). "Shooting a video" is not
-  gunfire. 50 emergencies and 20 look-alikes in `test/how-to-report-emergencies.test.mjs`.
+  gunfire. 50 emergencies and 23 look-alikes in `test/how-to-report-emergencies.test.mjs`, plus
+  14 suicide and self-harm phrasings that must lead with 911 and the City's 988 text.
 
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 

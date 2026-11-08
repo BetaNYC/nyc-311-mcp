@@ -209,7 +209,7 @@ emergencies, near misses that are not emergencies, Spanish, typos, several probl
 description, and requests 311 handles that are not complaints ("a copy of my birth certificate").
 Each row states whether the answer leads with 911 and with which City article.
 `test/how-to-report-emergencies.test.mjs` runs 50 emergencies, each of which must lead with 911,
-and 20 look-alikes that must not.
+23 look-alikes that must not, and 14 suicide and self-harm phrasings ("end it all", "better off dead", "jump off the bridge") that must lead with 911 and the 988 text.
 
 ## Live calls
 
