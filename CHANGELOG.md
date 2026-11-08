@@ -44,6 +44,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   threats, people at risk, domestic violence quoting KA-01217). "Shooting a video" is not
   gunfire. 50 emergencies and 23 look-alikes in `test/how-to-report-emergencies.test.mjs`, plus
   14 suicide and self-harm phrasings that must lead with 911 and the City's 988 text.
+- QA round 3 on #23: falls from a window or roof, calls for help, swallowed objects, "ODing",
+  "reeks of gas", "came crashing down", jumping in front of a train lead with 911; "gun store",
+  "shot glass", "flu shot" and "sparks shooting out" are not gunfire. 34 more cases in the tests.
 
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 

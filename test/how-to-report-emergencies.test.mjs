@@ -122,3 +122,38 @@ for (const d of [
     assert.match(out.emergency.also_988.text, /call, text, or chat 988/);
   });
 }
+
+// QA round 3 on #23 (a reviewer's third set).
+for (const d of ["mi abuela no respira","hay un incendio en el edificio","huele a gas en la cocina","mi hijo se cayó y está sangrando mucho","alguien tiene una pistola",
+"yo my homie got shot","bro is passed out and turning blue","he's ODing","she just dropped and isn't responding","my baby swallowed a battery",
+"the kitchen is in flames","grease fire spreading","there's a carbon monoxide leak","my whole floor reeks of gas","the wall just caved in",
+"a piece of the building came crashing down","sparks shooting out of a manhole","a manhole cover exploded","someone pulled a gun on me","there's a guy with a gun outside my building",
+"my roommate is threatening me with a bat","a kid fell out of a window","a man jumped in front of the train","people are trapped in a burning car","my neighbor's been yelling for help for an hour"]) {
+  test(`round 3 emergency leads with 911: ${d}`, async () => {
+    const out = await howToReport({ description: d }, client);
+    assert.ok(out.emergency, `no 911 lead: ${out.first_line}`);
+    assert.match(out.first_line, /call 911/i);
+  });
+}
+
+for (const d of ["the gun store on my block is too loud","my building's fire extinguisher is expired","a shot glass broke on the sidewalk","the gas meter reader never came","my landlord hasn't fixed the smoke alarm in months",
+"the bar's happy hour is killer","I need to report a broken window from last month's break-in","the pilot light on my boiler is out but I have heat","a manhole cover is loose and rattles when cars drive over"]) {
+  test(`round 3 look-alike is not flagged: ${d}`, async () => {
+    const out = await howToReport({ description: d }, client);
+    assert.equal(out.emergency, null, `flagged: ${out.first_line}`);
+  });
+}
+
+test("round 3 wording and borderline cases", async () => {
+  // "Shooting out" is not gunfire: the 911 lead stays, in BetaNYC's words.
+  const sparks = await howToReport({ description: "sparks shooting out of a manhole" }, client);
+  assert.ok(sparks.emergency);
+  assert.doesNotMatch(sparks.first_line, /gunfire/);
+  assert.equal(sparks.emergency.ka_number, null);
+  // Borderline, kept as 911 on purpose: a trash can on fire, even in an old picture.
+  assert.ok((await howToReport({ description: "the trash can is on fire with graffiti tags (old picture)" }, client)).emergency);
+  // Indirect: no keyword, but a no-match answer still leads with 911, and the assistant is told to judge.
+  const indirect = await howToReport({ description: "nobody would care if I disappeared" }, client);
+  assert.match(indirect.first_line, /call 911/);
+  assert.match(indirect.assistant_instruction, /tell them to call 911 first/);
+});
