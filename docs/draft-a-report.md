@@ -1,6 +1,6 @@
 # Draft a 311 report (Phase 5, #18)
 
-Built and reviewed 2026-11-07, about 22:35 to 22:50 ET. Closes #10.
+Built and reviewed 2026-11-07 (about 22:35 ET) and revised for #23's safety rounds the same evening (about 23:00 ET). Closes #10.
 
 `draft_311_report` turns what a person says about a problem into a short report **they submit
 themselves**: a ready-to-paste text, the 311 Online article to report it on, and what is still
@@ -31,11 +31,25 @@ not publish each form's exact fields, so the form may ask for things this draft 
 Anything missing goes into the text as `[add: …]` and into `questions_to_ask`. Nothing is made
 up: the draft holds only the person's words and the names the City's article uses.
 
+### Safety first, on every answer and error
+
+Every answer starts with `safety_line` ("If anyone is in danger right now, call 911."), its
+source, and `assistant_instruction`, the same as `how_to_report` (#23): "Danger detection here
+is keyword-based and will miss some emergencies. If anything the person says suggests someone
+may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did
+not flag it." The tool description carries both. Every error starts with the safety line: direct
+calls, and through the tool handler (`src/tools.ts`), where argument errors for the
+reporting-help tools read `If anyone is in danger right now, call 911. Error: …`. A no-match
+draft's first line leads with 911.
+
 ### When there is no draft
 
-- **Emergency**: if `how_to_report` gives an emergency answer, there is no draft, only that
-  answer (the City's "Call 911" wording where an article has it). A description that also names
-  a 311 problem ("someone got hurt in a car crash and there is a pothole") is not drafted either.
+- **Emergency**: no draft whenever `assessDanger` flags danger in the whole description or in any
+  split part, or `how_to_report` leads with 911 (including a matched City article whose summary
+  itself says "Call 911"). The answer is `how_to_report`'s own 911 answer, with the City's 988
+  text (KA-01635) or domestic violence text (KA-01217) when it gives them. A description that
+  also names a 311 problem ("someone got hurt in a car crash and there is a pothole") is not
+  drafted either.
 - **Not taken by 311**: if the article's summary says the City does not take it (KA-01332
   Neighbor Odor: "The City does not accept complaints about body or cooking odor from a
   residence."), or the article has no report option, no phone way, and says who handles it,
@@ -43,11 +57,11 @@ up: the draft holds only the person's words and the names the City's article use
 
 ### Two problems in one description
 
-311 takes one problem per report. The description is split at ";", a sentence break, "also" or
-"plus"; failing that, at "and". Each part is matched with `how_to_report`. It becomes two drafts
-only when the parts match different articles in different 311 categories, each clearly (at
-"and", each strongly). "Trash and litter all over the sidewalk" and "the sidewalk wasn't
-shoveled and it's icy" stay one problem. At most three drafts.
+311 takes one problem per report. The description is split by `how_to_report`'s own
+`splitProblems` (one part per kind of problem; "trash and litter" and "the sidewalk wasn't
+shoveled and it's icy" stay one). Each part is matched with `how_to_report`, and kept when it
+lands on an article no earlier part did. At most three drafts. The parts are `splitProblems`'s
+text: lower case, with the joining word dropped.
 
 ## Problem Detail options: `cs9t-e3x8`, last updated 2024-03-05
 
@@ -82,42 +96,56 @@ rows for the 20 problem types the recorded articles name). No ZIP codes in eithe
 most common problem types citywide, 2025-11 to 2026-10), given with no place or time, so each
 draft must ask for them. Every row is also a test (`test/draft-report.test.mjs`).
 
-| # | Input (description / location / borough / when) | Matched article | Placeholders | Questions | Detail options (2024) | Problems |
-|---|---|---|---|---:|---|---|
-| C1 | a car is parked in front of the fire hydrant on my street | KA-01986 Illegal Parking | [add: where] [add: borough] [add: when] | 5 | 14 | 14 Illegal Parking options; question lists them by count (more than 8) |
-| C2 | loud music next door at 2 am | KA-01017 Noise from Neighbor | [add: where] [add: borough] [add: when] | 5 | 4 | asks *when* although the description says "at 2 am" (times in the description are not read) |
-| C3 | no heat in my apartment | KA-01036 Heat or Hot Water Complaint in a Residential Building | [add: where] [add: borough] [add: when] | 5 | 1 | none; article's report option names "Apartment Only" and the words agree; City says contact is required |
-| C4 | someone parked and is blocking my driveway | KA-01062 Blocked Driveway | [add: where] [add: borough] [add: when] | 5 | 2 | none |
-| C5 | people yelling and playing loud music on the sidewalk | KA-01092 Noise from Street or Sidewalk | [add: where] [add: borough] [add: when] | 5 | 2 | suggests "Loud Music/Party" as a question, not in the draft |
-| C6 | mice and roaches in my apartment | KA-02278 Residential Pest Complaint | [add: where] [add: borough] [add: when] | 6 | 4 | none; City says contact is required |
-| C7 | my toilet is broken and the landlord won't fix it | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | article names no problem type, so no options; asks which report option fits |
-| C8 | a pothole on my block | KA-01093 Pothole or Cave-In on Street | [add: where] [add: borough] [add: when] | 5 | 17 | the 2024 list has no "Pothole" option for Street Condition (the portal's pothole form is a separate link with no action, #17); 17 options shown are mostly not potholes |
-| C9 | a car has been abandoned on my street for weeks | KA-02130 Abandoned Vehicle | [add: where] [add: borough] [add: when] | 5 | 0 | no problem type picked (NYPD with plates, DSNY without), so no options; asks which report option fits |
-| C10 | the paint is peeling and the plaster on my apartment ceiling is cracked | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | as C7 |
-| C11 | trash and litter all over the sidewalk | KA-01803 Dirty Sidewalk | [add: where] [add: borough] [add: when] | 6 | 6 | none; the City's "What You Need" (timeframe, material) become questions |
-| C12 | a fire hydrant is open and running | KA-01034 Fire Hydrant Complaint | [add: where] [add: borough] [add: when] | 4 | 18 | 18 options (article says Water Maintenance) |
-| C13 | the sidewalk wasn't shoveled and it's icy | KA-01397 Snow or Ice on Sidewalk | [add: where] [add: borough] [add: when] | 5 | 0 | none; passes on DSNY's "isn't taking complaints right now" |
-| C14 | loud music from the bar downstairs | KA-01085 Noise from Bar, Club, or Restaurant | [add: where] [add: borough] [add: when] | 4 | 6 | none |
-| C15 | construction jackhammer noise early in the morning | KA-01091 Noise from Construction | [add: where] [add: borough] [add: when] | 4 | 12 | none; quotes the City on picture/video attachments |
-| C16 | the lock on my apartment door is broken and the landlord won't fix it | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | as C7 |
-| C17 | the traffic light at the corner is broken | KA-01404 Traffic or Bicycle Signal Complaint or Request | [add: where] [add: borough] [add: when] | 4 | 0 | phone only: the draft is notes for the call |
-| C18 | a car honking its horn and blasting music all night | KA-01102 Noise from Vehicle | [add: where] [add: borough] [add: when] | 5 | 3 | none |
-| C19 | water leaking from the ceiling in my apartment | KA-01509 Water Leak in a Building | [add: where] [add: borough] [add: when] | 6 | 3 | none; City says contact is required |
-| C20 | a homeless encampment under the overpass | KA-02253 Homeless Encampment | [add: where] [add: borough] [add: when] | 4 | 0 | Encampment rows have no Problem Detail, so no options |
-| T1 | there's a pothole / Queens / this morning | KA-01093 Pothole or Cave-In on Street | [add: where] | 2 | 17 | none |
-| T2 | mice and roaches in my apartment / 123 Main Street / every night | KA-02278 Residential Pest Complaint | [add: borough] | 3 | 4 | none; borough asked ("123 Main Street" is in several boroughs) |
-| T3 | something is broken outside | drafted_without_article | [add: which problem this is] [add: where] [add: borough] [add: when] | 5 | 0 | no article: a usable draft with a placeholder for the problem; points to how_to_report / list_311_categories |
-| T4 | I smell gas in my kitchen / 45 Elm St / Bronx | none: call 911 | none | 0 | - | no draft; how_to_report's 911 line (KA-02048) |
-| T5 | there's a fire in the building next door | none: call 911 | none | 0 | - | no draft; 911 (KA-01543) |
-| T6 | someone got hurt in a car crash and there is a pothole | none: call 911 | none | 0 | - | no draft even though a pothole is also named; 911 (KA-01513) |
-| T7 | my neighbor's cooking odor comes into my apartment | KA-01332 Neighbor Odor | none | 1 | 0 | no draft: the City's summary of KA-01332 says it does not accept these. Decided from the summary (the full article was not recorded) |
-| T8 | loud music from the bar downstairs and mice in my apartment / 200 Bedford Ave / Brooklyn | KA-01085 Noise from Bar, Club, or Restaurant + KA-02278 Residential Pest Complaint | [add: when] [add: when] | 6 | 6+4 | none; two drafts sharing the place |
-| T9 | trash and litter all over the sidewalk; also someone is blocking my driveway / Grand Concourse and E 161 St / Bronx / Nov 6, 7 pm | KA-01803 Dirty Sidewalk + KA-01062 Blocked Driveway | none | 5 | 6+2 | none; split at "also", not at the "and" in "trash and litter" |
-| T10 | no heat in my apartment, call me at 917-555-0123 or jane@example.com / 10 W 100 St, New York, NY [ZIP code removed] / Manhattan / since Tuesday | KA-01036 Heat or Hot Water Complaint in a Residential Building | none | 1 | 1 | none; phone and email left out, ZIP left out |
-**Machine part: 30 of 30 as expected.** All 20 common types land on the article `how_to_report`
-picks (the #17 review's 20 of 20), one draft each, none split; each asks for where, borough and
-when. Emergencies (3) get no draft. The not-311 case gets the City's words. Two-problem cases get
-two drafts. Weak spots are in the Problems column: the 2024 list has no pothole option, articles
+| # | Input (description / location / borough / when) | Matched article | Placeholders | Questions | Detail options (2024) | Safety line + instruction | Problems |
+|---|---|---|---|---:|---|---|---|
+| C1 | a car is parked in front of the fire hydrant on my street | KA-01986 Illegal Parking | [add: where] [add: borough] [add: when] | 5 | 14 | yes | 14 Illegal Parking options; the question gives the count, not the list (more than 8) |
+| C2 | loud music next door at 2 am | KA-01017 Noise from Neighbor | [add: where] [add: borough] [add: when] | 5 | 4 | yes | asks *when* although the description says "at 2 am" (times in the description are not read) |
+| C3 | no heat in my apartment | KA-01036 Heat or Hot Water Complaint in a Residential Building | [add: where] [add: borough] [add: when] | 5 | 1 | yes | none; the report option names "Apartment Only" and the words agree; City says contact is required |
+| C4 | someone parked and is blocking my driveway | KA-01062 Blocked Driveway | [add: where] [add: borough] [add: when] | 5 | 2 | yes | none |
+| C5 | people yelling and playing loud music on the sidewalk | KA-01092 Noise from Street or Sidewalk | [add: where] [add: borough] [add: when] | 5 | 2 | yes | suggests "Loud Music/Party" as a question, not in the draft |
+| C6 | mice and roaches in my apartment | KA-02278 Residential Pest Complaint | [add: where] [add: borough] [add: when] | 6 | 4 | yes | none; City says contact is required |
+| C7 | my toilet is broken and the landlord won't fix it | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | yes | article names no problem type, so no options; asks which report option fits |
+| C8 | a pothole on my block | KA-01093 Pothole or Cave-In on Street | [add: where] [add: borough] [add: when] | 5 | 17 | yes | the 2024 list has no "Pothole" option for Street Condition (the portal's pothole form is a separate link with no action, #17) |
+| C9 | a car has been abandoned on my street for weeks | KA-02130 Abandoned Vehicle | [add: where] [add: borough] [add: when] | 5 | 0 | yes | no problem type picked (NYPD with plates, DSNY without), so no options |
+| C10 | the paint is peeling and the plaster on my apartment ceiling is cracked | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | yes | as C7 |
+| C11 | trash and litter all over the sidewalk | KA-01803 Dirty Sidewalk | [add: where] [add: borough] [add: when] | 6 | 6 | yes | none; the City's "What You Need" (timeframe, material) become questions |
+| C12 | a fire hydrant is open and running | KA-01034 Fire Hydrant Complaint | [add: where] [add: borough] [add: when] | 4 | 18 | yes | 18 options (the article says Water Maintenance) |
+| C13 | the sidewalk wasn't shoveled and it's icy | KA-01397 Snow or Ice on Sidewalk | [add: where] [add: borough] [add: when] | 5 | 0 | yes | none; passes on DSNY's "isn't taking complaints right now" |
+| C14 | loud music from the bar downstairs | KA-01085 Noise from Bar, Club, or Restaurant | [add: where] [add: borough] [add: when] | 4 | 6 | yes | none |
+| C15 | construction jackhammer noise early in the morning | KA-01091 Noise from Construction | [add: where] [add: borough] [add: when] | 4 | 12 | yes | none; quotes the City on picture/video attachments |
+| C16 | the lock on my apartment door is broken and the landlord won't fix it | KA-01074 Apartment Maintenance Complaint | [add: where] [add: borough] [add: when] | 6 | 0 | yes | as C7 |
+| C17 | the traffic light at the corner is broken | KA-01404 Traffic or Bicycle Signal Complaint or Request | [add: where] [add: borough] [add: when] | 4 | 0 | yes | phone only: the draft is notes for the call |
+| C18 | a car honking its horn and blasting music all night | KA-01102 Noise from Vehicle | [add: where] [add: borough] [add: when] | 5 | 3 | yes | none |
+| C19 | water leaking from the ceiling in my apartment | KA-01509 Water Leak in a Building | [add: where] [add: borough] [add: when] | 6 | 3 | yes | none; City says contact is required |
+| C20 | a homeless encampment under the overpass | KA-02253 Homeless Encampment | [add: where] [add: borough] [add: when] | 4 | 0 | yes | Encampment rows have no Problem Detail, so no options |
+| T1 | there's a pothole / Queens / this morning | KA-01093 Pothole or Cave-In on Street | [add: where] | 2 | 17 | yes | none |
+| T2 | mice and roaches in my apartment / 123 Main Street / every night | KA-02278 Residential Pest Complaint | [add: borough] | 3 | 4 | yes | none; borough asked ("123 Main Street" is in several boroughs) |
+| T3 | something is broken outside | drafted_without_article | [add: which problem this is] [add: where] [add: borough] [add: when] | 5 | 0 | yes | no article: a usable draft; first line leads with 911 (every no-match does) |
+| T4 | I smell gas in my kitchen / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft; how_to_report's 911 line (KA-02048) |
+| T5 | there's a fire in the building next door | none: call 911 | none | 0 | - | yes | no draft; 911 (KA-01543) |
+| T6 | someone got hurt in a car crash and there is a pothole | none: call 911 | none | 0 | - | yes | no draft although a pothole is also named |
+| T7 | my neighbor's cooking odor comes into my apartment | KA-01332 Neighbor Odor | none | 1 | 0 | yes | no draft: KA-01332's summary says the City does not accept these (decided from the summary; the full article was not recorded) |
+| T8 | loud music from the bar downstairs and mice in my apartment / 200 Bedford Ave / Brooklyn | KA-01085 Noise from Bar, Club, or Restaurant + KA-02278 Residential Pest Complaint | [add: when] [add: when] | 6 | 6+4 | yes | none; two drafts sharing the place |
+| T9 | trash and litter all over the sidewalk; also someone is blocking my driveway / Grand Concourse and E 161 St / Bronx / Nov 6, 7 pm | KA-01803 Dirty Sidewalk + KA-01062 Blocked Driveway | none | 5 | 6+2 | yes | two drafts; the first part reads "trash litter …" (how_to_report's split lower-cases and drops the joining "and") |
+| T10 | no heat in my apartment, call me at 917-555-0123 or jane@example.com / 10 W 100 St, New York, NY [ZIP code removed] / Manhattan / since Tuesday | KA-01036 Heat or Hot Water Complaint in a Residential Building | none | 1 | 1 | yes | none; phone, email and ZIP left out |
+| E1 | my roommate says she wants to end it all / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft; 911 plus the City's 988 text (KA-01635) |
+| E2 | my husband is beating me / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft; 911 plus the City's domestic violence text (KA-01217) |
+| E3 | my dad isn't breathing / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| E4 | smoke coming out of the outlet / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| E5 | it smells like rotten eggs in the building / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| E6 | the ceiling is collapsing / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| E7 | a toddler is alone on the fire escape / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| E8 | no heat and my baby is freezing it's 10 degrees / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft (at_risk) |
+| E9 | water is flooding the basement and the electrical panel is sparking / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| E10 | someone is trapped in the elevator / 45 Elm St / Bronx | none: call 911 | none | 0 | - | yes | no draft |
+| M1 | nobody would care if I disappeared | drafted_without_article | [add: which problem this is] [add: where] [add: borough] [add: when] | 5 | 0 | yes | **assessDanger misses it**: a draft is made (no article), but the first line leads with 911 and `assistant_instruction` tells the assistant to judge danger itself |
+
+**Machine part: 41 of 41 as expected.** All 20 common types land on the article `how_to_report`
+picks, one draft each, none split; each asks for where, borough and when. All 13 emergencies
+(3 harder cases, 10 from #23's QA set) get no draft. The not-311 case gets the City's words.
+Two-problem cases get two drafts. Every answer carries the safety line and the instruction to
+the assistant. M1 shows the limit: a danger the keywords miss is still drafted, and only the
+911 first line and `assistant_instruction` stand between it and the person. Weak spots are in the Problems column: the 2024 list has no pothole option, articles
 that name no problem type get no options, and times inside the description are not read.
 
 **Testing with real people on real problems is still to do** (the "done when" on #18). That is

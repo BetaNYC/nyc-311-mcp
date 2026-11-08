@@ -17,9 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   311 Online's "Look Up Service Requests", `portal.311.nyc.gov/check-status/`). **Files
   nothing, sends nothing, fills no form, never calls the Developer Partner product.** The
   City does not publish each form's fields, and the answer says so.
-- Matching, emergencies and articles come from `how_to_report` (called, not copied). An
-  emergency gets no draft, only how_to_report's 911 answer. A description of two problems
-  in different 311 categories gets one draft each. An article whose summary says the City
+- Matching, emergencies, splitting and articles come from `how_to_report` (called, not
+  copied). No draft whenever `assessDanger` flags danger in the whole description or any
+  part; the answer is how_to_report's own 911 answer (with its 988 and domestic violence
+  text). Every answer starts with `safety_line` and `assistant_instruction`, and every error
+  with the safety line, including argument errors through the tool handler. A description
+  of several problems gets one draft each (`splitProblems`). An article whose summary says the City
   does not take the complaint gets no draft and the City's words.
 - Problem Detail options and response times from NYC Open Data's 311 Service Level
   Agreements (`cs9t-e3x8`), labeled with its last update, 2024-03-05. Read whole (about
