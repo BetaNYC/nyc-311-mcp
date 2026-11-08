@@ -280,5 +280,10 @@ class Oracle:
             WHERE created_date >= CAST({lit(self.win_start)} AS DATE) AND created_date < CAST({lit(month_start)} AS DATE)
               AND status = 'Closed' AND closed_date >= CAST({lit(month_end)} AS DATE) + INTERVAL 1 DAY
             ORDER BY created_date, unique_key""")
+        prior_w = (f"created_date >= CAST({lit(self.win_start)} AS DATE) AND created_date < CAST({lit(month_start)} AS DATE)")
+        no_date = self.q(f"SELECT count(*)::INTEGER AS n FROM {t} WHERE {prior_w} AND status = 'Closed' AND closed_date IS NULL")[0]["n"]
+        open_dated = self.q(f"""SELECT count(*)::INTEGER AS n FROM {t} WHERE {prior_w} AND status IS DISTINCT FROM 'Closed'
+            AND closed_date < CAST({lit(month_end)} AS DATE) + INTERVAL 1 DAY""")[0]["n"]
         return {"new_this_month": [r["unique_key"] for r in fresh], "unresolved_from_prior_months": [r["unique_key"] for r in prior],
-                "unresolved_at_month_end_now_closed": [r["unique_key"] for r in since]}
+                "unresolved_at_month_end_now_closed": [r["unique_key"] for r in since],
+                "record_problems": {"closed_without_close_date": no_date, "not_closed_but_close_date_before_month_end": open_dated}}

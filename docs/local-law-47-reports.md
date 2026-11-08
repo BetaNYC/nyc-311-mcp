@@ -103,7 +103,9 @@ most hourly and saved too.
 **When the portal is slow or down.** One call has a 45 s budget, waits and retries included. The
 asked-for month is fetched first, then the rest of the fiscal year. Months not reached are listed in
 `months_missing`, the fiscal-year section says `complete: false` and gives no partial total, and
-asking again finishes from the saved months. Requests are never sent in parallel (engineering
+asking again finishes from the saved months. With 2 s pacing and about 10 to 13 s per
+month, a cold fiscal-year-to-date call **usually comes back `complete: false` the first time**; a
+second call completes it from the saved months. Requests are never sent in parallel (engineering
 standards §6 forbids it for one portal), so this is how a cold fiscal year stays inside client
 timeouts. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
 and a caveat; with no saved copy for the asked-for month, the tool says so and does not answer.
@@ -125,8 +127,14 @@ One community district, in three parts, in this order:
 
 Open data keeps only each request's current status, so a past status cannot be rebuilt. For any
 month other than the newest complete one the answer says so plainly (`status_note`, and a
-caveat): "unresolved" is as of `status_as_of` (the build), and the City's § 1075(d) list would
-show the status when it was sent. The third part is what can be rebuilt of the month-end view.
+caveat): "unresolved" is as of `status_as_of` (the build), and a § 1075(d) list sent at the month's end
+would show the status as of then. The third part is what can be rebuilt of the month-end view.
+
+Two kinds of inconsistent City records are counted in `record_problems`, with a caveat when
+either is above zero. Requests marked Closed with no close date cannot be placed in the third
+part, so they are left out (Manhattan CD 1 before 2024-03: 1,520). Requests not Closed today but
+carrying a close date before the month's end are listed as unresolved, by their current status
+(Manhattan CD 1, 2024-03: 391).
 
 Each row: `section`, `sr_number`, `created`, `closed`, `category`, `description`, `agency`,
 `agency_name`, `status` (current, as of the build, which is what § 1075(d)(3) asks), `address`
@@ -152,10 +160,11 @@ written from the law's list and BoardStat's columns. Build 2026-11-07T10:36:39Z:
 | L3 | Service request report, citywide, every district file, same | 2,860 | 0 |
 | L4 | Service request report, citywide, month file, same | 680 | 0 |
 | L5 | Service request report, Queens, month file, 2026-10 | 295 | 0 |
-| L6 | § 1075(d) list, Manhattan CD 1, 2026-10, first page of 1,000 | 1,004 | 0 |
-| L7 | § 1075(d) list, Manhattan CD 1, 2026-10, the page where the parts meet | 1,004 | 0 |
+| L6 | § 1075(d) list, Manhattan CD 1, 2026-10, first page of 1,000 | 1,006 | 0 |
+| L7 | § 1075(d) list, Manhattan CD 1, 2026-10, the page where the parts meet | 1,006 | 0 |
 | L8 | § 1075(d) list, Bronx CD 5, 2026-09, unresolved part | 1,001 | 0 |
-| L9 | § 1075(d) list, Brooklyn CD 1, 2024-03, unresolved at month end and closed since | 1,001 | 0 |
+| L9 | § 1075(d) list, Brooklyn CD 1, 2024-03, unresolved at month end and closed since | 1,002 | 0 |
+| L10 | § 1075(d) list, Manhattan CD 1, 2024-03, record-problem counts | 2 | 0 |
 
 Mutation check: counting every status except Open as closed, in `dist/`, gives 58, 152 and 312
 mismatches in L1 to L3 and fails 4 unit tests.

@@ -183,6 +183,7 @@ for (const [cd, month, key] of [[484, "2025-10", "cb_484_2025_10"], [101, "2026-
     assert.equal(data.counts.new_this_month, want.new_this_month.length);
     assert.equal(data.counts.unresolved_from_prior_months, want.unresolved_from_prior_months.length);
     assert.equal(data.counts.unresolved_at_month_end_now_closed, want.unresolved_at_month_end_now_closed.length);
+    assert.deepEqual(data.record_problems, want.record_problems);
     assert.deepEqual(data.rows.map((r) => r.sr_number), [
       ...want.new_this_month,
       ...want.unresolved_from_prior_months,
@@ -229,7 +230,7 @@ test("cb_monthly_list for an older month says plainly that 'unresolved' is as of
   const old = await run("cb_monthly_list", { community_district: 484, month: "2025-10" });
   assert.equal(old.data.status_as_of, MANIFEST.generated_at);
   assert.match(old.data.status_note, /not closed when this data was built .* not at the end of 2025-10/);
-  assert.match(old.data.status_note, /City's § 1075\(d\) list would show the status when it was sent/);
+  assert.match(old.data.status_note, /A § 1075\(d\) list sent at the month's end would show the status as of then/);
   assert.ok(old.env.caveats.some((c) => c === old.data.status_note));
   const newest = await run("cb_monthly_list", { community_district: 484 });
   assert.equal(newest.data.month.start, "2026-10-01");
@@ -506,4 +507,27 @@ test("the Socrata client's deadline bounds retries and waits", async () => {
   const { soda, requests } = await fixtureSoda({ respond: async () => new Response("busy", { status: 503 }), cost: 10_000 });
   await assert.rejects(soda.getJson("/resource/wewp-mm3p.json", { $limit: "1" }, { deadline: soda.clock() + 15_000 }), /Ran out of time/);
   assert.ok(requests.length <= 2, `${requests.length} requests`);
+});
+
+test("cb_monthly_list counts inconsistent City records and says so in a caveat (QA round 2 on #21)", async () => {
+  const created = new Date("2025-01-05T10:00:00Z");
+  const rows = {
+    open: [{ unique_key: "a", created_date: created, closed_date: new Date("2025-02-01T00:00:00Z"), status: "Open", agency: "NYPD", complaint_type_raw: "Noise" }],
+    closedNoDate: [{ created_date: created, closed_date: null, is_closed: true }, { created_date: created, closed_date: null, is_closed: true }],
+  };
+  const reader = {
+    siteUrl: "https://www.beta.nyc/boardstat/",
+    manifest: async () => ({ manifest: MANIFEST, stale: false }),
+    readParquet: async (_f, opts) => ({
+      manifest: { manifest: MANIFEST, stale: false },
+      rows:
+        opts.filter.is_closed?.$eq === false ? rows.open
+        : opts.filter.is_closed?.$eq === true && !opts.filter.closed_date ? rows.closedNoDate
+        : [],
+    }),
+  };
+  const env = await cbMonthlyList(reader, { community_district: 101, month: "2025-10" });
+  assert.deepEqual(env.data.record_problems, { closed_without_close_date: 2, not_closed_but_close_date_before_month_end: 1 });
+  assert.ok(env.caveats.some((c) => /^2 requests created before 2025-10 are marked Closed but have no close date/.test(c)));
+  assert.ok(env.caveats.some((c) => /City records are inconsistent for 1 requests/.test(c)));
 });
