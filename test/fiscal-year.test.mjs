@@ -46,6 +46,8 @@ test("resolvePeriod: the current fiscal year is cut to the data and called year 
   assert.equal(p.start, "2026-07-01");
   assert.equal(p.end, "2026-11-07");
   assert.match(p.notes.join(" "), /fiscal year to date/);
+  // The label names the dates covered, not the whole year (QA on #21).
+  assert.equal(p.label, "FY2027 to date (2026-07-01 to 2026-11-07)");
 });
 
 test("resolvePeriod: FY2020 starts at the data start, with a note", () => {
@@ -53,6 +55,11 @@ test("resolvePeriod: FY2020 starts at the data start, with a note", () => {
   assert.equal(p.start, DATA_START);
   assert.equal(p.end, "2020-06-30");
   assert.match(p.notes[0], /data begins 2020-01-01/);
+  assert.equal(p.label, "FY2020 (2020-01-01 to 2020-06-30)");
+});
+
+test("resolvePeriod: a calendar range cut to the data is labeled with the dates it covers", () => {
+  assert.equal(resolvePeriod({ from_date: "2019-06-01", to_date: "2030-01-01" }, WINDOW).label, `${DATA_START} to 2026-11-07`);
 });
 
 test("resolvePeriod: calendar ranges, open ends and fallback", () => {

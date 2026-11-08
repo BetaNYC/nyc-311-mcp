@@ -131,7 +131,7 @@ export function resolvePeriod(
   }
 
   const notes: string[] = [];
-  const label = fiscal_year !== undefined ? `FY${fiscal_year} (${start} to ${end})` : `${start} to ${end}`;
+  let toDate = false;
   if (start < window.start) {
     notes.push(`The data begins ${window.start}, so the period starts there rather than ${start}.`);
     start = window.start;
@@ -143,7 +143,12 @@ export function resolvePeriod(
         : `The data runs to ${window.end}, so the period ends there rather than ${end}.`
     );
     end = window.end;
+    toDate = true;
   }
+  // The label names the dates actually covered, after any cut (QA on #21): a fiscal year that
+  // is not over reads "FY2027 to date (2026-07-01 to 2026-11-04)", never the whole year.
+  const label =
+    fiscal_year !== undefined ? `FY${fiscal_year}${toDate ? " to date" : ""} (${start} to ${end})` : `${start} to ${end}`;
   return { start, end, fiscal_year, label, notes };
 }
 
