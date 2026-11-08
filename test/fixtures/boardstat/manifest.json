@@ -1495,12 +1495,14 @@
   "311 counts reflect who reports problems and how, not only how many problems exist."
  ],
  "files": {
-  "addresses.parquet": 3892,
+  "addresses.parquet": 3990,
   "agg/month_type.parquet": 29207,
   "boundaries/cc.geojson": 7219,
   "boundaries/cd.geojson": 5558,
   "detail/cc/1.parquet": 25480,
   "detail/cd/101.parquet": 23949,
-  "detail/cd/484.parquet": 52251
+  "detail/cd/102.parquet": 19019,
+  "detail/cd/484.parquet": 52251,
+  "expected.json": 9895
  }
 }

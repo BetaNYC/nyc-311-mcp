@@ -4,7 +4,9 @@
 // own page queries, not from this package's code).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runDistrictTool, resolveDistrict, shiftMonths, median, toolPeriod, DISTRICT_TOOLS } from "../dist/district-tools.js";
+import { runDistrictTool, resolveDistrict, shiftMonths, median, toolPeriod, priorWindow, nycLocal, DISTRICT_TOOLS } from "../dist/district-tools.js";
+import { assertNoZipValues, districtEnvelope, redactZip } from "../dist/envelope.js";
+import { BoardStatData } from "../dist/boardstat-data.js";
 import { citySpellings, isPlaceholderAddress } from "../dist/address-spelling.js";
 import { parseToolArgs } from "../dist/tools.js";
 import { EXPECTED, MANIFEST, fixtureData, pick } from "./district-fixture.mjs";
@@ -191,7 +193,8 @@ test("citySpellings: BoardStat's own rules, plus digits and words for numbered s
   assert.equal(citySpellings("1 Avenue S").spellings[0], "1 AVENUE S", "a trailing S is a lettered avenue, not South");
   const z = citySpellings("114 Nassau Ave, Brooklyn, NY 11222");
   assert.equal(z.dropped_zip, true);
-  assert.equal(z.dropped_after_comma, "BROOKLYN, NY");
+  assert.equal(z.ignored_text, "BROOKLYN, NY");
+  assert.equal(z.borough_hint, "Brooklyn");
   assert.ok(!JSON.stringify(z).includes("11222"), "the ZIP code is not kept anywhere");
   assert.ok(isPlaceholderAddress("-999 RODNEY ST") && isPlaceholderAddress("*** WEB/MAP CALL SOURCE") && !isPlaceholderAddress("1 MAIN STREET"));
 });
@@ -221,7 +224,7 @@ test("find_district: not found says so plainly and suggests the City's spelling"
 });
 
 test("address_history needs a borough when an address is in several places", async () => {
-  await assert.rejects(run("address_history", { address: "350 5 Ave" }), /more than one place.*Give a borough/s);
+  await assert.rejects(run("address_history", { address: "350 5 Ave" }), /more than one borough.*Give a borough/s);
 });
 
 // ── Tool definitions ─────────────────────────────────────────────────────────
@@ -255,4 +258,125 @@ test("each district tool's advertised JSON schema names exactly the parameters i
   for (const t of DISTRICT_TOOLS) {
     assert.deepEqual(Object.keys(t.inputSchema.properties).sort(), Object.keys(DISTRICT_ARG_SHAPES[t.name]).sort(), t.name);
   }
+});
+
+// ── QA round 1 on #20 ────────────────────────────────────────────────────────
+
+test("citySpellings: city, borough, state and ZIP after the street are dropped without a comma, too", () => {
+  for (const typed of ["350 5th Ave New York NY 10118", "350 5th Ave, New York, NY 10118", "350 5th Ave NYC", "350 5th Ave 10118 New York"]) {
+    const sp = citySpellings(typed);
+    assert.equal(sp.spellings[0], "350 5 AVENUE", typed);
+    assert.ok(!JSON.stringify(sp).includes("10118"), `${typed}: ZIP kept`);
+  }
+  const man = citySpellings("350 5th Ave Manhattan");
+  assert.equal(man.spellings[0], "350 5 AVENUE");
+  assert.equal(man.borough_hint, "Manhattan");
+  assert.equal(citySpellings("10001 4th Ave").spellings[0], "10001 4 AVENUE", "a five-digit house number is kept");
+  assert.equal(citySpellings("79-01 Queens Blvd").spellings[0], "79-01 QUEENS BOULEVARD", "QUEENS inside the street name is kept");
+  assert.equal(citySpellings("100 New York Ave Brooklyn").spellings[0], "100 NEW YORK AVENUE");
+  assert.equal(citySpellings("1 Staten Island Blvd").spellings[0], "1 STATEN ISLAND BOULEVARD");
+});
+
+test("find_district: a borough named in the address narrows the match; 'New York NY 10118' no longer blocks it", async () => {
+  const man = await run("find_district", { address: "350 5th Ave Manhattan" });
+  assert.deepEqual([...new Set(man.data.matches.map((m) => m.borough))], ["Manhattan"]);
+  assert.match(man.env.caveats.join(" "), /Only Manhattan was searched/);
+  const full = await run("find_district", { address: "350 5th Ave New York NY 10118" });
+  assert.equal(full.data.found, true);
+  assert.ok(!JSON.stringify(full.env).includes("10118"));
+  const house = await run("find_district", { address: "10001 4th Ave" });
+  assert.equal(house.data.matches[0].address, "10001 4 AVENUE");
+});
+
+test("redactZip: ZIP codes in free text are removed; house numbers and other numbers are kept", () => {
+  assert.equal(
+    redactZip("Call 311 or visit 100 Gold St, New York, NY 10038. You can also"),
+    "Call 311 or visit 100 Gold St, New York, NY [ZIP code removed]. You can also"
+  );
+  assert.equal(redactZip("NY 10010-1234"), "NY [ZIP code removed]");
+  assert.equal(redactZip("730 11363"), "730 [ZIP code removed]", "a junk address whose street is a ZIP");
+  assert.equal(redactZip("10001 4 AVENUE"), "10001 4 AVENUE");
+  assert.equal(redactZip("Building 12345 was inspected"), "Building 12345 was inspected");
+  assert.equal(redactZip("SR 311-12345678"), "SR 311-12345678");
+  assert.equal(redactZip(null), null);
+});
+
+test("no answer can carry a ZIP code in a value either: the envelope refuses it", () => {
+  assert.throws(
+    () => districtEnvelope({ manifest: MANIFEST, siteUrl: "https://www.beta.nyc/boardstat/", data: { rows: [{ resolution: "visit 33 Beaver St, New York, NY 10010." }] } }),
+    /ZIP code was about to be returned/
+  );
+  assert.throws(() => assertNoZipValues({ a: ["NY 11222"] }), /a\[0\]/);
+  assert.doesNotThrow(() => assertNoZipValues({ address: "10001 4 AVENUE", when: "2026-11-04 02:05:23", n: 10001 }));
+});
+
+test("address_history: an address straddling a district line uses the district with the most requests and names the other", async () => {
+  const want = EXPECTED.address_history_straddle;
+  const { env, data } = await run("address_history", { address: "Greenwich St", borough: "Manhattan" });
+  assert.equal(data.community_district.id, want.chosen.cd);
+  assert.equal(data.requests, want.chosen.requests);
+  const note = env.caveats.find((c) => /another district/.test(c));
+  assert.ok(note, env.caveats.join("\n"));
+  assert.match(note, new RegExp(`Manhattan CD 2 \\(${want.other.requests}\\)`));
+  const other = await run("address_history", { address: "Greenwich St", borough: "Manhattan", community_district: 102 });
+  assert.equal(other.data.community_district.id, 102);
+  assert.equal(other.data.requests, want.other.requests);
+  assert.deepEqual(other.data.newest_first.slice(0, 5).map((r) => r.sr_number), want.other.newest_sr_numbers);
+  await assert.rejects(run("address_history", { address: "Greenwich St", community_district: 484 }), /not in Queens Joint Interest Area 484/);
+});
+
+test("one tool call reads one build, even when BoardStat publishes a new one mid-call", async () => {
+  let manifestCalls = 0;
+  const B = { ...MANIFEST, generated_at: "2026-11-08T10:36:39Z" };
+  const { data: base } = await fixtureData();
+  const fetch = async (url) => {
+    const rel = String(url).slice("https://www.beta.nyc/boardstat/data/".length);
+    if (rel === "manifest.json") return Response.json(++manifestCalls === 1 ? MANIFEST : B);
+    const { readFile } = await import("node:fs/promises");
+    const path = await import("node:path");
+    const { FIX } = await import("./district-fixture.mjs");
+    return new Response(await readFile(path.join(FIX, ...rel.split("/"))));
+  };
+  // TTL 0: an unpinned client would ask for the manifest on every read and switch builds.
+  const data = new BoardStatData({ dataUrl: base.dataUrl, cacheDir: base.cacheDir, fetch, logger: () => {}, manifestTtlMs: 0 });
+  const env = await runDistrictTool("district_summary", { community_district: 484 }, data);
+  assert.equal(env.data_as_of, MANIFEST.generated_at);
+  assert.equal(manifestCalls, 1, "the call asked for the manifest more than once");
+});
+
+test("toolPeriod and the year-earlier window, with explicit dates", () => {
+  const W = (o) => ({ ...MANIFEST, window: { ...MANIFEST.window, ...o } });
+  const m = MANIFEST; // window 2020-01-01 .. newest request 2026-11-04 02:05:23
+  // FY boundaries: July 1 to June 30.
+  assert.deepEqual([toolPeriod({ fiscal_year: 2026 }, m, "view").start, toolPeriod({ fiscal_year: 2026 }, m, "view").end], ["2025-07-01", "2026-06-30"]);
+  assert.deepEqual([toolPeriod({ fiscal_year: "FY21" }, m, "view").start, toolPeriod({ fiscal_year: "FY21" }, m, "view").end], ["2020-07-01", "2021-06-30"]);
+  // FY2020 starts before the data: cut to 2020-01-01, with a note.
+  const fy20 = toolPeriod({ fiscal_year: 2020 }, m, "view");
+  assert.deepEqual([fy20.start, fy20.end], ["2020-01-01", "2020-06-30"]);
+  assert.match(fy20.notes.join(" "), /data begins 2020-01-01/);
+  // last_days across a month end and a leap day.
+  const leap = W({ last_created: "2024-03-01 09:00:00", end: "2024-03-02" });
+  assert.deepEqual([toolPeriod({ last_days: 2 }, leap, "view").start, toolPeriod({ last_days: 2 }, leap, "view").end], ["2024-02-29", "2024-03-01"]);
+  assert.equal(toolPeriod({ last_days: 1 }, m, "view").start, "2026-11-04");
+  // Year-earlier windows.
+  const pw = (start, end, mm = m) => priorWindow({ start, end, label: "", notes: [] }, mm);
+  const mid = pw("2024-03-01", "2024-03-31");
+  assert.equal(mid.from.toISOString(), "2023-03-01T00:00:00.000Z");
+  assert.equal(mid.toExclusive.toISOString(), "2023-04-01T00:00:00.000Z");
+  assert.equal(mid.label, "2023-03-01 to 2023-03-31");
+  const leapStart = pw("2024-02-29", "2024-02-29");
+  assert.equal(leapStart.from.toISOString(), "2023-02-28T00:00:00.000Z", "Feb 29 a year back is Feb 28");
+  assert.equal(leapStart.toExclusive.toISOString(), "2023-03-01T00:00:00.000Z");
+  const toNewest = pw("2026-07-01", "2026-11-04");
+  assert.equal(toNewest.from.toISOString(), "2025-07-01T00:00:00.000Z");
+  assert.equal(toNewest.toInclusive.toISOString(), "2025-11-04T02:05:23.000Z", "stops at the newest request's minute, a year back");
+  assert.match(pw("2020-06-01", "2020-06-30").none, /start before BoardStat's data/);
+  assert.equal(pw("2021-01-01", "2021-01-31").label, "2020-01-01 to 2020-01-31");
+});
+
+test("nycLocal: the build time in New York local time, across daylight saving", () => {
+  assert.equal(nycLocal("2026-11-07T10:36:39Z"), "2026-11-07 05:36:39", "EST, UTC-5");
+  assert.equal(nycLocal("2026-07-01T10:00:00Z"), "2026-07-01 06:00:00", "EDT, UTC-4");
+  assert.equal(nycLocal("2026-03-08T07:30:00Z"), "2026-03-08 03:30:00", "just after the spring change");
+  assert.equal(nycLocal("2026-11-01T05:30:00Z"), "2026-11-01 01:30:00", "the repeated hour, first pass");
 });

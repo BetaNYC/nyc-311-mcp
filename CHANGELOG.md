@@ -20,6 +20,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `boardstat_url` can carry descriptions (`desc`, `descx`); an answer served from the
   cache while beta.nyc is unreachable now says so with `stale: true` and a caveat.
 
+### Fixed (QA round 1 on #20)
+
+- Parallel tool calls on a cold cache no longer race on `manifest-state.json` (ENOENT on
+  rename, seen in CI on Node 20 and 22): one manifest refresh is shared, and each state
+  write uses its own temporary name.
+- ZIP codes in free text (agency resolution text, City addresses) are removed before an
+  answer leaves, and every string in an answer is checked for one.
+- `find_district` / `address_history` accept a city, borough, state or ZIP after the street
+  without a comma; a named borough narrows the match.
+- `address_history` no longer stops when one address straddles two districts: it uses the
+  district with the most requests, names the other, and accepts `community_district`.
+- One tool call reads one BoardStat build (`BoardStatData.pinned()`).
+- Ties sort in plain character order, as DuckDB and the BoardStat page do.
+
 ### Fixed (Phase 0 follow-up, QA round 2 on #19)
 
 - A newer build arriving during a download or read no longer deletes the folder in use

@@ -16,6 +16,8 @@ What each fixture is:
 - detail/cd/101.parquet    the first 150 rows plus the last 50 rows (open requests sit last)
 - detail/cd/484.parquet    the real file, unchanged (the smallest district file, ~52 KB)
 - detail/cc/1.parquet      the first 150 rows plus the last 50 rows (Phase 1)
+- detail/cd/102.parquet    only the requests at GREENWICH STREET, which straddles cd 101
+                           and cd 102 (Phase 1, address_history)
 - addresses.parquet        200 rows from cd 101, then the cd 484 addresses and a few
                            spelling cases for find_district (Phase 1), sorted by address
                            within each part so the cd 101 rows stay first
@@ -37,7 +39,10 @@ from boardstat_oracle import Oracle  # noqa: E402
 
 # Spelling cases for find_district: the same building written two ways, an ST that
 # means SAINT, and a word ordinal (2026-11-07 build).
-SPELLING_CASES = ("350 5 AVENUE", "350 FIFTH AVENUE", "76 ST NICHOLAS PLACE", "1530 WEST EIGHTH STREET", "1000 5 AVENUE")
+SPELLING_CASES = ("350 5 AVENUE", "350 FIFTH AVENUE", "76 ST NICHOLAS PLACE", "1530 WEST EIGHTH STREET", "1000 5 AVENUE",
+                  "1501 UNDERCLIFF AVENUE", "10001 4 AVENUE")
+# An address that straddles a district line: more requests in cd 101 than cd 102.
+STRADDLE = "GREENWICH STREET"
 
 OPTS = "(FORMAT parquet, COMPRESSION zstd, ROW_GROUP_SIZE 50000)"
 
@@ -82,8 +87,13 @@ def main() -> None:
               ORDER BY file_row_number)
         TO {lit(out / 'detail/cc/1.parquet')} {OPTS}""")
 
+    con.execute(f"""
+        COPY (SELECT * FROM read_parquet({lit(src / 'detail/cd/102.parquet')}) WHERE address_norm = {lit(STRADDLE)}
+              ORDER BY is_closed DESC, created_date, unique_key)
+        TO {lit(out / 'detail/cd/102.parquet')} {OPTS}""")
+
     addr = lit(src / "addresses.parquet")
-    cases = ", ".join(lit(a) for a in SPELLING_CASES)
+    cases = ", ".join(lit(a) for a in (*SPELLING_CASES, STRADDLE))
     con.execute(f"""
         COPY (
           SELECT * EXCLUDE (part) FROM (
@@ -124,6 +134,11 @@ def main() -> None:
         "problem_trend_noise": o.problem_trend("cd", 484, "2025-07-01", last, ["Noise - Street/Sidewalk"]),
         "district_summary_fy2027": o.district_summary("cd", 484, "2026-07-01", last, "Queens"),
         "address_history_top": {"address": top_addr, **o.address_history(484, [top_addr], o.win_start, last)},
+        "address_history_straddle": {
+            "address": STRADDLE,
+            "chosen": {"cd": 101, **o.address_history(101, [STRADDLE], o.win_start, last)},
+            "other": {"cd": 102, **o.address_history(102, [STRADDLE], o.win_start, last)},
+        },
     }
     (out / "expected.json").write_text(json.dumps(expected, indent=1, default=str) + "\n")
 

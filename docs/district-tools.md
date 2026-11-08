@@ -135,7 +135,11 @@ and reaches no host but beta.nyc. Phase 0 ships the exact-match primitive
 (`lookupAddress`, after BoardStat's own normalization: trimmed, spaces collapsed, upper
 case). One address string can be in several boroughs, so all matches are returned.
 
-**City spelling (Phase 1).** `src/address-spelling.ts` ports BoardStat's own address
+**City spelling (Phase 1).** Trailing city, borough and state words, and ZIP codes, are
+dropped whether or not a comma comes first ("350 5th Ave New York NY 10118",
+"350 5th Ave Manhattan"). They are matched only at the end, so `QUEENS BOULEVARD` and
+`NEW YORK AVENUE` keep them. A borough named there narrows the match, unless nothing is in
+that borough. Then: `src/address-spelling.ts` ports BoardStat's own address
 search (`v2/site/js/index.js`, `normalizeAddress`), so this server and the BoardStat page find
 the same addresses: upper case, periods removed, everything after the first comma dropped, a
 trailing ZIP code dropped and never used, ordinal endings dropped (`5TH` to `5`), `E/W/N/S`
@@ -169,6 +173,22 @@ Still open:
 | `still_open` | detail file, open rows only (they sit at the end of the file) | all data, 2020 on |
 | `top_addresses` | detail file | opening view |
 | `address_history` | `addresses.parquet`, then the address's community district file | all data |
+
+**One address, two districts.** BoardStat places each request by its own point, so an
+address can straddle a district line (`1501 UNDERCLIFF AVENUE`, Bronx: 4,025 requests in
+CD 5, 1 in CD 4). `address_history` uses the district with the most requests, names the
+others with their exact counts in a caveat, and takes `community_district` to choose
+another.
+
+**One build per answer.** Each tool call pins one manifest (`BoardStatData.pinned()`), so
+an answer never mixes two nightly builds. If BoardStat publishes a new build while a call is
+reading, the call fails and says to ask again, rather than combining the two.
+
+**Cost.** Every number comes from the district's detail file, as on the page. A question
+over all the data (2020 on) for the largest district, Council District 11 (940,801
+requests), takes 1 to 2 seconds and peaks at about 700 MB of memory. A one-year question
+there peaks at about 330 MB. The descriptor column is read only when a description filter
+needs it.
 | `boardstat_link` | the manifest; the month file to check problem names | the page's own default |
 | `boardstat_status` | the manifest | none |
 
@@ -209,6 +229,7 @@ Each rule is BoardStat's, from `v2/site/js/district.js`, so the numbers are the 
   requests, top 10 by the district's count (`renderCompare`).
 - Top addresses: requests with a street address, by `address_norm`, most first, ties by
   address (`renderAddresses`). The most common problem breaks ties by name.
+- Ties are broken in plain character order, as DuckDB sorts text, not in locale order.
 
 **Links.** `boardstat_url` uses only the parameters `district.js` `readState()` reads: `geo`,
 `id`, `start`, `end`, `type`, `desc`, `descx`, `agency`, `status`. Addresses are never put in

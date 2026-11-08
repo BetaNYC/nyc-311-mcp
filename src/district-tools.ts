@@ -20,9 +20,9 @@
 //     (district.js renderCompare).
 
 import { z } from "zod";
-import { BoardStatData, dataWindow, type BoardStatManifest, type ManifestResult } from "./boardstat-data.js";
+import { BoardStatData, dataWindow, type BoardStatManifest, type ManifestResult, type PinnedBoardStat } from "./boardstat-data.js";
 import { citySpellings, isPlaceholderAddress } from "./address-spelling.js";
-import { districtEnvelope, type BoardStatLinkFilters, type DistrictEnvelope } from "./envelope.js";
+import { districtEnvelope, redactZip, type BoardStatLinkFilters, type DistrictEnvelope } from "./envelope.js";
 import { PERIOD_ARG_SHAPE, PERIOD_JSON_PROPERTIES, resolvePeriod, type Period } from "./fiscal-year.js";
 
 // ─── The data client ──────────────────────────────────────────────────────────
@@ -39,6 +39,14 @@ export function boardstatData(): BoardStatData {
 export function setBoardStatData(data: BoardStatData | null): void {
   shared = data;
 }
+
+/** What the tools read through: one build, pinned for the whole call (BoardStatData.pinned()). */
+type Reader = PinnedBoardStat;
+type Source = BoardStatData | PinnedBoardStat;
+const pin = async (src: Source): Promise<Reader> => (src instanceof BoardStatData ? src.pinned() : src);
+
+/** Plain code-unit order, as DuckDB and the BoardStat page sort text (not locale order). */
+const byText = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
 // ─── Districts ────────────────────────────────────────────────────────────────
 
@@ -153,7 +161,7 @@ function fmtLocal(d: unknown): string | null {
 }
 
 /** The build time in New York local time, as BoardStat measures "days open" (district.js nycLocal). */
-function nycLocal(iso: string): string {
+export function nycLocal(iso: string): string {
   const f = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
     hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23",
@@ -250,7 +258,7 @@ const descOf = (r: Row) => (r.descriptor == null ? "(none)" : String(r.descripto
 
 /** The problem names BoardStat uses (its grouped complaint_type), from the city rows of the month file. */
 let typeCache: { build: string; types: string[] } | null = null;
-async function problemNames(data: BoardStatData): Promise<string[]> {
+async function problemNames(data: Reader): Promise<string[]> {
   const { manifest } = await data.manifest();
   if (typeCache?.build === manifest.generated_at) return typeCache.types;
   const { rows } = await data.readParquet("agg/month_type.parquet", {
@@ -263,7 +271,7 @@ async function problemNames(data: BoardStatData): Promise<string[]> {
 }
 
 /** Map each requested problem to BoardStat's exact name (case-insensitive), or fail with suggestions. */
-export async function canonicalProblems(data: BoardStatData, asked: string[] | undefined): Promise<string[] | undefined> {
+export async function canonicalProblems(data: Reader, asked: string[] | undefined): Promise<string[] | undefined> {
   if (!asked?.length) return undefined;
   const names = await problemNames(data);
   const out: string[] = [];
@@ -295,7 +303,7 @@ function canonicalDescriptions(rows: Row[], f: Filters): string[] | undefined {
   for (const a of f.descriptions) {
     const hit = [...counts.keys()].find((k) => k.toLowerCase() === a.trim().toLowerCase());
     if (!hit) {
-      const top = [...counts].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0])).slice(0, 15).map(([k]) => `'${k}'`);
+      const top = [...counts].sort((x, y) => y[1] - x[1] || byText(x[0], y[0])).slice(0, 15).map(([k]) => `'${redactZip(k)}'`);
       throw new Error(
         `No request${f.problems?.length ? ` for ${f.problems.join(", ")}` : ""} in this district and period has the description '${a}'.` +
           (top.length ? ` The descriptions used are: ${top.join(", ")}.` : "")
@@ -347,7 +355,7 @@ function linkFilters(d: District, p: Period | null, f: Filters): BoardStatLinkFi
 
 /** Rows of a district's detail file created in [from, toExclusive), or all of them. */
 async function readDetail(
-  data: BoardStatData,
+  data: Reader,
   d: District,
   columns: string[],
   range: { from?: Date; toExclusive?: Date; openOnly?: boolean; addresses?: string[] } = {}
@@ -371,6 +379,9 @@ async function readDetail(
   }
   return data.readParquet(d.file, { columns: [...cols], filter: Object.keys(filter).length ? filter : undefined });
 }
+
+/** The descriptor column only when a description filter needs it: it is the widest text read. */
+const descCol = (args: { descriptions?: string[] }) => (args.descriptions?.length ? ["descriptor"] : []);
 
 function closedDays(r: Row): number | null {
   return isClosed(r) && typeof r.days_to_close === "number" ? r.days_to_close : null;
@@ -410,7 +421,7 @@ function inPeriod(p: Period) {
  * The "same days a year earlier" window for a period, as the page's monthly chart
  * builds it, or null (with the reason) when the data does not reach back that far.
  */
-function priorWindow(p: Period, m: BoardStatManifest): { from: Date; toExclusive?: Date; toInclusive?: Date; label: string } | { none: string } {
+export function priorWindow(p: Period, m: BoardStatManifest): { from: Date; toExclusive?: Date; toInclusive?: Date; label: string } | { none: string } {
   const startPrior = shiftMonths(p.start, -12);
   if (startPrior < m.window.start) {
     return { none: `The same days a year earlier (from ${startPrior}) start before BoardStat's data (${m.window.start}), so there is no comparison.` };
@@ -517,7 +528,7 @@ const FIND_SHAPE = {
 
 type AddressHit = { address: string; borough: string; cd: number; cc: number; requests: number };
 
-async function findAddress(data: BoardStatData, address: string, borough?: string) {
+async function findAddress(data: Reader, address: string, borough?: string) {
   const sp = citySpellings(address);
   const { rows, manifest } = await data.readParquet("addresses.parquet", {
     columns: ["address", "cd", "cc", "borough", "n"],
@@ -525,20 +536,30 @@ async function findAddress(data: BoardStatData, address: string, borough?: strin
   });
   // addresses.parquet has one row per address and ZIP code; the ZIP is never read, so
   // rows that differ only by ZIP are added together here.
-  const merged = new Map<string, AddressHit>();
-  for (const r of rows) {
-    if (borough && String(r.borough) !== borough) continue;
-    const key = `${r.address}|${r.borough}|${r.cd}|${r.cc}`;
-    const prev = merged.get(key);
-    if (prev) prev.requests += Number(r.n);
-    else merged.set(key, { address: String(r.address), borough: String(r.borough), cd: Number(r.cd), cc: Number(r.cc), requests: Number(r.n) });
+  const collect = (only?: string) => {
+    const merged = new Map<string, AddressHit>();
+    for (const r of rows) {
+      if (only && String(r.borough) !== only) continue;
+      const key = `${r.address}|${r.borough}|${r.cd}|${r.cc}`;
+      const prev = merged.get(key);
+      if (prev) prev.requests += Number(r.n);
+      else merged.set(key, { address: String(r.address), borough: String(r.borough), cd: Number(r.cd), cc: Number(r.cc), requests: Number(r.n) });
+    }
+    return [...merged.values()].sort((a, b) => b.requests - a.requests || byText(a.address, b.address));
+  };
+  // A borough the person named in the address ("… Ave, Brooklyn") narrows the match,
+  // unless nothing is there, in which case every borough is shown.
+  let hits = collect(borough ?? sp.borough_hint ?? undefined);
+  let boroughFromText: string | null = !borough && sp.borough_hint ? sp.borough_hint : null;
+  if (!hits.length && boroughFromText) {
+    hits = collect();
+    boroughFromText = null;
   }
-  const hits = [...merged.values()].sort((a, b) => b.requests - a.requests || a.address.localeCompare(b.address));
-  return { spelling: sp, hits, manifest };
+  return { spelling: sp, hits, manifest, boroughFromText };
 }
 
 /** Closest City spellings when nothing matched: same house number and first street word, BoardStat-style prefix search. */
-async function suggestAddresses(data: BoardStatData, spelling: string, borough?: string) {
+async function suggestAddresses(data: Reader, spelling: string, borough?: string) {
   const words = spelling.split(" ");
   const prefix = /^\d/.test(words[0]) && words.length > 1 ? `${words[0]} ${words[1].slice(0, 1)}` : words.slice(0, 2).join(" ");
   if (prefix.length < 3) return [];
@@ -562,28 +583,30 @@ async function suggestAddresses(data: BoardStatData, spelling: string, borough?:
     })
     .sort((a, b) => b.overlap - a.overlap || b.requests - a.requests)
     .slice(0, 5)
-    .map(({ address, borough: b, requests }) => ({ address, borough: b, requests }));
+    .map(({ address, borough: b, requests }) => ({ address: redactZip(address), borough: b, requests }));
 }
 
 function label(m: BoardStatManifest, geo: Geo, id: number): string {
   return manifestDistricts(m)[geo].find((e) => e.id === id)?.label ?? `${geo.toUpperCase()} ${id}`;
 }
 
-export async function findDistrict(data: BoardStatData, args: z.infer<z.ZodObject<typeof FIND_SHAPE>>) {
-  const { spelling, hits, manifest } = await findAddress(data, args.address, args.borough);
+export async function findDistrict(src: Source, args: z.infer<z.ZodObject<typeof FIND_SHAPE>>) {
+  const data = await pin(src);
+  const { spelling, hits, manifest, boroughFromText } = await findAddress(data, args.address, args.borough);
   const m = manifest.manifest;
   const caveats = [
     "This looks the address up in the list of addresses that appear in 311 requests since 2020, as the City spelled them. It is not a geocoder: an address with no 311 request is not in the list.",
     "The district is where BoardStat placed most requests at this address, using today's boundary lines.",
   ];
-  if (spelling.dropped_after_comma) caveats.push(`Ignored the part after the first comma ('${spelling.dropped_after_comma}').`);
+  if (spelling.ignored_text) caveats.push(`Ignored '${spelling.ignored_text}' (a city, borough or state name, or the part after a comma).`);
+  if (boroughFromText) caveats.push(`Only ${boroughFromText} was searched, because the address named it.`);
   if (spelling.dropped_zip) caveats.push("A ZIP code was ignored. This server does not use ZIP codes.");
   const distinctSpellings = [...new Set(hits.map((h) => h.address))];
   if (distinctSpellings.length > 1) {
-    caveats.push(`The City spells this address more than one way (${distinctSpellings.join("; ")}). BoardStat treats each spelling as a separate address.`);
+    caveats.push(`The City spells this address more than one way (${distinctSpellings.map(redactZip).join("; ")}). BoardStat treats each spelling as a separate address.`);
   }
   const matches = hits.map((h) => ({
-    address: h.address,
+    address: redactZip(h.address),
     borough: h.borough,
     community_district: { id: h.cd, label: label(m, "cd", h.cd) },
     council_district: { id: h.cc, label: label(m, "cc", h.cc) },
@@ -594,9 +617,9 @@ export async function findDistrict(data: BoardStatData, args: z.infer<z.ZodObjec
   if (matches.length) {
     const boroughs = new Set(hits.map((h) => h.borough));
     message =
-      boroughs.size > 1 && !args.borough
+      boroughs.size > 1 && !args.borough && !boroughFromText
         ? `This address exists in ${boroughs.size} boroughs (${[...boroughs].join(", ")}). Give a borough to pick one.`
-        : `Found as ${distinctSpellings.join(" and ")}.`;
+        : `Found as ${distinctSpellings.map(redactZip).join(" and ")}.`;
   } else {
     suggestions = await suggestAddresses(data, spelling.spellings[0], args.borough);
     message =
@@ -620,7 +643,7 @@ const SUMMARY_SHAPE = { ...DISTRICT_SHAPE, ...DISTRICT_PERIOD_SHAPE, limit: LIMI
 type AggPair = [kind: string, id: string | null];
 
 /** Month-file counts by problem for each (geo_kind, geo_id), whole months ymStart..ymEnd. */
-async function aggCounts(data: BoardStatData, ymStart: string, ymEnd: string, pairs: AggPair[]) {
+async function aggCounts(data: Reader, ymStart: string, ymEnd: string, pairs: AggPair[]) {
   const out = new Map<string, Map<string, number>>();
   for (const [kind, id] of pairs) {
     const filter: Record<string, unknown> = { geo_kind: { $eq: kind }, year_month: { $gte: ymStart, $lte: ymEnd } };
@@ -635,7 +658,8 @@ async function aggCounts(data: BoardStatData, ymStart: string, ymEnd: string, pa
 
 const total = (m: Map<string, number> | undefined) => [...(m?.values() ?? [])].reduce((a, b) => a + b, 0);
 
-export async function districtSummary(data: BoardStatData, args: z.infer<z.ZodObject<typeof SUMMARY_SHAPE>>) {
+export async function districtSummary(src: Source, args: z.infer<z.ZodObject<typeof SUMMARY_SHAPE>>) {
+  const data = await pin(src);
   const mr = await data.manifest();
   const m = mr.manifest;
   const d = resolveDistrict(m, args);
@@ -648,7 +672,7 @@ export async function districtSummary(data: BoardStatData, args: z.infer<z.ZodOb
   const closed = rows.map(closedDays).filter((v): v is number => v !== null);
   const byType = [...countBy(rows, (r) => String(r.complaint_type))]
     .map(([t, rs]) => ({ problem: t, requests: rs.length, share: share(rs.length, rows.length) }))
-    .sort((a, b) => b.requests - a.requests || a.problem.localeCompare(b.problem));
+    .sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem));
   const top = capped(byType, limit);
 
   // Compare panel: whole months, located requests, district vs borough vs city.
@@ -666,7 +690,7 @@ export async function districtSummary(data: BoardStatData, args: z.infer<z.ZodOb
       city_share: share(agg.get("city")?.get(t) ?? 0, cT),
       _n: n,
     }))
-    .sort((a, b) => b._n - a._n || a.problem.localeCompare(b.problem))
+    .sort((a, b) => b._n - a._n || byText(a.problem, b.problem))
     .slice(0, 10)
     .map(({ _n, ...rest }) => rest);
 
@@ -712,7 +736,8 @@ const TOP_SHAPE = {
   limit: LIMIT(100),
 };
 
-export async function topProblems(data: BoardStatData, args: z.infer<z.ZodObject<typeof TOP_SHAPE>>) {
+export async function topProblems(src: Source, args: z.infer<z.ZodObject<typeof TOP_SHAPE>>) {
+  const data = await pin(src);
   const m = (await data.manifest()).manifest;
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
@@ -740,7 +765,7 @@ export async function topProblems(data: BoardStatData, args: z.infer<z.ZodObject
         change_pct: before ? Number((((rs.length - before) / before) * 100).toFixed(1)) : null,
       };
     })
-    .sort((a, b) => b.requests - a.requests || a.problem.localeCompare(b.problem));
+    .sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem));
   const top = capped(list, limit);
   const extra = [...p.notes, ...districtCaveats(d, m)];
   if ("none" in prior) extra.push(prior.none);
@@ -779,7 +804,8 @@ function lastOfMonth(ym: string): string {
   return `${ym}-${String(d).padStart(2, "0")}`;
 }
 
-export async function problemTrend(data: BoardStatData, args: z.infer<z.ZodObject<typeof TREND_SHAPE>>) {
+export async function problemTrend(src: Source, args: z.infer<z.ZodObject<typeof TREND_SHAPE>>) {
+  const data = await pin(src);
   const m = (await data.manifest()).manifest;
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
@@ -788,7 +814,7 @@ export async function problemTrend(data: BoardStatData, args: z.infer<z.ZodObjec
   const effEnd = p.end < lastDataDay(m) ? p.end : lastDataDay(m);
   const startPrior = shiftMonths(p.start, -12);
   const from = startPrior >= m.window.start ? localAsDate(startPrior) : localAsDate(m.window.start);
-  const { rows, manifest } = await readDetail(data, d, ["complaint_type", "descriptor", "status", "agency", "year_month"], {
+  const { rows, manifest } = await readDetail(data, d, ["complaint_type", ...descCol(args), "status", "agency", "year_month"], {
     from,
     toExclusive: localAsDate(addDays(p.end, 1)),
   });
@@ -864,12 +890,13 @@ const AGENCY_SHAPE = {
   limit: LIMIT(100),
 };
 
-export async function agencyResponse(data: BoardStatData, args: z.infer<z.ZodObject<typeof AGENCY_SHAPE>>) {
+export async function agencyResponse(src: Source, args: z.infer<z.ZodObject<typeof AGENCY_SHAPE>>) {
+  const data = await pin(src);
   const m = (await data.manifest()).manifest;
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
   const problems = await canonicalProblems(data, args.problems);
-  const { rows, manifest } = await readDetail(data, d, ["agency", "agency_name", "complaint_type", "descriptor", "status", "days_to_close"], {
+  const { rows, manifest } = await readDetail(data, d, ["agency", "agency_name", "complaint_type", ...descCol(args), "status", "days_to_close"], {
     from: localAsDate(p.start),
     toExclusive: localAsDate(addDays(p.end, 1)),
   });
@@ -892,7 +919,7 @@ export async function agencyResponse(data: BoardStatData, args: z.infer<z.ZodObj
         average_days_to_close: days1(mean(closed)),
       };
     })
-    .sort((a, b) => b.requests - a.requests || a.agency.localeCompare(b.agency));
+    .sort((a, b) => b.requests - a.requests || byText(a.agency, b.agency));
   const out = capped(list, args.limit ?? 25);
   return districtEnvelope({
     manifest,
@@ -926,7 +953,8 @@ function addressOf(r: Row): string | null {
   return null;
 }
 
-export async function stillOpen(data: BoardStatData, args: z.infer<z.ZodObject<typeof OPEN_SHAPE>>) {
+export async function stillOpen(src: Source, args: z.infer<z.ZodObject<typeof OPEN_SHAPE>>) {
+  const data = await pin(src);
   const m = (await data.manifest()).manifest;
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "all");
@@ -947,7 +975,7 @@ export async function stillOpen(data: BoardStatData, args: z.infer<z.ZodObject<t
   const keep = rowMatcher(f);
   const open = rows
     .filter(keep)
-    .sort((a, b) => (a.created_date as Date).getTime() - (b.created_date as Date).getTime() || String(a.unique_key).localeCompare(String(b.unique_key)));
+    .sort((a, b) => (a.created_date as Date).getTime() - (b.created_date as Date).getTime() || byText(String(a.unique_key), String(b.unique_key)));
   const asOf = localAsDate(nycLocal(m.generated_at)).getTime();
   const byAgency = [...countBy(open, (r) => String(r.agency))]
     .map(([agency, rs]) => ({
@@ -956,16 +984,16 @@ export async function stillOpen(data: BoardStatData, args: z.infer<z.ZodObject<t
       not_closed: rs.length,
       oldest_created: (fmtLocal(rs[0].created_date) as string).slice(0, 10),
     }))
-    .sort((a, b) => b.not_closed - a.not_closed || a.agency.localeCompare(b.agency));
+    .sort((a, b) => b.not_closed - a.not_closed || byText(a.agency, b.agency));
   const list = capped(
     open.map((r) => ({
       sr_number: String(r.unique_key),
       created: fmtLocal(r.created_date),
       problem: String(r.complaint_type),
-      description: r.descriptor == null ? null : String(r.descriptor),
+      description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
       agency: String(r.agency),
       status: r.status == null ? null : String(r.status),
-      address: addressOf(r),
+      address: redactZip(addressOf(r)),
       days_open: Number((Math.max(0, asOf - (r.created_date as Date).getTime()) / DAY).toFixed(1)),
     })),
     args.limit ?? 25
@@ -1000,12 +1028,13 @@ const ADDR_SHAPE = {
   limit: LIMIT(100),
 };
 
-export async function topAddresses(data: BoardStatData, args: z.infer<z.ZodObject<typeof ADDR_SHAPE>>) {
+export async function topAddresses(src: Source, args: z.infer<z.ZodObject<typeof ADDR_SHAPE>>) {
+  const data = await pin(src);
   const m = (await data.manifest()).manifest;
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
   const problems = await canonicalProblems(data, args.problems);
-  const { rows, manifest } = await readDetail(data, d, ["address_norm", "complaint_type", "descriptor", "agency", "status"], {
+  const { rows, manifest } = await readDetail(data, d, ["address_norm", "complaint_type", ...descCol(args), "agency", "status"], {
     from: localAsDate(p.start),
     toExclusive: localAsDate(addDays(p.end, 1)),
   });
@@ -1021,16 +1050,16 @@ export async function topAddresses(data: BoardStatData, args: z.infer<z.ZodObjec
   const located = matched.filter((r) => r.address_norm != null);
   const list = [...countBy(located, (r) => String(r.address_norm))]
     .map(([address, rs]) => {
-      const types = [...countBy(rs, (r) => String(r.complaint_type))].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
+      const types = [...countBy(rs, (r) => String(r.complaint_type))].sort((a, b) => b[1].length - a[1].length || byText(a[0], b[0]));
       return {
-        address,
+        address: redactZip(address),
         requests: rs.length,
         most_common_problem: types[0][0],
         not_closed: rs.filter((r) => !isClosed(r)).length,
         placeholder_address: isPlaceholderAddress(address) || undefined,
       };
     })
-    .sort((a, b) => b.requests - a.requests || a.address.localeCompare(b.address));
+    .sort((a, b) => b.requests - a.requests || byText(a.address, b.address));
   const out = capped(list, args.limit ?? 15);
   const extra = [
     ...p.notes,
@@ -1060,28 +1089,46 @@ export async function topAddresses(data: BoardStatData, args: z.infer<z.ZodObjec
 const HISTORY_SHAPE = {
   address: z.string().min(1).max(200),
   borough: z.enum(BOROUGHS).optional(),
+  community_district: z.union([z.number().int(), z.string()]).optional(),
   ...DISTRICT_PERIOD_SHAPE,
   problems: FILTER_SHAPE.problems,
   status: FILTER_SHAPE.status,
   limit: LIMIT(200),
 };
 
-export async function addressHistory(data: BoardStatData, args: z.infer<z.ZodObject<typeof HISTORY_SHAPE>>) {
-  const { spelling, hits, manifest: mr0 } = await findAddress(data, args.address, args.borough);
+export async function addressHistory(src: Source, args: z.infer<z.ZodObject<typeof HISTORY_SHAPE>>) {
+  const data = await pin(src);
+  const { spelling, hits: found, manifest: mr0 } = await findAddress(data, args.address, args.borough);
   const m = mr0.manifest;
-  if (!hits.length) {
+  if (!found.length) {
     const sug = await suggestAddresses(data, spelling.spellings[0], args.borough);
     throw new Error(
       `No 311 request in BoardStat's data uses this address as the City spells it (tried: ${spelling.spellings.join("; ")}).` +
-        (sug.length ? ` Close City spellings: ${sug.map((s) => `${s.address} (${s.borough})`).join("; ")}.` : "")
+        (sug.length ? ` Close City spellings: ${sug.map((s) => `${redactZip(s.address)} (${s.borough})`).join("; ")}.` : "")
     );
   }
-  const places = [...new Set(hits.map((h) => `${h.borough}|${h.cd}`))];
-  if (places.length > 1) {
+  let hits = found;
+  if (args.community_district !== undefined) {
+    const want = resolveDistrict(m, { community_district: args.community_district }).id;
+    hits = found.filter((h) => h.cd === want);
+    if (!hits.length) {
+      throw new Error(`This address is not in ${label(m, "cd", want)} in BoardStat's data. It is in: ${[...new Set(found.map((h) => label(m, "cd", h.cd)))].join(", ")}.`);
+    }
+  }
+  const boroughs = [...new Set(hits.map((h) => h.borough))];
+  if (boroughs.length > 1) {
     throw new Error(
-      `This address is in more than one place: ${hits.map((h) => `${h.address}, ${h.borough} (${label(m, "cd", h.cd)})`).join("; ")}. Give a borough.`
+      `This address exists in more than one borough: ${hits.map((h) => `${redactZip(h.address)}, ${h.borough} (${label(m, "cd", h.cd)})`).join("; ")}. Give a borough.`
     );
   }
+  // One address can straddle a district line: BoardStat places each request by its own
+  // point. Use the district with the most requests, and say where the rest are.
+  const byCd = new Map<number, number>();
+  for (const h of hits) byCd.set(h.cd, (byCd.get(h.cd) ?? 0) + h.requests);
+  const perCd = [...byCd].map(([cd, requests]) => ({ cd, requests })).sort((a, b) => b.requests - a.requests || a.cd - b.cd);
+  const chosen = perCd[0].cd;
+  const others = perCd.slice(1);
+  hits = hits.filter((h) => h.cd === chosen);
   const d = resolveDistrict(m, { community_district: hits[0].cd });
   const p = toolPeriod(args, m, "all");
   const problems = await canonicalProblems(data, args.problems);
@@ -1095,23 +1142,24 @@ export async function addressHistory(data: BoardStatData, args: z.infer<z.ZodObj
   const keep = rowMatcher({ problems, status: args.status });
   const matched = rows
     .filter(keep)
-    .sort((a, b) => (b.created_date as Date).getTime() - (a.created_date as Date).getTime() || String(a.unique_key).localeCompare(String(b.unique_key)));
+    .sort((a, b) => (b.created_date as Date).getTime() - (a.created_date as Date).getTime() || byText(String(a.unique_key), String(b.unique_key)));
   const asOf = localAsDate(nycLocal(m.generated_at)).getTime();
   const byProblem = [...countBy(matched, (r) => String(r.complaint_type))]
     .map(([problem, rs]) => ({ problem, requests: rs.length, not_closed: rs.filter((r) => !isClosed(r)).length }))
-    .sort((a, b) => b.requests - a.requests || a.problem.localeCompare(b.problem));
+    .sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem));
   const list = capped(
     matched.map((r) => ({
       sr_number: String(r.unique_key),
       created: fmtLocal(r.created_date),
       closed: fmtLocal(r.closed_date),
       problem: String(r.complaint_type),
-      description: r.descriptor == null ? null : String(r.descriptor),
+      description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
       agency: String(r.agency),
       status: r.status == null ? null : String(r.status),
       days_to_close: days1(closedDays(r)),
       days_open: isClosed(r) ? null : Number((Math.max(0, asOf - (r.created_date as Date).getTime()) / DAY).toFixed(1)),
-      resolution: r.resolution_description == null ? null : String(r.resolution_description),
+      // Agency text can carry an address with a ZIP code ("…, New York, NY 10010").
+      resolution: redactZip(r.resolution_description == null ? null : String(r.resolution_description)),
     })),
     args.limit ?? 50
   );
@@ -1122,13 +1170,30 @@ export async function addressHistory(data: BoardStatData, args: z.infer<z.ZodObj
     "Talk about the address, not the people who reported: 311 data does not say who called, and this server does not try to.",
     "The BoardStat link opens the district page; to see this one address on BoardStat, search for it on BoardStat's home page.",
   ];
-  if (spellings.length > 1) extra.push(`Requests under every spelling found are included: ${spellings.join("; ")}.`);
+  if (spellings.length > 1) extra.push(`Requests under every spelling found are included: ${spellings.map(redactZip).join("; ")}.`);
+  if (others.length) {
+    // Exact counts for the other districts, same period and filters, from their own files.
+    const counts: string[] = [];
+    for (const o of others) {
+      const od = resolveDistrict(m, { community_district: o.cd });
+      const { rows: orows } = await readDetail(data, od, ["complaint_type", "status"], {
+        from: localAsDate(p.start),
+        toExclusive: localAsDate(addDays(p.end, 1)),
+        addresses: spellings,
+      });
+      counts.push(`${od.label} (${orows.filter(keep).length.toLocaleString("en-US")})`);
+    }
+    extra.push(
+      `BoardStat placed some requests at this address in another district, by where each was reported: ${counts.join(", ")}. ` +
+        `This answer covers ${d.label}, which has the most; pass community_district to see another.`
+    );
+  }
   return districtEnvelope({
     manifest,
     siteUrl: data.siteUrl,
     link: linkFilters(d, p, { problems, status: args.status }),
     data: {
-      address: spellings.length === 1 ? spellings[0] : spellings,
+      address: spellings.length === 1 ? redactZip(spellings[0]) : spellings.map(redactZip),
       borough: hits[0].borough,
       community_district: { id: d.id, label: d.label },
       council_district: { id: hits[0].cc, label: label(m, "cc", hits[0].cc) },
@@ -1147,7 +1212,8 @@ export async function addressHistory(data: BoardStatData, args: z.infer<z.ZodObj
 
 const LINK_SHAPE = { ...DISTRICT_SHAPE, ...DISTRICT_PERIOD_SHAPE, ...FILTER_SHAPE };
 
-export async function boardstatLink(data: BoardStatData, args: z.infer<z.ZodObject<typeof LINK_SHAPE>>) {
+export async function boardstatLink(src: Source, args: z.infer<z.ZodObject<typeof LINK_SHAPE>>) {
+  const data = await pin(src);
   const mr = await data.manifest();
   const m = mr.manifest;
   const d = resolveDistrict(m, args);
@@ -1184,7 +1250,8 @@ export const NIGHTLY_LATE_HOURS = 26;
 /** The BoardStat page shows its "data may be out of date" banner after this many hours (site/js/lib.js STALE_HOURS). */
 export const PAGE_STALE_HOURS = 48;
 
-export async function boardstatStatus(data: BoardStatData, now: number = Date.now()) {
+export async function boardstatStatus(from: Source, now: number = Date.now()) {
+  const data = await pin(from);
   const mr = await data.manifest();
   const m = mr.manifest;
   const hours = Number(((now - Date.parse(m.generated_at)) / 3_600_000).toFixed(1));
@@ -1317,6 +1384,10 @@ export const DISTRICT_TOOLS = [
       {
         address: { type: "string", description: "Street address, e.g. '1000 5th Ave'." },
         borough: { type: "string", enum: BOROUGHS, description: "Needed when the same address exists in several boroughs." },
+        community_district: {
+          type: ["integer", "string"],
+          description: "Optional. When an address straddles a district line, the district to use (BoardStat id, e.g. 205). Without it, the district with the most requests at the address is used, and the answer names the other.",
+        },
         ...DISTRICT_PERIOD_JSON,
         problems: FILTER_JSON.problems,
         status: FILTER_JSON.status,

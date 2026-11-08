@@ -507,5 +507,227 @@
    "66376131",
    "65881186"
   ]
+ },
+ "address_history_straddle": {
+  "address": "GREENWICH STREET",
+  "chosen": {
+   "cd": 101,
+   "requests": 0,
+   "by_problem": [],
+   "newest_sr_numbers": []
+  },
+  "other": {
+   "cd": 102,
+   "requests": 160,
+   "by_problem": [
+    {
+     "problem": "Illegal Parking",
+     "requests": 21,
+     "not_closed": 0
+    },
+    {
+     "problem": "Street Condition",
+     "requests": 17,
+     "not_closed": 0
+    },
+    {
+     "problem": "Litter Basket Request",
+     "requests": 15,
+     "not_closed": 0
+    },
+    {
+     "problem": "Encampment",
+     "requests": 14,
+     "not_closed": 0
+    },
+    {
+     "problem": "Noise - Vehicle",
+     "requests": 10,
+     "not_closed": 0
+    },
+    {
+     "problem": "Lost Property",
+     "requests": 9,
+     "not_closed": 0
+    },
+    {
+     "problem": "Homeless Person Assistance",
+     "requests": 6,
+     "not_closed": 0
+    },
+    {
+     "problem": "Noise - Residential",
+     "requests": 6,
+     "not_closed": 0
+    },
+    {
+     "problem": "Noise - Street/Sidewalk",
+     "requests": 6,
+     "not_closed": 0
+    },
+    {
+     "problem": "Abandoned Vehicle",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Broken Parking Meter",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Damaged Tree",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Litter Basket Complaint",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Non-Emergency Police Matter",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Street Sign - Dangling",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Street Sign - Missing",
+     "requests": 3,
+     "not_closed": 0
+    },
+    {
+     "problem": "Bike/Roller/Skate Chronic",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Dirty Condition",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Illegal Dumping",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Illegal Fireworks",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Mobile Food Vendor",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Noise - Commercial",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Obstruction",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Sidewalk Condition",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Taxi Complaint",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Traffic",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Wood Pile Remaining",
+     "requests": 2,
+     "not_closed": 0
+    },
+    {
+     "problem": "Animal-Abuse",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Dead Animal",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Dead/Dying Tree",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Found Property",
+     "requests": 1,
+     "not_closed": 1
+    },
+    {
+     "problem": "Illegal Tree Damage",
+     "requests": 1,
+     "not_closed": 1
+    },
+    {
+     "problem": "New Tree Request",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Rodent",
+     "requests": 1,
+     "not_closed": 1
+    },
+    {
+     "problem": "Sewer Maintenance",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Street Sign - Damaged",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Street Sweeping Complaint",
+     "requests": 1,
+     "not_closed": 0
+    },
+    {
+     "problem": "Taxi Report",
+     "requests": 1,
+     "not_closed": 1
+    },
+    {
+     "problem": "Unleashed Dog",
+     "requests": 1,
+     "not_closed": 1
+    },
+    {
+     "problem": "Urinating in Public",
+     "requests": 1,
+     "not_closed": 0
+    }
+   ],
+   "newest_sr_numbers": [
+    "70993041",
+    "70877912",
+    "70862392",
+    "70796422",
+    "70770230"
+   ]
+  }
  }
 }

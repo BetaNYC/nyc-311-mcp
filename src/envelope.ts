@@ -72,6 +72,54 @@ export type DistrictEnvelope<T> = {
 
 const ZIP_KEY = /zip/i;
 
+// A ZIP code inside text: five digits (optionally +4) standing alone, that either follow
+// a state ("NY 10010", "New York, NY 10010") or are not followed by more of an address.
+// A house number is five digits followed by the street ("10001 4 AVENUE"), so it is kept.
+// Found in City data: agency boilerplate "…, New York, NY 10010." in resolution text,
+// and junk addresses such as "730 11363".
+const ZIP_IN_TEXT = /(?<![\d-])(\d{5})(?:-\d{4})?(?![\d-])/g;
+const STATE_BEFORE = /\b(?:N\.?\s?Y\.?|NEW YORK|N\.?\s?J\.?|NEW JERSEY|C\.?\s?T\.?)\s*,?\s*$/i;
+const ADDRESS_AFTER = /^\s+[A-Za-z0-9]/;
+
+function zipSpans(text: string): Array<[number, number]> {
+  const spans: Array<[number, number]> = [];
+  for (const m of text.matchAll(ZIP_IN_TEXT)) {
+    const start = m.index as number;
+    const end = start + m[0].length;
+    const afterState = STATE_BEFORE.test(text.slice(Math.max(0, start - 20), start));
+    const houseNumber = ADDRESS_AFTER.test(text.slice(end)) && !afterState;
+    if (!houseNumber) spans.push([start, end]);
+  }
+  return spans;
+}
+
+/** Text with every ZIP code replaced by "[ZIP code removed]". Used on every free-text field a tool returns. */
+export function redactZip(text: string): string;
+export function redactZip(text: string | null): string | null;
+export function redactZip(text: string | null): string | null {
+  if (text == null) return text;
+  const spans = zipSpans(text);
+  if (!spans.length) return text;
+  let out = "";
+  let at = 0;
+  for (const [a, b] of spans) {
+    out += text.slice(at, a) + "[ZIP code removed]";
+    at = b;
+  }
+  return out + text.slice(at);
+}
+
+/** Throws if any string anywhere in `value` still holds a ZIP code. The value-level twin of assertNoZip. */
+export function assertNoZipValues(value: unknown, where = "response"): void {
+  if (typeof value === "string") {
+    if (zipSpans(value).length) throw new Error(`A ZIP code was about to be returned in text (at ${where}). ZIP codes are not part of any answer.`);
+  } else if (Array.isArray(value)) {
+    value.forEach((v, i) => assertNoZipValues(v, `${where}[${i}]`));
+  } else if (value && typeof value === "object") {
+    for (const [k, v] of Object.entries(value)) assertNoZipValues(v, `${where}.${k}`);
+  }
+}
+
 /** Throws if any key anywhere in `value` names a ZIP code. No ZIP codes, by decision (#12). */
 export function assertNoZip(value: unknown, where = "response"): void {
   if (Array.isArray(value)) {
@@ -116,5 +164,6 @@ export function districtEnvelope<T>(args: {
     env.caveats.push(`BoardStat could not be reached just now, so this answer comes from a saved copy of the data built ${m.generated_at}. Newer data may exist.`);
   }
   assertNoZip(env);
+  assertNoZipValues(env);
   return env;
 }

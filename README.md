@@ -40,7 +40,7 @@ Every district tool takes a community district (BoardStat's ids: `101` is Manhat
 Community District 1, `306` Brooklyn 6) or a Council district (`1` to `51`), and dates as
 `from_date`/`to_date`, a City `fiscal_year` (July 1 to June 30; `2027` or `"FY27"`), or
 `last_days`. Every answer carries `data_as_of`, a `boardstat_url`, plain-language `caveats`
-and its `source`. They are a BetaNYC copy of NYC Open Data, **not an official City report**.
+and its `source`. They are built by BetaNYC from NYC Open Data and are **not an official City report**.
 311 counts are reports, not problems, and "closed" does not mean fixed. No ZIP codes.
 
 ---
@@ -169,13 +169,13 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 ## Prerequisites
 
 - Node.js 18 or later
-- An NYC 311 Public API subscription key (free)
+- An NYC 311 Public API subscription key (free), for the four 311 API tools only. The ten district tools need no key.
 
 ---
 
 ## API key
 
-**Yes — a free API key is required.** The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
+**For the four 311 API tools, yes — a free API key is required.** The ten district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
 
 1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and register / sign in.
 2. Subscribe to the **NYC 311 Public Developers** product (see the table below for which product to choose).
@@ -283,7 +283,7 @@ Once connected, you can ask your AI assistant things like:
 
 ## Notes & limitations
 
-- **Service-request lookup is by number only.** The API resolves a known SR number (`311-XXXXXXXX`); it does not search complaints by address, agency, or area. For citywide complaint analysis, use the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9) on NYC Open Data instead.
+- **`get_service_request` looks up by number only.** The 311 API resolves a known SR number (`311-XXXXXXXX`); it does not search by address, agency, or area. For questions by district, address, agency or problem, use the district tools above (`top_problems`, `address_history`, `agency_response` and the rest), which read BoardStat's nightly copy of the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).
 - **Calendar range cap.** `get_calendar` accepts a span of up to 90 days; longer ranges are rejected before the request is sent.
 - **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. The status and service-request endpoints are returned as the API's raw JSON — their exact field set is defined by the upstream API and is passed through unchanged.
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.
@@ -291,15 +291,15 @@ Once connected, you can ask your AI assistant things like:
 ## Roadmap
 
 More district work is planned under epic
-[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12): the monthly reports Local Law 47 of
-2005 asked for (#15), request lookup by address and district (#16), and help reporting a
+[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12): the monthly reports that
+[Local Law 47 of 2005](https://intro.nyc/0174-2004) (Int 0174-2004) asked for (#15), request lookup by address and district (#16), and help reporting a
 problem to 311 (#17, #18). None of those ship yet.
 
 ---
 
 ## Data source
 
-Today, all data comes from the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI). Access requires a free subscription key. The district tools on the roadmap will instead read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data; none of them ship yet.
+The four lookup tools use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The ten district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data.
 
 This is an independent, community-built project from BetaNYC. It is not affiliated with, endorsed by, or an official product of the City of New York.
 

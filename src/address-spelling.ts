@@ -7,6 +7,9 @@
 //   - upper case, periods removed, spaces collapsed
 //   - everything after the first comma dropped ("…, Brooklyn, NY 11222")
 //   - a trailing ZIP code dropped. It is never used for anything: no ZIP codes (#12).
+//   - (added here) trailing city, borough and state words without a comma dropped too
+//     ("350 5th Ave New York NY 10118", "350 5th Ave Manhattan"); a borough named there
+//     is offered as a hint to narrow the match
 //   - ordinal endings dropped: 5TH → 5, 42ND → 42
 //   - E/W/N/S right after the house number spelled out: 10 W 42 ST → 10 WEST 42 ST
 //   - the street-type word expanded, only as the LAST word: AVE → AVENUE, ST → STREET.
@@ -41,41 +44,98 @@ const NUMBER_TO_WORD = new Map(ORDINAL_WORDS.map((w, i) => [String(i + 1), w]));
 export type CitySpelling = {
   /** Spellings to look up, the BoardStat-style one first. */
   spellings: string[];
-  /** Text after the first comma, dropped (a borough or city name, usually). */
-  dropped_after_comma: string | null;
-  /** True when a trailing ZIP code was removed. Its value is never kept. */
+  /** Text that was dropped: after the first comma, and trailing city, borough or state words. ZIP codes removed. */
+  ignored_text: string | null;
+  /** True when a ZIP code was removed. Its value is never kept. */
   dropped_zip: boolean;
+  /** A borough named in the dropped text ("…, Brooklyn" or "… Ave Manhattan"), if exactly one. */
+  borough_hint: Borough | null;
 };
 
-/** BoardStat's index.js normalizeAddress for a finished address, minus the ZIP code. */
+export type Borough = "Manhattan" | "Bronx" | "Brooklyn" | "Queens" | "Staten Island";
+
+// Place words people add after the street (", New York, NY 10118"; "… 5th Ave Manhattan").
+// Each is a token sequence, matched at the END of the address only, so QUEENS BOULEVARD
+// and NEW YORK AVENUE are left alone.
+const PLACE_WORDS: { words: string[]; borough?: Borough }[] = [
+  { words: ["STATEN", "ISLAND"], borough: "Staten Island" },
+  { words: ["THE", "BRONX"], borough: "Bronx" },
+  { words: ["BRONX"], borough: "Bronx" },
+  { words: ["BROOKLYN"], borough: "Brooklyn" },
+  { words: ["MANHATTAN"], borough: "Manhattan" },
+  { words: ["QUEENS"], borough: "Queens" },
+  { words: ["NEW", "YORK", "CITY"] },
+  { words: ["NEW", "YORK"] },
+  { words: ["NYC"] },
+  { words: ["NY"] },
+  { words: ["USA"] },
+];
+const ZIP_TOKEN = /^\d{5}(?:-\d{4})?$/;
+const ZIP_ANYWHERE = /\b\d{5}(?:-\d{4})?\b/g;
+
+function boroughsIn(text: string): Borough[] {
+  const t = ` ${text.replace(/[^A-Z ]/g, " ").replace(/\s+/g, " ")} `;
+  const found = new Set<Borough>();
+  for (const p of PLACE_WORDS) if (p.borough && t.includes(` ${p.words.join(" ")} `)) found.add(p.borough);
+  return [...found];
+}
+
+/** BoardStat's index.js normalizeAddress for a finished address, minus ZIP codes and trailing place words. */
 function boardstatSpelling(input: string): {
   words: string[];
   base: string;
-  droppedAfterComma: string | null;
+  ignored: string | null;
   droppedZip: boolean;
+  boroughHint: Borough | null;
 } {
   let t = input.toUpperCase().replace(/\./g, "").replace(/\s+/g, " ").trim();
-  const zipMatch = /\b(\d{5})(?:-\d{4})?\s*$/.exec(t);
-  const comma = t.indexOf(",");
-  // A ZIP code in the dropped part is removed too: no ZIP code is ever returned.
-  const droppedAfterComma =
-    comma >= 0 ? t.slice(comma + 1).replace(/\b\d{5}(?:-\d{4})?\b/g, "").replace(/[\s,]+$/, "").trim() || null : null;
-  t = comma >= 0 ? t.slice(0, comma).trim() : t;
+  const ignoredParts: string[] = [];
   let droppedZip = false;
-  if (zipMatch) {
-    const re = new RegExp(`\\s*${zipMatch[1]}(?:-\\d{4})?$`);
-    if (re.test(t)) t = t.replace(re, "").trim();
-    droppedZip = true;
+  const comma = t.indexOf(",");
+  if (comma >= 0) {
+    ignoredParts.push(t.slice(comma + 1));
+    t = t.slice(0, comma).trim();
   }
+  // Trailing ZIP codes and place words, repeatedly ("350 5TH AVE NEW YORK NY 10118"),
+  // keeping at least two words of street.
+  let tokens = t.split(" ").filter(Boolean);
+  const dropped: string[] = [];
+  for (let changed = true; changed && tokens.length > 2; ) {
+    changed = false;
+    if (ZIP_TOKEN.test(tokens[tokens.length - 1])) {
+      tokens = tokens.slice(0, -1);
+      droppedZip = true;
+      changed = true;
+      continue;
+    }
+    for (const p of PLACE_WORDS) {
+      const n = p.words.length;
+      if (tokens.length - n >= 2 && tokens.slice(-n).join(" ") === p.words.join(" ")) {
+        dropped.unshift(...p.words);
+        tokens = tokens.slice(0, -n);
+        changed = true;
+        break;
+      }
+    }
+  }
+  if (dropped.length) ignoredParts.unshift(dropped.join(" "));
+  // A five-digit word anywhere after the house number is a ZIP code, never a street.
+  const kept = tokens.filter((w, i) => i === 0 || !ZIP_TOKEN.test(w));
+  if (kept.length !== tokens.length) droppedZip = true;
+  tokens = kept;
+  t = tokens.join(" ");
+  const ignoredRaw = ignoredParts.join(", ");
+  if (ZIP_ANYWHERE.test(ignoredRaw)) droppedZip = true;
+  ZIP_ANYWHERE.lastIndex = 0;
+  // No ZIP code is ever kept or returned, including in the ignored text.
+  const ignored = ignoredRaw.replace(ZIP_ANYWHERE, "").replace(/\s+,/g, ",").replace(/[\s,]+$/, "").replace(/^[\s,]+/, "").replace(/\s+/g, " ").trim() || null;
+  const boroughs = ignored ? boroughsIn(ignored) : [];
   const base = t;
-  const words = t
-    .split(" ")
-    .filter(Boolean)
-    .map((w) => w.replace(/^(\d+)(ST|ND|RD|TH)$/, "$1"));
+  const words = tokens.map((w) => w.replace(/^(\d+)(ST|ND|RD|TH)$/, "$1"));
   if (words.length > 2 && /^\d/.test(words[0]) && DIRECTIONS[words[1]]) words[1] = DIRECTIONS[words[1]];
   const last = words.length - 1;
   if (last > 0 && SUFFIXES[words[last]]) words[last] = SUFFIXES[words[last]];
-  return { words, base, droppedAfterComma, droppedZip };
+  return { words, base, ignored, droppedZip, boroughHint: boroughs.length === 1 ? boroughs[0] : null };
 }
 
 /** Index of a numbered-street word: a number or ordinal word right before a street type. */
@@ -89,10 +149,11 @@ function numberedStreetIndex(words: string[]): number {
 
 /**
  * The City spellings to try for what a person typed. "350 Fifth Ave., New York, NY 10118"
- * gives ["350 5 AVENUE", "350 FIFTH AVENUE"] and reports the dropped ", NEW YORK, NY 10118".
+ * gives ["350 5 AVENUE", "350 FIFTH AVENUE"], reports "NEW YORK, NY" as ignored, and says a
+ * ZIP code was dropped (without its value).
  */
 export function citySpellings(input: string): CitySpelling {
-  const { words, base, droppedAfterComma, droppedZip } = boardstatSpelling(input);
+  const { words, base, ignored, droppedZip, boroughHint } = boardstatSpelling(input);
   const spellings: string[] = [];
   const add = (s: string) => {
     if (s && !spellings.includes(s)) spellings.push(s);
@@ -109,7 +170,7 @@ export function citySpellings(input: string): CitySpelling {
   // The text as typed (comma part and ZIP already removed), in case it is already the
   // City's spelling and one of the rules above changed it.
   add(base);
-  return { spellings, dropped_after_comma: droppedAfterComma, dropped_zip: droppedZip };
+  return { spellings, ignored_text: ignored, dropped_zip: droppedZip, borough_hint: boroughHint };
 }
 
 /** Placeholder addresses in the City's data, not real places: "-999 RODNEY ST", "*** WEB/MAP CALL SOURCE". */

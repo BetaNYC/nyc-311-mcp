@@ -307,8 +307,9 @@ test("ZIP cannot be used through a filter either, at any depth", async () => {
     );
   }
   assert.doesNotThrow(() => assertNoZipFilter({ address: { $eq: "1 ZIPPER LANE" } }));
-  const ok = await data.readParquet("addresses.parquet", { columns: ["address"], filter: { cd: { $eq: 101 } } });
-  assert.equal(ok.rows.length, 200);
+  const ok = await data.readParquet("addresses.parquet", { columns: ["address", "cd"], filter: { cd: { $eq: 101 } } });
+  // 200 top cd 101 addresses, plus the cd 101 rows of Phase 1's spelling cases (build_fixtures.py).
+  assert.ok(ok.rows.length >= 200 && ok.rows.every((r) => r.cd === 101), String(ok.rows.length));
 });
 
 test("while beta.nyc is down, the network is tried once per backoff window, not on every call", async () => {
