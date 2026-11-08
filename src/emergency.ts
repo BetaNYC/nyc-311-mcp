@@ -45,7 +45,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "smoke",
     label: "smoke",
-    when: /\b(smoke (is )?(coming|pouring|billowing|filling|everywhere)|(full of|filled with|lots of|thick|black|heavy) smoke|smoke from (the|a|my|our|their) (building|apartment|window|vent|roof|basement|hallway)|humo)\b/,
+    when: /\b(smoke (is )?(coming|pouring|billowing|filling|everywhere)|(full of|filled with|filling with|filling up with|lots of|thick|black|heavy) smoke|smoke (coming )?(out of|from) (the|a|my|our|their) (electrical )?(building|apartment|window|vent|roof|basement|hallway|outlet|socket|wall|panel|stove|oven)|(outlets?|sockets?|panel|wires?|wiring|stove|oven|microwave) (is |are )?(smoking|smoldering)|smell(s)? (of|like) (smoke|something burning) (from|in) (the )?(outlet|wall|panel|walls)|humo)\b/,
     unless: /\b(smok(e|es|ing) (a |the )?(cigarettes?|cigars?|weed|marijuana|pot|vapes?|hookah|joints?|blunts?)|cigarette smoke|smoke[- ]free|second[- ]?hand smoke)\b/,
     city: /^Smoke or Fumes$/,
     terms: ["smoke", "fumes"],
@@ -53,21 +53,21 @@ export const DANGERS: DangerKind[] = [
   {
     id: "gas",
     label: "a gas smell or leak",
-    when: /\b(gas (smell|leak|odor|odour)|smells? (of|like) gas|smell(ing)? (of )?gas|gas is leaking|leaking gas|olor a gas|fuga de gas)\b/,
+    when: /\b(gas (smell|leak|odor|odour)|smells? (of|like) gas|smell(ing)? (of )?gas|gas is leaking|leaking gas|rotten eggs?|smells? (of|like) sulfur|gas\b[^.]{0,40}\b(smell|odor)\w*|(smell|odor)\w*[^.]{0,30}\bgas\b(?! station)|olor a gas|fuga de gas)/,
     city: /^Gas Leak$/,
     terms: ["gas", "leak"],
   },
   {
     id: "carbon_monoxide",
     label: "carbon monoxide",
-    when: /\b((carbon monoxide|co)( (detector|alarm|monitor|sensor))? (is |keeps |started |has been )?(going off|beeping|sounding|ringing|alarming|went off)|carbon monoxide (leak|poisoning|in|from|smell)|(detector|alarm) (says|shows|reads) (carbon monoxide|co))\b/,
+    when: /\b((carbon monoxide|co)( (detector|alarm|monitor|sensor))? (is |keeps |started |has been )?(going off|beeping|beeps?|sounding|ringing|alarming|went off|goes off)|carbon monoxide (leak|poisoning|in|from|smell)|(detector|alarm) (says|shows|reads) (carbon monoxide|co))\b/,
     city: /^Carbon Monoxide$/,
     terms: ["carbon", "monoxide"],
   },
   {
     id: "electric",
     label: "downed wires or sparking",
-    when: /\b(((power|electric(al)?|live|utility) )?(lines?|wires?|cables?) (is |are |has |have )?(down|fell|fallen|falling|sparking|arcing|smoking|on the (ground|street|sidewalk))|down(ed)? (power |electric(al)? |live |utility )?(lines?|wires?|cables?)|(power|electric) lines? down|sparking|sparks (are )?(coming|flying|shooting)|cables? sueltos?)\b/,
+    when: /\b(((power|electric(al)?|live|utility) )?(lines?|wires?|cables?) (is |are |has |have )?(down|fell|fallen|falling|sparking|arcing|smoking|on the (ground|street|sidewalk))|down(ed)? (power |electric(al)? |live |utility )?(lines?|wires?|cables?)|(power|electric) lines? down|sparking|sparks?\b(?! plugs?)|live wires?|cables? sueltos?)\b/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -79,21 +79,22 @@ export const DANGERS: DangerKind[] = [
   {
     id: "water_electric",
     label: "water near electricity",
-    when: /\b(water|flood\w*|leak\w*)\b[^.]{0,40}\b(outlets?|electrical|electric|wires?|wiring|panel|breaker)\b|\b(outlets?|electrical|wiring|panel|breaker)\b[^.]{0,40}\b(water|flood\w*|wet)\b/,
-    terms: ["dangerous", "situation", "location"],
+    when: /\b(water|flood\w*|leak\w*|pouring|dripping)\b[^.]{0,50}\b(outlets?|sockets?|electrical|electric|wires?|wiring|panel|breaker|light fixtures?|fixtures?|ceiling lights?|light)\b|\b(outlets?|sockets?|electrical|wiring|panel|breaker|light fixtures?)\b[^.]{0,40}\b(water|flood\w*|wet)\b/,
+    // No search words of its own: the answer still finds the leak article.
+    terms: [],
   },
   {
     id: "crime",
     label: "a crime in progress",
-    when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots? (fired|being fired)|gun ?(fire|shots?)|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
-    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun (permit|license|laws?)|knife sharpening)\b/,
+    when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
+    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun (permit|license|laws?)|knife sharpening|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
     city: /^(Assault|Gunshot)$/,
     terms: ["dangerous", "situation", "location"],
   },
   {
     id: "hurt",
     label: "someone hurt or in medical danger",
-    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|not breathing|can'?t breathe|passed out|collapsed|seizure|heart attack|overdos\w*|choking|fainted|not moving|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
+    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|choking|fainted|not moving|turning blue|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
     unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b/,
     city: /^(Medical Emergency|Overdose)$/,
     terms: ["medical", "emergency"],
@@ -123,16 +124,45 @@ export const DANGERS: DangerKind[] = [
   {
     id: "collapse",
     label: "a collapse",
-    when: /\b(building|ceiling|wall|roof|scaffold\w*|balcony|stairs?|staircase|floor|facade|façade|crane|sidewalk shed)\b[^.]{0,20}\b(collaps\w*|caving in|caved in|falling down|about to (fall|collapse)|is falling|fell (in|down))\b|\bcollapse\b|\bderrumb\w*/,
+    when: /\b(building|ceiling|wall|roof|scaffold\w*|balcony|stairs?|staircase|floor|facade|façade|crane|sidewalk shed)\b[^.]{0,20}\b(collaps\w*|caving in|caved in|falling down|about to (fall|collapse)|is falling|fell( in| down| onto| on| off)?|shaking|swaying|cracking|tipping|buckling)\b|\bcollapse\b|\bderrumb\w*/,
     terms: ["dangerous", "situation", "location"],
   },
   {
     id: "trapped",
     label: "someone trapped",
-    when: /\b(trapped|stuck in (an |the |a )?elevator|(someone|somebody|people|person|kid|child|man|woman) (is |are )?stuck|atrapad[oa]s?)\b/,
+    when: /\b(trapped|stuck in (an |the |a )?elevator|(someone|somebody|people|person|kids?|children|child|man|woman|driver|passengers?) (is |are )?stuck|stuck[^.]{0,40}\b(with )?(kids|people|children|someone|a person|passengers?) inside|atrapad[oa]s?)\b/,
     terms: ["dangerous", "situation", "location"],
   },
+  {
+    id: "at_risk",
+    label: "a person at risk",
+    when: /\b(on the (subway |train )?tracks|fell (into|in) the (river|water|harbor|ocean|lake|pool|east river|hudson)|drowning|(basement|cellar|apartment) is flood\w*[^.]{0,40}\b(is|are) (down there|inside|in there)|(baby|infant|toddler|newborn|elderly|grandm\w*|grandf\w*|grandparent)[^.]{0,30}\b(freezing|too cold|hypotherm\w*|turning blue)|(freezing|too cold)[^.]{0,30}\b(baby|infant|toddler|newborn))\b/,
+    // No search words of its own: a baby freezing with no heat still gets the 311 heat article.
+    terms: [],
+  },
+  {
+    id: "domestic_violence",
+    label: "domestic violence",
+    when: /\b(domestic violence|(husband|wife|boyfriend|girlfriend|partner|ex) (is |keeps )?(beating|hitting|hurting|choking) (me|her|him)|hitting (his|her) (wife|husband|girlfriend|boyfriend|partner)|violencia dom[eé]stica)\b/,
+    terms: ["domestic", "violence"],
+  },
 ];
+
+/**
+ * The City's own domestic violence text, from KA-01217 "Domestic Violence" (911 section,
+ * read 2026-11-07). The HOPE Hotline's number is not in the article text, so none is given.
+ */
+export const CITY_DV = {
+  call_911: "Call 911 to report domestic violence, including a crime in progress, impending threat, fear of violence, or past domestic violence.",
+  text_911: "If you can't safely call 911, you can send them a text.",
+  hope_hotline: "New York City’s 24-Hour HOPE Hotline provides safety planning, referrals, and connections to emergency housing for victims of all crimes, including survivors of domestic violence, in more than 150 languages.",
+  ka_number: "KA-01217",
+  url: "https://portal.311.nyc.gov/article/?kanumber=KA-01217",
+};
+
+/** For the calling assistant: it is the better detector of danger, and is told so (QA round 2 on #23). */
+export const ASSISTANT_INSTRUCTION =
+  "Danger detection here is keyword-based and will miss some emergencies. If anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag it.";
 
 /** The City's 988 sentence, from KA-01635 (Suicide), read 2026-11-07. */
 export const CITY_988 = {
@@ -211,6 +241,7 @@ export type EmergencyLead = {
   suggested_by: string[];
   dangers: string[];
   also_988?: typeof CITY_988;
+  domestic_violence?: typeof CITY_DV;
 };
 
 /**
@@ -257,6 +288,13 @@ export function emergencyLead(a: DangerAssessment, articles: ArticleLike[], opts
         dangers: kinds.map((k) => k.label),
       };
   if (kinds.some((k) => k.id === "suicide")) lead.also_988 = CITY_988;
+  if (kinds.some((k) => k.id === "domestic_violence")) {
+    lead.call_911 = CITY_DV.call_911;
+    lead.source = `311 article ${CITY_DV.ka_number} ("Domestic Violence"), ${CITY_DV.url}`;
+    lead.ka_number = CITY_DV.ka_number;
+    lead.portal_url = CITY_DV.url;
+    lead.domestic_violence = CITY_DV;
+  }
   return lead;
 }
 

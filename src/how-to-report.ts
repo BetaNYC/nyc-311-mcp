@@ -19,7 +19,7 @@ import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
 import { articleUrl, contentClient, NotFoundError, CATEGORY_ID, PORTAL, type Article, type ArticleSummary, type Category, type ContentAction, type ContentClient, type Fetched } from "./content-311.js";
 import { BOROUGHS, boardstatData, DISTRICT_JSON, DISTRICT_SHAPE, problemTrend } from "./district-tools.js";
 import type { BoardStatData } from "./boardstat-data.js";
-import { assessDanger, CRIME_POINTER, CRIME_WORDS, emergencyLead, normalize, SAFETY_LINE, SAFETY_LINE_SOURCE, type DangerAssessment } from "./emergency.js";
+import { ASSISTANT_INSTRUCTION, assessDanger, CRIME_POINTER, CRIME_WORDS, emergencyLead, GENERIC_911, normalize, SAFETY_LINE, SAFETY_LINE_SOURCE, type DangerAssessment } from "./emergency.js";
 
 // ─── words ────────────────────────────────────────────────────────────────────
 
@@ -155,7 +155,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
   { when: /\b(smoke|carbon monoxide|co) (detector|alarm)s?\b[^.]{0,30}\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\w*|needs? (a )?batter\w*)|\b(no|missing|broken) (smoke|carbon monoxide|co) (detector|alarm)/, terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
-  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, terms: ["leak", "water"], weight: 2, categories: ["Tenants", "Water"], family: "leak" },
+  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
   { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, terms: ["elevator", "escalator"], weight: 3, categories: ["Buildings & Property"], family: "elevator" },
   { when: /\bfire escapes?\b|\b(blocked|locked) (building )?exits?\b/, terms: ["fire", "escape", "exit", "blocked"], weight: 3, categories: ["Buildings & Property"], family: "exit" },
   // Streets and sidewalks
@@ -214,8 +214,10 @@ export function parseQuery(description: string): Query {
     if (c.spanish) spanish = true;
   }
   // A danger adds its words and always searches Safety & Crime, where the City's "Call 911" articles are.
+  const dv = danger.kinds.some((k) => k.id === "domestic_violence");
   for (const k of danger.kinds) {
-    for (const t of k.terms) add(t, 3);
+    // Domestic violence: the City's own Domestic Violence article, not the general danger one.
+    if (!(dv && k.id === "crime")) for (const t of k.terms) add(t, 3);
     if (!categories.includes("Safety & Crime")) categories.unshift("Safety & Crime");
     matched.push(...danger.suggested_by);
   }
@@ -557,7 +559,21 @@ function matchLine(m: Match): string {
   );
 }
 
-export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, client: ContentClient = contentClient(), data: BoardStatData = boardstatData()) {
+/** Every error from these tools starts with the safety line (QA round 2 on #23). */
+async function safely<T>(run: () => Promise<T>): Promise<T> {
+  try {
+    return await run();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(message.startsWith(SAFETY_LINE) ? message : `${SAFETY_LINE} ${message}`);
+  }
+}
+
+export function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, client: ContentClient = contentClient(), data: BoardStatData = boardstatData()) {
+  return safely(() => howToReportInner(args, client, data));
+}
+
+async function howToReportInner(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, client: ContentClient, data: BoardStatData) {
   if (args.community_district !== undefined && args.council_district !== undefined) throw new Error("Give community_district or council_district, not both.");
   if (args.last_days !== undefined && args.community_district === undefined && args.council_district === undefined) {
     throw new Error("last_days counts reports in a district; give community_district or council_district with it.");
@@ -597,7 +613,8 @@ export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, 
   } else if (alternatives.length) {
     first_line = `Possible match: "${alternatives[0].title}" (${alternatives[0].ka_number}). Its details could not be read; open the link.`;
   } else {
-    first_line = "No 311 article matched this description well enough to suggest one. Try other words, browse with list_311_categories, or search 311 Online.";
+    // Every no-match answer leads with 911: the description may be an emergency the keywords missed.
+    first_line = GENERIC_911;
   }
 
   const searchWords = [...q.terms.entries()].filter(([, w]) => w > 1).map(([t]) => t).slice(0, 6);
@@ -638,9 +655,10 @@ export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, 
 
   const stale = used.filter((x) => x.stale);
   const out = {
-    first_line,
     safety_line: SAFETY_LINE,
     safety_line_source: SAFETY_LINE_SOURCE,
+    assistant_instruction: ASSISTANT_INSTRUCTION,
+    first_line,
     emergency,
     best_match: lead,
     alternatives,
@@ -682,7 +700,13 @@ function withDanger(part: Query, whole: Query): Query {
   return { ...part, danger: whole.danger, terms: new Map([...part.terms, ...[...whole.terms].filter(([t]) => whole.danger.kinds.some((k) => k.terms.map(stem).includes(t)))]) };
 }
 
-export async function list311Categories(args: z.infer<z.ZodObject<typeof CATEGORIES_SHAPE>>, client: ContentClient = contentClient()) {
+export function list311Categories(args: z.infer<z.ZodObject<typeof CATEGORIES_SHAPE>>, client: ContentClient = contentClient()) {
+  return safely(() => list311CategoriesInner(args, client));
+}
+
+const SAFETY_FIELDS = { safety_line: SAFETY_LINE, assistant_instruction: ASSISTANT_INSTRUCTION } as const;
+
+async function list311CategoriesInner(args: z.infer<z.ZodObject<typeof CATEGORIES_SHAPE>>, client: ContentClient) {
   const cats = await client.categories();
   const kids = (id: string | null) => cats.value.filter((c) => c.parent_id === id);
   const source = { name: "NYC 311 Public API, GetCategory and GetContentList", url: "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api" };
@@ -692,6 +716,7 @@ export async function list311Categories(args: z.infer<z.ZodObject<typeof CATEGOR
   };
   if (!args.category_id) {
     return redactAll({
+      ...SAFETY_FIELDS,
       categories: kids(null).map(node),
       count: cats.value.length,
       note: "Only categories with no subcategories hold articles. Give one as category_id here to list its articles, or to how_to_report to search only it. \"A to Z\" (311-19) returns no articles through the API.",
@@ -703,10 +728,11 @@ export async function list311Categories(args: z.infer<z.ZodObject<typeof CATEGOR
   if (!c) throw new Error(`311 has no category ${args.category_id}. Call list_311_categories with no category_id to see them.`);
   const children = kids(c.id);
   if (children.length) {
-    return redactAll({ category: node(c), note: "This category has subcategories; articles are in the ones with no subcategories.", source: { ...source, fetched_at: cats.fetched_at } });
+    return redactAll({ ...SAFETY_FIELDS, category: node(c), note: "This category has subcategories; articles are in the ones with no subcategories.", source: { ...source, fetched_at: cats.fetched_at } });
   }
   const list = await client.articleList(c.id);
   return redactAll({
+    ...SAFETY_FIELDS,
     category: { id: c.id, name: c.name, description: c.description, portal_url: c.url },
     articles: list.value.map((a) => ({ ka_number: a.ka_number, title: a.title, summary: a.description, portal_url: articleUrl(a.ka_number) })),
     count: list.value.length,
@@ -731,7 +757,7 @@ export const REPORT_TOOLS = [
   {
     name: "how_to_report",
     description:
-      "Find how to report a problem to 311, from a plain description ('a pothole on my block', 'loud music next door at 2 am', 'no heat in my apartment'). Returns the best 311 articles from the City's own 311 content (title, KA number, link on 311 Online), the agency and the 311 problem type each names (the problem type is NYC Open Data's complaint_type), what the article says to do and what happens next, and the ways to report (311 Online, the NYC311 app, phone 311 or 212-NEW-YORK, text 311-692), all from City text. If the description suggests danger, first_line says to call 911, in the City's words where an article has them. Matching is by keyword, done by BetaNYC, and reads only a few 311 categories (listed in searched). Give community_district or council_district to add how often that problem type was reported there (BoardStat). Does not file anything.",
+      "Find how to report a problem to 311, from a plain description ('a pothole on my block', 'loud music next door at 2 am', 'no heat in my apartment'). Returns the best 311 articles from the City's own 311 content (title, KA number, link on 311 Online), the agency and the 311 problem type each names (the problem type is NYC Open Data's complaint_type), what the article says to do and what happens next, and the ways to report (311 Online, the NYC311 app, phone 311 or 212-NEW-YORK, text 311-692), all from City text. Every answer starts with 'If anyone is in danger right now, call 911.'; a description that suggests danger, and every no-match answer, leads with a 911 line, in the City's words only when the City article is that danger. IMPORTANT: danger detection here is keyword-based and will miss some emergencies. If anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag it. Matching is by keyword, done by BetaNYC, and reads only a few 311 categories (listed in searched). Give community_district or council_district to add how often that problem type was reported there (BoardStat). Does not file anything.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -749,7 +775,7 @@ export const REPORT_TOOLS = [
   {
     name: "list_311_categories",
     description:
-      "Browse 311's own topic categories (the ones on 311 Online), or, given a category_id, the articles in it with their KA numbers and links. Use it when how_to_report's match looks wrong, then pass the category_id to how_to_report.",
+      "Browse 311's own topic categories (the ones on 311 Online), or, given a category_id, the articles in it with their KA numbers and links. Use it when how_to_report's match looks wrong, then pass the category_id to how_to_report. Danger detection in these tools is keyword-based and will miss some emergencies: if anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first.",
     inputSchema: {
       type: "object",
       additionalProperties: false,

@@ -73,13 +73,33 @@ Deterministic, no model call, no new dependency (`src/how-to-report.ts`):
 
 Confidence: *strong* (score 9 or more and 2 ahead of the next), *close call*, or *possible*.
 
-**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer carries
-`safety_line`: "If anyone is in danger right now, call 911." (BetaNYC wording). A description that
+**Danger detection is keyword-based; it will miss some emergencies.** No word list covers every
+way a person describes an emergency. So the calling assistant is made responsible: the tool
+descriptions and every answer (`assistant_instruction`) say "Danger detection here is
+keyword-based and will miss some emergencies. If anything the person says suggests someone may be
+in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag
+it."
+
+**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer starts with
+`safety_line`: "If anyone is in danger right now, call 911." (BetaNYC wording), and every error
+message starts with the same sentence. Every no-match answer leads with the BetaNYC 911 line. A description that
 suggests danger leads with a 911 line: fire, smoke pouring out, gas, carbon monoxide going off,
 downed or sparking wires, an explosion, water near electricity, a crime in progress (robbery,
 break-in, assault, a gun or knife, shots), someone hurt, unconscious, not breathing or
 overdosing, a person hit by a car, a child alone or someone missing, suicide or self-harm, a
-collapse, or someone trapped. Spanish words for fire, gas, injury and robbery count too.
+collapse or a building shaking, someone trapped or stuck with people inside, someone on the tracks
+or in the water, a baby or elderly person freezing, domestic violence, threats, or someone being
+dragged into a car. The medical words include "took too many pills", "won't wake up", "isn't
+breathing", chest pain, an allergic reaction or swelling throat, a stroke or drooping face,
+"fell and can't get up", a seizure, unconscious, and heavy bleeding. Spanish words for fire, gas,
+injury and robbery count too. Where a 311 problem also applies (a baby freezing with no heat,
+water near a light fixture), the 311 article is still the best match, after the 911 line.
+
+**Domestic violence.** The line quotes KA-01217 "Domestic Violence" (911 section, read
+2026-11-07): "Call 911 to report domestic violence, including a crime in progress, impending
+threat, fear of violence, or past domestic violence." and "If you can't safely call 911, you can
+send them a text." It names the City's 24-Hour HOPE Hotline in the article's words; the article
+text gives no number for it, so none is given.
 
 The line quotes a City article **only when that article is the danger detected**: "Gas Leak"
 (KA-02048) for a gas smell, "Fire Emergency" (KA-01543), "Carbon Monoxide" (KA-02608), "Medical
@@ -93,8 +113,7 @@ wording. For suicide and self-harm, `also_988` quotes KA-01635: "When people cal
 Not danger: "no one was hurt", "nobody got hurt", "not an emergency"; smoking as an activity
 ("smoke cigarettes in the hallway"); an odor ("a burning smell"); "the noise hurts my sleep"; a
 crash with no word about injury ("my car was hit"), which gets the standing line only. A past crime
-("robbed last week") gets no 911 lead. A no-match answer with an urgent word ("help", "right now",
-"emergency") leads with the BetaNYC 911 line.
+("robbed last week") gets no 911 lead, and neither does "shooting a video" or "a movie".
 
 **Crime.** When the description is about a crime, `crime` points to the City's own articles: "Crime
 Stoppers Tip" (KA-02668: "You can anonymously report a tip about a crime ... The City accepts tips
@@ -137,7 +156,7 @@ answer adds `in_your_district`: the number of reports of the matched problem typ
 ## Cost and caching
 
 A first question makes at most 1 + 5 + 1 requests (categories, routed lists, the best article).
-Each answer is cached on disk for 7 days (`NYC_311_MCP_CACHE_DIR/content-311/`), so most questions
+Each answer is cached on disk for 7 days, or 1 day for articles that say something holds "right now" (`NYC_311_MCP_CACHE_DIR/content-311/`), so most questions
 make none. When the API cannot be reached, the saved copy answers with `stale: true` and a
 `warning`. Requests go one at a time, at least 1 s apart, with a 30 s timeout and one retry on
 429/503 honoring `Retry-After`.
@@ -189,10 +208,13 @@ different name. They are listed here and the tool says so in each answer (`probl
 emergencies, near misses that are not emergencies, Spanish, typos, several problems in one
 description, and requests 311 handles that are not complaints ("a copy of my birth certificate").
 Each row states whether the answer leads with 911 and with which City article.
+`test/how-to-report-emergencies.test.mjs` runs 50 emergencies, each of which must lead with 911,
+and 20 look-alikes that must not.
 
 ## Live calls
 
-59 read-only calls to the content operations on 2026-11-07, all 200: 1 `GetCategory`, 23
-`GetContentList` (two of them, a parent category and "A to Z", to confirm they are empty), 35
-`GetContent` (one of them the free-text observation above; 13 recorded for QA round 1). No other
+60 read-only calls to the content operations on 2026-11-07, all 200: 1 `GetCategory`, 23
+`GetContentList` (two of them, a parent category and "A to Z", to confirm they are empty), 36
+`GetContent` (one of them the free-text observation above; 13 recorded for QA round 1, 1 for
+round 2). No other
 311 operation, no request filed, no portal form opened.

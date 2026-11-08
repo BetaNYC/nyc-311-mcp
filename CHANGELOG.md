@@ -36,6 +36,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   broken detector, broken sidewalk, elevator, fireworks, missed collection, crash, smoking).
   Article date in every answer; time-sensitive articles refreshed daily; a missing key is named
   as such. 46 phrasings in `test/how-to-report-phrasings.test.mjs`.
+- QA round 2 on #23: danger detection is keyword-based and will miss some emergencies, so
+  every answer and both tool descriptions carry `assistant_instruction` telling the calling
+  assistant to send the person to 911 whenever anything suggests danger. `safety_line` is the
+  first field of every answer and starts every error; every no-match answer leads with 911.
+  Much wider patterns (medical, smoke and outlets, gas smell, structural, violence and
+  threats, people at risk, domestic violence quoting KA-01217). "Shooting a video" is not
+  gunfire. 50 emergencies and 20 look-alikes in `test/how-to-report-emergencies.test.mjs`.
 
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 

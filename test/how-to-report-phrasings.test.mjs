@@ -56,7 +56,7 @@ export const PHRASINGS = [
   ["a man with a gun outside", "generic", "KA-01033", []],
   ["someone is stuck in the elevator", "generic", "KA-01033", []],
   ["the ceiling is collapsing", "generic", "KA-01033", []],
-  ["water is leaking into the electrical outlet", "generic", "KA-01033", []],
+  ["water is leaking into the electrical outlet", "generic", "KA-01509", []],
   ["I want a gun permit", null, null, []],
 ];
 
@@ -68,7 +68,9 @@ for (const [description, lead, top, others] of PHRASINGS) {
     assert.equal(out.safety_line, SAFETY_LINE, "every answer carries the standing safety line");
     if (lead === null) {
       assert.equal(out.emergency, null, `no 911 lead expected, got: ${out.first_line}`);
-      assert.doesNotMatch(out.first_line, /call 911/i);
+      // A no-match answer still leads with the 911 line (round 2); a match does not.
+      if (out.best_match || out.alternatives.length) assert.doesNotMatch(out.first_line, /call 911/i);
+      else assert.equal(out.first_line, GENERIC_911);
     } else if (lead === "generic") {
       assert.equal(out.first_line, GENERIC_911);
       assert.equal(out.emergency.ka_number, null);
