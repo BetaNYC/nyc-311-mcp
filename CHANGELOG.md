@@ -21,10 +21,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the address to pass to `address_history`); the list adds `not_found`, since the API leaves
   out unknown numbers silently. A 404 explains that an Open Data id is not a 311 number.
 - `src/service-requests.ts`; evidence and status tables in `docs/service-requests.md`.
+- QA round 1 on #22: `find_requests` and `address_history` pages carry `next_page`
+  (`offset` + `data_as_of`) and refuse a page from another build, as `cb_monthly_list` does.
+  `find_requests` reads the district window by window and the text columns only for the page
+  (Council District 11, 2020 on, `limit: 1`: about 1.06 GB peak before, 344 MB after).
+  `status` + `statuses` that cannot both hold are refused. Status meanings are labeled
+  `meaning_source: "BetaNYC"` and each says the City publishes no definition.
 
 ### Changed (Phase 3, #16)
 
-- **The 311 number is not Open Data's `unique_key`** (two live lookups, docs/service-requests.md).
+- **The 311 number is not Open Data's `unique_key`** (two matched requests, 2026-11-07; no published source links them that we found; docs/service-requests.md).
   District tools and `cb_monthly_list` now call the id `unique_key` instead of `sr_number`
   (unreleased; Phases 1 and 2 only), and their caveats say it is not the 311 number.
 - **ZIP codes are now removed from the 311 API answers too** (`Address.FullAddress` ended in

@@ -4,7 +4,7 @@ Evidence read and calls made 2026-11-07, about 22:00 to 22:10 ET.
 
 ## The 311 number is not Open Data's `unique_key`
 
-**Finding: they are different numbers, and no published source links them.**
+**Finding: they are different numbers (two matched requests, 2026-11-07), and we found no published source that links them** (checked: the `erm2-nwe9` data dictionary and the 311 API portal's operation docs, below).
 
 | 311 Public API (`GetServiceRequest`) | NYC Open Data `erm2-nwe9` |
 |---|---|
@@ -12,8 +12,8 @@ Evidence read and calls made 2026-11-07, about 22:00 to 22:10 ET.
 | `311-17323514`, DSNY, Snow or Ice / Sidewalk, submitted 2024-01-18T14:38:53, 165 EAST 94 STREET, "…found no violation at the location." | `unique_key` **60071726**, same again |
 | `311-70999528` (`311-` + a real 2026-11-04 `unique_key`, NYPD noise, Manhattan CD 1) | HTTP 404, "SR with Number 311-70999528 wasn't found!" |
 
-The two 311 numbers are 6 apart; their `unique_key`s are 10,629 apart, so there is no offset
-or formula either. The Open Data rows were found by agency and `created_date` to the second.
+The two 311 numbers are 6 apart; their `unique_key`s are 10,629 apart, so there is no fixed
+offset. The Open Data rows were found by agency and `created_date` to the second.
 
 Documentation:
 
@@ -30,7 +30,7 @@ What this server does about it:
   `sr_number`, which wrongly implied a 311 number), with a caveat.
 - `get_service_request` adds a `plain_language.about_the_number` note, and on a 404 it says that
   an 8-digit Open Data id is not a 311 number.
-- **No link by number is made**, because none exists. Instead, `plain_language.address_lookup`
+- **No link by number is made**: none is published, and the two checked pairs show no formula. Instead, `plain_language.address_lookup`
   gives the request's street address (as the API wrote it, ZIP removed) and borough, and
   `next_step` says to call `address_history` with them. That finds the address and its
   district, not this request. A match by address and time to the second would usually find the
@@ -71,11 +71,27 @@ submitted". Values seen:
 "Cancelled" does not appear in either. A citywide count over all years timed out on the portal
 and was not retried.
 
-The City publishes no definition of any status beyond its label. `src/service-requests.ts`
-`explainStatus` says what the label says, that BoardStat counts everything but Closed as "not yet
-closed", and, for Closed, that closed does not mean fixed. What the data shows in Manhattan CD 1
-was used only to word examples: Pending and Assigned are mostly DOT (whose resolution text often
-says the status is on DOT's website), In Progress is mostly TLC, DOHMH and EDC, Started is DEP.
+The City publishes no definition of any status beyond its label. The meanings
+`src/service-requests.ts` `explainStatus` returns are **BetaNYC's plain-language reading, not
+definitions**: every answer carries `meaning_source: "BetaNYC"` (or `status_meanings_source`),
+and every meaning starts "The City does not publish a definition of this status." Each says only
+the label, which agencies use it in the data checked, that BoardStat counts everything but
+Closed as "not yet closed", and, for Closed, that closed does not mean fixed.
+
+Which agencies use each status, BoardStat build of 2026-11-07, 2020 on (top agencies; "close
+date" = rows that have a `closed_date` although the status is not Closed):
+
+| Status | Manhattan CD 1 | Council District 11 (Bronx) |
+|---|---|---|
+| Open | 297: HPD 137, DOB 55, DEP 46, DOT 37; close date 55 | 2,672: HPD 2,213, DOB 160, DEP 138, DOT 119; close date 166 |
+| In Progress | 3,188: TLC 1,156, DOHMH 803, EDC 671, DPR 147; close date 21 | 2,899: DPR 1,250, DOHMH 680, TLC 239, DSNY 193; close date 48 |
+| Pending | 456: DOT 450; close date 316 | 1,073: DOT 1,054; close date 954 |
+| Assigned | 295: DOT 254, DOB 26, DEP 8; close date 181 | 267: DOT 135, DOB 66, DEP 46; close date 103 |
+| Started | 41: DEP 41; close date 1 | 115: DEP 115; close date 4 |
+| Unspecified | 20: DSNY 18; close date 19 | 250: NYPD 212, DSNY 30; close date 247 |
+
+A citywide breakdown by agency was attempted from `erm2-nwe9` and refused (HTTP 429), so the
+meanings say "in the BoardStat districts checked", not citywide.
 
 ## `find_requests`
 

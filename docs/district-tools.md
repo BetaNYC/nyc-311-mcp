@@ -219,7 +219,18 @@ exactly one, the BoardStat link carries it (`district.js` filters `status = '<va
 several, the link carries none and a caveat says so.
 
 **Lists** take a `limit` and say `truncated: true` when rows were left out. `find_requests`,
-`address_history` and `cb_monthly_list` also take an `offset` and return `next_offset`.
+`address_history` and `cb_monthly_list` also page: they return `next_page` (`offset` and
+`data_as_of`), and a page asked for with a `data_as_of` that is not the current build is
+refused, so a list is never stitched from two builds. `find_requests` refuses a `status` and
+`statuses` that cannot both hold (for example `closed` with `Pending`).
+
+**`find_requests` memory.** It reads the district's file one 51,200-row window at a time (the
+row-group size BoardStat writes), keeping counts and only the newest `offset + limit` rows,
+then reads the text columns (resolution, address, description, close date) for the page alone.
+Council District 11, 2020 on, `limit: 1`: about 1.06 GB peak before this, 344 MB after; a
+200-row page of DOT Pending requests spread over 2020 to 2026, 516 MB (BoardStat build of
+2026-11-07, Node 26, macOS arm64). When `agency`, `descriptions` or `statuses` is given, a first
+light pass finds the City's exact spellings, as the other tools match them.
 
 **Request ids.** Every list names a request by `unique_key`, NYC Open Data's id. It is not
 the 311 number (`311-XXXXXXXX`) a person is given when they report, and the 311 API cannot

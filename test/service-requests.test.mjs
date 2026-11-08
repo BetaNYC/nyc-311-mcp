@@ -106,6 +106,55 @@ test("address_history pages with offset and explains its statuses", async () => 
   assert.ok(Object.keys(first.data.status_meanings).length >= 1);
 });
 
+test("find_requests and address_history: next_page carries data_as_of, and a page from another build is refused", async () => {
+  const one = await run({ community_district: 484, from_date: "2020-01-01", limit: 10 });
+  assert.deepEqual(one.data.next_page, { offset: 10, data_as_of: MANIFEST.generated_at });
+  const two = await run({ community_district: 484, from_date: "2020-01-01", limit: 10, ...one.data.next_page });
+  assert.equal(two.data.offset, 10);
+  await assert.rejects(run({ community_district: 484, from_date: "2020-01-01", offset: 10, data_as_of: "2026-01-01T00:00:00Z" }), /published new data since the first page/);
+  const { data } = await fixtureData();
+  const want = JSON.parse(await readFile(path.join(FIX, "expected.json"), "utf8")).address_history_top;
+  const args = { address: want.address.toLowerCase(), borough: "Queens", limit: 2 };
+  const first = await runDistrictTool("address_history", parseToolArgs("address_history", args), data);
+  assert.deepEqual(first.data.next_page, { offset: 2, data_as_of: MANIFEST.generated_at });
+  await assert.rejects(
+    runDistrictTool("address_history", parseToolArgs("address_history", { ...args, offset: 2, data_as_of: "2026-01-01T00:00:00Z" }), data),
+    /published new data since the first page/
+  );
+});
+
+test("find_requests refuses status + statuses that cannot both hold, and allows ones that agree", async () => {
+  for (const args of [{ status: "closed", statuses: ["Pending"] }, { status: "not_closed", statuses: ["closed"] }, { status: "closed", statuses: ["Closed", "Open"] }]) {
+    await assert.rejects(run({ community_district: 484, ...args }), /cannot both hold/, JSON.stringify(args));
+  }
+  const ok = await run({ community_district: 484, from_date: "2020-01-01", status: "not_closed", statuses: ["Pending"] });
+  assert.equal(ok.data.requests, EXPECTED.pending_484.requests);
+});
+
+test("find_requests reads the text columns only for the page, not for every request in the district", async () => {
+  const { data } = await fixtureData();
+  const pinned = await data.pinned();
+  let textRows = 0;
+  let lightRows = 0;
+  const spy = {
+    siteUrl: pinned.siteUrl,
+    manifest: () => pinned.manifest(),
+    readParquet: async (rel, opts) => {
+      const r = await pinned.readParquet(rel, opts);
+      if (rel.startsWith("detail/")) {
+        if (opts.columns.includes("resolution_description")) textRows += r.rows.length;
+        else lightRows += r.rows.length;
+      }
+      return r;
+    },
+  };
+  const env = await runDistrictTool("find_requests", parseToolArgs("find_requests", { community_district: 484, from_date: "2020-01-01", limit: 3 }), spy);
+  assert.equal(env.data.newest_first.length, 3);
+  assert.equal(lightRows, 867);
+  assert.equal(textRows, 3);
+  assert.ok(env.data.newest_first.every((r) => "resolution" in r && "address" in r));
+});
+
 // ── Status meanings ───────────────────────────────────────────────────────────
 
 test("explainStatus: the API's four documented codes and Open Data's seven values all have a meaning", () => {
@@ -114,6 +163,9 @@ test("explainStatus: the API's four documented codes and Open Data's seven value
     const e = explainStatus(s);
     assert.ok(!/not a status this server knows/.test(e.meaning), s);
     assert.equal(e.closed, s === "Closed");
+    // Every meaning is BetaNYC's reading, and says the City publishes no definition (#22 QA).
+    assert.equal(e.meaning_source, "BetaNYC", s);
+    assert.match(e.meaning, /The City does not publish a definition of this status\./, s);
   }
   assert.equal(explainStatus("Resolved").closed, null);
   assert.match(explainStatus("Resolved").meaning, /not a status this server knows/);
@@ -135,6 +187,7 @@ test("describeServiceRequest keeps every API field, removes the ZIP code, and ad
       status: "Closed",
       status_code: "614110003",
       meaning: undefined,
+      meaning_source: "BetaNYC",
       closed: true,
       resolution: "The Department of Sanitation investigated this complaint and issued a Notice of Violation.",
       resolution_updated: "2024-01-20T20:44:17",

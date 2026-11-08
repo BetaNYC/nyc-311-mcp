@@ -300,6 +300,12 @@ function canonicalDescriptions(rows: Row[], f: Filters): string[] | undefined {
   const scope = f.problems?.length ? rows.filter((r) => f.problems!.includes(String(r.complaint_type))) : rows;
   const counts = new Map<string, number>();
   for (const r of scope) counts.set(descOf(r), (counts.get(descOf(r)) ?? 0) + 1);
+  return canonicalDescriptionsCounted(counts, f);
+}
+
+/** canonicalDescriptions over counts already taken (description → requests, within the problems asked for). */
+function canonicalDescriptionsCounted(counts: Map<string, number>, f: Filters): string[] | undefined {
+  if (!f.descriptions?.length) return undefined;
   const out: string[] = [];
   for (const a of f.descriptions) {
     const hit = [...counts.keys()].find((k) => k.toLowerCase() === a.trim().toLowerCase());
@@ -516,7 +522,7 @@ export const LIMIT_JSON = (def: number, max: number) => ({
   description: `How many rows to list (default ${def}, at most ${max}). The answer says when more were left out.`,
 });
 
-const OFFSET_JSON = { type: "integer", minimum: 0, description: "How many rows to skip, for the next page (default 0). The answer gives next_offset." } as const;
+const OFFSET_JSON = { type: "integer", minimum: 0, description: "How many rows to skip, for the next page (default 0). Pass next_page.offset, with next_page.data_as_of." } as const;
 
 // Plain-language sentence shared by every description.
 const ABOUT =
@@ -1017,6 +1023,7 @@ export async function stillOpen(src: Source, args: z.infer<z.ZodObject<typeof OP
       by_agency: byAgency,
       oldest_first: list.items,
       truncated: list.truncated,
+      status_meanings_source: "BetaNYC",
       status_meanings: statusMeanings(open.map((r) => (r.status == null ? null : String(r.status)))),
     },
     extraCaveats: [
@@ -1104,12 +1111,14 @@ const HISTORY_SHAPE = {
   status: FILTER_SHAPE.status,
   limit: LIMIT(200),
   offset: z.number().int().min(0).optional(),
+  data_as_of: z.string().optional(),
 };
 
 export async function addressHistory(src: Source, args: z.infer<z.ZodObject<typeof HISTORY_SHAPE>>) {
   const data = await pin(src);
   const { spelling, hits: found, manifest: mr0 } = await findAddress(data, args.address, args.borough);
   const m = mr0.manifest;
+  assertSameBuild(args.data_as_of, m);
   if (!found.length) {
     const sug = await suggestAddresses(data, spelling.spellings[0], args.borough);
     throw new Error(
@@ -1179,6 +1188,7 @@ export async function addressHistory(src: Source, args: z.infer<z.ZodObject<type
     "Only requests whose address matches exactly, as the City spelled it, in this address's community district. Requests that gave only a cross street are not included.",
     "The resolution is the agency's own words. It says what the agency recorded, not whether the problem was fixed.",
     "unique_key is NYC Open Data's id for each request, not the 311 number (311-XXXXXXXX) the person who reported was given.",
+    "To page, pass next_page.offset and next_page.data_as_of; a page from another build is refused.",
     "Talk about the address, not the people who reported: 311 data does not say who called, and this server does not try to.",
     "The BoardStat link opens the district page; to see this one address on BoardStat, search for it on BoardStat's home page.",
   ];
@@ -1217,6 +1227,8 @@ export async function addressHistory(src: Source, args: z.infer<z.ZodObject<type
       truncated: list.truncated,
       offset: historyOffset,
       next_offset: list.truncated ? historyOffset + list.items.length : null,
+      next_page: list.truncated ? { offset: historyOffset + list.items.length, data_as_of: m.generated_at } : null,
+      status_meanings_source: "BetaNYC",
       status_meanings: statusMeanings(matched.map((r) => (r.status == null ? null : String(r.status)))),
     },
     extraCaveats: extra,
@@ -1235,7 +1247,60 @@ const FIND_REQUESTS_SHAPE = {
   statuses: z.array(z.string().min(1)).max(10).optional(),
   limit: LIMIT(200),
   offset: z.number().int().min(0).optional(),
+  data_as_of: z.string().optional(),
 };
+
+/** Refuse `status` + `statuses` that cannot both hold (closed + Pending, not_closed + Closed). */
+function assertStatusesAgree(status: Status | undefined, statuses: string[] | undefined): void {
+  if (!status || !statuses?.length) return;
+  const bad = statuses.filter((s) => (s.trim().toLowerCase() === "closed") !== (status === "closed"));
+  if (bad.length) {
+    throw new Error(
+      `status '${status}' and statuses ${bad.map((b) => `'${b}'`).join(", ")} cannot both hold, so the answer would always be empty. ` +
+        "Give one of the two: status for closed / not_closed, or statuses for the City's own values."
+    );
+  }
+}
+
+/** Heavy text columns, read only for the rows of the page (#22 QA: reading them for a whole district peaked at about 1 GB). */
+const PAGE_TEXT_COLUMNS = ["closed_date", "descriptor", "resolution_description", "incident_address", "intersection_street_1", "intersection_street_2"];
+
+/**
+ * The heavy columns for the given requests, read one row-group-sized window at a time with a
+ * created_date range around the page, so row groups outside it are skipped and memory stays
+ * bounded by one window, not the district.
+ */
+async function readPageText(data: Reader, d: District, page: Row[], totalRows: number): Promise<Map<string, Row>> {
+  const out = new Map<string, Row>();
+  if (!page.length) return out;
+  const keys = page.map((r) => String(r.unique_key));
+  const times = page.map((r) => (r.created_date as Date).getTime());
+  const filter = {
+    unique_key: { $in: keys },
+    created_date: { $gte: new Date(Math.min(...times)), $lte: new Date(Math.max(...times)) },
+  };
+  const WINDOW = 51_200;
+  for (let start = 0; start < totalRows && out.size < keys.length; start += WINDOW) {
+    const { rows } = await data.readParquet(d.file, {
+      columns: ["unique_key", ...PAGE_TEXT_COLUMNS],
+      filter,
+      rowStart: start,
+      rowEnd: Math.min(start + WINDOW, totalRows),
+    });
+    for (const r of rows) out.set(String(r.unique_key), r);
+  }
+  return out;
+}
+
+/** Refuse a later page asked for against another build than the first page (as cb_monthly_list does). */
+export function assertSameBuild(dataAsOf: string | undefined, m: BoardStatManifest): void {
+  if (dataAsOf !== undefined && dataAsOf !== m.generated_at) {
+    throw new Error(
+      `BoardStat published new data since the first page (that page was from ${dataAsOf}; the data is now from ${m.generated_at}), ` +
+        "so later pages would not line up with earlier ones. Start again at offset 0, without data_as_of."
+    );
+  }
+}
 
 /** Map each requested City status to the exact value in the rows read (case-insensitive), or fail listing the values there. */
 function canonicalStatuses(rows: Row[], asked: string[] | undefined): string[] | undefined {
@@ -1255,42 +1320,98 @@ function canonicalStatuses(rows: Row[], asked: string[] | undefined): string[] |
   return out;
 }
 
+/** One row-group-sized window of a detail file at a time (BoardStat writes 51,200-row groups), so memory is bounded by a window. */
+const SCAN_WINDOW = 51_200;
+
+/** Calls `each` with the rows of every window, in file order, with the same created_date filter readDetail uses. */
+async function scanDetail(data: Reader, d: District, totalRows: number, columns: string[], p: Period, each: (rows: Row[]) => void): Promise<ManifestResult> {
+  const filter = { created_date: { $gte: localAsDate(p.start), $lt: localAsDate(addDays(p.end, 1)) } };
+  const cols = [...new Set([...columns, "created_date"])];
+  let manifest: ManifestResult | undefined;
+  // The manifest's row count bounds the windows; one open-ended read after them catches any rows beyond it.
+  for (let at = 0; ; at += SCAN_WINDOW) {
+    const last = at >= totalRows;
+    const r = await data.readParquet(d.file, { columns: cols, filter, rowStart: at, ...(last ? {} : { rowEnd: Math.min(at + SCAN_WINDOW, totalRows) }) });
+    manifest = r.manifest;
+    each(r.rows);
+    if (last) break;
+  }
+  return manifest as ManifestResult;
+}
+
+const statusOf = (r: Row) => (r.status == null ? "(none)" : String(r.status));
+const newestFirst = (a: Row, b: Row) => (b.created_date as Date).getTime() - (a.created_date as Date).getTime() || byText(String(a.unique_key), String(b.unique_key));
+
 export async function findRequests(src: Source, args: z.infer<z.ZodObject<typeof FIND_REQUESTS_SHAPE>>) {
   const data = await pin(src);
   const m = (await data.manifest()).manifest;
+  assertSameBuild(args.data_as_of, m);
+  assertStatusesAgree(args.status, args.statuses);
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
   const problems = await canonicalProblems(data, args.problems);
-  const { rows, manifest } = await readDetail(
-    data,
-    d,
-    [
-      "unique_key", "created_date", "closed_date", "agency", "complaint_type", "descriptor", "status", "days_to_close",
-      "resolution_description", "incident_address", "intersection_street_1", "intersection_street_2",
-    ],
-    { from: localAsDate(p.start), toExclusive: localAsDate(addDays(p.end, 1)) }
-  );
-  const f: Filters = {
-    problems,
-    descriptions: canonicalDescriptions(rows, { problems, descriptions: args.descriptions }),
-    exclude_descriptions: args.exclude_descriptions,
-    agency: canonicalAgency(rows, args.agency),
-    status: args.status,
-  };
-  const statuses = canonicalStatuses(rows, args.statuses);
+  const totalRows = Number(manifestDistricts(m)[d.geo].find((e) => Number(e.id) === d.id)?.rows ?? 0);
+
+  // Pass 1, only when a filter needs it: the agencies, descriptions and statuses present, so
+  // each asked-for value is matched to the City's exact spelling as the other tools do.
+  let descriptions: string[] | undefined;
+  let agency: string | undefined;
+  let statuses: string[] | undefined;
+  if (args.descriptions?.length || args.agency || args.statuses?.length) {
+    const descCounts = new Map<string, number>();
+    const agencies = new Set<string>();
+    const present = new Set<string>();
+    const inScope = problems?.length ? (r: Row) => problems.includes(String(r.complaint_type)) : () => true;
+    await scanDetail(data, d, totalRows, ["complaint_type", ...descCol(args), "agency", "status"], p, (rows) => {
+      for (const r of rows) {
+        agencies.add(String(r.agency));
+        present.add(statusOf(r));
+        if (args.descriptions?.length && inScope(r)) descCounts.set(descOf(r), (descCounts.get(descOf(r)) ?? 0) + 1);
+      }
+    });
+    // The same checks and messages as the other tools (canonicalDescriptions, canonicalAgency).
+    if (args.descriptions?.length) {
+      descriptions = canonicalDescriptionsCounted(descCounts, { problems, descriptions: args.descriptions });
+    }
+    agency = canonicalAgency([...agencies].map((a) => ({ agency: a })), args.agency);
+    statuses = canonicalStatuses([...present].map((s) => ({ status: s === "(none)" ? null : s })), args.statuses);
+  }
+  const f: Filters = { problems, descriptions, exclude_descriptions: args.exclude_descriptions, agency, status: args.status };
   const keepFilters = rowMatcher(f);
   const statusSet = statuses ? new Set(statuses) : null;
-  const matched = rows
-    .filter((r) => keepFilters(r) && (!statusSet || statusSet.has(r.status == null ? "(none)" : String(r.status))))
-    .sort((a, b) => (b.created_date as Date).getTime() - (a.created_date as Date).getTime() || byText(String(a.unique_key), String(b.unique_key)));
-  const asOf = localAsDate(nycLocal(m.generated_at)).getTime();
+  const keep = (r: Row) => keepFilters(r) && (!statusSet || statusSet.has(statusOf(r)));
+
+  // Pass 2: light columns, window by window. Keep the counts and only the newest offset + limit
+  // rows; the text columns are then read for the page alone (#22 QA: reading every column for
+  // Council District 11 since 2020 peaked at about 1 GB).
   const offset = args.offset ?? 0;
   const limit = args.limit ?? 25;
-  const page = matched.slice(offset, offset + limit);
-  const byStatus = [...countBy(matched, (r) => (r.status == null ? "(none)" : String(r.status)))]
-    .map(([status, rs]) => {
+  const want = offset + limit;
+  let top: Row[] = [];
+  let matchedCount = 0;
+  const statusCounts = new Map<string, number>();
+  const manifest = await scanDetail(
+    data, d, totalRows,
+    ["unique_key", "agency", "complaint_type", ...descCol(args), "status", "days_to_close"],
+    p,
+    (rows) => {
+      for (const r of rows) {
+        if (!keep(r)) continue;
+        matchedCount++;
+        statusCounts.set(statusOf(r), (statusCounts.get(statusOf(r)) ?? 0) + 1);
+        top.push(r);
+      }
+      if (top.length > want) top = top.sort(newestFirst).slice(0, want);
+    }
+  );
+  top.sort(newestFirst);
+  const page = top.slice(offset, want);
+  const text = await readPageText(data, d, page, totalRows);
+  const asOf = localAsDate(nycLocal(m.generated_at)).getTime();
+  const byStatus = [...statusCounts]
+    .map(([status, n]) => {
       const ex = explainStatus(status === "(none)" ? null : status);
-      return { status, requests: rs.length, closed: ex.closed, meaning: ex.meaning };
+      return { status, requests: n, closed: ex.closed, meaning: ex.meaning, meaning_source: ex.meaning_source };
     })
     .sort((a, b) => b.requests - a.requests || byText(a.status, b.status));
   const link = linkFilters(d, p, f);
@@ -1302,6 +1423,7 @@ export async function findRequests(src: Source, args: z.infer<z.ZodObject<typeof
     "Newest first. Each request's status is the City's current one; status meanings are in by_status. The resolution is the agency's own words, not proof the problem was fixed.",
     `unique_key is NYC Open Data's id for each request, not the 311 number (311-XXXXXXXX) the person who reported was given. ${SR_NUMBER_NOTE}`,
     "For every request at one address, use address_history.",
+    "To page, pass next_page.offset and next_page.data_as_of. A page asked for with an older data_as_of is refused, so a list is never stitched from two builds.",
   ];
   if (statuses && statuses.length > 1) extra.push("BoardStat's page filters on one status at a time, so the link does not carry the statuses asked for.");
   return districtEnvelope({
@@ -1312,24 +1434,28 @@ export async function findRequests(src: Source, args: z.infer<z.ZodObject<typeof
       district: districtOut(d),
       period: periodOut(p),
       filters: { problems: f.problems ?? null, descriptions: f.descriptions ?? null, exclude_descriptions: f.exclude_descriptions ?? null, agency: f.agency ?? null, status: f.status ?? null, statuses: statuses ?? null },
-      requests: matched.length,
+      requests: matchedCount,
       by_status: byStatus,
       offset,
       limit,
-      next_offset: offset + limit < matched.length ? offset + limit : null,
-      newest_first: page.map((r) => ({
-        unique_key: String(r.unique_key),
-        created: fmtLocal(r.created_date),
-        closed: fmtLocal(r.closed_date),
-        problem: String(r.complaint_type),
-        description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
-        agency: String(r.agency),
-        status: r.status == null ? null : String(r.status),
-        days_to_close: days1(closedDays(r)),
-        days_open: isClosed(r) ? null : Number((Math.max(0, asOf - (r.created_date as Date).getTime()) / DAY).toFixed(1)),
-        address: redactZip(addressOf(r)),
-        resolution: redactZip(r.resolution_description == null ? null : String(r.resolution_description)),
-      })),
+      next_offset: want < matchedCount ? want : null,
+      next_page: want < matchedCount ? { offset: want, data_as_of: m.generated_at } : null,
+      newest_first: page.map((r) => {
+        const t = text.get(String(r.unique_key)) ?? {};
+        return {
+          unique_key: String(r.unique_key),
+          created: fmtLocal(r.created_date),
+          closed: fmtLocal(t.closed_date),
+          problem: String(r.complaint_type),
+          description: t.descriptor == null ? null : redactZip(String(t.descriptor)),
+          agency: String(r.agency),
+          status: r.status == null ? null : String(r.status),
+          days_to_close: days1(closedDays(r)),
+          days_open: isClosed(r) ? null : Number((Math.max(0, asOf - (r.created_date as Date).getTime()) / DAY).toFixed(1)),
+          address: redactZip(addressOf(t)),
+          resolution: redactZip(t.resolution_description == null ? null : String(t.resolution_description)),
+        };
+      }),
     },
     extraCaveats: extra,
   });
@@ -1520,6 +1646,7 @@ export const DISTRICT_TOOLS = [
         status: FILTER_JSON.status,
         limit: LIMIT_JSON(50, 200),
         offset: OFFSET_JSON,
+        data_as_of: { type: "string", description: "For the next page: the data_as_of from next_page. A page from a newer build is refused, so pages always line up." },
       },
       ["address"]
     ),
@@ -1539,6 +1666,7 @@ export const DISTRICT_TOOLS = [
       },
       limit: LIMIT_JSON(25, 200),
       offset: OFFSET_JSON,
+      data_as_of: { type: "string", description: "For the next page: the data_as_of from next_page. A page from a newer build is refused, so pages always line up." },
     }),
   },
   {

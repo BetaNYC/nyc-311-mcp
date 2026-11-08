@@ -16,13 +16,15 @@
 //     In Progress, Pending, Assigned, Started, Unspecified (BoardStat detail/cd/101, every
 //     request since 2020; erm2-nwe9 since 2026-10-01 has the same set less Started).
 //
-// The City publishes no definition of any status beyond its label. The meanings below say
-// what the label says, what BoardStat counts it as, and what the data shows, and nothing more.
+// The City publishes no definition of any status beyond its label. The meanings below are
+// BetaNYC's reading (meaning_source), from the label, BoardStat's rule and the data, nothing more.
 //
 // The API's request number (311-XXXXXXXX) is NOT the Open Data unique_key. Evidence
-// (docs/service-request-numbers.md): 311-17323508 is unique_key 60061097 and 311-17323514 is
+// (docs/service-requests.md): 311-17323508 is unique_key 60061097 and 311-17323514 is
 // unique_key 60071726 (same agency, problem, address, second and resolution text), and
-// "311-" + a unique_key is not found by the API. Open Data has no column holding the 311 number.
+// "311-" + a unique_key is not found by the API. Open Data has no column holding the 311 number,
+// and we found no published source linking the two (checked: the erm2-nwe9 data dictionary and
+// the API portal's operation docs).
 
 import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
 
@@ -36,41 +38,47 @@ export const API_STATUS_CODES: Readonly<Record<string, string>> = {
 
 const NO_DEFINITION = "The City does not publish a definition of this status.";
 const NOT_CLOSED = "BoardStat counts it as not yet closed.";
+/** Who wrote each meaning: BetaNYC, from the label and the data, not the City. */
+export const MEANING_SOURCE = "BetaNYC";
+/** Where the "used mostly by" evidence comes from. */
+const SEEN = "in the BoardStat districts checked (Manhattan CD 1 and Council District 11, 2020 on, build of 2026-11-07)";
 
-/** Plain-language meanings, keyed by the lower-case label. */
+/**
+ * BetaNYC's plain-language reading of each label, keyed by the lower-case label. Every one says
+ * the City publishes no definition, and states only the label, which agencies use it in the data
+ * checked, and how BoardStat counts it. Wording reviewed in #22 QA.
+ */
 const MEANINGS: Record<string, { meaning: string; closed: boolean }> = {
   closed: {
-    meaning:
-      "The agency closed the request. Closed does not mean the problem was fixed: read the agency's resolution text for what it recorded.",
+    meaning: `${NO_DEFINITION} The request is marked Closed. Closed does not mean the problem was fixed: read the agency's resolution text for what it recorded.`,
     closed: true,
   },
   open: {
-    meaning: `311 sent the request to the agency, and the agency has not closed it. ${NOT_CLOSED}`,
+    meaning: `${NO_DEFINITION} The request is marked Open, not Closed. Used mostly by HPD, then DOB and DEP, ${SEEN}. ${NOT_CLOSED}`,
     closed: false,
   },
   "in progress": {
-    meaning: `The agency has the request and has not closed it. Some agencies keep requests In Progress while a longer process runs (for example a TLC hearing or a health inspection). ${NOT_CLOSED}`,
+    meaning: `${NO_DEFINITION} The request is marked In Progress, not Closed. Used mostly by Parks, DOHMH, TLC and EDC, ${SEEN}. ${NOT_CLOSED}`,
     closed: false,
   },
   pending: {
-    meaning: `Not closed, and waiting on a further step. Mostly used by DOT, whose resolution text often says the status is on DOT's own website. ${NO_DEFINITION} ${NOT_CLOSED}`,
+    meaning: `${NO_DEFINITION} The request is marked Pending, not Closed. Used almost only by DOT ${SEEN}, whose resolution text often says the status is on DOT's own website. Most of these also have a close date. ${NOT_CLOSED}`,
     closed: false,
   },
   assigned: {
-    meaning: `The agency assigned the request to a unit for action (for example, the Department of Buildings to a division). ${NO_DEFINITION} ${NOT_CLOSED}`,
+    meaning: `${NO_DEFINITION} The request is marked Assigned, not Closed. Used mostly by DOT, then DOB and DEP, ${SEEN}. ${NOT_CLOSED}`,
     closed: false,
   },
   started: {
-    meaning: `The agency has started work or an investigation and has not closed the request. ${NO_DEFINITION} ${NOT_CLOSED}`,
+    meaning: `${NO_DEFINITION} The request is marked Started, not Closed. Used only by DEP ${SEEN}; the label suggests work has begun. ${NOT_CLOSED}`,
     closed: false,
   },
   unspecified: {
-    meaning: `The City's data gives no status for this request. Read the resolution text and close date instead. ${NO_DEFINITION} ${NOT_CLOSED}`,
+    meaning: `${NO_DEFINITION} The City's data says Unspecified. Most of these have a close date anyway; read the close date and resolution text. ${NOT_CLOSED}`,
     closed: false,
   },
   cancel: {
-    meaning:
-      "The request was cancelled (the 311 API's label is 'Cancel'). The API does not say who cancelled it or why. It was not closed by the agency.",
+    meaning: `${NO_DEFINITION} The 311 API labels this code 'Cancel'. The API does not say who cancelled the request or why. It is not marked Closed.`,
     closed: false,
   },
 };
@@ -82,17 +90,19 @@ export type StatusExplained = {
   meaning: string;
   /** True for Closed, false for every other known status, null when the status is unknown or missing. */
   closed: boolean | null;
+  /** Who wrote `meaning`: always "BetaNYC". The City publishes no definitions. */
+  meaning_source: typeof MEANING_SOURCE;
 };
 
 /** The plain-language meaning of a status label from either source (case-insensitive). */
 export function explainStatus(status: string | null | undefined): StatusExplained {
   if (status == null || String(status).trim() === "") {
-    return { status: null, meaning: `No status was given. ${NOT_CLOSED}`, closed: null };
+    return { status: null, meaning: `No status was given. ${NOT_CLOSED}`, closed: null, meaning_source: MEANING_SOURCE };
   }
   const s = String(status).trim();
   const hit = MEANINGS[s.toLowerCase()];
-  if (hit) return { status: s, meaning: hit.meaning, closed: hit.closed };
-  return { status: s, meaning: `'${s}' is not a status this server knows. ${NO_DEFINITION}`, closed: null };
+  if (hit) return { status: s, meaning: hit.meaning, closed: hit.closed, meaning_source: MEANING_SOURCE };
+  return { status: s, meaning: `'${s}' is not a status this server knows. ${NO_DEFINITION}`, closed: null, meaning_source: MEANING_SOURCE };
 }
 
 /** Meanings for every status present in a list of rows, in the order first seen. */
@@ -108,7 +118,7 @@ export function statusMeanings(statuses: Iterable<string | null>): Record<string
 // ─── The 311 Public API's service request ───────────────────────────────────────
 
 export const SR_NUMBER_NOTE =
-  "The 311 number (311-XXXXXXXX) is not NYC Open Data's unique_key, and Open Data does not publish the 311 number, so a request looked up here cannot be matched to its Open Data or BoardStat row by number.";
+  "The 311 number (311-XXXXXXXX) is not NYC Open Data's unique_key (two matched requests, 2026-11-07), Open Data does not publish the 311 number, and we found no published source that links them. So a request looked up here is not matched to its Open Data or BoardStat row by number; use address_history for its address.";
 
 export const NOT_FOUND_HINT =
   "If this number came from NYC Open Data or BoardStat (an 8-digit unique_key such as 60061097), it is not a 311 number: the two use different numbers. Use address_history or find_requests for Open Data requests.";
@@ -146,6 +156,7 @@ export type Explained = {
   status: string | null;
   status_code: string | null;
   meaning: string;
+  meaning_source: typeof MEANING_SOURCE;
   closed: boolean | null;
   resolution: string | null;
   resolution_updated: string | null;
@@ -168,6 +179,7 @@ export function explainApiRequest(sr: Record<string, unknown>): Explained {
     status: label,
     status_code: code,
     meaning: label == null && code != null ? `Status code ${code} is not in the 311 API's documentation.` : ex.meaning,
+    meaning_source: MEANING_SOURCE,
     closed: label == null ? null : ex.closed,
     resolution: redactZip(str(sr.ResolutionAction)),
     resolution_updated: str(sr.ResolutionActionUpdatedDate),
