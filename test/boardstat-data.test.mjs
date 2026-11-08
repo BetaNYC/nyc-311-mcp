@@ -8,8 +8,10 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  assertNoZipFilter,
   BoardStatData,
   buildKey,
+  dataWindow,
   defaultCacheDir,
   lookupAddress,
   normalizeAddress,
@@ -159,11 +161,15 @@ test("cache: a newer build is downloaded and the old build folder is removed", a
   assert.equal(server.log.filter((l) => l.rel === "boundaries/cc.geojson").length, 2);
   assert.deepEqual(await readdir(path.join(cacheDir, "builds")), [buildKey("2026-11-08T10:36:39Z")]);
 
-  // An OLDER manifest (a rollback or a stale CDN copy) does not replace the newer cache.
+  // A rollback on BoardStat's side (an OLDER generated_at) is followed, not ignored
+  // (QA round 1, item 2): the client uses what the server publishes, and its files
+  // still read, because the cache is keyed per build.
   server.manifest = REAL_MANIFEST;
   clock = 20;
   const { manifest } = await data.manifest();
-  assert.equal(manifest.generated_at, "2026-11-08T10:36:39Z");
+  assert.equal(manifest.generated_at, REAL_MANIFEST.generated_at);
+  await data.file("boundaries/cc.geojson");
+  assert.deepEqual(await readdir(path.join(cacheDir, "builds")), [buildKey(REAL_MANIFEST.generated_at)]);
 });
 
 test("cache: when beta.nyc is unreachable, the cached build answers and says it is stale", async () => {
@@ -261,3 +267,118 @@ test("resolveDataUrl: https only (localhost excepted), trailing slash added", ()
   assert.throws(() => resolveDataUrl({ BOARDSTAT_DATA_URL: "not a url" }), /not a valid URL/);
 });
 
+
+// ─── QA round 1 ──────────────────────────────────────────────────────────────
+
+test("a nightly publish inside the manifest TTL: the size mismatch re-reads the manifest and succeeds", async () => {
+  // Client checked build A; BoardStat then published B, where the file's size changed.
+  const A = { ...REAL_MANIFEST, files: { ...REAL_MANIFEST.files, "boundaries/cd.geojson": 999 } };
+  const server = fakeServer({ manifest: A });
+  let clock = 0;
+  const data = client(server, await freshCache(), { now: () => clock, manifestTtlMs: 60 * 60 * 1000 });
+  await data.manifest();
+  server.manifest = REAL_MANIFEST; // build B
+  clock = 30 * 60 * 1000; // still inside the TTL
+  const { manifest } = await data.file("boundaries/cd.geojson");
+  assert.equal(manifest.manifest.files["boundaries/cd.geojson"], REAL_MANIFEST.files["boundaries/cd.geojson"]);
+  assert.deepEqual(server.log.map((l) => l.rel), [
+    "manifest.json",
+    "boundaries/cd.geojson",
+    "manifest.json",
+    "boundaries/cd.geojson",
+  ]);
+  // and once more is a cache hit, no network
+  await data.file("boundaries/cd.geojson");
+  assert.equal(server.log.length, 4);
+});
+
+test("ZIP cannot be used through a filter either, at any depth", async () => {
+  const data = client(fakeServer(), await freshCache());
+  for (const filter of [
+    { zip: { $eq: "10004" } },
+    { $and: [{ cd: { $eq: 101 } }, { zip: { $eq: "10004" } }] },
+    { $or: [{ $nor: [{ incident_zip: { $in: ["10004"] } }] }] },
+    { ZIP: { $not: { $eq: "1" } } },
+  ]) {
+    await assert.rejects(
+      data.readParquet("addresses.parquet", { columns: ["address", "cd"], filter }),
+      /ZIP code columns are not available/,
+      JSON.stringify(filter)
+    );
+  }
+  assert.doesNotThrow(() => assertNoZipFilter({ address: { $eq: "1 ZIPPER LANE" } }));
+  const ok = await data.readParquet("addresses.parquet", { columns: ["address"], filter: { cd: { $eq: 101 } } });
+  assert.equal(ok.rows.length, 200);
+});
+
+test("while beta.nyc is down, the network is tried once per backoff window, not on every call", async () => {
+  let down = false;
+  let attempts = 0;
+  const server = fakeServer();
+  const real = server.fetch;
+  server.fetch = async (u, i) => {
+    attempts += 1;
+    if (down) throw new TypeError("fetch failed");
+    return real(u, i);
+  };
+  let clock = 0;
+  const data = client(server, await freshCache(), { now: () => clock, manifestTtlMs: 1000, offlineBackoffMs: 60_000 });
+  await data.manifest();
+  down = true;
+  attempts = 0;
+  clock = 10_000;
+  for (let i = 0; i < 5; i++) assert.equal((await data.manifest()).stale, true);
+  assert.equal(attempts, 1);
+  clock = 80_000; // backoff over
+  await data.manifest();
+  assert.equal(attempts, 2);
+  down = false;
+  clock = 150_000;
+  assert.equal((await data.manifest()).stale, false);
+});
+
+/** A body that sends `chunks` chunks `gapMs` apart, then optionally stalls forever. */
+function slowBody(signal, { chunks, gapMs, stall = false }) {
+  let sent = 0;
+  return new ReadableStream({
+    async pull(controller) {
+      if (sent === chunks) {
+        if (!stall) return controller.close();
+        await new Promise((_, reject) => signal.addEventListener("abort", () => reject(signal.reason)));
+      }
+      await new Promise((r) => setTimeout(r, gapMs));
+      sent += 1;
+      controller.enqueue(new Uint8Array(10));
+    },
+  });
+}
+
+test("file downloads use an idle timeout: slow but steady completes, a stall is abandoned", async () => {
+  const sized = { ...REAL_MANIFEST, files: { ...REAL_MANIFEST.files, "boundaries/cd.geojson": 100 } };
+  const steady = fakeServer({ manifest: sized });
+  const steadyFetch = steady.fetch;
+  steady.fetch = (u, i) =>
+    String(u).endsWith("cd.geojson") ? new Response(slowBody(i.signal, { chunks: 10, gapMs: 25 })) : steadyFetch(u, i);
+  // 10 chunks x 25 ms = 250 ms in all, well past the 80 ms timeout, but never 80 ms idle.
+  await client(steady, await freshCache(), { fileTimeoutMs: 80 }).file("boundaries/cd.geojson");
+
+  const stalled = fakeServer({ manifest: sized });
+  const stalledFetch = stalled.fetch;
+  stalled.fetch = (u, i) =>
+    String(u).endsWith("cd.geojson")
+      ? new Response(slowBody(i.signal, { chunks: 2, gapMs: 5, stall: true }))
+      : stalledFetch(u, i);
+  const cacheDir = await freshCache();
+  await assert.rejects(
+    client(stalled, cacheDir, { fileTimeoutMs: 80 }).file("boundaries/cd.geojson"),
+    /sent nothing for 80 ms/
+  );
+  const dir = path.join(cacheDir, "builds", buildKey(REAL_MANIFEST.generated_at), "boundaries");
+  assert.deepEqual(await readdir(dir), [], "no .partial left behind");
+});
+
+test("dataWindow ends at the newest request (last_created), not the build date", () => {
+  assert.deepEqual(dataWindow(REAL_MANIFEST), { start: "2020-01-01", end: "2026-11-04" });
+  const { last_created, ...w } = REAL_MANIFEST.window;
+  assert.deepEqual(dataWindow({ ...REAL_MANIFEST, window: w }), { start: "2020-01-01", end: "2026-11-07" });
+});

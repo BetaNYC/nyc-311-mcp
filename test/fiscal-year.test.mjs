@@ -95,3 +95,12 @@ test("monthsInPeriod lists the months and flags partial ones", () => {
 function pick(p) {
   return [p.start, p.end];
 }
+
+test("with dataWindow, 'fiscal year to date' runs to the newest request, not the build date", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const { dataWindow } = await import("../dist/boardstat-data.js");
+  const manifest = JSON.parse(await readFile(new URL("./fixtures/boardstat/manifest.json", import.meta.url), "utf8"));
+  const p = resolvePeriod({ fiscal_year: "FY27" }, dataWindow(manifest));
+  assert.equal(p.end, "2026-11-04");
+  assert.match(p.notes[0], /data runs to 2026-11-04, so this is fiscal year to date/);
+});

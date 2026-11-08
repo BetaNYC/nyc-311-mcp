@@ -283,7 +283,7 @@ shared answer shape) is groundwork only; the design is in
 
 ## Data source
 
-All data comes from the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI). Access requires a free subscription key.
+Today, all data comes from the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI). Access requires a free subscription key. The district tools on the roadmap will instead read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data; none of them ship yet.
 
 This is an independent, community-built project from BetaNYC. It is not affiliated with, endorsed by, or an official product of the City of New York.
 

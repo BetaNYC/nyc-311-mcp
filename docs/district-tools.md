@@ -20,7 +20,7 @@ answer matches what a person sees on the BoardStat page and adds no load to NYC 
 | `boundaries/{cd,cc}.geojson` | District outlines |
 
 **No ZIP codes.** BoardStat's address and detail files carry ZIP columns. The data layer
-never reads them, refuses a request for one, and every answer is checked for a ZIP key
+never reads them, refuses a request for one (as a column or as a filter key), and every answer is checked for a ZIP key
 before it leaves (`assertNoZip`).
 
 ## Reading Parquet: hyparquet
@@ -49,13 +49,19 @@ without the second. DuckDB stays the right tool for BoardStat's own build.
 - **Layout:** `manifest-state.json` (the manifest and when it was checked) and
   `builds/<generated_at>/<file>`. Only the current build's folder is kept.
 - **When it downloads:** a file is downloaded the first time a tool needs it, once per
-  BoardStat build. `manifest.json` is asked for again at most once an hour. A newer
-  `generated_at` starts a new build folder; an older one (a rollback or stale copy) is ignored.
+  BoardStat build. `manifest.json` is asked for again at most once an hour. Whatever
+  `generated_at` the server publishes is the build used, newer or older: a rollback on
+  BoardStat's side is followed, and its files are fetched into their own build folder.
+- **A publish between checks:** if a download's size disagrees with the manifest (usually
+  because BoardStat published a new build since the last check), the manifest is re-read
+  at once, ignoring the hour, and the download is tried one more time.
 - **Safe:** only files listed in the manifest can be fetched; each download must match the
   manifest's size or it is thrown away; files are written to a temporary name and then renamed.
 - **Offline:** if beta.nyc cannot be reached, cached files still answer, and the answer
-  carries a `warning` saying the data may be out of date.
-- **Polite:** one request at a time, a timeout on every request, one retry on 429 or 503
+  carries a `warning` saying the data may be out of date. After a failed check, the
+  network is not tried again for 5 minutes, so each question does not wait on a timeout.
+- **Polite:** one request at a time, a timeout on every request (15 s for the manifest; for
+  files, 30 s with no bytes arriving, so a large file on a slow link still completes), one retry on 429 or 503
   honoring `Retry-After`, and `User-Agent: @betanyc/nyc-311-mcp/<version> (+https://github.com/BetaNYC/nyc-311-mcp)`.
 - **Elsewhere:** `BOARDSTAT_DATA_URL` points the server at another copy of the files (https only).
 - Logs are one JSON line per event on stderr. stdout carries the MCP protocol.
@@ -69,11 +75,14 @@ Every district tool that takes dates accepts the same three parameters
 |---|---|
 | `from_date` | Start, YYYY-MM-DD, inclusive. Missing means the start of the data. |
 | `to_date` | End, YYYY-MM-DD, inclusive. Missing means the latest data. |
-| `fiscal_year` | NYC fiscal year, July 1 to June 30, named for the year it ends: `2027` or `"FY2027"` is 2026-07-01 to 2027-06-30. |
+| `fiscal_year` | NYC fiscal year, July 1 to June 30, named for the year it ends: `2027`, `"FY2027"` or `"FY27"` is 2026-07-01 to 2027-06-30. |
 
-A fiscal year and calendar dates together are an error. A period reaching past the data is
-cut to it, with a note in the answer's caveats (for the current fiscal year: "fiscal year to
-date"). A period before 2020-01-01 is an error. `monthsInPeriod` says which months a period
+A fiscal year and calendar dates together are an error. A period that starts before
+2020-01-01 is cut to start there, and one that runs past the newest data is cut to end there,
+each with a note in the answer's caveats (for the current fiscal year: "fiscal year to
+date"). Only a period that ends before 2020-01-01, or starts after the newest data, is an
+error. Tools pass `dataWindow(manifest)` as the window, which ends on the day of the newest
+request (`window.last_created`), not the build date, so "to date" means what the data holds. `monthsInPeriod` says which months a period
 covers only in part, because the month aggregate counts whole months.
 
 ## The answer envelope

@@ -29,6 +29,7 @@ import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/p
 import { homedir } from "node:os";
 import path from "node:path";
 import { Readable } from "node:stream";
+import { Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { asyncBufferFromFile, parquetMetadataAsync, parquetReadObjects, parquetSchema } from "hyparquet";
 import { compressors } from "hyparquet-compressors";
@@ -128,7 +129,14 @@ export type BoardStatDataOptions = {
   /** How long a fetched manifest is trusted before beta.nyc is asked again. Default 1 hour. */
   manifestTtlMs?: number;
   manifestTimeoutMs?: number;
+  /**
+   * File downloads fail only if NO bytes arrive for this long (an idle timeout,
+   * reset on every chunk), so a 28 MB district file on a slow link still
+   * completes. Default 30 s. (Before QA round 1 this bounded the whole download.)
+   */
   fileTimeoutMs?: number;
+  /** After a failed manifest check, how long to serve the cache without asking again. Default 5 minutes. */
+  offlineBackoffMs?: number;
   now?: () => number;
 };
 
@@ -142,7 +150,9 @@ export class BoardStatData {
   private readonly ttl: number;
   private readonly manifestTimeout: number;
   private readonly fileTimeout: number;
+  private readonly offlineBackoff: number;
   private readonly now: () => number;
+  private lastFailure: { at: number; reason: string } | null = null;
   private state: CacheState | null = null;
   private queue: Promise<unknown> = Promise.resolve();
   private inflight = new Map<string, Promise<string>>();
@@ -154,7 +164,8 @@ export class BoardStatData {
     this.log = opts.logger ?? stderrLogger;
     this.ttl = opts.manifestTtlMs ?? 60 * 60 * 1000;
     this.manifestTimeout = opts.manifestTimeoutMs ?? 15_000;
-    this.fileTimeout = opts.fileTimeoutMs ?? 120_000;
+    this.fileTimeout = opts.fileTimeoutMs ?? 30_000;
+    this.offlineBackoff = opts.offlineBackoffMs ?? 5 * 60 * 1000;
     this.now = opts.now ?? Date.now;
   }
 
@@ -178,17 +189,35 @@ export class BoardStatData {
     return run;
   }
 
-  private async request(url: string, timeoutMs: number): Promise<Response> {
-    const init: RequestInit = { headers: { "User-Agent": USER_AGENT }, signal: AbortSignal.timeout(timeoutMs) };
-    let res = await this.fetchImpl(url, init);
+  /**
+   * One GET with a timer that aborts it after `timeoutMs` without progress. The
+   * caller must call `idle.clear()` when done, and `idle.touch()` on each chunk
+   * of a streamed body.
+   */
+  private async request(url: string, timeoutMs: number): Promise<{ res: Response; idle: IdleTimer }> {
+    const attempt = async () => {
+      const idle = new IdleTimer(timeoutMs, url);
+      try {
+        const res = await this.fetchImpl(url, { headers: { "User-Agent": USER_AGENT }, signal: idle.signal });
+        return { res, idle };
+      } catch (err) {
+        idle.clear();
+        throw err;
+      }
+    };
+    let { res, idle } = await attempt();
     if (res.status === 429 || res.status === 503) {
+      idle.clear();
       const wait = retryAfterMs(res.headers.get("retry-after"));
       this.log("http_retry", { url, status: res.status, wait_ms: wait });
       await new Promise((r) => setTimeout(r, wait));
-      res = await this.fetchImpl(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
+      ({ res, idle } = await attempt());
     }
-    if (!res.ok) throw new Error(`BoardStat data request failed: HTTP ${res.status} for ${url}`);
-    return res;
+    if (!res.ok) {
+      idle.clear();
+      throw new Error(`BoardStat data request failed: HTTP ${res.status} for ${url}`);
+    }
+    return { res, idle };
   }
 
   private async loadState(): Promise<CacheState | null> {
@@ -211,40 +240,57 @@ export class BoardStatData {
   }
 
   /**
-   * The current manifest. Re-asks beta.nyc only after the TTL; switches to a new
-   * build only when its `generated_at` is later than the cached one. If beta.nyc
-   * cannot be reached, serves the cached build and says so (`stale: true`).
+   * The current manifest. Re-asks beta.nyc only after the TTL (or when `force`
+   * is set). Whatever build the server publishes is the build used, newer or
+   * older: a rollback on BoardStat's side is followed, not ignored, because files
+   * are only ever cached per `generated_at`. If beta.nyc cannot be reached, the
+   * cached build answers with `stale: true`, and the network is not tried again
+   * for `offlineBackoffMs`.
    */
-  async manifest(): Promise<ManifestResult> {
+  async manifest(opts: { force?: boolean } = {}): Promise<ManifestResult> {
     const cached = await this.loadState();
-    if (cached && this.now() - cached.checked_at < this.ttl) {
+    if (!opts.force && cached && this.now() - cached.checked_at < this.ttl) {
       return { manifest: cached.manifest, stale: false };
     }
+    const staleResult = (reason: string): ManifestResult => ({
+      manifest: (cached as CacheState).manifest,
+      stale: true,
+      warning: `Could not reach BoardStat to check for newer data (${reason}). Serving the cached build from ${(cached as CacheState).manifest.generated_at}.`,
+    });
+    if (!opts.force && cached && this.lastFailure && this.now() - this.lastFailure.at < this.offlineBackoff) {
+      return staleResult(this.lastFailure.reason);
+    }
+
     const url = new URL("manifest.json", this.dataUrl).toString();
     let fresh: BoardStatManifest;
     try {
-      fresh = await this.serial(async () => validateManifest(await (await this.request(url, this.manifestTimeout)).json()));
+      fresh = await this.serial(async () => {
+        const { res, idle } = await this.request(url, this.manifestTimeout);
+        try {
+          return validateManifest(await res.json());
+        } finally {
+          idle.clear();
+        }
+      });
     } catch (err) {
       const reason = err instanceof Error ? err.message : String(err);
+      this.lastFailure = { at: this.now(), reason };
       if (cached) {
         this.log("manifest_stale", { reason, generated_at: cached.manifest.generated_at });
-        return {
-          manifest: cached.manifest,
-          stale: true,
-          warning: `Could not reach BoardStat to check for newer data (${reason}). Serving the cached build from ${cached.manifest.generated_at}.`,
-        };
+        return staleResult(reason);
       }
       throw new Error(`Could not load BoardStat's manifest.json from ${url}: ${reason}`);
     }
+    this.lastFailure = null;
 
-    const keep =
-      cached && Date.parse(cached.manifest.generated_at) >= Date.parse(fresh.generated_at) ? cached.manifest : fresh;
-    if (keep === fresh && cached?.manifest.generated_at !== fresh.generated_at) {
-      this.log("new_build", { generated_at: fresh.generated_at, previous: cached?.manifest.generated_at ?? null });
+    const previous = cached?.manifest.generated_at ?? null;
+    if (previous !== fresh.generated_at) {
+      const older = previous !== null && Date.parse(fresh.generated_at) < Date.parse(previous);
+      this.log(older ? "build_rolled_back" : "new_build", { generated_at: fresh.generated_at, previous });
     }
-    await this.saveState({ checked_at: this.now(), manifest: keep });
-    if (keep === fresh) await this.pruneBuilds(buildKey(fresh.generated_at));
-    return { manifest: keep, stale: false };
+    await this.saveState({ checked_at: this.now(), manifest: fresh });
+    if (previous !== fresh.generated_at) await this.pruneBuilds(buildKey(fresh.generated_at));
+    return { manifest: fresh, stale: false };
   }
 
   /** Keep the current build folder only. Touches nothing outside <cacheDir>/builds/. */
@@ -267,10 +313,26 @@ export class BoardStatData {
   /**
    * Local path to one published file for the current build, downloading it once.
    * Only files the manifest lists can be fetched, and the download must match the
-   * size the manifest gives, or it is discarded.
+   * size the manifest gives, or it is discarded. A mismatch usually means BoardStat
+   * published a new build since the manifest was last checked, so the manifest is
+   * re-read at once (ignoring the TTL) and the download tried one more time.
    */
   async file(relPath: string): Promise<{ path: string; manifest: ManifestResult }> {
     const mr = await this.manifest();
+    try {
+      return await this.fileFor(relPath, mr);
+    } catch (err) {
+      if (!(err instanceof SizeMismatchError)) throw err;
+      const again = await this.manifest({ force: true });
+      const unchanged =
+        again.manifest.generated_at === mr.manifest.generated_at && again.manifest.files[relPath] === err.expected;
+      if (again.stale || unchanged) throw err;
+      this.log("retry_after_new_build", { file: relPath, generated_at: again.manifest.generated_at });
+      return await this.fileFor(relPath, again);
+    }
+  }
+
+  private async fileFor(relPath: string, mr: ManifestResult): Promise<{ path: string; manifest: ManifestResult }> {
     const expected = mr.manifest.files[relPath];
     if (typeof expected !== "number") {
       throw new Error(`BoardStat does not publish '${relPath}' in the current build (${mr.manifest.generated_at}).`);
@@ -293,15 +355,32 @@ export class BoardStatData {
   private async download(relPath: string, dest: string, expected: number): Promise<string> {
     const url = new URL(relPath, this.dataUrl).toString();
     const started = this.now();
-    const res = await this.request(url, this.fileTimeout);
-    if (!res.body) throw new Error(`BoardStat returned an empty body for ${url}`);
-    await mkdir(path.dirname(dest), { recursive: true });
+    const { res, idle } = await this.request(url, this.fileTimeout);
     const tmp = `${dest}.${process.pid}.partial`;
-    await pipeline(Readable.fromWeb(res.body as import("node:stream/web").ReadableStream), createWriteStream(tmp));
+    try {
+      if (!res.body) throw new Error(`BoardStat returned an empty body for ${url}`);
+      await mkdir(path.dirname(dest), { recursive: true });
+      const progress = new Transform({
+        transform(chunk, _enc, cb) {
+          idle.touch();
+          cb(null, chunk);
+        },
+      });
+      await pipeline(
+        Readable.fromWeb(res.body as import("node:stream/web").ReadableStream),
+        progress,
+        createWriteStream(tmp)
+      );
+    } catch (err) {
+      await rm(tmp, { force: true });
+      throw idle.signal.aborted && idle.signal.reason instanceof Error ? idle.signal.reason : err;
+    } finally {
+      idle.clear();
+    }
     const got = (await stat(tmp)).size;
     if (got !== expected) {
       await rm(tmp, { force: true });
-      throw new Error(`Downloaded ${relPath} is ${got} bytes; BoardStat's manifest says ${expected}. Not cached.`);
+      throw new SizeMismatchError(relPath, got, expected);
     }
     await rename(tmp, dest);
     this.log("file_cached", { file: relPath, bytes: got, ms: this.now() - started });
@@ -327,6 +406,8 @@ export class BoardStatData {
   ): Promise<{ rows: Record<string, unknown>[]; manifest: ManifestResult }> {
     const asked = opts.columns?.filter((c) => ZIP_COLUMN.test(c)) ?? [];
     if (asked.length) throw new Error(`ZIP code columns are not available (${asked.join(", ")}).`);
+    // A filter on a ZIP column would answer a ZIP question without returning the column.
+    if (opts.filter !== undefined) assertNoZipFilter(opts.filter);
     const { path: p, manifest } = await this.file(relPath);
     const columns = opts.columns ?? (await this.columns(relPath));
     const rows = await parquetReadObjects({
@@ -347,6 +428,71 @@ export class BoardStatData {
     const { path: p, manifest } = await this.file(relPath);
     return { value: JSON.parse(await readFile(p, "utf8")), manifest };
   }
+}
+
+/** Thrown when a download's size disagrees with the manifest. */
+export class SizeMismatchError extends Error {
+  constructor(
+    readonly relPath: string,
+    readonly got: number,
+    readonly expected: number
+  ) {
+    super(`Downloaded ${relPath} is ${got} bytes; BoardStat's manifest says ${expected}. Not cached.`);
+    this.name = "SizeMismatchError";
+  }
+}
+
+/** Aborts a request after `ms` with no progress; `touch()` restarts the clock. */
+class IdleTimer {
+  private readonly ac = new AbortController();
+  private timer: ReturnType<typeof setTimeout> | undefined;
+  constructor(
+    private readonly ms: number,
+    private readonly url: string
+  ) {
+    this.touch();
+  }
+  get signal(): AbortSignal {
+    return this.ac.signal;
+  }
+  touch() {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(
+      () => this.ac.abort(new Error(`BoardStat sent nothing for ${this.ms} ms (${this.url}); request abandoned.`)),
+      this.ms
+    );
+  }
+  clear() {
+    clearTimeout(this.timer);
+  }
+}
+
+/**
+ * Rejects any filter that names a ZIP column, at any depth ($and / $or / $nor /
+ * $not included). Operator keys start with "$"; every other key is a column.
+ */
+export function assertNoZipFilter(filter: unknown, where = "filter"): void {
+  if (Array.isArray(filter)) {
+    filter.forEach((f, i) => assertNoZipFilter(f, `${where}[${i}]`));
+  } else if (filter && typeof filter === "object") {
+    for (const [k, v] of Object.entries(filter)) {
+      if (!k.startsWith("$") && ZIP_COLUMN.test(k)) {
+        throw new Error(`ZIP code columns are not available, including as a filter ('${k}' at ${where}).`);
+      }
+      assertNoZipFilter(v, `${where}.${k}`);
+    }
+  }
+}
+
+/**
+ * The window to pass to resolvePeriod: from the data start to the day of the
+ * newest request (`window.last_created`), not the build date (`window.end`), so
+ * "fiscal year to date" says how far the requests actually reach. Falls back to
+ * `window.end` for a manifest without `last_created`.
+ */
+export function dataWindow(m: BoardStatManifest): { start: string; end: string } {
+  const last = typeof m.window.last_created === "string" ? m.window.last_created.slice(0, 10) : "";
+  return { start: m.window.start, end: /^\d{4}-\d{2}-\d{2}$/.test(last) ? last : m.window.end };
 }
 
 function plainRow(row: Record<string, unknown>): Record<string, unknown> {

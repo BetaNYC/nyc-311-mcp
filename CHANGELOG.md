@@ -27,6 +27,7 @@ nothing a client sees has changed: tool names, descriptions and schemas are the 
 
 ### Changed
 
+- CI tests Node 18 again (alongside 20 and 22), to back `engines.node >= 18`.
 - The server reports its real version (from `package.json`) instead of a hard-coded `1.0.0`.
 - Cleanup from PR #3 (#9): one `apiFetch` helper instead of `apiGet`/`apiPost`/`buildUrl`,
   no `STATUS_PATHS` table, the unused calendar response types removed, and a shorter
