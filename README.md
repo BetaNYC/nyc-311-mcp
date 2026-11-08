@@ -264,6 +264,21 @@ Once connected, you can ask your AI assistant things like:
 - **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. The status and service-request endpoints are returned as the API's raw JSON — their exact field set is defined by the upstream API and is passed through unchanged.
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.
 
+## Roadmap: district tools (in progress, not yet available)
+
+Work has started on tools that answer district questions from the files
+[BoardStat](https://www.beta.nyc/boardstat/) publishes every night: top problems in a
+community or council district, how fast requests are closed, what is still open, and
+which district an address is in. Each answer will say how fresh the data is and link to
+the BoardStat page with the same filters. Dates will be accepted as a calendar period or
+an NYC fiscal year (July 1 to June 30).
+
+**None of these tools ship yet.** The four tools above are everything the published
+package does. Phase 0 (the data reader, the on-disk cache, fiscal-year handling and the
+shared answer shape) is groundwork only; the design is in
+[docs/district-tools.md](docs/district-tools.md) and the plan is epic
+[#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12).
+
 ---
 
 ## Data source
