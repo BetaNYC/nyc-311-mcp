@@ -10,6 +10,7 @@ import { describeServiceRequest, describeServiceRequestList, NOT_FOUND_HINT } fr
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
+import { SAFETY_LINE } from "./emergency.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -195,6 +196,12 @@ export async function callTool(name: string, args: unknown) {
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    // The reporting-help tools put the safety line first on every error too, argument
+    // errors included: a person describing a problem may be in danger (QA on #23, #24).
+    if (name in DRAFT_ARG_SHAPES || name in REPORT_ARG_SHAPES) {
+      const rest = message.startsWith(SAFETY_LINE) ? message.slice(SAFETY_LINE.length).trim() : message;
+      return { content: [{ type: "text", text: `${SAFETY_LINE} Error: ${rest}` }], isError: true };
+    }
     return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
   }
 }

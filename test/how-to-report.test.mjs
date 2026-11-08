@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { howToReport, list311Categories, parseQuery, stem } from "../dist/how-to-report.js";
+import { howToReport, list311Categories, parseQuery, REACH_311, stem } from "../dist/how-to-report.js";
 import { ContentClient, htmlToText, parseCategories } from "../dist/content-311.js";
 import { problemTrend } from "../dist/district-tools.js";
 import { fixtureContent, recorded, API } from "./content-fixture.mjs";
@@ -89,6 +89,7 @@ for (const [description, lead, ka] of [
     const out = await howToReport({ description }, client);
     assert.equal(out.first_line, lead);
     assert.ok(out.emergency.suggested_by.length > 0);
+    assert.equal(out.emergency.ka_number, ka);
     assert.match(out.emergency.source, new RegExp(ka));
   });
 }
@@ -101,14 +102,14 @@ test("danger with no City 911 article to quote: a plain 911 line, labeled as Bet
     },
   });
   const out = await howToReport({ description: "there is smoke coming from my neighbor's apartment" }, client);
-  assert.equal(out.first_line, "If anyone is in danger, call 911 now. 311 is for problems that are not emergencies.");
+  assert.equal(out.first_line, "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.");
   assert.match(out.emergency.source, /^BetaNYC wording/);
 });
 
 test("'fire hydrant' and 'smoke detector' are not danger words", () => {
-  assert.deepEqual(parseQuery("a fire hydrant is open").danger, []);
-  assert.deepEqual(parseQuery("my landlord removed the smoke detector").danger, []);
-  assert.notDeepEqual(parseQuery("the car is on fire").danger, []);
+  assert.deepEqual(parseQuery("a fire hydrant is open").danger.kinds, []);
+  assert.deepEqual(parseQuery("my landlord removed the smoke detector").danger.kinds, []);
+  assert.notDeepEqual(parseQuery("the car is on fire").danger.kinds, []);
 });
 
 test("a large party: the City's own 911 article leads only when it is the match", async () => {
@@ -125,7 +126,8 @@ test("no match: says so and links 311 Online search with the recognized words on
   const out = await howToReport({ description: "xyzzy plugh at 123 Main Street, Brooklyn 11201" }, client);
   assert.equal(out.best_match, null);
   assert.deepEqual(out.alternatives, []);
-  assert.match(out.first_line, /^No 311 article matched/);
+  assert.equal(out.first_line, "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.");
+  assert.match(out.no_match.message, /^No 311 article matched/);
   assert.match(out.no_match.portal_search_url, /^https:\/\/portal\.311\.nyc\.gov\/search\/\?q=/);
   const text = JSON.stringify(out);
   assert.doesNotMatch(text, /123 Main|11201|xyzzy/i, "the description is never echoed");
@@ -336,4 +338,132 @@ test("htmlToText and stem", () => {
   assert.equal(stem("leaking"), stem("leak"));
   assert.equal(stem("parties"), "party");
   assert.equal(stem("blocked"), stem("blocking"));
+});
+
+// ─── QA round 1 on #23 ────────────────────────────────────────────────────────
+
+test("a 911 line never quotes a City article for a different danger", async () => {
+  const { client } = await fixtureContent();
+  for (const d of ["downed wire sparking in the road", "a man is breaking into a car right now", "a child left alone in a hot car"]) {
+    const out = await howToReport({ description: d }, client);
+    assert.equal(out.emergency.ka_number, null, `${d}: quoted ${out.emergency.source}`);
+    assert.doesNotMatch(out.first_line, /animal|assault|missing|kidnap/i);
+  }
+  const shot = await howToReport({ description: "I heard shots fired outside" }, client);
+  assert.equal(shot.emergency.ka_number, "KA-01557");
+  const crash = await howToReport({ description: "someone got hurt in a car crash" }, client);
+  assert.equal(crash.emergency.ka_number, "KA-01513");
+});
+
+test("suicide: the City's 911 line and its 988 sentence, cited", async () => {
+  const { client } = await fixtureContent();
+  const out = await howToReport({ description: "my friend says he wants to kill himself" }, client);
+  assert.equal(out.first_line, "Call 911 to report that someone is considering suicide or endangering themselves.");
+  assert.equal(out.emergency.also_988.ka_number, "KA-01635");
+  assert.match(out.emergency.also_988.text, /call, text, or chat 988/);
+});
+
+test("negation, smoking and odors do not lead with 911; 'not an emergency' is honored", async () => {
+  const { client } = await fixtureContent();
+  for (const d of ["my car was hit but no one was hurt", "nobody got hurt in the crash", "my neighbors smoke cigarettes in the hallway", "the burning smell from the restaurant exhaust", "the noise hurts my sleep", "not an emergency but there is smoke coming from a vent"]) {
+    const out = await howToReport({ description: d }, client);
+    assert.equal(out.emergency, null, `${d}: ${out.first_line}`);
+    assert.equal(out.safety_line, "If anyone is in danger right now, call 911.");
+  }
+});
+
+test("no match with an urgent word leads with 911", async () => {
+  const { client } = await fixtureContent();
+  const out = await howToReport({ description: "I need help right now" }, client);
+  assert.equal(out.best_match, null);
+  assert.match(out.first_line, /^If anyone is in danger right now, call 911/);
+  assert.match(out.emergency.source, /^BetaNYC wording: an urgent word/);
+});
+
+test("crime: a pointer to the City's own articles, never an invented number", async () => {
+  const { client } = await fixtureContent();
+  for (const d of ["I want to report a crime", "I was robbed last week"]) {
+    const out = await howToReport({ description: d }, client);
+    assert.equal(out.emergency, null, d);
+    assert.deepEqual(out.crime.past_crime.map((x) => x.ka_number), ["KA-02668", "KA-01027"]);
+    assert.doesNotMatch(JSON.stringify(out.crime), /\d{3}-\d{3}-\d{4}/);
+  }
+  const now = await howToReport({ description: "someone is getting robbed outside" }, client);
+  assert.ok(now.emergency && now.crime);
+});
+
+test("Spanish: matched by keyword, with 311's own language-help text, quoted", async () => {
+  const { client } = await fixtureContent();
+  const out = await howToReport({ description: "ruido muy fuerte de los vecinos" }, client);
+  assert.equal(out.best_match.ka_number, "KA-01017");
+  assert.match(out.language_help.says, /over 175 languages and dialects when you ask to speak to an interpreter/);
+  assert.equal(out.language_help.source, "quote of https://portal.311.nyc.gov/about-nyc-311/");
+  const en = await howToReport({ description: "a pothole on my block" }, client);
+  assert.equal(en.language_help, undefined);
+});
+
+test("typos one edit away from a known word are corrected, and said so", async () => {
+  const { client } = await fixtureContent();
+  const out = await howToReport({ description: "pothoel on my stret" }, client);
+  assert.equal(out.best_match.ka_number, "KA-01093");
+  assert.deepEqual(out.spelling_corrected, ["pothoel → pothole", "stret → street"]);
+  const dog = await howToReport({ description: "dog barking all night next door" }, client);
+  assert.equal(dog.spelling_corrected, undefined, "barking is not parking");
+});
+
+test("several problems: one match each", async () => {
+  const { client } = await fixtureContent();
+  const out = await howToReport({ description: "my building has no hot water and the elevator is broken" }, client);
+  assert.equal(out.best_match.ka_number, "KA-01036");
+  assert.equal(out.other_problems.length, 1);
+  assert.equal(out.other_problems[0].best_match.ka_number, "KA-02015");
+  const one = await howToReport({ description: "people yelling and playing loud music on the sidewalk" }, client);
+  assert.equal(one.other_problems, undefined);
+});
+
+test("every answer says how old the article text is", async () => {
+  const { client } = await fixtureContent({ now: () => Date.parse("2026-11-07T12:00:00Z") });
+  const out = await howToReport({ description: "the sidewalk wasn't shoveled and it's icy" }, client);
+  assert.match(out.first_line, /Article text as of 2026-11-07\./);
+  assert.equal(out.source.best_match_article_as_of, "2026-11-07T12:00:00.000Z");
+  assert.ok(out.caveats.some((c) => /as of 2026-11-07T12:00:00.000Z/.test(c)));
+});
+
+test("an article that says 'right now' is refreshed daily; others weekly", async () => {
+  let now = Date.parse("2026-11-07T12:00:00Z");
+  const { client } = await fixtureContent({ now: () => now });
+  await client.article("KA-01397"); // "DSNY isn't taking complaints right now"
+  await client.article("KA-01092");
+  assert.equal(client.requests, 2);
+  now += 25 * 3600_000;
+  await client.article("KA-01397");
+  await client.article("KA-01092");
+  assert.equal(client.requests, 3, "only the time-sensitive article was asked again");
+});
+
+test("missing key with a saved copy: the warning says the key is not set", async () => {
+  let now = Date.parse("2026-11-07T12:00:00Z");
+  const cacheDir = await tmp();
+  const { client } = await fixtureContent({ now: () => now, cacheDir });
+  await howToReport({ description: "a pothole on my block" }, client);
+  now += 8 * 86400_000;
+  const saved = process.env.NYC_311_API_KEY;
+  delete process.env.NYC_311_API_KEY;
+  try {
+    const later = new ContentClient({ cacheDir, now: () => now, logger: () => {}, minIntervalMs: 0, fetch: async () => assert.fail("no request without a key") });
+    const out = await howToReport({ description: "a pothole on my block" }, later);
+    assert.equal(out.stale, true);
+    assert.match(out.warning, /^NYC_311_API_KEY is not set, so the 311 API was not asked/);
+    assert.doesNotMatch(out.warning, /could not be reached/);
+  } finally {
+    if (saved !== undefined) process.env.NYC_311_API_KEY = saved;
+  }
+});
+
+test("the ways to reach 311 are quoted, and the phone line is labeled a paraphrase", () => {
+  const phone = REACH_311.ways.find((w) => w.method === "phone");
+  assert.match(phone.source, /^paraphrase of https:\/\/portal\.311\.nyc\.gov\/about-nyc-311\//);
+  const text = REACH_311.ways.find((w) => w.method === "text");
+  assert.equal(text.how, "Send a text to 311-692 24 hours a day, 7 days a week, 365 days a year. Message and data rates may apply.");
+  assert.match(text.source, /^quote of/);
 });

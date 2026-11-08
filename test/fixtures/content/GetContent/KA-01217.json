@@ -1,0 +1,46 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01217",
+   "Title": "Domestic Violence",
+   "Description": "Report domestic violence or get counseling, support, and shelter for victims.",
+   "Section": [
+    {
+     "Name": "911 Domestic Violence",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\"><p>Call <font color=\"#ff0004\"><b>911&nbsp;</b></font>to report domestic violence, including a crime in progress, impending threat, fear of violence, or past domestic violence.</p><p>If you can&#39;t safely call 911, you can send them a text. See the &quot;Texting 911&quot; section below for more information.</p></div></div></div></div><p>Services are available to survivors of domestic and gender-based violence throughout the five boroughs. Domestic violence occurs in families and relationships of all races, cultures, religions, and income levels.</p><p>Free and confidential support is available to you regardless of your gender identity or immigration status.</p><p>New York City&rsquo;s 24-Hour HOPE Hotline provides safety planning, referrals, and connections to emergency housing for victims of all crimes, including survivors of domestic violence, in more than 150 languages.</p><p><strong>Online</strong></p><p><a target=\"_blank\" href=\"https://www.safehorizon.org/hotlines/\">Learn more about the HOPE Hotline.</a></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.safehorizon.org/safechat/\">Chat with a Safe Horizon client advocate.</a></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/content/endgbv/pages/traumatic-brain-injuries\">Get information and resources for domestic violence-related traumatic brain injuries (TBI).</a></p><p><strong>By Phone</strong></p><p><span style=\"font-size:20px;\"><strong>Family Justice Centers</strong></span></p><p>New York City&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02084\">Family Justice Centers</a>&nbsp;provide one-stop locations for victims to receive services. Services include:</p><ul><li>Emergency shelter and permanent housing</li><li>Orders of protection</li><li>Financial assistance</li><li>Forensic care</li><li>Counseling</li><li>Health care</li><li>Civil legal assistance</li><li>Self-sufficiency</li><li>Filing police reports</li></ul>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Texting 911",
+     "Content": "<p>Text-to-911 is a reliable and safe way to reach emergency services in New York City.</p><p>It is beneficial to people who are:</p><ul><li>Deaf</li><li>Hard of hearing</li><li>Have a speech disability</li><li>Not able to safely call 911</li></ul><p>You should:</p><ul><li>Only text 911, if you can&#39;t call 911</li><li>Never text and drive</li></ul><p><strong>Restrictions</strong></p><p>Text-to-911 is free and works through short message service (SMS) with cellular carriers but requires a text or data plan.</p><p>Text-to-911 is also only available in English and Spanish in the five boroughs.</p><p><strong>How to Text</strong></p><p>To use Text-to-911 as efficiently as possible you should:&nbsp;</p><ul><li>Enter 911 in the &ldquo;to&rdquo; field without spaces or hyphens</li><li>Let the operator know if you are deaf</li><li>Text the reason for your emergency</li><li>Text your full address with&nbsp;borough&nbsp;and cross streets if available</li><li>Use complete words and sentences, not abbreviations</li><li>Not text 911 in a group chat or send photos, videos, GIFs, or emojis</li><li>Answer all of the operator&rsquo;s questions. The operator will end the chat when appropriate.</li></ul>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Home+ Program",
+     "Content": "<p>Home+&nbsp;is a free city-wide program sponsored by the Mayor&rsquo;s Office to End Domestic and Gender-Based Violence (ENDGBV).</p><p>The Home+ Program&nbsp;helps survivors stay safely in their homes by providing:</p><ul><li>Pendant alarm systems to call for help</li><li>Lock change and repair services for doors and windows</li><li>Grants to help cover expenses to maintain or secure housing</li><li>Housing-related case management</li><li>Safety planning</li></ul><p>All Home+ participants are connected to additional support services, like case management and safety planning through contracted community-based organizations.</p><p>Contact a <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02084\">Family Justice Center</a>&nbsp;for more information.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Project Kol Tzedek",
+     "Content": "<p>The Kings County District Attorney&rsquo;s Office established a hotline to help sex-crime victims in Brooklyn&rsquo;s Orthodox Jewish communities report abuse.&nbsp;English, Yiddish and Hebrew languages can be accommodated.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "NYC Hope",
+     "Content": "<p>The NYC Hope website provides information and resources&nbsp;for survivors of domestic violence and those seeking to help a victim of domestic violence.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://finder.nyc.gov/hopeservices/\">Learn about help available for victims of domestic violence.</a></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Material for Community Outreach Organizations",
+     "Content": "<p>The City provides brochures, palm cards, posters, and other materials about domestic violence for education, outreach, and distribution.&nbsp;</p><p>Materials are available in multiple languages.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/content/endgbv/pages/intimate-partner-violence\">Download domestic violence brochures or posters.</a></p><p><strong>By Phone</strong></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> to request a copy.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Project Home Pilot Program",
+     "Content": "<p>The Project Home pilot program will provide intensive, specialized housing search assistance to domestic violence survivors with children living in Department of Homeless Services (DHS) shelters.</p><p>Project Home will help domestic violence survivors find safe, permanent homes and reduce the amount of time spent in shelter.</p><p>This program is starting with one hundred families staying in DHS shelters. Families&nbsp;were&nbsp;randomly selected from a&nbsp;pool of eligible households.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/mayors-office/news/2024/04/mayor-adams-launches-pilot-rapidly-connect-families-fleeing-domestic-violence-permanent#/0\">Learn more about Project Home.</a></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02249",
+   "Title": "Fireworks Complaint",
+   "Description": "Report the sale, use, storage, or transport of illegal fireworks.",
+   "Section": [
+    {
+     "Name": "911 Fireworks Complaint",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\"><p>Call <strong><span style=\"color:#FF0000;\">911</span></strong> to report:</p><ul><li>Illegal fireworks sale in progress</li><li>People storing large amounts of fireworks</li><li>Fireworks that are an imminent threat to your personal safety</li></ul></div></div></div></div><p>In New York City, all consumer fireworks, including sparklers,&nbsp;are illegal to use, buy, sell, or transport.</p><p><strong>What Happens Next</strong></p><p>Officers from your local police precinct will respond when they are not handling emergency situations.</p><p>The police may seize vehicles used to transport fireworks.</p>",
+     "ContentAction": [
+      {
+       "Name": "Illegal Firework Use",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Fireworks",
+       "ProblemDetail": "N/A"
+      },
+      {
+       "Name": "Illegal Firework Sale in the Past",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Fireworks",
+       "ProblemDetail": "N/A"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

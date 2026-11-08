@@ -1,0 +1,26 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02668",
+   "Title": "Crime Stoppers Tip",
+   "Description": "Report a tip about a crime.",
+   "Section": [
+    {
+     "Name": "Crime Stoppers Tip",
+     "Content": "<p>You can anonymously report a tip about a crime, or information about a police officer being shot or targeted, through New York City&rsquo;s Crime Stoppers Hotline and COP SHOT Program.&nbsp;</p><p>Cash rewards are available if the information provided leads to an arrest and an indictment or conviction.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Crime Stoppers Tip",
+     "Content": "<p>The City accepts tips regarding individuals wanted for past felony crimes.&nbsp;</p><p>These crimes can include:</p><ul><li style=\"margin-bottom: 0.0001pt;\">Murder</li><li style=\"margin-bottom: 0.0001pt;\">Shooting</li><li style=\"margin-bottom: 0.0001pt;\">Attempted murder</li><li style=\"margin-bottom: 0.0001pt;\">Rape</li><li style=\"margin-bottom: 0.0001pt;\">Robbery</li><li style=\"margin-bottom: 0.0001pt;\">Arson</li><li style=\"margin-bottom: 0.0001pt;\">Burglary</li><li style=\"margin-bottom: 0.0001pt;\">Any open misdemeanor or felony warrant</li></ul><p>You can remain anonymous. If you provide information leading to the arrest and indictment of a person who committed a violent felony, you are eligible for a cash reward of up to $3,500.</p><p>You can now send a text message to the Crime Stoppers Hotline</p><p>The Hotline does not accept tips on future crimes.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://crimestoppers.nypdonline.org/\">Get information about Crime Stoppers or submit a tip online.</a></p><p><strong>By Phone</strong></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "COP SHOT Program",
+     "Content": "<p>The City accepts information about a police officer being shot or targeted.&nbsp;A $10,000-dollar reward is available to anyone with information that leads to an arrest and conviction. Your call can remain anonymous.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

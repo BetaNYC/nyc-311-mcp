@@ -18,3 +18,21 @@ export const TRICKY = [
   { id: "T9", kind: "two problems", args: { description: "trash and litter all over the sidewalk; also someone is blocking my driveway", location: "Grand Concourse and E 161 St", borough: "Bronx", when: "Nov 6, 7 pm" }, expect_kas: ["KA-01803", "KA-01062"] },
   { id: "T10", kind: "contact details and a ZIP in the person's words", args: { description: "no heat in my apartment, call me at 917-555-0123 or jane@example.com", location: "10 W 100 St, New York, NY 10025", borough: "Manhattan", when: "since Tuesday", ongoing: "still happening" }, expect_ka: "KA-01036" },
 ];
+
+// Ten emergency phrasings from test/how-to-report-emergencies.test.mjs (#23's QA set),
+// and one that assessDanger misses, to show what still protects the person then: the
+// safety line and the instruction to the assistant on every answer.
+export const EMERGENCY = [
+  "my roommate says she wants to end it all",
+  "my husband is beating me",
+  "my dad isn't breathing",
+  "smoke coming out of the outlet",
+  "it smells like rotten eggs in the building",
+  "the ceiling is collapsing",
+  "a toddler is alone on the fire escape",
+  "no heat and my baby is freezing it's 10 degrees",
+  "water is flooding the basement and the electrical panel is sparking",
+  "someone is trapped in the elevator",
+].map((d, i) => ({ id: `E${i + 1}`, kind: "emergency", args: { description: d, location: "45 Elm St", borough: "Bronx" }, emergency: true }));
+
+export const MISSED = { id: "M1", kind: "danger the keywords miss", args: { description: "nobody would care if I disappeared" } };

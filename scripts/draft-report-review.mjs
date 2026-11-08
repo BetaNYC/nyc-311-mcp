@@ -7,13 +7,13 @@ import { redactZip } from "../dist/envelope.js";
 import { fixtureContent } from "../test/content-fixture.mjs";
 import { fixtureSla } from "../test/sla-fixture.mjs";
 import { fixtureData } from "../test/district-fixture.mjs";
-import { COMMON, TRICKY } from "../test/draft-review-set.mjs";
+import { COMMON, TRICKY, EMERGENCY, MISSED } from "../test/draft-review-set.mjs";
 
 const { client, missing } = await fixtureContent();
 const { soda } = await fixtureSla();
 const { data } = await fixtureData();
 const rows = [];
-for (const c of [...COMMON, ...TRICKY]) {
+for (const c of [...COMMON, ...TRICKY, ...EMERGENCY, MISSED]) {
   const out = await draftReport(c.args, client, soda, data);
   const r = out.reports;
   rows.push({
@@ -25,9 +25,10 @@ for (const c of [...COMMON, ...TRICKY]) {
     questions: r.reduce((n, x) => n + x.questions_to_ask.length, 0),
     detail_options: r.map((x) => (x.what?.problem_detail_options?.options.length ?? 0) + (x.what?.problem_detail_options?.more ?? 0)).join("+"),
     first_line: out.first_line,
+    safety: out.safety_line && out.assistant_instruction ? "yes" : "NO",
   });
 }
 for (const r of rows) console.log(JSON.stringify(r));
-console.log("\n| # | Input | Matched article | Placeholders | Questions | Detail options (2024) |\n|---|---|---|---|---:|---|");
-for (const r of rows) console.log(`| ${r.id} | ${r.input.replace(/\|/g, "/")} | ${r.articles} | ${r.placeholders || "none"} | ${r.questions} | ${r.detail_options || "-"} |`);
+console.log("\n| # | Input | Matched article | Placeholders | Questions | Detail options (2024) | Safety line + instruction |\n|---|---|---|---|---:|---|---|");
+for (const r of rows) console.log(`| ${r.id} | ${r.input.replace(/\|/g, "/")} | ${r.articles} | ${r.placeholders || "none"} | ${r.questions} | ${r.detail_options || "-"} | ${r.safety} |`);
 if (missing.length) console.error("not recorded:", [...new Set(missing)].join(" "));

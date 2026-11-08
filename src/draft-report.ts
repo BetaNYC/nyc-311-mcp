@@ -21,7 +21,8 @@ import { z } from "zod";
 import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
 import { contentClient, PORTAL, type Article, type ContentClient } from "./content-311.js";
 import { BOROUGHS, boardstatData } from "./district-tools.js";
-import { howToReport, REACH_311, stem, words } from "./how-to-report.js";
+import { howToReport, REACH_311, splitProblems, stem, words } from "./how-to-report.js";
+import { ASSISTANT_INSTRUCTION, assessDanger, emergencyLead, GENERIC_911, SAFETY_LINE, SAFETY_LINE_SOURCE } from "./emergency.js";
 import { sodaClient, type SodaClient } from "./soda.js";
 import type { BoardStatData } from "./boardstat-data.js";
 
@@ -177,24 +178,6 @@ export function cleanText(s: string): { text: string; contact_removed: boolean; 
   return { text: t, contact_removed, zip_removed };
 }
 
-/** Clauses joined by "and", "also", "plus" or ";", for telling apart two problems in one description. */
-export function clauses(description: string): string[] {
-  return splitClauses(description).parts;
-}
-
-/** The parts, and whether they were split only at "and" (a weaker sign of two problems). */
-export function splitClauses(description: string): { parts: string[]; at_and: boolean } {
-  const split = (re: RegExp) =>
-    description
-      .split(re)
-      .map((c) => c.trim())
-      .filter((c) => words(c).length >= 2);
-  // ";", a sentence break, "also" or "plus" first; "and" only when those find one part,
-  // because "and" also joins the parts of one problem ("trash and litter").
-  const strong = split(/\s*(?:;|\.\s+|\band also\b|\balso\b|\bplus\b)\s*/i);
-  return strong.length >= 2 ? { parts: strong, at_and: false } : { parts: split(/\s*\band\b\s*/i), at_and: true };
-}
-
 // ─── the tool ─────────────────────────────────────────────────────────────────
 
 export const ONGOING = ["still happening", "stopped", "keeps happening"] as const;
@@ -227,41 +210,40 @@ const CITY_DOES_NOT = /^The City (does not|doesn’t|doesn't) (accept|handle|tak
 /** The article's own "not taking complaints right now" (DSNY's sidewalk snow action out of season). */
 const NOT_NOW = /(not|n’t|n't) (taking|accepting)|does not accept|cannot accept/i;
 
+/** The safety fields every answer starts with (the same as how_to_report's). */
+const SAFETY = { safety_line: SAFETY_LINE, safety_line_source: SAFETY_LINE_SOURCE, assistant_instruction: ASSISTANT_INSTRUCTION } as const;
+
 export async function draftReport(args: DraftArgs, client: ContentClient = contentClient(), soda: SodaClient = sodaClient(), data: BoardStatData = boardstatData()) {
+  try {
+    return await draftReportInner(args, client, soda, data);
+  } catch (err) {
+    // Every error starts with the safety line, as how_to_report's do.
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(message.startsWith(SAFETY_LINE) ? message : `${SAFETY_LINE} ${message}`);
+  }
+}
+
+async function draftReportInner(args: DraftArgs, client: ContentClient, soda: SodaClient, data: BoardStatData) {
   const whole = await howToReport({ description: args.description, borough: args.borough }, client, data);
 
-  // One report per problem: a description that joins two problems which match
-  // articles in different 311 categories gets a draft for each.
-  let parts: { said: string; match: Matched }[] = [{ said: args.description, match: whole }];
-  const { parts: cs, at_and } = splitClauses(args.description);
-  if (!whole.emergency && cs.length >= 2) {
-    const each: { said: string; match: Matched }[] = [];
-    for (const c of cs.slice(0, MAX_PROBLEMS + 1)) each.push({ said: c, match: await howToReport({ description: c, borough: args.borough }, client, data) });
-    if (each.some((x) => x.match.emergency)) {
-      parts = each.filter((x) => x.match.emergency);
-    } else {
-      const distinct: typeof each = [];
-      for (const x of each) {
-        const m = x.match.best_match;
-        // Only a clear match counts as its own problem; split at "and", only a strong one
-        // ("the sidewalk wasn't shoveled and it's icy" is one problem).
-        if (!m || (at_and ? !/^strong/.test(m.confidence) : /^possible/.test(m.confidence))) continue;
-        const clash = distinct.some((d) => {
-          const dm = d.match.best_match!;
-          return dm.ka_number === m.ka_number || dm.found_in_categories.some((c) => m.found_in_categories.includes(c));
-        });
-        if (!clash) distinct.push(x);
-      }
-      if (distinct.length >= 2) parts = distinct.slice(0, MAX_PROBLEMS);
-    }
-  }
+  // One report per problem, split by how_to_report's own splitProblems; each part is
+  // matched on its own, and kept when it lands on an article no other part did.
+  const split = splitProblems(args.description);
+  const each: { said: string; match: Matched }[] = [];
+  if (split.length > 1) for (const part of split.slice(0, MAX_PROBLEMS)) each.push({ said: part, match: await howToReport({ description: part, borough: args.borough }, client, data) });
 
-  // Emergencies: no draft. how_to_report's own 911 answer, as it gives it.
-  const urgent = parts.find((p) => p.match.emergency) ?? (whole.emergency ? { said: args.description, match: whole } : null);
-  if (urgent) {
+  // Danger: no draft whenever assessDanger flags it, in the whole description or in any
+  // part, or how_to_report leads with 911 (including a matched City article that itself
+  // says "Call 911"). The answer is how_to_report's own 911 answer.
+  const dangerWhole = assessDanger(args.description);
+  const flaggedPart = each.find((x) => assessDanger(x.said).kinds.length || x.match.emergency);
+  const cityCall911 = Boolean(whole.best_match && /^call 911\b/i.test(whole.best_match.summary) && whole.first_line === whole.best_match.summary);
+  if (dangerWhole.kinds.length || whole.emergency || flaggedPart || cityCall911) {
+    const emergency = whole.emergency ?? flaggedPart?.match.emergency ?? emergencyLead(dangerWhole.kinds.length ? dangerWhole : assessDanger(flaggedPart?.said ?? args.description), []);
     return finish({
-      first_line: urgent.match.first_line,
-      emergency: urgent.match.emergency,
+      ...SAFETY,
+      first_line: whole.emergency || cityCall911 ? whole.first_line : (flaggedPart?.match.emergency ? flaggedPart.match.first_line : (emergency?.call_911 ?? GENERIC_911)),
+      emergency,
       drafted: false,
       reports: [],
       not_drafted: "No 311 draft is made when the description suggests an emergency. Call 911 first. When the emergency is over and a problem that is not an emergency remains (a pothole after a crash, say), ask again about that problem.",
@@ -269,6 +251,10 @@ export async function draftReport(args: DraftArgs, client: ContentClient = conte
       not_sent: NOT_SENT,
     });
   }
+
+  let parts: { said: string; match: Matched }[] = [{ said: args.description, match: whole }];
+  const distinct = each.filter((x, i) => x.match.best_match && !each.slice(0, i).some((y) => y.match.best_match?.ka_number === x.match.best_match!.ka_number));
+  if (distinct.length >= 2) parts = distinct;
 
   const sla = await slaTable(soda);
   const reports = [];
@@ -281,9 +267,10 @@ export async function draftReport(args: DraftArgs, client: ContentClient = conte
         ? `The City's own article says it does not take this (${reports[0].report_at?.ka_number}); its words are in where_to_go. No draft is made.`
         : reports[0].report_at
           ? `Draft ready for "${reports[0].report_at.title}" (${reports[0].report_at.ka_number}). ${reports[0].placeholders.length ? `Fill in the ${reports[0].placeholders.length} [add: …] place${reports[0].placeholders.length > 1 ? "s" : ""} first. ` : ""}${FIELDS_NOTE}`
-          : `No 311 article matched well enough to name one; the draft is still usable. ${FIELDS_NOTE}`;
+          : `${GENERIC_911} No 311 article matched well enough to name one; the draft is still usable. ${FIELDS_NOTE}`;
 
   return finish({
+    ...SAFETY,
     first_line,
     emergency: null,
     drafted: true,
@@ -502,7 +489,7 @@ export const DRAFT_TOOLS = [
   {
     name: "draft_311_report",
     description:
-      "Draft a 311 report for the person to submit themselves: a short ready-to-paste text (problem, where, when, what they saw), the 311 Online article link to report it on, questions to ask them for anything missing (marked [add: …], never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the City's article says about contact details and photos, and what happens next. Uses how_to_report's matching. Files nothing, sends nothing, and fills no form: the City does not publish each form's fields, so the form may ask for more. If the description suggests an emergency it does not draft and says to call 911. A description of two problems gets one draft each.",
+      `Draft a 311 report for the person to submit themselves: a short ready-to-paste text (problem, where, when, what they saw), the 311 Online article link to report it on, questions to ask them for anything missing (marked [add: …], never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the City's article says about contact details and photos, and what happens next. Uses how_to_report's matching. Files nothing, sends nothing, and fills no form: the City does not publish each form's fields, so the form may ask for more. If the description suggests an emergency it does not draft and says to call 911. A description of two problems gets one draft each. Every answer and error starts with "If anyone is in danger right now, call 911." ${ASSISTANT_INSTRUCTION}`,
     inputSchema: {
       type: "object",
       additionalProperties: false,

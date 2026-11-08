@@ -51,6 +51,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`CONCEPTS` in `src/how-to-report.ts`). Reviewed on the 20 most common problem types:
   the right article 20 of 20; the article names the open-data problem type in 14
   (`docs/how-to-report.md`).
+- QA round 1 on #23 (safety first): `src/emergency.ts` (`assessDanger`, `emergencyLead`,
+  `SAFETY_LINE`, `CITY_988`, `CRIME_POINTER`) detects many more dangers and leads with 911;
+  a City "Call 911" article is quoted only when it is the danger detected, otherwise BetaNYC's
+  own line, labeled. Every answer carries `safety_line`. Negation, smoking, odors and past
+  crimes do not lead with 911. 988 for suicide (from KA-01635). `crime` pointer to the City's
+  articles. `other_problems` for several problems; Spanish keywords with `language_help`;
+  one-edit typo correction (`spelling_corrected`). New concepts (harassment, fire escape,
+  broken detector, broken sidewalk, elevator, fireworks, missed collection, crash, smoking).
+  Article date in every answer; time-sensitive articles refreshed daily; a missing key is named
+  as such. 46 phrasings in `test/how-to-report-phrasings.test.mjs`.
+- QA round 2 on #23: danger detection is keyword-based and will miss some emergencies, so
+  every answer and both tool descriptions carry `assistant_instruction` telling the calling
+  assistant to send the person to 911 whenever anything suggests danger. `safety_line` is the
+  first field of every answer and starts every error; every no-match answer leads with 911.
+  Much wider patterns (medical, smoke and outlets, gas smell, structural, violence and
+  threats, people at risk, domestic violence quoting KA-01217). "Shooting a video" is not
+  gunfire. 50 emergencies and 23 look-alikes in `test/how-to-report-emergencies.test.mjs`, plus
+  14 suicide and self-harm phrasings that must lead with 911 and the City's 988 text.
 
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 

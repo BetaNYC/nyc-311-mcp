@@ -143,11 +143,15 @@ export class ContentClient {
     return this.cached(`list/${categoryId}`, () => this.get("/GetContentList", { categoryId }), parseArticleList);
   }
 
-  /** One article by its KA number. */
+  /**
+   * One article by its KA number. An article whose text says something holds "right
+   * now", "currently" or "at this time" (KA-01397: "DSNY isn't taking complaints right
+   * now") is refreshed daily rather than weekly, because it changes with the season.
+   */
   article(ka: string): Promise<Fetched<Article>> {
     const id = ka.trim().toUpperCase();
     if (!KA_NUMBER.test(id)) throw new Error(`'${ka}' is not a 311 article number (they look like KA-01092).`);
-    return this.cached(`article/${id}`, () => this.get("/GetContent", { SearchText: id }), (raw) => parseArticle(raw, id));
+    return this.cached(`article/${id}`, () => this.get("/GetContent", { SearchText: id }), (raw) => parseArticle(raw, id), (a) => (isTimeSensitive(a) ? DAY : this.ttl));
   }
 
   // ─── cache ──────────────────────────────────────────────────────────────────
@@ -181,12 +185,12 @@ export class ContentClient {
    * A fresh cached copy, else the API (then cached), else an older cached copy
    * marked stale. Concurrent asks for the same key share one request.
    */
-  private cached<T>(key: string, load: () => Promise<unknown>, parse: (raw: unknown) => T): Promise<Fetched<T>> {
+  private cached<T>(key: string, load: () => Promise<unknown>, parse: (raw: unknown) => T, ttlFor: (value: T) => number = () => this.ttl): Promise<Fetched<T>> {
     const running = this.inflight.get(key);
     if (running) return running as Promise<Fetched<T>>;
     const run = (async (): Promise<Fetched<T>> => {
       const saved = await this.read<T>(key);
-      if (saved && this.now() - Date.parse(saved.fetched_at) < this.ttl) return { value: saved.value, fetched_at: saved.fetched_at, stale: false };
+      if (saved && this.now() - Date.parse(saved.fetched_at) < ttlFor(saved.value)) return { value: saved.value, fetched_at: saved.fetched_at, stale: false };
       try {
         const value = parse(await load());
         const fetched_at = await this.write(key, value);
@@ -194,12 +198,15 @@ export class ContentClient {
       } catch (err) {
         if (!saved || err instanceof NotFoundError) throw err;
         const reason = err instanceof Error ? err.message : String(err);
-        this.log("content_311_stale", { key, reason });
+        this.log("content_311_stale", { key, reason: err instanceof MissingKeyError ? "NYC_311_API_KEY not set" : reason });
         return {
           value: saved.value,
           fetched_at: saved.fetched_at,
           stale: true,
-          warning: `The 311 API could not be reached (${reason}). This uses the copy saved ${saved.fetched_at}.`,
+          warning:
+            err instanceof MissingKeyError
+              ? `NYC_311_API_KEY is not set, so the 311 API was not asked. This uses the copy saved ${saved.fetched_at}; set the key to get current text.`
+              : `The 311 API could not be reached (${reason}). This uses the copy saved ${saved.fetched_at}.`,
         };
       }
     })();
@@ -225,7 +232,12 @@ export class ContentClient {
   }
 
   private get(pathname: string, params: Record<string, string>): Promise<unknown> {
-    const key = this.apiKey();
+    let key: string;
+    try {
+      key = this.apiKey();
+    } catch (err) {
+      throw new MissingKeyError(err instanceof Error ? err.message : String(err));
+    }
     const url = new URL(`${this.base}${pathname}`);
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
     const headers = { "Ocp-Apim-Subscription-Key": key, "User-Agent": USER_AGENT, Accept: "application/json" };
@@ -254,6 +266,19 @@ export class ContentClient {
       }
     });
   }
+}
+
+/** NYC_311_API_KEY is not set. A saved copy may still answer, with a warning that says so. */
+export class MissingKeyError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "MissingKeyError";
+  }
+}
+
+/** Text that says something holds only now ("right now", "currently", "at this time"). */
+export function isTimeSensitive(a: Article): boolean {
+  return a.sections.some((s) => /\b(right now|currently|at this time)\b/i.test(s.text));
 }
 
 /** The API answered, but the article asked for is not in its answer. Never served from a stale copy. */
