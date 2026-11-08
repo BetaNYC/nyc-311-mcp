@@ -1,0 +1,154 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn about an online tool to help you apply for benefits from the Human Resources Administration.",
+   "id": "KA-02540",
+   "title": "ACCESS HRA Website and Mobile App"
+  },
+  {
+   "description": "Screen for eligibility for City, State, and Federal health and human service benefit programs.",
+   "id": "KA-02541",
+   "title": "ACCESS NYC"
+  },
+  {
+   "description": "Learn about rental assistance for low-income families and individual adults who live in shelter or are at risk of becoming homeless.",
+   "id": "KA-03172",
+   "title": "CityFHEPS Rental Assistance"
+  },
+  {
+   "description": "Report a problem with a domestic violence shelter.",
+   "id": "KA-02692",
+   "title": "Domestic Violence Shelter Complaint"
+  },
+  {
+   "description": "Get help if you have gotten an eviction notice and learn about the Homebase program.",
+   "id": "KA-01041",
+   "title": "Eviction Prevention and Homebase"
+  },
+  {
+   "description": "Get help for families with children who live in shelters, are being evicted, or have been evicted.",
+   "id": "KA-02723",
+   "title": "Family Homelessness and Eviction Prevention Supplement (FHEPS)"
+  },
+  {
+   "description": "Landlords, real estate brokers, and property managers can get support leasing vacant apartments to New Yorkers in shelters with housing subsidies.",
+   "id": "KA-03307",
+   "title": "Home Support Unit"
+  },
+  {
+   "description": "Get hot meals, clothing, and social services for homeless people living on the streets.",
+   "id": "KA-02528",
+   "title": "Homeless Drop-In Centers"
+  },
+  {
+   "description": "Request outreach for a homeless person living on the streets, in the subway, or in other public places.",
+   "id": "KA-01037",
+   "title": "Homeless Outreach Assistance"
+  },
+  {
+   "description": "Volunteer to survey New Yorkers experiencing unsheltered homelessness.",
+   "id": "KA-03273",
+   "title": "Homeless Outreach Population Estimate (HOPE)"
+  },
+  {
+   "description": "Contact a homeless adult or family in a shelter.",
+   "id": "KA-01190",
+   "title": "Homeless Person or Family Contact"
+  },
+  {
+   "description": "Get help for people previously in homeless shelters to keep their permanent housing.",
+   "id": "KA-02790",
+   "title": "Homeless Shelter Aftercare"
+  },
+  {
+   "description": "Make a complaint or comment about a homeless shelter.",
+   "id": "KA-01039",
+   "title": "Homeless Shelter Complaint"
+  },
+  {
+   "description": "Get help for homeless people who is currently in the shelter system, including medical concerns.",
+   "id": "KA-01566",
+   "title": "Homeless Shelter Resident Assistance"
+  },
+  {
+   "description": "Apply for homeless shelter intake.",
+   "id": "KA-02501",
+   "title": "Homeless Shelters"
+  },
+  {
+   "description": "Get help with City rental assistance programs, including apartment registration, tenant disputes, and payment issues.",
+   "id": "KA-01578",
+   "title": "HRA Rental Assistance Programs for Landlords"
+  },
+  {
+   "description": "Get help for former Income Savings Plan (ISP) Program participants.",
+   "id": "KA-03697",
+   "title": "Income Savings Plan (ISP)"
+  },
+  {
+   "description": "Providers can learn more about mental health services for adults and children.",
+   "id": "KA-03675",
+   "title": "Mobile Behavioral Health Treatment and Care Coordination Services"
+  },
+  {
+   "description": "Learn about services for older adults and their caregivers.",
+   "id": "KA-03596",
+   "title": "Older Adults Support"
+  },
+  {
+   "description": "Learn about support programs and resources for parents.",
+   "id": "KA-02911",
+   "title": "Parenting Support"
+  },
+  {
+   "description": "Learn about financial assistance to help homeless families move out of shelters and stay with family members or friends.",
+   "id": "KA-02917",
+   "title": "Pathway Home Program"
+  },
+  {
+   "description": "Learn about programs and services for pregnant women, expectant fathers, and families.",
+   "id": "KA-02928",
+   "title": "Pregnancy Support"
+  },
+  {
+   "description": "Learn how young people can get shelter and services through Department of Youth and Community Development (DYCD). Submit a complaint or comment to DYCD.",
+   "id": "KA-01619",
+   "title": "Runaway or Homeless Youth Shelter and Support"
+  },
+  {
+   "description": "Request social services and emergency assistance for victims of rape, incest, and sexual assault.",
+   "id": "KA-01621",
+   "title": "Sexual Assault Victim Support"
+  },
+  {
+   "description": "Homeless New Yorkers can access basic health and wellness services at SHOW mobile units.",
+   "id": "KA-03705",
+   "title": "Street Health Outreach and Wellness (SHOW)"
+  },
+  {
+   "description": "Learn about educational services for students who are homeless or in temporary housing.",
+   "id": "KA-03031",
+   "title": "Student in Temporary Housing"
+  },
+  {
+   "description": "Learn more about supportive housing for people who have experienced homelessness or incarceration, or youth aging out of foster care.",
+   "id": "KA-02797",
+   "title": "Supportive Housing Assistance"
+  },
+  {
+   "description": "Get help for residents in three quarter housing.",
+   "id": "KA-03056",
+   "title": "Three Quarter Housing"
+  },
+  {
+   "description": "Find a warming center, a heated place to go when it is dangerously cold.",
+   "id": "KA-03702",
+   "title": "Warming Centers"
+  },
+  {
+   "description": "Get resources for young people, troubled youth, and their families, including Community Connect and walk-in centers.",
+   "id": "KA-03106",
+   "title": "Youth Services and Counseling"
+  }
+ ]
+}

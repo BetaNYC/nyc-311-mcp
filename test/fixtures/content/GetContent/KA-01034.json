@@ -1,0 +1,106 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01034",
+   "Title": "Fire Hydrant Complaint",
+   "Description": "Report a fire hydrant that is leaking, running, missing, misused, or damaged (including fender post), or blocked by a vehicle.",
+   "Section": [
+    {
+     "Name": "Fire Hydrant Complaint Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01060\">Park Maintenance Complaint</a>&nbsp;for hydrants in a park</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01035\">Fire Hydrant Request</a>&nbsp;for&nbsp;a hydrant&nbsp;spray cap&nbsp;or fender post</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01507\">Fire Hydrant Commercial Use Permit</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01980\">Blocked Sidewalk or Street</a>&nbsp;to report a hydrant blocked on the sidewalk or street blocked by an object or activity</li></ul></div><p>You can report a fire hydrant that:</p><ul><li>Is leaking or running</li><li>Is damaged or missing</li><li>Is missing a valve box cover</li><li>Is being misused</li><li>Has a damaged fender protection post</li><li>Is blocked by a vehicle</li></ul>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Leaking or Running",
+     "Content": "<p>You can report a fire hydrant that is leaking, running, or running at full blast.</p><style type=\"text/css\">.asp {\n  max-width: 100%;\n  height: auto;\n}</style><p><img alt=\"Examples of fire hydrants leaking, running, or running at full blast.\" height=\"170\" width=\"685\" src=\"https://portal.311.nyc.gov/article/fire-hydrant-conditions.jpg\" /></p><p>Report a fire hydrant that is:</p>",
+     "ContentAction": [
+      {
+       "Name": "Fire Hydrant Leaking",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Leaking"
+      },
+      {
+       "Name": "Fire Hydrant Running",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Running"
+      },
+      {
+       "Name": "Fire Hydrant Running at Full Blast",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Running Full"
+      }
+     ]
+    },
+    {
+     "Name": "Damaged or Missing",
+     "Content": "<p>You can report a fire hydrant that is damaged, broken, cracked, leaning, knocked over, or missing.</p><p>Report a fire hydrant that is:</p>",
+     "ContentAction": [
+      {
+       "Name": "Fire Hydrant Damaged",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Defective"
+      },
+      {
+       "Name": "Fire Hydrant Leaning or Missing",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Leaning/Missing"
+      }
+     ]
+    },
+    {
+     "Name": "Missing Valve Box Cover",
+     "Content": "<p>You can report a fire hydrant valve box cover that is missing. The valve box is in the street near the hydrant.</p>",
+     "ContentAction": [
+      {
+       "Name": "Missing Fire Hydrant Valve Box Cover",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Valve Box"
+      }
+     ]
+    },
+    {
+     "Name": "Misuse",
+     "Content": "<p>You must have a permit to open a hydrant and use the water for any reason. You can get a ticket for using a hydrant without a permit.</p>",
+     "ContentAction": [
+      {
+       "Name": "Fire Hydrant Misuse",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Conservation",
+       "ProblemDetail": "Fire Hydrant"
+      }
+     ]
+    },
+    {
+     "Name": "Fender Protection Post Damaged",
+     "Content": "<p>The Department of Environmental Protection (DEP) installs and maintains fire hydrant fender protection posts based on the type of hydrant and its location.</p><p><img alt=\"A fire hydrant with two metal protection posts in front of the the hydrant.\" style=\"width: 350px; height: 298px;\" src=\"https://portal.311.nyc.gov/article/fire_hydrant_fender.jpg\" /></p><p>You can report a fender that is:</p><ul><li>Damaged</li><li>Cracked</li><li>Broken</li><li>Leaning</li><li>Knocked over</li></ul>",
+     "ContentAction": [
+      {
+       "Name": "Fire Hydrant Fender Post Damaged",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Fire Hydrant Fender Request"
+      }
+     ]
+    },
+    {
+     "Name": "Blocked by a Vehicle",
+     "Content": "<p>You can report a non-emergency vehicle or&nbsp;motorcycle&nbsp;blocking a fire hydrant.&nbsp;</p><p>It is illegal to park within 15 feet of a fire hydrant.</p><p>If possible, include in your report the vehicle&#39;s:</p><ul><li>Color</li><li>Make</li><li>Model</li><li>License plate number</li></ul><p><strong>What Happens Next</strong></p><p>Officers from your local police precinct will respond when they are not handling emergency situations.</p>",
+     "ContentAction": [
+      {
+       "Name": "Blocked Fire Hydrant",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Blocked Hydrant"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

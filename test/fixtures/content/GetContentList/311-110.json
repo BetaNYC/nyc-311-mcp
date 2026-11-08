@@ -1,0 +1,189 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Report an abandoned vehicle (including boats) on public property or request the removal of an abandoned vehicle with no license plates on private property.",
+   "id": "KA-02130",
+   "title": "Abandoned Vehicle"
+  },
+  {
+   "description": "Learn about the City and State agency charges, fees, and fines that appear on your property tax bill.",
+   "id": "KA-02246",
+   "title": "Agency Charges Collected by the Department of Finance"
+  },
+  {
+   "description": "Learn what to do if your vehicle has been booted because of unpaid parking or camera violations.",
+   "id": "KA-02054",
+   "title": "Booted Vehicle"
+  },
+  {
+   "description": "Make a complaint about a business that places wheel locks on illegally parked cars.",
+   "id": "KA-02194",
+   "title": "Booting Company Complaint"
+  },
+  {
+   "description": "Learn about the new enforcement program for overweight trucks traveling on the Brooklyn-Queens Expressway (BQE).",
+   "id": "KA-03594",
+   "title": "BQE Vehicle Weigh-In-Motion (WIM) Program"
+  },
+  {
+   "description": "Learn about cameras that film vehicles driving, parking, or standing in bus lanes, standing or stopping in a bus stop, and double parking.",
+   "id": "KA-02325",
+   "title": "Bus Lane and MTA Bus Cameras"
+  },
+  {
+   "description": "Report a damaged or defective bus lane camera.",
+   "id": "KA-02342",
+   "title": "Bus Lane Camera Complaint"
+  },
+  {
+   "description": "Report a problem with a city marshal.",
+   "id": "KA-01154",
+   "title": "City Marshal Complaint"
+  },
+  {
+   "description": "Pay New York City bills and fees online.",
+   "id": "KA-02520",
+   "title": "CityPay"
+  },
+  {
+   "description": "Request relief from debts owed to the Department of Finance if you are a member of the military.",
+   "id": "KA-02519",
+   "title": "Debt Relief for Military Service Members"
+  },
+  {
+   "description": "Find places to pay parking tickets, camera violations, and property taxes and get related services.",
+   "id": "KA-01015",
+   "title": "Department of Finance Business Centers"
+  },
+  {
+   "description": "Learn about DMV services and office locations or make a complaint.",
+   "id": "KA-02056",
+   "title": "Department of Motor Vehicles (DMV)"
+  },
+  {
+   "description": "Report a disabled vehicle on a City street, limited access highway, bridge, or tunnel.",
+   "id": "KA-02052",
+   "title": "Disabled Vehicle"
+  },
+  {
+   "description": "Report a vehicle parked illegally on public property, a blocked hydrant, parking permit misuse, or overnight commercial parking on residential street.",
+   "id": "KA-01986",
+   "title": "Illegal Parking"
+  },
+  {
+   "description": "Learn about MTA Bridges and Tunnels Work Zone Speed Camera program violations and fines.",
+   "id": "KA-03732",
+   "title": "MTA Bridges and Tunnels Work Zone Speed Cameras"
+  },
+  {
+   "description": "Report a vehicle with a covered license plate.",
+   "id": "KA-03584",
+   "title": "Obscured License Plate Complaint"
+  },
+  {
+   "description": "Report the use or sale of unauthorized paper license plates, also known as ghost plates.",
+   "id": "KA-03492",
+   "title": "Paper License Plate Complaint"
+  },
+  {
+   "description": "Get help if you've been unable to resolve a parking or camera violation issue through the normal process.",
+   "id": "KA-03206",
+   "title": "Parking Ticket or Camera Violation Advocate"
+  },
+  {
+   "description": "Appeal a parking or camera violation hearing decision if you were found guilty.",
+   "id": "KA-02320",
+   "title": "Parking Ticket or Camera Violation Appeal"
+  },
+  {
+   "description": "Get help with a parking or camera violation payment, dispute, or status.",
+   "id": "KA-02348",
+   "title": "Parking Ticket or Camera Violation Assistance"
+  },
+  {
+   "description": "Get a copy of a parking ticket or bus lane, red light, or speed camera Notice of Liability (NOL).",
+   "id": "KA-02345",
+   "title": "Parking Ticket or Camera Violation Copy"
+  },
+  {
+   "description": "Fight a parking ticket or camera violation.",
+   "id": "KA-02275",
+   "title": "Parking Ticket or Camera Violation Dispute"
+  },
+  {
+   "description": "Fight parking tickets or camera violations issued to commercial vehicle owners or operators.",
+   "id": "KA-02323",
+   "title": "Parking Ticket or Camera Violation Dispute for Businesses"
+  },
+  {
+   "description": "Pay a parking ticket or camera violation.",
+   "id": "KA-02036",
+   "title": "Parking Ticket or Camera Violation Payment"
+  },
+  {
+   "description": "Request an agreement to pay in installments if you owe parking or camera violation judgment debt.",
+   "id": "KA-02061",
+   "title": "Parking Ticket or Camera Violation Payment Plan"
+  },
+  {
+   "description": "Enroll in programs to help your business track and pay parking and camera violations.",
+   "id": "KA-02059",
+   "title": "Parking Ticket or Camera Violation Programs for Businesses"
+  },
+  {
+   "description": "Look up information about your parking or camera violations and get payment, dispute, and appeal status.",
+   "id": "KA-02057",
+   "title": "Parking Ticket or Camera Violation Status"
+  },
+  {
+   "description": "Report a damaged or defective red light camera.",
+   "id": "KA-02343",
+   "title": "Red Light Camera Complaint"
+  },
+  {
+   "description": "Learn about cameras that photograph vehicles running a red light or report a broken or malfunctioning camera.",
+   "id": "KA-02326",
+   "title": "Red Light Cameras"
+  },
+  {
+   "description": "Report a damaged or defective speed camera.",
+   "id": "KA-02341",
+   "title": "Speed Camera Complaint"
+  },
+  {
+   "description": "Learn about cameras that photograph vehicles speeding in school zones.",
+   "id": "KA-02324",
+   "title": "Speed Cameras"
+  },
+  {
+   "description": "Make a complaint about a tow truck driver or company.",
+   "id": "KA-02149",
+   "title": "Tow Truck Complaint"
+  },
+  {
+   "description": "Find a towed vehicle and get it back or stop a tow in progress.",
+   "id": "KA-02055",
+   "title": "Towed Vehicle"
+  },
+  {
+   "description": "Reclaim a vehicle towed or in the process of being towed by a Marshal or Sheriff.",
+   "id": "KA-03124",
+   "title": "Towed Vehicle Reclaim from Marshal or Sheriff"
+  },
+  {
+   "description": "Reclaim a vehicle towed or in the process of being towed by the New York Police Department.",
+   "id": "KA-03123",
+   "title": "Towed Vehicle Reclaim from NYPD"
+  },
+  {
+   "description": "Learn about private towing services.",
+   "id": "KA-03059",
+   "title": "Towing Guide"
+  },
+  {
+   "description": "Learn how to pay or dispute non-criminal moving violations.",
+   "id": "KA-02058",
+   "title": "Traffic Ticket"
+  }
+ ]
+}

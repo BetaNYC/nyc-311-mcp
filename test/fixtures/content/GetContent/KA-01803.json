@@ -1,0 +1,41 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01803",
+   "Title": "Dirty Sidewalk",
+   "Description": "Report a sidewalk or gutter, including 18 inches into the street, that is not clean.",
+   "Section": [
+    {
+     "Name": "Dirty Sidewalk Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02143\">Litter Basket Complaint</a> for trash overflowing onto the sidewalk from a litter basket</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02097\">Illegal Dumping</a> to report a large amount of trash dumped on public property</li></ul></div><p>Property owners must clean and sweep the sidewalk, tree beds, and gutters next to their properties and the area extending 18 inches into the street from the curb. This rule applies even if someone else caused the dirty condition.</p><p><strong>What You Can Report</strong></p><p>You can report dirty sidewalks and tree beds, including:</p><ul><li>Loose trash and stray garbage bags</li><li>Broken glass</li></ul><p><strong>What Happens Next</strong></p><p>DSNY will inspect the location during the&nbsp;<a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/assets/dsny/forms/collection-schedule\">enforcement routing time</a>&nbsp;for the address. If the condition exists at the time of inspection, DSNY may issue a summons to the property owner but will not clean it up.</p>",
+     "ContentAction": [
+      {
+       "Name": "Trash on Sidewalk",
+       "Agency": "Department of Sanitation",
+       "Problem": "Dirty Condition",
+       "ProblemDetail": "Trash"
+      },
+      {
+       "Name": "Broken Glass",
+       "Agency": "Department of Sanitation",
+       "Problem": "Dirty Condition",
+       "ProblemDetail": "Broken Glass"
+      }
+     ]
+    },
+    {
+     "Name": "Chronic Littering",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02097\">Illegal Dumping</a></li></ul></div><p>You can report an area where people repeatedly litter.</p><p>This also includes:</p><ul><li>Property owners who sweep or blow trash or debris into the street</li><li>Landscapers who disperse yard waste in or around a sidewalk, curb, or street</li></ul><p>You can&rsquo;t report a one-time occurrence of littering.</p><p>Please note that if you&#39;re a property owner, you are responsible for keeping the sidewalks and gutters next to your property clean. You&#39;re responsible even if you reported littering. You may get a ticket for trash you should have cleared but didn&#39;t.</p><p><strong>What You Need</strong></p><p>You must provide:</p><ul><li>Timeframe and the days of the week when littering occurs</li><li>Type of material being littered</li></ul><p><strong>What Happens Next</strong></p><p>A Department of Sanitation (DSNY) enforcement agent will watch the location during the timeframe you provided. If the agent sees someone littering, they will give them a violation.</p>",
+     "ContentAction": [
+      {
+       "Name": "Littering",
+       "Agency": "Department of Sanitation",
+       "Problem": "Dirty Condition",
+       "ProblemDetail": "Trash"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

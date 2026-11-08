@@ -1,0 +1,49 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02130",
+   "Title": "Abandoned Vehicle",
+   "Description": "Report an abandoned vehicle (including boats) on public property or request the removal of an abandoned vehicle with no license plates on private property.",
+   "Section": [
+    {
+     "Name": "Abandoned Vehicle Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01062\">Blocked Driveway</a>&nbsp;to report vehicles (with or without plates) parked in a private driveway</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02131\">Car Dealer Complaint</a>&nbsp;to report&nbsp;vehicles without plates parked on public property by a car dealer</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03492\">Paper License Plate Complaint</a>&nbsp;to report the use or sale of unauthorized paper license plates</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01986\">Illegal Parking</a>&nbsp;to report an illegally parked vehicle that is not abandoned</li></ul></div><p>You can report an abandoned vehicle on public property or in a vacant lot.</p><p>If you are a property owner, you can also request the removal of abandoned vehicles without license plates from your private property for a fee.&nbsp;</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Abandoned Vehicle on Public Property",
+     "Content": "<p>You can report a vehicle abandoned on public property.&nbsp;</p><p>Public property includes:</p><ul><li>Streets</li><li>Sidewalks</li><li>Highway embankments</li><li>Public alleys</li></ul><p>Common driveways are not considered public property.</p><p>How the report is handled depends on whether or not the vehicle still has license plates.</p><p><span style=\"font-size:20px;\"><strong>With License Plates</strong></span></p><p>You can report an abandoned vehicle with at least one fixed metal license plate or in-transit paper registration plate if that vehicle has been left on public property for at least 48 hours.&nbsp;</p><p>Officers from your local police precinct will respond when they are not handling emergency situations. The vehicle&#39;s owner will be responsible for all towing and storage fees.</p><p><span style=\"font-size:20px;\"><strong>Without License Plates</strong></span></p><p>You can report a vehicle without license plates abandoned on a City street or sidewalk.&nbsp;</p><p>If the abandoned vehicle meets the criteria to be classified as a derelict (i.e. junk) the Department of Sanitation (DSNY) will investigate and tag the vehicle within three business days.</p><p>If the abandoned vehicle does not meet the criteria to be classified as derelict, DSNY will tag the vehicle and refer it to your local police precinct for handling similar to a vehicle with license plates.&nbsp;</p>",
+     "ContentAction": [
+      {
+       "Name": "Abandoned Vehicle With Plates",
+       "Agency": "New York City Police Department",
+       "Problem": "Abandoned Vehicle",
+       "ProblemDetail": "With License Plate"
+      },
+      {
+       "Name": "Abandoned Vehicle Without Plates",
+       "Agency": "Department of Sanitation",
+       "Problem": "Abandoned Vehicle",
+       "ProblemDetail": "Without License Plate"
+      }
+     ]
+    },
+    {
+     "Name": "Abandoned Vehicle on Private Property",
+     "Content": "<p>You can ask the Department of Sanitation (DSNY) to remove a vehicle without license plates that was abandoned by someone else on your private property.&nbsp;</p><p>In order to request removal, you must:</p><ul><li>Sign a waiver</li><li>Make the vehicle accessible for removal</li><li>Pay a fee based on the price of scrap metal</li></ul><p>Vehicles owned by the property owner are not eligible for this service.</p><p>Make your request in writing to:</p><p>Derelict Vehicle Removal<br />Department of Sanitation<br />Central Correspondence Unit<br />59 Maiden Lane, 5th Floor<br />New York, NY 99999</p><p><strong>Abandoned Vehicle in Vacant Lot</strong></p><p>You can&nbsp;request the removal of an abandoned vehicle from an empty lot.</p><p>Make your request in writing&nbsp;to:</p><p>Department of Sanitation<br />Central Correspondence Unit<br />59 Maiden Lane, 5th Floor<br />New York, NY 99999</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Abandoned Boat on Public or Private Property",
+     "Content": "<p><span style=\"font-size:20px;\"><strong>Street or Sidewalk</strong></span></p><p>You can report an abandoned boat on a public street or sidewalk to the Department of Sanitation (DSNY).</p><p>DSNY <strong>will not </strong>remove abandoned boats from private property.</p><p>You can contact DSNY to report a boat on public property or to get&nbsp;information on how to remove a boat from private property.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p><p><span style=\"font-size:20px;\"><strong>Shorelines and Waterways</strong></span></p><p>You can contact NYC Parks for&nbsp;free, voluntary boat or vessel surrender and disposal.&nbsp;To participate in the vessel turn-in program,&nbsp;<a class=\"externallink\" target=\"_blank\" href=\"https://www.nycgovparks.org/facilities/boating/vtip\">review program information and complete the interest form</a>.</p><p>You can also report an abandoned or derelict boat/vessel or large marine debris on city shorelines and waterways to NYC Parks. The&nbsp;agency may be able to remove it.</p><p>Submit your report:</p><p><strong>By Email</strong></p><p><a href=\"mailto:vesselturnin@parks.nyc.gov\">vesselturnin@parks.nyc.gov</a></p><p><strong>By Phone</strong></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Missing Derelict Vehicle",
+     "Content": "<p>A derelict vehicle without plates may have been removed by the Department of Sanitation (DSNY).</p><p>You can contact DSNY to find out if a vehicle was removed from public property.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

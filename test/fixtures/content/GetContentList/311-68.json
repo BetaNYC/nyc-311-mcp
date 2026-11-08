@@ -1,0 +1,974 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn how to text with 911 and send them a file attachment related to an emergency.",
+   "id": "KA-03309",
+   "title": "911 Information"
+  },
+  {
+   "description": "Get help for parents who are unable or unwilling to care for their baby.",
+   "id": "KA-02752",
+   "title": "Abandoned Baby Prevention"
+  },
+  {
+   "description": "Call 911 to report an accident in progress.",
+   "id": "KA-01513",
+   "title": "Accident with Injury"
+  },
+  {
+   "description": "Get help for an adult age 18 or older who has mental or physical disabilities or make a complaint about the Adult Protective Services program.",
+   "id": "KA-03113",
+   "title": "Adult Protective Services"
+  },
+  {
+   "description": "Report an airline safety or scale problem.",
+   "id": "KA-01114",
+   "title": "Airline Complaint"
+  },
+  {
+   "description": "Report drinking outside or in an unlicensed establishment or social club.",
+   "id": "KA-01979",
+   "title": "Alcohol Drinking Complaint"
+  },
+  {
+   "description": "Report the sale of alcohol to minors/intoxicated people, at more than half-off, to-go without food, outside of approved hours, or in unlicensed businesses.",
+   "id": "KA-02223",
+   "title": "Alcohol Sale Complaint"
+  },
+  {
+   "description": "Report a problem with an ambulance.",
+   "id": "KA-02558",
+   "title": "Ambulance Complaint"
+  },
+  {
+   "description": "Report abuse or neglect of an animal.",
+   "id": "KA-02224",
+   "title": "Animal Abuse"
+  },
+  {
+   "description": "Learn about the Animal Abuse Registry, including how NYC residents convicted of an animal abuse crime can register with the Abuse Registry.",
+   "id": "KA-03217",
+   "title": "Animal Abuse Registry"
+  },
+  {
+   "description": "Report an animal that bit a person.",
+   "id": "KA-01109",
+   "title": "Animal Bite"
+  },
+  {
+   "description": "Get information about an arrest warrant issued by the New York City Police Department.",
+   "id": "KA-01400",
+   "title": "Arrest Warrant"
+  },
+  {
+   "description": "Report that a fire may have been set deliberately.",
+   "id": "KA-01120",
+   "title": "Arson Tips"
+  },
+  {
+   "description": "Call 911 to report any type of assault.",
+   "id": "KA-01515",
+   "title": "Assault"
+  },
+  {
+   "description": "Report a bar or club that's selling alcohol to minors, overcrowded, or open after hours.",
+   "id": "KA-01993",
+   "title": "Bar or Club Complaint"
+  },
+  {
+   "description": "Report a problem caused by people biking, riding motorized scooters, rollerblading, skating, or using or storing ATVs.",
+   "id": "KA-02232",
+   "title": "Biking, Rollerblading, or Skating Complaint"
+  },
+  {
+   "description": "Report building construction work in progress that is unsafe, done without a permit, after hours, or outside approved plans.",
+   "id": "KA-01797",
+   "title": "Building Construction Complaint"
+  },
+  {
+   "description": "Report past changes without DOB approval, including to a basement, room, space, apartment, or building. Report building use against occupancy or zoning.",
+   "id": "KA-02025",
+   "title": "Building Conversion or Occupancy Complaint"
+  },
+  {
+   "description": "Call 911 to report burning garbage either outdoors or in an illegal incinerator.",
+   "id": "KA-01518",
+   "title": "Burning Garbage"
+  },
+  {
+   "description": "Learn about legislation regarding the use of cannabis (marijuana) for adults in New York State.",
+   "id": "KA-03375",
+   "title": "Cannabis Legalization"
+  },
+  {
+   "description": "Call 911 to report the sale of cannabis (marijuana) at an outside location.",
+   "id": "KA-03378",
+   "title": "Cannabis Sale Outside"
+  },
+  {
+   "description": "Call 911 to report carbon monoxide emission or poisoning. Learn about carbon monoxide detector requirements.",
+   "id": "KA-02608",
+   "title": "Carbon Monoxide"
+  },
+  {
+   "description": "Report an issue or ask a question about the cargo drones.",
+   "id": "KA-03719",
+   "title": "Cargo Drone Complaint"
+  },
+  {
+   "description": "Report an individual or business committing welfare fraud.",
+   "id": "KA-01611",
+   "title": "Cash Assistance, SNAP, or Medicaid Fraud"
+  },
+  {
+   "description": "Learn about a program that offers cash to turn in a gun at any police precinct.",
+   "id": "KA-01306",
+   "title": "Cash for Guns Program"
+  },
+  {
+   "description": "Report a building that has overcrowding, no legal Certificate of Occupancy, or an illegal change in building use that violates the Certificate.",
+   "id": "KA-02024",
+   "title": "Certificate of Occupancy Complaint"
+  },
+  {
+   "description": "Report a problem with a charity committing fraud.",
+   "id": "KA-01524",
+   "title": "Charity Fraud"
+  },
+  {
+   "description": "Report chemical odors or chemicals that are abandoned or not stored safely.",
+   "id": "KA-01982",
+   "title": "Chemical Complaint"
+  },
+  {
+   "description": "Report possible child abuse or neglect.",
+   "id": "KA-01221",
+   "title": "Child Abuse"
+  },
+  {
+   "description": "Call 911 to report child pornography.",
+   "id": "KA-02624",
+   "title": "Child Pornography"
+  },
+  {
+   "description": "Learn about child safety.",
+   "id": "KA-02625",
+   "title": "Child Safety"
+  },
+  {
+   "description": "Report dense or visible smoke from a chimney or ventilation system.",
+   "id": "KA-02219",
+   "title": "Chimney or Ventilation Smoke"
+  },
+  {
+   "description": "Report illegal cigarette sales, cigarette tax evasion, or a problem with a cigarette vending machine.",
+   "id": "KA-02627",
+   "title": "Cigarette Sale Complaint"
+  },
+  {
+   "description": "Report a false or fraudulent claim against the city.",
+   "id": "KA-01147",
+   "title": "City Claim Fraud"
+  },
+  {
+   "description": "Learn about the bonds filed by New York City Marshals.",
+   "id": "KA-01153",
+   "title": "City Marshal Bonds"
+  },
+  {
+   "description": "Report illegal activity, assault, or suspected wrongdoing by a City employee or contractor.",
+   "id": "KA-02418",
+   "title": "City Worker or Contractor Corruption or Criminal Misconduct"
+  },
+  {
+   "description": "Learn about hearings for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-02019",
+   "title": "City-Issued Summons Hearing"
+  },
+  {
+   "description": "Pay a summons for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-03622",
+   "title": "City-Issued Summons Payment"
+  },
+  {
+   "description": "Pay New York City bills and fees online.",
+   "id": "KA-02520",
+   "title": "CityPay"
+  },
+  {
+   "description": "Learn about the United States Coast Guard.",
+   "id": "KA-01769",
+   "title": "Coast Guard"
+  },
+  {
+   "description": "Learn how business owners can register a security camera to share live video feeds with the NYPD during emergencies.",
+   "id": "KA-03645",
+   "title": "Community Camera Sharing Program"
+  },
+  {
+   "description": "Call 911 to report stores or vendors that are selling counterfeit items.",
+   "id": "KA-01414",
+   "title": "Counterfeit Item Sale"
+  },
+  {
+   "description": "Report counterfeit United States currency.",
+   "id": "KA-01168",
+   "title": "Counterfeit Money"
+  },
+  {
+   "description": "Get information about business certificates, divorce court, notary verification, and Supreme Court document maintenance.",
+   "id": "KA-01029",
+   "title": "County Clerk"
+  },
+  {
+   "description": "Take a free class in Cardiopulmonary Resuscitation and Automated External Defibrillator.",
+   "id": "KA-01282",
+   "title": "CPR and AED Training"
+  },
+  {
+   "description": "Report a tip about a crime.",
+   "id": "KA-02668",
+   "title": "Crime Stoppers Tip"
+  },
+  {
+   "description": "Get help for a victim of crime.",
+   "id": "KA-02379",
+   "title": "Crime Victim Support"
+  },
+  {
+   "description": "Call 911 to report criminal mischief, vandalism, or criminal activity that has damaged property.",
+   "id": "KA-01537",
+   "title": "Criminal Mischief"
+  },
+  {
+   "description": "Learn about criminal history searches or request past criminal court and district attorney records.",
+   "id": "KA-02669",
+   "title": "Criminal Record"
+  },
+  {
+   "description": "Learn about how to identify and reduce the spread of violence.",
+   "id": "KA-03328",
+   "title": "Cure Violence Program"
+  },
+  {
+   "description": "Call 911 to report an animal causing a dangerous or hazardous condition.",
+   "id": "KA-01538",
+   "title": "Dangerous Animal"
+  },
+  {
+   "description": "Call 911 to report a situation that might cause danger to life or personal property.",
+   "id": "KA-01033",
+   "title": "Dangerous Location or Situation"
+  },
+  {
+   "description": "Request a workshop on preventing teen and young adult dating violence.",
+   "id": "KA-01539",
+   "title": "Dating Violence Prevention"
+  },
+  {
+   "description": "Investigate a death that took place in New York City.",
+   "id": "KA-01540",
+   "title": "Death Investigation"
+  },
+  {
+   "description": "Report someone using false information to file for a Department of Buildings (DOB) document.",
+   "id": "KA-01177",
+   "title": "Department of Buildings Document Fraud"
+  },
+  {
+   "description": "Report a security problem in a DCAS-managed building.",
+   "id": "KA-02679",
+   "title": "Department of Citywide Administrative Services Building Security Complaint"
+  },
+  {
+   "description": "Report the illegal storage of dirt bikes or all-terrain vehicles (ATV).",
+   "id": "KA-03638",
+   "title": "Dirt Bikes and All-Terrain Vehicle (ATV) Storage Complaint"
+  },
+  {
+   "description": "Report discrimination in employment, housing, public accommodations, and by members of the public.",
+   "id": "KA-01783",
+   "title": "Discrimination"
+  },
+  {
+   "description": "Report a disorderly person or group creating a dangerous condition.",
+   "id": "KA-02215",
+   "title": "Disorderly Person or Group"
+  },
+  {
+   "description": "Report domestic violence or get counseling, support, and shelter for victims.",
+   "id": "KA-01217",
+   "title": "Domestic Violence"
+  },
+  {
+   "description": "Find classes for an abuser court-ordered to get counseling.",
+   "id": "KA-01293",
+   "title": "Domestic Violence Offender Counseling"
+  },
+  {
+   "description": "Report a problem with a domestic violence shelter.",
+   "id": "KA-02692",
+   "title": "Domestic Violence Shelter Complaint"
+  },
+  {
+   "description": "Give money to help the families of police officers and firefighters killed in the line of duty.",
+   "id": "KA-02695",
+   "title": "Donate to Families of Fallen Police Officers and Firefighters"
+  },
+  {
+   "description": "Give money to support the New York Police Department.",
+   "id": "KA-01425",
+   "title": "Donate to the New York Police Department"
+  },
+  {
+   "description": "Report drag racing.",
+   "id": "KA-02046",
+   "title": "Drag Racing"
+  },
+  {
+   "description": "Apply for an Unmanned Aircraft Permit, which is required to operate a drone within New York City. Report unpermitted or reckless drone use.",
+   "id": "KA-01541",
+   "title": "Drones"
+  },
+  {
+   "description": "Call 911 to report the sale of illegal drugs.",
+   "id": "KA-01983",
+   "title": "Drug Sale"
+  },
+  {
+   "description": "Report illegal drug use.",
+   "id": "KA-03112",
+   "title": "Drug Use"
+  },
+  {
+   "description": "Report suspected abuse or neglect of an older adult age 60 or older.",
+   "id": "KA-02089",
+   "title": "Elder Abuse"
+  },
+  {
+   "description": "Learn about EBT scams and how to report stolen benefits or personal information.",
+   "id": "KA-03716",
+   "title": "Electronic Benefit Theft and Scams"
+  },
+  {
+   "description": "Replace Cash Assistance benefits that were electronically-stolen from your EBT card.",
+   "id": "KA-03589",
+   "title": "Electronically Stolen Cash Assistance Benefit Replacement"
+  },
+  {
+   "description": "Report a problem with an elevator or escalator.",
+   "id": "KA-02015",
+   "title": "Elevator or Escalator Complaint"
+  },
+  {
+   "description": "Learn about one-stop center where victims of domestic, intimate partner, and gender-based violence; elder abuse; or sex trafficking can get services.",
+   "id": "KA-02084",
+   "title": "Family Justice Centers"
+  },
+  {
+   "description": "Apply for a permit or request an inspection for a business or high occupancy residential facility.",
+   "id": "KA-01456",
+   "title": "FDNY Permit or Inspection"
+  },
+  {
+   "description": "Learn about violations issued by the Fire Department and how to correct them.",
+   "id": "KA-01961",
+   "title": "FDNY Violation"
+  },
+  {
+   "description": "Find someone in police custody who has not been arraigned.",
+   "id": "KA-01399",
+   "title": "Find an Arrested Person"
+  },
+  {
+   "description": "Get non-criminal fingerprints, which are required for certain permits and licenses.",
+   "id": "KA-02726",
+   "title": "Fingerprinting"
+  },
+  {
+   "description": "Report a problem with a fire alarm box.",
+   "id": "KA-01465",
+   "title": "Fire Alarm Box Complaint"
+  },
+  {
+   "description": "Call 911 to report a fire.",
+   "id": "KA-01543",
+   "title": "Fire Emergency"
+  },
+  {
+   "description": "Report a potential fire hazard.",
+   "id": "KA-01466",
+   "title": "Fire Hazard"
+  },
+  {
+   "description": "Report a fire hydrant that is leaking, running, missing, misused, or damaged (including fender post), or blocked by a vehicle.",
+   "id": "KA-01034",
+   "title": "Fire Hydrant Complaint"
+  },
+  {
+   "description": "Request installation, removal, relocation, spray cap fitting, or fender post installation.",
+   "id": "KA-01035",
+   "title": "Fire Hydrant Request"
+  },
+  {
+   "description": "Learn how to get a fire incident report or fire marshal investigation report.",
+   "id": "KA-01468",
+   "title": "Fire Incident and Investigation Records"
+  },
+  {
+   "description": "Get a fire, ambulance, or enforcement report from the Fire Department.",
+   "id": "KA-02728",
+   "title": "Fire or Ambulance Report"
+  },
+  {
+   "description": "Learn about fire safety from the Fire Department, including fire safety notices. Request a fire safety education speaker.",
+   "id": "KA-03561",
+   "title": "Fire Safety"
+  },
+  {
+   "description": "Find the location of a firehouse.",
+   "id": "KA-01508",
+   "title": "Firehouses"
+  },
+  {
+   "description": "Report the sale, use, storage, or transport of illegal fireworks.",
+   "id": "KA-02249",
+   "title": "Fireworks Complaint"
+  },
+  {
+   "description": "Get a list of legal fireworks displays and their locations.",
+   "id": "KA-01301",
+   "title": "Fireworks Displays"
+  },
+  {
+   "description": "Learn how to apply for a fireworks permit.",
+   "id": "KA-03731",
+   "title": "Fireworks Permit"
+  },
+  {
+   "description": "Learn about how to use floor finishing products safely.",
+   "id": "KA-01476",
+   "title": "Floor Varnish Safety"
+  },
+  {
+   "description": "Call 911 to report illegal gambling.",
+   "id": "KA-01550",
+   "title": "Gambling"
+  },
+  {
+   "description": "Learn about a program designed to help reduce gang activity.",
+   "id": "KA-01551",
+   "title": "Gang Resistance Education and Training (GREAT)"
+  },
+  {
+   "description": "Call 911 to report a gas leak or any gas-related emergency or dangerous condition.",
+   "id": "KA-02048",
+   "title": "Gas Leak"
+  },
+  {
+   "description": "Report graffiti. Learn about what your options are when someone else reports graffiti on your building.",
+   "id": "KA-02070",
+   "title": "Graffiti"
+  },
+  {
+   "description": "Register a trained guard dog or report loss, theft, or transfer of ownership.",
+   "id": "KA-01556",
+   "title": "Guard Dog Registration"
+  },
+  {
+   "description": "Learn about requirements for firearm licenses or permits for people traveling to New York.",
+   "id": "KA-01307",
+   "title": "Gun Laws"
+  },
+  {
+   "description": "Request or renew a firearms permit.",
+   "id": "KA-01683",
+   "title": "Gun Permit"
+  },
+  {
+   "description": "Report the sale or possession of an illegal gun.",
+   "id": "KA-02762",
+   "title": "Gun Tip"
+  },
+  {
+   "description": "Call 911 to report gunfire.",
+   "id": "KA-01557",
+   "title": "Gunshot"
+  },
+  {
+   "description": "Call 911 to report any type of harassment, including sexual harassment, cat calling, and voyeurism.",
+   "id": "KA-01216",
+   "title": "Harassment"
+  },
+  {
+   "description": "Call 911 to report a hate crime.",
+   "id": "KA-01561",
+   "title": "Hate Crime"
+  },
+  {
+   "description": "Learn about hazardous materials and how to dispose them.",
+   "id": "KA-01188",
+   "title": "Hazardous Materials"
+  },
+  {
+   "description": "Report a homeless encampment.",
+   "id": "KA-02253",
+   "title": "Homeless Encampment"
+  },
+  {
+   "description": "Request outreach for a homeless person living on the streets, in the subway, or in other public places.",
+   "id": "KA-01037",
+   "title": "Homeless Outreach Assistance"
+  },
+  {
+   "description": "Report a location that is being used as a hotel, for vacation rentals, or for rentals of fewer than 30 days.",
+   "id": "KA-02317",
+   "title": "Housing Used for Short-Term Rental (Vacation Rentals or Illegal Home-Sharing)"
+  },
+  {
+   "description": "Report the use of a hoverboard, which is a motorized self-balancing scooter.",
+   "id": "KA-02802",
+   "title": "Hoverboard"
+  },
+  {
+   "description": "Report tenant or landlord fraud in the HPD Section 8 program.",
+   "id": "KA-01494",
+   "title": "HPD Section 8 Fraud"
+  },
+  {
+   "description": "Report the recruiting, transporting, selling, or buying of people to exploit them. Get support and social services for victims.",
+   "id": "KA-02806",
+   "title": "Human Trafficking"
+  },
+  {
+   "description": "Report identify theft or get tips for consumers and businesses about preventing it.",
+   "id": "KA-02533",
+   "title": "Identity Theft"
+  },
+  {
+   "description": "Report a person selling or keeping a wild or illegal animal as a pet.",
+   "id": "KA-02255",
+   "title": "Illegal Animal"
+  },
+  {
+   "description": "Call 911 to report an eviction that was not performed by a NYC Marshal or Sheriff.",
+   "id": "KA-02518",
+   "title": "Illegal Eviction or Lockout"
+  },
+  {
+   "description": "Report individuals or businesses that target and exploit immigrants through fraudulent schemes or scams.",
+   "id": "KA-01568",
+   "title": "Immigration Fraud"
+  },
+  {
+   "description": "Report someone impersonating an IRS employee.",
+   "id": "KA-01573",
+   "title": "IRS Impersonation"
+  },
+  {
+   "description": "Report a problem with the New York City jail system, including threats to incarcerated people.",
+   "id": "KA-02384",
+   "title": "Jail System Complaint"
+  },
+  {
+   "description": "Report misconduct by a judge.",
+   "id": "KA-02832",
+   "title": "Judge Complaint"
+  },
+  {
+   "description": "Learn about a program designed to identify at-risk children who have an unusual interest in fire.",
+   "id": "KA-01574",
+   "title": "Juvenile Fire Setters Intervention"
+  },
+  {
+   "description": "Call 911 to report a lewd act done in public or where others are forced to see it.",
+   "id": "KA-01576",
+   "title": "Lewd Act"
+  },
+  {
+   "description": "Learn how to store, charge, and get rid of lithium-ion batteries safely. Report someone not following guidelines or counterfeit batteries.",
+   "id": "KA-03565",
+   "title": "Lithium-Ion Battery Safety and Complaint"
+  },
+  {
+   "description": "Report lost or found property.",
+   "id": "KA-01231",
+   "title": "Lost or Found Property"
+  },
+  {
+   "description": "Call 911 to report the use of marijuana by a minor under the age of 21.",
+   "id": "KA-03379",
+   "title": "Marijuana Use by a Minor"
+  },
+  {
+   "description": "Get free and confidential help to resolve a dispute.",
+   "id": "KA-01016",
+   "title": "Mediation"
+  },
+  {
+   "description": "Call 911 to report any type of medical or health related emergency.",
+   "id": "KA-01581",
+   "title": "Medical Emergency"
+  },
+  {
+   "description": "Report possible Medicare fraud.",
+   "id": "KA-01584",
+   "title": "Medicare Fraud or Abuse"
+  },
+  {
+   "description": "Register to be eligible for the military draft, in case a draft becomes necessary.",
+   "id": "KA-01199",
+   "title": "Military Draft Registration"
+  },
+  {
+   "description": "Call 911 to report someone who may be missing, abducted, or kidnapped. Check if a missing person has been found.",
+   "id": "KA-01046",
+   "title": "Missing Person"
+  },
+  {
+   "description": "Leave the area immediately and then call 911 to report a gas leak. Learn about natural gas detector requirements.",
+   "id": "KA-03673",
+   "title": "Natural Gas Detectors"
+  },
+  {
+   "description": "Learn about the New York Police Department.",
+   "id": "KA-01589",
+   "title": "New York Police Department (NYPD)"
+  },
+  {
+   "description": "Report an alarm in progress or an alarm that goes off too often or for too long.",
+   "id": "KA-01089",
+   "title": "Noise from Alarm"
+  },
+  {
+   "description": "Report noise, including music, coming from a bar, club, or restaurant. Learn how mediation can help quality of life disputes between restaurants, bars,",
+   "id": "KA-01085",
+   "title": "Noise from Bar, Club, or Restaurant"
+  },
+  {
+   "description": "Get a free app to protect you from malicious cyber activity on mobile devices.",
+   "id": "KA-02897",
+   "title": "NYC Secure Mobile App"
+  },
+  {
+   "description": "Report tenant or landlord fraud in public housing or the NYCHA Section 8 program.",
+   "id": "KA-01664",
+   "title": "NYCHA Public Housing Section 8 Fraud"
+  },
+  {
+   "description": "Learn about a citywide effort to resolve persistent quality-of-life concerns through the newly created NYPD Quality of Life Division.",
+   "id": "KA-03672",
+   "title": "NYPD Quality of Life Division"
+  },
+  {
+   "description": "Call 911 to report obscene sexual material displayed at a newsstand or other public location.",
+   "id": "KA-01593",
+   "title": "Offensive Sexual Material"
+  },
+  {
+   "description": "Learn about how to file an Order of Protection to limit the behavior of someone who harms or threatens another person.",
+   "id": "KA-02904",
+   "title": "Order of Protection"
+  },
+  {
+   "description": "Call 911 to report organized crime.",
+   "id": "KA-01595",
+   "title": "Organized Crime"
+  },
+  {
+   "description": "Call 911 to report someone in very bad condition who needs immediate medical help.",
+   "id": "KA-02907",
+   "title": "Overdose"
+  },
+  {
+   "description": "Report panhandling.",
+   "id": "KA-02272",
+   "title": "Panhandling"
+  },
+  {
+   "description": "Give feedback about a pharmacy you visited to get naloxone or general comments about access to naloxone.",
+   "id": "KA-02922",
+   "title": "Pharmacy Without Naloxone"
+  },
+  {
+   "description": "Request to have police sawhorse, cement, or metal barricades set up or removed.",
+   "id": "KA-02925",
+   "title": "Police Barricade Request"
+  },
+  {
+   "description": "Report unnecessary use of force, abuse of authority, discourtesy, or offensive language by a police officer. Report NYPD criminal activity or misconduct.",
+   "id": "KA-02420",
+   "title": "Police Officer Complaint"
+  },
+  {
+   "description": "Learn how to hire a police officer for private work.",
+   "id": "KA-01602",
+   "title": "Police Officer for Private Duty"
+  },
+  {
+   "description": "Call 911 to report someone impersonating a police officer.",
+   "id": "KA-01603",
+   "title": "Police Officer Impersonation"
+  },
+  {
+   "description": "Find a precinct or police service area (PSA) for a specific address. Get precinct and PSA locations and contact information.",
+   "id": "KA-01027",
+   "title": "Police Precincts and PSAs"
+  },
+  {
+   "description": "Get a copy of a police report for a crime or lost property.",
+   "id": "KA-02322",
+   "title": "Police Report"
+  },
+  {
+   "description": "Request a Stop Report or the release of body camera footage by an NYPD police officer.",
+   "id": "KA-02531",
+   "title": "Police Stops"
+  },
+  {
+   "description": "Report deed theft or learn how to prevent it.",
+   "id": "KA-02936",
+   "title": "Property Deed or Record Theft"
+  },
+  {
+   "description": "Call 911 to report prostitution.",
+   "id": "KA-01609",
+   "title": "Prostitution"
+  },
+  {
+   "description": "Learn about public auctions from the City and Police Department.",
+   "id": "KA-02942",
+   "title": "Public Auction"
+  },
+  {
+   "description": "Call 911 to report someone threatening a public official, building, facility, or government employee.",
+   "id": "KA-01613",
+   "title": "Public Official Threat"
+  },
+  {
+   "description": "Report a person defecating or urinating in public.",
+   "id": "KA-01958",
+   "title": "Public Urination or Defecation"
+  },
+  {
+   "description": "Report an animal that may have rabies, dead or alive.",
+   "id": "KA-02349",
+   "title": "Rabid Animal"
+  },
+  {
+   "description": "Report radioactive material that is stored improperly or creating a risk of contamination.",
+   "id": "KA-01943",
+   "title": "Radioactive Materials Complaint"
+  },
+  {
+   "description": "Call 911 to report reckless or dangerous driving in progress.",
+   "id": "KA-01615",
+   "title": "Reckless Driving"
+  },
+  {
+   "description": "Learn about sprinkler and standpipe system testing.",
+   "id": "KA-01617",
+   "title": "Residential Sprinkler System Test"
+  },
+  {
+   "description": "Report a store selling box cutters, etching acid, laser pointers, spray paint, tobacco products or electronic cigarettes to minors.",
+   "id": "KA-01989",
+   "title": "Sale to Minor Complaint"
+  },
+  {
+   "description": "Report a fight or other safety issue at a public school.",
+   "id": "KA-02985",
+   "title": "School Safety Complaint"
+  },
+  {
+   "description": "Get a free and confidential security survey for a home or business.",
+   "id": "KA-02993",
+   "title": "Security Survey"
+  },
+  {
+   "description": "Check if a person is registered as a New York State Sex Offender.",
+   "id": "KA-01500",
+   "title": "Sex Offender Registry"
+  },
+  {
+   "description": "Call 911 to report sexual assault.",
+   "id": "KA-02049",
+   "title": "Sexual Assault"
+  },
+  {
+   "description": "Request social services and emergency assistance for victims of rape, incest, and sexual assault.",
+   "id": "KA-01621",
+   "title": "Sexual Assault Victim Support"
+  },
+  {
+   "description": "Learn how residents can get a smoke detector installed in their home for free.",
+   "id": "KA-03606",
+   "title": "Smoke Alarm Installation"
+  },
+  {
+   "description": "Call 911 to report smoke or fumes.",
+   "id": "KA-02220",
+   "title": "Smoke or Fumes"
+  },
+  {
+   "description": "Report a problem with an obstructed or locked exit, overcrowding, lack of exits, or lack of alarms or sprinklers.",
+   "id": "KA-01624",
+   "title": "Social Club Safety Complaint"
+  },
+  {
+   "description": "Report Social Security fraud.",
+   "id": "KA-01626",
+   "title": "Social Security Fraud"
+  },
+  {
+   "description": "Report someone requesting money for unwanted car window washing.",
+   "id": "KA-02062",
+   "title": "Squeegee Complaint"
+  },
+  {
+   "description": "Call 911 to report stolen property.",
+   "id": "KA-01219",
+   "title": "Stolen Property"
+  },
+  {
+   "description": "Call 911 to report a stolen vehicle. You must be the owner of the vehicle to report it as stolen.",
+   "id": "KA-01632",
+   "title": "Stolen Vehicle"
+  },
+  {
+   "description": "Learn about anti-sexual harassment training in the workplace.",
+   "id": "KA-03020",
+   "title": "Stop Sexual Harassment Act (SSHA)"
+  },
+  {
+   "description": "Report a street con game, such as three card Monte.",
+   "id": "KA-02060",
+   "title": "Street Con Game"
+  },
+  {
+   "description": "Call 911 to report that someone is considering suicide or endangering themselves.",
+   "id": "KA-01635",
+   "title": "Suicide"
+  },
+  {
+   "description": "Call 911 to report a suspicious looking package.",
+   "id": "KA-01636",
+   "title": "Suspicious Package"
+  },
+  {
+   "description": "Call 911 to report a suspicious looking vehicle.",
+   "id": "KA-01637",
+   "title": "Suspicious Vehicle"
+  },
+  {
+   "description": "Report tax evasion or fraud involving sales, payroll, cigarette, or personal income sales tax.",
+   "id": "KA-01676",
+   "title": "Tax Fraud"
+  },
+  {
+   "description": "Report telemarketing fraud.",
+   "id": "KA-01641",
+   "title": "Telemarketing Fraud"
+  },
+  {
+   "description": "Report suspected terrorist activity.",
+   "id": "KA-01642",
+   "title": "Terrorism"
+  },
+  {
+   "description": "Call 911 to report someone using a service without paying for it.",
+   "id": "KA-01643",
+   "title": "Theft of Service"
+  },
+  {
+   "description": "Report an illegal ticket sale.",
+   "id": "KA-02304",
+   "title": "Ticket Scalping"
+  },
+  {
+   "description": "Report a business that sells toy or fake guns that are not brightly colored.",
+   "id": "KA-02214",
+   "title": "Toy Gun Sale"
+  },
+  {
+   "description": "Learn how to clean up a trauma scene.",
+   "id": "KA-01648",
+   "title": "Trauma Scene Cleanup"
+  },
+  {
+   "description": "Report trespassing, which is entering someone's property without permission.",
+   "id": "KA-02308",
+   "title": "Trespassing"
+  },
+  {
+   "description": "Reports of undocumented immigrants are outside the scope of New York City government.",
+   "id": "KA-01387",
+   "title": "Undocumented Immigrant New Yorkers"
+  },
+  {
+   "description": "Report unsafe storage of flammable or explosive material at a construction site or in a building.",
+   "id": "KA-01905",
+   "title": "Unsafe Construction Material Storage"
+  },
+  {
+   "description": "Report a dangerous condition at a highway construction site.",
+   "id": "KA-01952",
+   "title": "Unsafe Highway Construction"
+  },
+  {
+   "description": "Report a new building under construction that is unsafe.",
+   "id": "KA-01906",
+   "title": "Unsafe New Building Structure"
+  },
+  {
+   "description": "Learn about or report the sale of pesticides or other unsafe products.",
+   "id": "KA-03068",
+   "title": "Unsafe Product"
+  },
+  {
+   "description": "Report a building that is shaking, vibrating, leaning, unstable, or has a defective or cracked building exterior facade.",
+   "id": "KA-01918",
+   "title": "Unstable Building"
+  },
+  {
+   "description": "Report vandalism taking place in a park.",
+   "id": "KA-01019",
+   "title": "Vandalism in a Park"
+  },
+  {
+   "description": "Report a car accident.",
+   "id": "KA-01220",
+   "title": "Vehicle Accident"
+  },
+  {
+   "description": "Learn about VIN etching at local police precincts.",
+   "id": "KA-03081",
+   "title": "VIN Etching"
+  },
+  {
+   "description": "Learn about criminal history checks for volunteer fire department applicants.",
+   "id": "KA-01207",
+   "title": "Volunteer Firefighter Background Check"
+  },
+  {
+   "description": "Check that someone claiming to be a water meter inspector works for the Department of Environmental Protection (DEP).",
+   "id": "KA-01774",
+   "title": "Water Meter Inspector Check"
+  },
+  {
+   "description": "Call 911 to request a wellness check for someone you haven't been able to contact.",
+   "id": "KA-03357",
+   "title": "Wellness Check"
+  },
+  {
+   "description": "Report workers' compensation fraud.",
+   "id": "KA-01780",
+   "title": "Workers' Compensation Fraud"
+  },
+  {
+   "description": "Learn about programs and policies to address disparities that impact boys and men of color.",
+   "id": "KA-03103",
+   "title": "Young Men's Initiative"
+  }
+ ]
+}

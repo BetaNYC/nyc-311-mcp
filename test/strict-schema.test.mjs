@@ -4,6 +4,8 @@ import { TOOLS, callTool } from "../dist/tools.js";
 import { setBoardStatData } from "../dist/district-tools.js";
 import { fixtureData } from "./district-fixture.mjs";
 import { SodaClient, setSodaClient } from "../dist/soda.js";
+import { setContentClient } from "../dist/content-311.js";
+import { fixtureContent } from "./content-fixture.mjs";
 
 // These tests never touch the live 311 API. A key is set so getApiKey() does not
 // short-circuit, and fetch is stubbed so anything that escapes argument
@@ -69,7 +71,12 @@ setSodaClient(
   })
 );
 
+// how_to_report and list_311_categories read the recorded 311 content, never api.nyc.gov.
+setContentClient((await fixtureContent()).client);
+
 const VALID_ARGS = {
+  how_to_report: { description: "a pothole on my block" },
+  list_311_categories: { category_id: "311-12" },
   find_district: { address: "350 5th Ave" },
   district_summary: { community_district: 484 },
   top_problems: { council_district: 1, last_days: 30 },

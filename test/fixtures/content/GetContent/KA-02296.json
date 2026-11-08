@@ -1,0 +1,53 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02296",
+   "Title": "Snow or Ice on Street or Highway",
+   "Description": "Report an icy or snowy roadway and learn about snow clearing operations.",
+   "Section": [
+    {
+     "Name": "Snow or Ice on Street or Highway Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><p>Report snow or ice on:</p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01079\">Bridges</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03706\">Buildings or construction sites</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01080\">Pedestrian bridges</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01397\">Sidewalks</a></li></ul></div><ul></ul><p>The Department of Sanitation (DSNY) starts plowing city streets and highways after 2 inches of snow have fallen. They also spread salt to keep roads from freezing.</p><p>You can use the&nbsp;<a class=\"externallink\" target=\"_blank\" href=\"https://plownyc.cityofnewyork.us/plownyc/\">PlowNYC</a>&nbsp;website&nbsp;to track the progress of DSNY&rsquo;s snow removal and see if a plow has visited a street yet.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dsny/what-we-do/snow-response.page\">Learn about DSNY snow operations.</a></p><p><strong>What You Can Report</strong></p><p>You can report snow or ice after 2 inches or more have fallen.</p><p>At all other times, you can only report an ice patch caused by a non-storm condition, such as a water leak.</p><p><strong>What You Cannot Report</strong></p><ul><li>Snowy or icy alleys, private streets, or private parking lots</li><li>Snow blocking access to vehicles, sidewalks, or driveways, even if it was caused by plowing</li></ul><p>Right now, DSNY is only taking reports about ice patches on the road caused by a non-storm condition.</p><p>&nbsp;</p>",
+     "ContentAction": [
+      {
+       "Name": "Ice Patch on Roadway",
+       "Agency": "Department of Sanitation",
+       "Problem": "Snow or Ice",
+       "ProblemDetail": "Roadway"
+      }
+     ]
+    },
+    {
+     "Name": "Bike Lanes",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from bike lanes once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every bike lane will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Bus Stops",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from streets in front of bus stops once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every bus stop will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Crosswalks",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from crosswalks along major commercial streets and at critical locations once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>Please note that clearing pedestrian ramps (curb cuts) that provide access from a sidewalk to a crosswalk are the property owner&rsquo;s responsibility. Learn more and report a property owner that didn&rsquo;t clear a path to the crosswalk for pedestrians on the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01397\">Snow or Ice on Sidewalk</a> page.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every crosswalk will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Overpasses and Underpasses",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from pedestrian overpasses and underpasses once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every overpass or underpass&nbsp;will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Pedestrian Medians",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from medians once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every median will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Snow Clearing Operations",
+     "Content": "<p><strong>Preparing for the Storm </strong></p><p>As a normal part of snow preparation, Department of Sanitation (DSNY) conducts snow drills during the year. Before a snow event, DSNY vehicles may be placed in strategic locations. Complaints are not accepted for these vehicles being parked before the start of a snow event or during snow drills.</p><p><strong>Plowing and Spreading </strong></p><p>During a snow operation, DSNY uses salt spreaders or plows to treat icy or snowy conditions on streets and highways. The equipment used depends on the location and condition of the roadway.</p><p>Snow is plowed to the right side of the street because the same trucks must plow both one-way and two-way streets. Once the plows are mounted on trucks they can&rsquo;t be shifted from one direction to the other.</p><p>While piling and hauling snow on a roadway, the vehicles may need to block traffic temporarily.&nbsp;</p><p>DSNY doesn&rsquo;t clear:</p><ul><li>Cars, sidewalks, or driveways, even if the obstruction was caused by a City plow</li><li>Alleys, parking lots (with the exception of <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02380\">City-owned lots</a>), and private streets</li></ul><p><strong>Scattering and Breaking Piles </strong></p><p>When temperatures are above freezing and expected to stay above freezing for a period of time, DSNY workers may shovel snow into the street to break down piles of snow to encourage melting. Sanitation equipment is used to break the snow down further so it is not a driving hazard.</p><p>Property owners may not shovel snow into the street. If a Sanitation supervisor witnesses snow being shoveled into the street, you may receive a summons.</p><p><strong>Shoveling Pedestrian Features </strong></p><p>About 72 hours after streets have been cleared, temporary snow laborers help clear&nbsp;streets next to bus stops, and pedestrian features, such as crosswalks. This effort takes time because it requires manual labor. There is no guarantee that every pedestrian feature will be cleared.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

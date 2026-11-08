@@ -1,0 +1,109 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn about Alternate Side Parking (ASP) suspensions, rules, and change requests.",
+   "id": "KA-01011",
+   "title": "Alternate Side Parking and Street Cleaning"
+  },
+  {
+   "description": "Learn about the CleaNYC program for major commercial areas.",
+   "id": "KA-03003",
+   "title": "CleaNYC Sidewalk Cleaning"
+  },
+  {
+   "description": "Get supplies and tools for neighborhood cleanup projects.",
+   "id": "KA-03187",
+   "title": "Community Cleanup Tool Loan Program"
+  },
+  {
+   "description": "Request for a Department of Sanitation speaker or participation in an event.",
+   "id": "KA-01287",
+   "title": "Department of Sanitation Public Outreach"
+  },
+  {
+   "description": "Report an accident or property damage involving a garbage truck, snow plow, or other City sanitation vehicle.",
+   "id": "KA-01186",
+   "title": "Department of Sanitation Vehicle Accident"
+  },
+  {
+   "description": "Report a problem with a Department of Sanitation employee's behavior or operation of a Sanitation vehicle.",
+   "id": "KA-02363",
+   "title": "Department of Sanitation Worker or Vehicle Complaint"
+  },
+  {
+   "description": "Report a gutter, including 18 inches into the street, that is not clean.",
+   "id": "KA-02141",
+   "title": "Dirty Gutter"
+  },
+  {
+   "description": "Report a sidewalk or gutter, including 18 inches into the street, that is not clean.",
+   "id": "KA-01803",
+   "title": "Dirty Sidewalk"
+  },
+  {
+   "description": "Report an unclean or untidy yard, alley, or court that is visible from the street.",
+   "id": "KA-02133",
+   "title": "Dirty Yard or Alley"
+  },
+  {
+   "description": "Report an illegally-placed donation collection bin.",
+   "id": "KA-02466",
+   "title": "Donation Collection Bin Complaint"
+  },
+  {
+   "description": "Report grease, gasoline, cement, oil, sewage, chemicals, or other liquids being dumped into a street sewer grate or catch basin.",
+   "id": "KA-02202",
+   "title": "Dumping in Catch Basin"
+  },
+  {
+   "description": "Report a dumpster that is blocking a sidewalk or street, overflowing, or uncovered.",
+   "id": "KA-02139",
+   "title": "Dumpster Complaint"
+  },
+  {
+   "description": "Report waste leaking or spilling from a garbage truck or trash that spilled onto the ground while being loaded into a truck.",
+   "id": "KA-02335",
+   "title": "Garbage Truck Spill"
+  },
+  {
+   "description": "Report past or chronic dumping on public property.",
+   "id": "KA-02097",
+   "title": "Illegal Dumping"
+  },
+  {
+   "description": "Report a public trash can that is missing, overflowing, or being misused. Suggest a location for a new or replacement public litter basket.",
+   "id": "KA-02143",
+   "title": "Litter Basket Complaint or Request"
+  },
+  {
+   "description": "Report litter, debris, or garbage alongside or on the roadway of a highway.",
+   "id": "KA-01672",
+   "title": "Litter on Highway"
+  },
+  {
+   "description": "Report a location that is the target of chronic littering.",
+   "id": "KA-01673",
+   "title": "Littering"
+  },
+  {
+   "description": "Report an overflowing or misused public recycling bin.",
+   "id": "KA-02483",
+   "title": "Public Recycling Bin Complaint"
+  },
+  {
+   "description": "The City no longer accepts requests for No Dumping, Clean Up After Dog, and No Littering signs.",
+   "id": "KA-01288",
+   "title": "Sanitation Sign Request"
+  },
+  {
+   "description": "Learn about sidewalk cleaning rules and enforcement for property owners.",
+   "id": "KA-02443",
+   "title": "Sidewalk Cleaning"
+  },
+  {
+   "description": "Report a stray trash bag or loose debris in the driving or biking lane of a City street.",
+   "id": "KA-02356",
+   "title": "Trash or Debris in Street"
+  }
+ ]
+}

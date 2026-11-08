@@ -8,6 +8,7 @@ import {
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
 import { describeServiceRequest, describeServiceRequestList, NOT_FOUND_HINT } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
+import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -86,6 +87,8 @@ export const TOOLS = [
   ...DISTRICT_TOOLS,
   // The three Local Law 47 of 2005 reports (Charter § 1075), rebuilt from open data (#15).
   ...LL47_TOOLS,
+  // Help reporting a problem: which 311 article, agency and problem type fit (#17).
+  ...REPORT_TOOLS,
 ];
 
 const ARG_SHAPES = {
@@ -99,6 +102,7 @@ const ARG_SHAPES = {
   get_service_request_list: { sr_numbers: z.array(z.string()) },
   ...DISTRICT_ARG_SHAPES,
   ...LL47_ARG_SHAPES,
+  ...REPORT_ARG_SHAPES,
 };
 
 /**
@@ -163,6 +167,11 @@ export async function callTool(name: string, args: unknown) {
       }
 
       default:
+        if (name in REPORT_ARG_SHAPES) {
+          const parsed = parseToolArgs(name as ReportToolName, args) as Record<string, unknown>;
+          const result = await runReportTool(name as ReportToolName, parsed);
+          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+        }
         if (name in LL47_ARG_SHAPES) {
           const parsed = parseToolArgs(name as Ll47ToolName, args) as Record<string, unknown>;
           const result = await runLl47Tool(name as Ll47ToolName, parsed);

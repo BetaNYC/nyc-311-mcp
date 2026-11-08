@@ -1,0 +1,104 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn about the new enforcement program for overweight trucks traveling on the Brooklyn-Queens Expressway (BQE).",
+   "id": "KA-03594",
+   "title": "BQE Vehicle Weigh-In-Motion (WIM) Program"
+  },
+  {
+   "description": "Get information about bridges, request bridge maintenance or report a bridge condition.",
+   "id": "KA-01079",
+   "title": "Bridges"
+  },
+  {
+   "description": "Learn about Manhattan's largest park.",
+   "id": "KA-02612",
+   "title": "Central Park"
+  },
+  {
+   "description": "Learn about the congestion pricing program.",
+   "id": "KA-03612",
+   "title": "Congestion Pricing Program"
+  },
+  {
+   "description": "Request a translation of DOT forms, guides, and other literature in a language not currently available.",
+   "id": "KA-03127",
+   "title": "Department of Transportation Document Translation"
+  },
+  {
+   "description": "Learn about E-Zpass, which allows drivers to prepay tolls and get discounts, or paying Tolls by Mail.",
+   "id": "KA-01450",
+   "title": "E-ZPass"
+  },
+  {
+   "description": "Find out when heavy traffic is expected in Manhattan.",
+   "id": "KA-02759",
+   "title": "Gridlock Alert Days"
+  },
+  {
+   "description": "Learn about traffic lanes designated for buses and passenger vehicles with multiple people.",
+   "id": "KA-02801",
+   "title": "HOV Lanes"
+  },
+  {
+   "description": "Learn about the program that encourages delivery of goods in specific neighborhoods between 7 PM and 6 AM.",
+   "id": "KA-03180",
+   "title": "Off-Hour Delivery Program"
+  },
+  {
+   "description": "Learn about the flagship park of Brooklyn.",
+   "id": "KA-02940",
+   "title": "Prospect Park"
+  },
+  {
+   "description": "Request a Right Turn on Red sign at a specific intersection in Staten Island.",
+   "id": "KA-01354",
+   "title": "Right Turn on Red in Staten Island"
+  },
+  {
+   "description": "Learn about City and highway speed limits.",
+   "id": "KA-01368",
+   "title": "Speed Limits"
+  },
+  {
+   "description": "Request to change the direction of traffic on a street.",
+   "id": "KA-01371",
+   "title": "Street Traffic Flow Change"
+  },
+  {
+   "description": "Learn about street, highway, bridge, and tunnel closures.",
+   "id": "KA-01081",
+   "title": "Street, Highway, Bridge, and Tunnel Closures"
+  },
+  {
+   "description": "Learn about traffic and travel conditions in the NY metro area. Report a non-emergency traffic condition, such as congestion or chronic speeding.",
+   "id": "KA-02305",
+   "title": "Traffic Condition"
+  },
+  {
+   "description": "Get a copy of New York City's traffic rules.",
+   "id": "KA-03062",
+   "title": "Traffic Rules"
+  },
+  {
+   "description": "Learn about or report traffic patterns or trends.",
+   "id": "KA-01384",
+   "title": "Traffic Trends"
+  },
+  {
+   "description": "Report a truck on a roadway where truck traffic is not allowed.",
+   "id": "KA-01957",
+   "title": "Truck Route Complaint"
+  },
+  {
+   "description": "Learn about truck routes and regulations from NYC Department of Transportation Traffic Rules.",
+   "id": "KA-03065",
+   "title": "Truck Traffic Rules and Routes"
+  },
+  {
+   "description": "Get information or make a complaint about a tunnel.",
+   "id": "KA-01230",
+   "title": "Tunnels"
+  }
+ ]
+}

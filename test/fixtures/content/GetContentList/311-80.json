@@ -1,0 +1,594 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Get information or make a complaint about automatic public toilets.",
+   "id": "KA-02226",
+   "title": "Automatic Public Toilets"
+  },
+  {
+   "description": "Report a bike rack issue or a usable abandoned bike chained to a bike rack. Learn how to retrieve a bike that has been removed from a city-owned bike rack.",
+   "id": "KA-01072",
+   "title": "Bike Rack Complaint"
+  },
+  {
+   "description": "Request that the City install a bike rack on a sidewalk or other public property.",
+   "id": "KA-02576",
+   "title": "Bike Rack Request"
+  },
+  {
+   "description": "Report a problem caused by people biking, riding motorized scooters, rollerblading, skating, or using or storing ATVs.",
+   "id": "KA-02232",
+   "title": "Biking, Rollerblading, or Skating Complaint"
+  },
+  {
+   "description": "Report a vehicle that is blocking your driveway.",
+   "id": "KA-01062",
+   "title": "Blocked Driveway"
+  },
+  {
+   "description": "Report a sidewalk or street blocked by an object or activity.",
+   "id": "KA-01980",
+   "title": "Blocked Sidewalk or Street"
+  },
+  {
+   "description": "Report a sidewalk condition that may cause a trip hazard. Learn about how to maintain or repair the sidewalk next to your property.",
+   "id": "KA-02235",
+   "title": "Broken Sidewalk"
+  },
+  {
+   "description": "Report building construction work in progress that is unsafe, done without a permit, after hours, or outside approved plans.",
+   "id": "KA-01797",
+   "title": "Building Construction Complaint"
+  },
+  {
+   "description": "Request a new bus stop or relocation of an existing bus stop.",
+   "id": "KA-01265",
+   "title": "Bus Stop Request"
+  },
+  {
+   "description": "Request a new bus stop shelter or report an existing bus stop shelter that needs maintenance or repair.",
+   "id": "KA-01071",
+   "title": "Bus Stop Shelters"
+  },
+  {
+   "description": "Learn about legislation regarding the use of cannabis (marijuana) for adults in New York State.",
+   "id": "KA-03375",
+   "title": "Cannabis Legalization"
+  },
+  {
+   "description": "Call 911 to report the sale of cannabis (marijuana) at an outside location.",
+   "id": "KA-03378",
+   "title": "Cannabis Sale Outside"
+  },
+  {
+   "description": "Report a street sewer catch basin that needs cleaning or has a defect, including missing curb piece or cover. Report a lost personal item in a catch basin.",
+   "id": "KA-01084",
+   "title": "Catch Basin Complaint"
+  },
+  {
+   "description": "The City no longer accepts requests for catch basin installation.",
+   "id": "KA-02611",
+   "title": "Catch Basin Installation"
+  },
+  {
+   "description": "Report a smell coming from a catch basin or sewer.",
+   "id": "KA-02315",
+   "title": "Catch Basin or Sewer Odor"
+  },
+  {
+   "description": "Report an unusable (derelict) chained bike or a bike chained to a tree on the street or in a park.",
+   "id": "KA-02218",
+   "title": "Chained Bike"
+  },
+  {
+   "description": "Report chemical odors or chemicals that are abandoned or not stored safely.",
+   "id": "KA-01982",
+   "title": "Chemical Complaint"
+  },
+  {
+   "description": "Report a spill of chemicals or other hazardous material onto a roadway, sidewalk, or indoors.",
+   "id": "KA-02239",
+   "title": "Chemical Spill"
+  },
+  {
+   "description": "Learn about hearings for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-02019",
+   "title": "City-Issued Summons Hearing"
+  },
+  {
+   "description": "Pay a summons for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-03622",
+   "title": "City-Issued Summons Payment"
+  },
+  {
+   "description": "Pay New York City bills and fees online.",
+   "id": "KA-02520",
+   "title": "CityPay"
+  },
+  {
+   "description": "Learn about the CleaNYC program for major commercial areas.",
+   "id": "KA-03003",
+   "title": "CleaNYC Sidewalk Cleaning"
+  },
+  {
+   "description": "Submit questions about Con Edison worksites.",
+   "id": "KA-01695",
+   "title": "Con Edison Worksites"
+  },
+  {
+   "description": "Request a new crosswalk on a street.",
+   "id": "KA-01283",
+   "title": "Crosswalk Request"
+  },
+  {
+   "description": "Apply for a permit to create or modify a curb cut.",
+   "id": "KA-02117",
+   "title": "Curb Cut Permit"
+  },
+  {
+   "description": "Report a curb that is damaged, painted, or illegally cut for a driveway.",
+   "id": "KA-01083",
+   "title": "Curb or Driveway Complaint"
+  },
+  {
+   "description": "Report a dead animal in a public place, including sidewalks, highways, and parks.",
+   "id": "KA-02245",
+   "title": "Dead Animal on Public Property"
+  },
+  {
+   "description": "Request the removal of a standing dead or dying tree.",
+   "id": "KA-02006",
+   "title": "Dead Tree"
+  },
+  {
+   "description": "Report a sidewalk or gutter, including 18 inches into the street, that is not clean.",
+   "id": "KA-01803",
+   "title": "Dirty Sidewalk"
+  },
+  {
+   "description": "Report dog or animal waste in a park or on a street, sidewalk, or private property.",
+   "id": "KA-02247",
+   "title": "Dog or Animal Waste"
+  },
+  {
+   "description": "Call 911 to report the sale of illegal drugs.",
+   "id": "KA-01983",
+   "title": "Drug Sale"
+  },
+  {
+   "description": "Report illegal drug use.",
+   "id": "KA-03112",
+   "title": "Drug Use"
+  },
+  {
+   "description": "Report a smell directly outside a dry cleaning business or coming into a nearby residential building or business.",
+   "id": "KA-02201",
+   "title": "Dry Cleaning Odor"
+  },
+  {
+   "description": "Report grease, gasoline, cement, oil, sewage, chemicals, or other liquids being dumped into a street sewer grate or catch basin.",
+   "id": "KA-02202",
+   "title": "Dumping in Catch Basin"
+  },
+  {
+   "description": "Get information, report a problem, or suggest a location for a sign with real-time bus arrival information.",
+   "id": "KA-03486",
+   "title": "Electronic Bus Arrival Sign"
+  },
+  {
+   "description": "Request the removal of a fallen tree or branch, cracked branches in danger of falling, or a tree in poor condition.",
+   "id": "KA-02138",
+   "title": "Fallen Tree or Branch"
+  },
+  {
+   "description": "Report noise or other problems with a film or television production.",
+   "id": "KA-01461",
+   "title": "Film or Television Production Complaint"
+  },
+  {
+   "description": "Apply for a new film, video, or photography permit, or check the status of an existing permit.",
+   "id": "KA-02073",
+   "title": "Film, Video, or Photography Permit"
+  },
+  {
+   "description": "Report a problem with a fire alarm box.",
+   "id": "KA-01465",
+   "title": "Fire Alarm Box Complaint"
+  },
+  {
+   "description": "Learn about permit required to open or use a hydrant.",
+   "id": "KA-01507",
+   "title": "Fire Hydrant Commercial Use Permit"
+  },
+  {
+   "description": "Report a fire hydrant that is leaking, running, missing, misused, or damaged (including fender post), or blocked by a vehicle.",
+   "id": "KA-01034",
+   "title": "Fire Hydrant Complaint"
+  },
+  {
+   "description": "Request a fire hydrant flow test.",
+   "id": "KA-01467",
+   "title": "Fire Hydrant Flow Test"
+  },
+  {
+   "description": "Request installation, removal, relocation, spray cap fitting, or fender post installation.",
+   "id": "KA-01035",
+   "title": "Fire Hydrant Request"
+  },
+  {
+   "description": "Report graffiti. Learn about what your options are when someone else reports graffiti on your building.",
+   "id": "KA-02070",
+   "title": "Graffiti"
+  },
+  {
+   "description": "Learn about the Greenstreets program.",
+   "id": "KA-01554",
+   "title": "Greenstreets Program"
+  },
+  {
+   "description": "Report past or chronic dumping on public property.",
+   "id": "KA-02097",
+   "title": "Illegal Dumping"
+  },
+  {
+   "description": "Learn about LinkNYC or report a problem with a LinkNYC kiosk.",
+   "id": "KA-02260",
+   "title": "LinkNYC"
+  },
+  {
+   "description": "Report a location that is the target of chronic littering.",
+   "id": "KA-01673",
+   "title": "Littering"
+  },
+  {
+   "description": "Learn about a pilot program that allows New Yorkers to receive and send packages using secure lockers on public sidewalks.",
+   "id": "KA-03633",
+   "title": "LockerNYC Pilot"
+  },
+  {
+   "description": "Report loose syringes or needles on public property.",
+   "id": "KA-02475",
+   "title": "Loose Syringes"
+  },
+  {
+   "description": "The City does not retrieve items that have fallen into sidewalk gratings.",
+   "id": "KA-01232",
+   "title": "Lost Item in Sidewalk Grating"
+  },
+  {
+   "description": "Call 911 to report the use of marijuana by a minor under the age of 21.",
+   "id": "KA-03379",
+   "title": "Marijuana Use by a Minor"
+  },
+  {
+   "description": "Apply for a permit to perform in subways, streets, parks, and ferry terminals.",
+   "id": "KA-02069",
+   "title": "Musician or Performer Permit"
+  },
+  {
+   "description": "Learn about Neighborhood Area Maps, also known as WalkNYC signs. Report a problem with a local neighborhood area map sign.",
+   "id": "KA-01953",
+   "title": "Neighborhood Area Maps"
+  },
+  {
+   "description": "Report a problem with a newsrack.",
+   "id": "KA-02266",
+   "title": "Newspaper Box Complaint"
+  },
+  {
+   "description": "Report noise from the street or sidewalk.",
+   "id": "KA-01092",
+   "title": "Noise from Street or Sidewalk"
+  },
+  {
+   "description": "Learn about how to volunteer to work on protecting, restoring and expanding New York City's green spaces.",
+   "id": "KA-02217",
+   "title": "NYC Parks Stewardship Program"
+  },
+  {
+   "description": "Report an automotive, heating, or industrial oil spill on a street or in a facility, apartment building, or private home.",
+   "id": "KA-02270",
+   "title": "Oil Spill"
+  },
+  {
+   "description": "Report a problem with an outdoor dining structure or a restaurant or bar offering outdoor dining without authorization.",
+   "id": "KA-03321",
+   "title": "Outdoor Dining Complaint"
+  },
+  {
+   "description": "Learn about the permanent outdoor dining program that allows restaurants to add outdoor seating to sidewalks and streets.",
+   "id": "KA-03604",
+   "title": "Outdoor Dining Information and Application"
+  },
+  {
+   "description": "Report overgrown grass or weeds on public property.",
+   "id": "KA-02271",
+   "title": "Overgrown Grass or Weeds"
+  },
+  {
+   "description": "Report panhandling.",
+   "id": "KA-02272",
+   "title": "Panhandling"
+  },
+  {
+   "description": "Report a pay phone that is broken, damaged, dirty, or has graffiti.",
+   "id": "KA-01054",
+   "title": "Pay Phone Complaint"
+  },
+  {
+   "description": "Report a damaged pedestrian ramp.",
+   "id": "KA-02276",
+   "title": "Pedestrian Ramp Complaint"
+  },
+  {
+   "description": "Request the installation of a new pedestrian ramp.",
+   "id": "KA-02277",
+   "title": "Pedestrian Ramp Request"
+  },
+  {
+   "description": "Report a problem with an existing pedestrian (Walk/Don't Walk) signal. Request a new Accessible Pedestrian Signal.",
+   "id": "KA-01047",
+   "title": "Pedestrian Signal Complaint or Request"
+  },
+  {
+   "description": "Report signs, stickers, or decals posted on public property.",
+   "id": "KA-02140",
+   "title": "Poster or Sticker Complaint"
+  },
+  {
+   "description": "Report a person defecating or urinating in public.",
+   "id": "KA-01958",
+   "title": "Public Urination or Defecation"
+  },
+  {
+   "description": "Learn about rain gardens that manage stormwater runoff from streets and sidewalks. Report a drainage or maintenance issue with a Rain Garden.",
+   "id": "KA-02948",
+   "title": "Rain Garden"
+  },
+  {
+   "description": "Report rats, mice, and conditions that might attract them.",
+   "id": "KA-01107",
+   "title": "Rat or Mouse Complaint"
+  },
+  {
+   "description": "Get permission to install and maintain a structure affecting the street or sidewalk, such as a stoop, cellar door, large planter, or accessibility lift.",
+   "id": "KA-02957",
+   "title": "Revocable Consent Application"
+  },
+  {
+   "description": "Report a problem with a pipe scaffold, suspended or hanging scaffold, or sidewalk shed.",
+   "id": "KA-02291",
+   "title": "Scaffold or Sidewalk Shed Complaint"
+  },
+  {
+   "description": "Apply for a permit to construct pipe scaffolding.",
+   "id": "KA-02094",
+   "title": "Scaffolding Permit"
+  },
+  {
+   "description": "Find free, sheltered bike parking.",
+   "id": "KA-02355",
+   "title": "Sheltered Bike Parking"
+  },
+  {
+   "description": "Request permission to install a cellar door in a sidewalk.",
+   "id": "KA-01954",
+   "title": "Sidewalk Cellar Door Application"
+  },
+  {
+   "description": "Report sidewalk cellar door that is open and unprotected, damaged, bent, broken, or wobbly.",
+   "id": "KA-02292",
+   "title": "Sidewalk Cellar Door Complaint"
+  },
+  {
+   "description": "Learn about sidewalk cleaning rules and enforcement for property owners.",
+   "id": "KA-02443",
+   "title": "Sidewalk Cleaning"
+  },
+  {
+   "description": "Report a sidewalk that collapsed, caved in, or fallen into a hole.",
+   "id": "KA-01955",
+   "title": "Sidewalk Collapsed"
+  },
+  {
+   "description": "Apply for a permit to repair, install, or replace a sidewalk.",
+   "id": "KA-01786",
+   "title": "Sidewalk Construction Permit"
+  },
+  {
+   "description": "Report a missing or defective metal sidewalk grating.",
+   "id": "KA-02293",
+   "title": "Sidewalk Grating Complaint"
+  },
+  {
+   "description": "Learn about installing a new sidewalk in locations where sidewalks have never been built.",
+   "id": "KA-01364",
+   "title": "Sidewalk Installation"
+  },
+  {
+   "description": "Request an agreement to pay in installments for sidewalk repairs made by the Department of Transportation.",
+   "id": "KA-01671",
+   "title": "Sidewalk Repair Payment Plan"
+  },
+  {
+   "description": "Report a problem with a sidewalk that the City repaired.",
+   "id": "KA-03004",
+   "title": "Sidewalk Repair Protest"
+  },
+  {
+   "description": "Find sidewalk seating locations. Report a city-owned bench or leaning bar needing repair. Request a new bench or leaning bar location.",
+   "id": "KA-02572",
+   "title": "Sidewalk Seating"
+  },
+  {
+   "description": "Apply for a permit to construct a sidewalk shed.",
+   "id": "KA-02095",
+   "title": "Sidewalk Shed Permit"
+  },
+  {
+   "description": "Report a problem on a sidewalk stairway that connects two different street levels.",
+   "id": "KA-02294",
+   "title": "Sidewalk Staircase Complaint"
+  },
+  {
+   "description": "Report a damaged, sunken, or noisy utility access cover on a sidewalk.",
+   "id": "KA-01956",
+   "title": "Sidewalk Utility Hardware Complaint"
+  },
+  {
+   "description": "The City does not accept reports of missing or damaged sidewalk valve covers.",
+   "id": "KA-01365",
+   "title": "Sidewalk Valve Cover Complaint"
+  },
+  {
+   "description": "Learn how property owners can resolve a sidewalk violation, request an inspection, or learn about repairs.",
+   "id": "KA-01506",
+   "title": "Sidewalk Violation and Repair"
+  },
+  {
+   "description": "Report someone washing a sidewalk outside of permitted hours.",
+   "id": "KA-01937",
+   "title": "Sidewalk Washing Complaint"
+  },
+  {
+   "description": "Report snow or ice on a sidewalk. Learn about snow shoveling rules for property owners.",
+   "id": "KA-01397",
+   "title": "Snow or Ice on Sidewalk"
+  },
+  {
+   "description": "Learn about resources and tools for community-based organizations interested in recruiting volunteers to assist their neighbors with snow removal.",
+   "id": "KA-01781",
+   "title": "Snow Removal Resources for Community Organizations"
+  },
+  {
+   "description": "Learn about the Spotted Lanternfly (SLF) and report signs of SLF infestation.",
+   "id": "KA-03449",
+   "title": "Spotted Lanternfly"
+  },
+  {
+   "description": "Get the status of an active street construction or sidewalk repair permit.",
+   "id": "KA-02039",
+   "title": "Status of Active Street or Sidewalk Construction Permits"
+  },
+  {
+   "description": "Report a street con game, such as three card Monte.",
+   "id": "KA-02060",
+   "title": "Street Con Game"
+  },
+  {
+   "description": "Report a problem with a street light.",
+   "id": "KA-02463",
+   "title": "Street Light Complaint"
+  },
+  {
+   "description": "Request installation of a new street light or relocation of an existing street light.",
+   "id": "KA-02491",
+   "title": "Street Light Installation or Relocation Request"
+  },
+  {
+   "description": "Learn about pre-construction markings on a street or sidewalk that indicate underground utility company lines such as gas, electric, water, and cable.",
+   "id": "KA-03026",
+   "title": "Street or Sidewalk Utility Markings"
+  },
+  {
+   "description": "Make a complaint about a vendor operating on City streets, sidewalks, or bridges.",
+   "id": "KA-02152",
+   "title": "Street Vendor Complaint"
+  },
+  {
+   "description": "Learn about telecommunication boxes and antennas on street poles.",
+   "id": "KA-03047",
+   "title": "Telecom Equipment"
+  },
+  {
+   "description": "Report a problem with a telephone pole or wires.",
+   "id": "KA-03076",
+   "title": "Telephone Pole or Wire Complaint"
+  },
+  {
+   "description": "Report a problem with a pedestrian fence at a traffic median.",
+   "id": "KA-01383",
+   "title": "Traffic Median Pedestrian Fence Complaint"
+  },
+  {
+   "description": "Report a problem with an existing traffic or bicycle signal. Request a new traffic or bicycle signal.",
+   "id": "KA-01404",
+   "title": "Traffic or Bicycle Signal Complaint or Request"
+  },
+  {
+   "description": "Report a building that doesn't follow trash, recycling, or compost disposal rules.",
+   "id": "KA-01504",
+   "title": "Trash, Recycling, or Compost Disposal Complaint"
+  },
+  {
+   "description": "Report trash, recycling, or compost stored incorrectly on private property.",
+   "id": "KA-02250",
+   "title": "Trash, Recycling, or Compost Storage Complaint"
+  },
+  {
+   "description": "Learn how to maintain City tree beds and keep them safe.",
+   "id": "KA-01385",
+   "title": "Tree Bed Care"
+  },
+  {
+   "description": "Report someone damaging or destroying City trees on a street or in a park.",
+   "id": "KA-01990",
+   "title": "Tree Destruction"
+  },
+  {
+   "description": "Learn about installing a tree guard for a City tree.",
+   "id": "KA-03463",
+   "title": "Tree Guard"
+  },
+  {
+   "description": "Learn about the Neighborhood Tree Planting Program. Report a problem with the location or condition of a newly planted tree.",
+   "id": "KA-01895",
+   "title": "Tree Planting"
+  },
+  {
+   "description": "Learn about tree pruning, request pruning of a City tree, or become a volunteer Citizen Pruner.",
+   "id": "KA-01794",
+   "title": "Tree Pruning"
+  },
+  {
+   "description": "Learn about City tree stump removals.",
+   "id": "KA-01386",
+   "title": "Tree Stump"
+  },
+  {
+   "description": "Apply for a permit to add, prune, decorate, or remove a curbside tree at the property owner's expense.",
+   "id": "KA-01896",
+   "title": "Tree Work Permit"
+  },
+  {
+   "description": "Learn about free repair for qualifying City sidewalks that are severely damaged by curbside tree roots.",
+   "id": "KA-01505",
+   "title": "Trees and Sidewalks Repair"
+  },
+  {
+   "description": "Report inadequate ventilation inside a building or a ventilation or exhaust system that is illegal, installed improperly, or has an odor.",
+   "id": "KA-02313",
+   "title": "Ventilation or Exhaust System Complaint"
+  },
+  {
+   "description": "Report water leaking on a street or sidewalk.",
+   "id": "KA-01234",
+   "title": "Water Leak on Street or Sidewalk"
+  },
+  {
+   "description": "Report a possible water main break.",
+   "id": "KA-01233",
+   "title": "Water Main Break"
+  },
+  {
+   "description": "Report a defective water sampling station.",
+   "id": "KA-01939",
+   "title": "Water Sampling Station Complaint"
+  },
+  {
+   "description": "Learn about free public Wi-Fi and find places to connect to the Internet.",
+   "id": "KA-03096",
+   "title": "Wi-Fi"
+  }
+ ]
+}

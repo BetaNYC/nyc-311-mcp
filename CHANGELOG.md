@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added: help reporting a problem to 311 (Phase 4, #17)
+
+- `how_to_report`: from a plain description, the best 311 article (title, KA number, link
+  on 311 Online) and up to four others, with the agency and 311 problem type the article names
+  (NYC Open Data's `complaint_type`), what happens next, what the City says it does not
+  handle, and the ways to report. All of it is City text: the article, and for the NYC311
+  app, phone 311 / 212-NEW-YORK and text 311-692, portal.311.nyc.gov/about-nyc-311/ (read
+  2026-11-07). When the description suggests danger, `first_line` is the City's own
+  "Call 911" summary. Optional district: how often that problem type was reported there
+  (`problem_trend`). It files nothing.
+- `list_311_categories`: 311's categories, or one category's articles.
+- `src/content-311.ts`: client for the API's GetCategory, GetContentList and GetContent,
+  built from the portal's operation list and checked against live responses (several
+  differ from the documented schema). Disk cache, 7 days, with a stale copy when the API
+  is down; one request at a time, 1 s apart, 30 s timeout, one 429/503 retry.
+- Matching is deterministic keyword scoring over the articles of a few routed categories
+  (`CONCEPTS` in `src/how-to-report.ts`). Reviewed on the 20 most common problem types:
+  the right article 20 of 20; the article names the open-data problem type in 14
+  (`docs/how-to-report.md`).
+
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 
 - `find_requests`: every request in a community or council district, any status, newest

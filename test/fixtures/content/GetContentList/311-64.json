@@ -1,0 +1,869 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn about a list advertising abandoned properties.",
+   "id": "KA-01254",
+   "title": "Abandoned Property"
+  },
+  {
+   "description": "Learn how people with disabilities can get help with accessing City programs and services.",
+   "id": "KA-02321",
+   "title": "Access City Agencies as a Person with a Disability"
+  },
+  {
+   "description": "Report an adult establishment that does not follow zoning regulations.",
+   "id": "KA-01902",
+   "title": "Adult Establishment Zoning Complaint"
+  },
+  {
+   "description": "Report a billboard, poster, or flexible fabric sign that does not follow permit regulations.",
+   "id": "KA-01903",
+   "title": "Advertising Sign Complaint"
+  },
+  {
+   "description": "Learn about low-cost financing options for new construction and rehabilitation of former publicly-owned buildings.",
+   "id": "KA-01290",
+   "title": "Affordable Housing Development and Preservation Financing"
+  },
+  {
+   "description": "Report a window air conditioner that is in danger of falling.",
+   "id": "KA-01908",
+   "title": "Air Conditioner in Danger of Falling"
+  },
+  {
+   "description": "Learn about the rules for installing a window air conditioner.",
+   "id": "KA-02551",
+   "title": "Air Conditioner Installation Guidelines"
+  },
+  {
+   "description": "Report asbestos that is exposed or illegally removed.",
+   "id": "KA-02197",
+   "title": "Asbestos Complaint"
+  },
+  {
+   "description": "File the notification required to do work that disturbs asbestos.",
+   "id": "KA-01123",
+   "title": "Asbestos Work Notification"
+  },
+  {
+   "description": "Make a complaint about an awning, canopy, marquee, or storm enclosure.",
+   "id": "KA-02227",
+   "title": "Awning, Canopy, Marquee, or Storm Enclosure Complaint"
+  },
+  {
+   "description": "Get help if you are displaced from your home because of a vacate order, fire, or other emergency.",
+   "id": "KA-03711",
+   "title": "Back Home NYC"
+  },
+  {
+   "description": "Apply for a permit to construct or alter a baker's oven.",
+   "id": "KA-02116",
+   "title": "Baker's Oven Permit"
+  },
+  {
+   "description": "Learn about NYC benchmarking and energy grading laws and requirements for certain buildings.",
+   "id": "KA-02573",
+   "title": "Benchmarking and Energy Grading Requirements"
+  },
+  {
+   "description": "Apply for billboard, building sign, and awning permits.",
+   "id": "KA-01139",
+   "title": "Billboard, Building Sign, or Awning Permit"
+  },
+  {
+   "description": "Report partially or fully blocked building exits or fire escapes.",
+   "id": "KA-02233",
+   "title": "Blocked Building Exit or Fire Escape"
+  },
+  {
+   "description": "Report a problem with a boiler.",
+   "id": "KA-02047",
+   "title": "Boiler Complaint"
+  },
+  {
+   "description": "Learn about the requirements for the Department of Building's (DOB) boiler inspections.",
+   "id": "KA-01782",
+   "title": "Boiler Inspection"
+  },
+  {
+   "description": "Learn about the violation issued to property owners who do not file an annual boiler inspection report.",
+   "id": "KA-02584",
+   "title": "Boiler Inspection Violation"
+  },
+  {
+   "description": "Learn about required boiler permits and registration.",
+   "id": "KA-02085",
+   "title": "Boiler Permits and Registration"
+  },
+  {
+   "description": "Get the Borough Block Lot (BBL) or parcel number for a specific address.",
+   "id": "KA-01247",
+   "title": "Borough-Block-Lot (BBL) Lookup"
+  },
+  {
+   "description": "Learn about brownfield cleanup and redevelopment.",
+   "id": "KA-01516",
+   "title": "Brownfields"
+  },
+  {
+   "description": "Get a copy of the New York City Building Code.",
+   "id": "KA-02590",
+   "title": "Building Code"
+  },
+  {
+   "description": "Report building construction work in progress that is unsafe, done without a permit, after hours, or outside approved plans.",
+   "id": "KA-01797",
+   "title": "Building Construction Complaint"
+  },
+  {
+   "description": "Apply for a permit to construct or alter a building.",
+   "id": "KA-02104",
+   "title": "Building Construction or Alteration Permit"
+  },
+  {
+   "description": "Report past changes without DOB approval, including to a basement, room, space, apartment, or building. Report building use against occupancy or zoning.",
+   "id": "KA-02025",
+   "title": "Building Conversion or Occupancy Complaint"
+  },
+  {
+   "description": "Report building demolition that is illegal, unsafe, or done without a permit.",
+   "id": "KA-02236",
+   "title": "Building Demolition Complaint"
+  },
+  {
+   "description": "Get a certificate of adequate rat extermination for building demolitions.",
+   "id": "KA-01517",
+   "title": "Building Demolition Rat Extermination Certificate"
+  },
+  {
+   "description": "Learn about required building facade inspections and the Local Law 11/98 Facade Safety Program.",
+   "id": "KA-02591",
+   "title": "Building Facade Inspection"
+  },
+  {
+   "description": "Get a copy of building floor plans.",
+   "id": "KA-02017",
+   "title": "Building Floor Plan"
+  },
+  {
+   "description": "Report a building or public space that does not meet local accessibility requirements for people with disabilities.",
+   "id": "KA-03570",
+   "title": "Building or Public Space Accessibility Complaint"
+  },
+  {
+   "description": "Learn about annual building parapet observations and requirements.",
+   "id": "KA-03637",
+   "title": "Building Parapet Observations"
+  },
+  {
+   "description": "Check the status of a building work permit.",
+   "id": "KA-02101",
+   "title": "Building Permit Status"
+  },
+  {
+   "description": "Learn about building planting regulations or report a violation.",
+   "id": "KA-03663",
+   "title": "Building Planting Regulations"
+  },
+  {
+   "description": "Register a building with 3 or more units or a 1- or 2-family home that you don't live in with the Department of Housing Preservation and Development (HPD).",
+   "id": "KA-02381",
+   "title": "Building Registration"
+  },
+  {
+   "description": "Report a problem with a building sign.",
+   "id": "KA-01981",
+   "title": "Building Sign Complaint"
+  },
+  {
+   "description": "Get status and general information about violations issued by the Department of Buildings.",
+   "id": "KA-02018",
+   "title": "Building Violation"
+  },
+  {
+   "description": "Apply or renew a permit to install a canopy.",
+   "id": "KA-02604",
+   "title": "Canopy Permit"
+  },
+  {
+   "description": "Learn how to apply for a new Certificate of Occupancy, or request the letter DOB provides to confirm the legal use of a building constructed before 1938.",
+   "id": "KA-02023",
+   "title": "Certificate of Occupancy and Letter of No Objection"
+  },
+  {
+   "description": "Report a building that has overcrowding, no legal Certificate of Occupancy, or an illegal change in building use that violates the Certificate.",
+   "id": "KA-02024",
+   "title": "Certificate of Occupancy Complaint"
+  },
+  {
+   "description": "Learn about Certification of No Harassment or Exemption and their applications.",
+   "id": "KA-02615",
+   "title": "Certification of No Harassment"
+  },
+  {
+   "description": "Find a certified asbestos investigator.",
+   "id": "KA-02448",
+   "title": "Certified Asbestos Investigator"
+  },
+  {
+   "description": "Apply for a permit to construct a cesspool.",
+   "id": "KA-02105",
+   "title": "Cesspool Permit"
+  },
+  {
+   "description": "Report that child proof stove knob covers are not provided to a tenant.",
+   "id": "KA-03159",
+   "title": "Child Proof Stove Knob Covers Complaint"
+  },
+  {
+   "description": "Get an application for changes to the City map.",
+   "id": "KA-01693",
+   "title": "City Map Change"
+  },
+  {
+   "description": "Learn about New York City planning and zoning. Get City Planning publications, including maps and books.",
+   "id": "KA-02121",
+   "title": "City Planning and Zoning"
+  },
+  {
+   "description": "Learn about the ownership of City-owned property.",
+   "id": "KA-01160",
+   "title": "City-Owned Property"
+  },
+  {
+   "description": "Learn about a program to help owners and operators of small- and mid-size private buildings complete energy and water efficiency retrofits.",
+   "id": "KA-02656",
+   "title": "Community Retrofit NYC Program"
+  },
+  {
+   "description": "Report a construction site that does not have a No Smoking sign.",
+   "id": "KA-02241",
+   "title": "Construction Site No Smoking Sign Complaint"
+  },
+  {
+   "description": "Learn about required signs for construction sites, demolition sites, and sidewalk sheds.",
+   "id": "KA-01280",
+   "title": "Construction Site Sign Requirements"
+  },
+  {
+   "description": "Report a cooling tower that is unsanitary, malfunctioning, or has structural problems.",
+   "id": "KA-02243",
+   "title": "Cooling Tower Complaint"
+  },
+  {
+   "description": "Learn about cooling tower registration and required maintenance plans.",
+   "id": "KA-02664",
+   "title": "Cooling Tower Registration and Maintenance"
+  },
+  {
+   "description": "Apply for a permit to operate or install equipment used to hoist or lift objects.",
+   "id": "KA-01169",
+   "title": "Crane and Derrick Permit"
+  },
+  {
+   "description": "Report a crane or derrick operation that is unsafe or without a permit, license, or certificate.",
+   "id": "KA-02053",
+   "title": "Crane or Derrick Complaint"
+  },
+  {
+   "description": "Rent a City-owned building for a privately held special event or celebration.",
+   "id": "KA-03726",
+   "title": "DCAS Event Space for Rent"
+  },
+  {
+   "description": "Apply for a permit to construct or alter a deck or porch.",
+   "id": "KA-02102",
+   "title": "Deck and Porch Permit"
+  },
+  {
+   "description": "Small business and property owners, building managers, tenants and more can ask DOB questions about renovations, violations, permits, etc.",
+   "id": "KA-03190",
+   "title": "Department of Buildings (DOB) After Hours Sessions"
+  },
+  {
+   "description": "Report someone using false information to file for a Department of Buildings (DOB) document.",
+   "id": "KA-01177",
+   "title": "Department of Buildings Document Fraud"
+  },
+  {
+   "description": "Report a problem with a filing representative registered with the Department of Buildings.",
+   "id": "KA-01460",
+   "title": "Department of Buildings Filing Representative Complaint"
+  },
+  {
+   "description": "Report a Department of Buildings notice that is defaced, unreadable, or missing.",
+   "id": "KA-01910",
+   "title": "Department of Buildings Notice Defaced"
+  },
+  {
+   "description": "Report a security problem in a DCAS-managed building.",
+   "id": "KA-02679",
+   "title": "Department of Citywide Administrative Services Building Security Complaint"
+  },
+  {
+   "description": "Learn about general services and initiatives or report a problem or get information for a specific Department of Design and Construction project.",
+   "id": "KA-01181",
+   "title": "Department of Design and Construction (DDC) Services and Projects"
+  },
+  {
+   "description": "Learn about how to challenge the approval of a construction project.",
+   "id": "KA-01289",
+   "title": "Development or Zoning Challenge"
+  },
+  {
+   "description": "Report a gutter, including 18 inches into the street, that is not clean.",
+   "id": "KA-02141",
+   "title": "Dirty Gutter"
+  },
+  {
+   "description": "Report an unclean or untidy yard, alley, or court that is visible from the street.",
+   "id": "KA-02133",
+   "title": "Dirty Yard or Alley"
+  },
+  {
+   "description": "Learn how to submit proof of compliance and certificates of correction for OATH/ECB violations issued by the Department of Buildings (DOB).",
+   "id": "KA-02715",
+   "title": "DOB Proof of Compliance for OATH Violation"
+  },
+  {
+   "description": "Report dog or animal waste in a park or on a street, sidewalk, or private property.",
+   "id": "KA-02247",
+   "title": "Dog or Animal Waste"
+  },
+  {
+   "description": "Apply for a permit to place a dumpster or debris container on a sidewalk or street.",
+   "id": "KA-02700",
+   "title": "Dumpster Permit"
+  },
+  {
+   "description": "Report dust from roadwork, construction, demolition, renovation, or another source.",
+   "id": "KA-02248",
+   "title": "Dust Complaint"
+  },
+  {
+   "description": "Learn about capital infrastructure construction projects managed by the Economic Development Corporation (NYCEDC).",
+   "id": "KA-01432",
+   "title": "Economic Development Corporation Construction Projects"
+  },
+  {
+   "description": "Learn about the letter required to move forward on a Department of Buildings job on a tax lot that has an E-Designation.",
+   "id": "KA-01433",
+   "title": "E-Designation Approval Letter"
+  },
+  {
+   "description": "Report electric space heaters sold without required safety features or disclosures.",
+   "id": "KA-03515",
+   "title": "Electric Space Heater Sale Complaint"
+  },
+  {
+   "description": "Report an electrical problem in a rental building, defective or exposed wiring in a building, or faulty outdoor electrical equipment.",
+   "id": "KA-01048",
+   "title": "Electrical Complaint"
+  },
+  {
+   "description": "Apply for a permit to install electrical wiring or cables in a building.",
+   "id": "KA-02118",
+   "title": "Electrical Wiring Installation Permit"
+  },
+  {
+   "description": "Apply for an electrician's license.",
+   "id": "KA-01435",
+   "title": "Electrician License"
+  },
+  {
+   "description": "Make a complaint about a licensed plumber or electrician.",
+   "id": "KA-02328",
+   "title": "Electrician or Plumber Complaint"
+  },
+  {
+   "description": "Learn about a free program that supports 1-4 family homeowners to install efficient and clean energy technologies, such as solar and air-source heat pumps.",
+   "id": "KA-03452",
+   "title": "ElectrifyNYC"
+  },
+  {
+   "description": "Learn about elevator and escalator codes and permits.",
+   "id": "KA-01437",
+   "title": "Elevator or Escalator Code and Permit"
+  },
+  {
+   "description": "Report a problem with an elevator or escalator.",
+   "id": "KA-02015",
+   "title": "Elevator or Escalator Complaint"
+  },
+  {
+   "description": "Request an appointment online with an elevator or escalator inspector.",
+   "id": "KA-02012",
+   "title": "Elevator or Escalator Inspection"
+  },
+  {
+   "description": "Apply for a permit to demolish a building or excavate property.",
+   "id": "KA-02103",
+   "title": "Excavation or Demolition Permit"
+  },
+  {
+   "description": "Report building excavation that is undermining a nearby building.",
+   "id": "KA-01912",
+   "title": "Excavation Undermining Nearby Building"
+  },
+  {
+   "description": "Report a fence that is over the height limit, missing, or not secured.",
+   "id": "KA-02050",
+   "title": "Fence Complaint"
+  },
+  {
+   "description": "Request a fire alarm, range hood suppression, or sprinkler or standpipe installation inspection.",
+   "id": "KA-01464",
+   "title": "Fire Alarm and Suppression System Installation"
+  },
+  {
+   "description": "Schedule an inspection of a fire alarm.",
+   "id": "KA-01300",
+   "title": "Fire Alarm Inspection"
+  },
+  {
+   "description": "Learn about the New York City Fire Code.",
+   "id": "KA-02727",
+   "title": "Fire Code"
+  },
+  {
+   "description": "Learn about fire safety from the Fire Department, including fire safety notices. Request a fire safety education speaker.",
+   "id": "KA-03561",
+   "title": "Fire Safety"
+  },
+  {
+   "description": "Request an on-site Fire Safety Director test.",
+   "id": "KA-02731",
+   "title": "Fire Safety Director On-Site Test"
+  },
+  {
+   "description": "Schedule a safety inspection of a restaurant, public facility, area of assembly, or City Agency.",
+   "id": "KA-01471",
+   "title": "Fire Safety Inspection"
+  },
+  {
+   "description": "Get a permit to install a fuel oil tank.",
+   "id": "KA-01705",
+   "title": "Fuel Oil Tank Installation Permit"
+  },
+  {
+   "description": "Apply for a permit to construct or alter a garage or driveway.",
+   "id": "KA-02100",
+   "title": "Garage or Driveway Permit"
+  },
+  {
+   "description": "Apply for a permit to install or alter a gas appliance or piping.",
+   "id": "KA-02106",
+   "title": "Gas Appliance or Pipe Permit"
+  },
+  {
+   "description": "Call 911 to report a gas leak or any gas-related emergency or dangerous condition.",
+   "id": "KA-02048",
+   "title": "Gas Leak"
+  },
+  {
+   "description": "Report an improper, illegal, defective, or unpermitted gas piping or hookup.",
+   "id": "KA-01913",
+   "title": "Gas Piping or Hookup Complaint"
+  },
+  {
+   "description": "Learn about gas piping system inspection certification and Local Law 152 of 2016.",
+   "id": "KA-03353",
+   "title": "Gas Piping System Inspection Certification"
+  },
+  {
+   "description": "Report a heat problem in a commercial or public school building.",
+   "id": "KA-02122",
+   "title": "Heat Complaint in a Commercial Building"
+  },
+  {
+   "description": "Report a problem with heat or hot water in a residential building.",
+   "id": "KA-01036",
+   "title": "Heat or Hot Water Complaint in a Residential Building"
+  },
+  {
+   "description": "Apply for a permit to install or alter a heating or ventilation system.",
+   "id": "KA-02096",
+   "title": "Heating or Ventilation System Permit"
+  },
+  {
+   "description": "Apply for a permit for hoisting and rigging.",
+   "id": "KA-01711",
+   "title": "Hoisting and Rigging Permit"
+  },
+  {
+   "description": "HPD offers free informational classes on a variety of housing topics for tenants, homeowners, and property managers.",
+   "id": "KA-03646",
+   "title": "Housing Information Classes"
+  },
+  {
+   "description": "Report a location that is being used as a hotel, for vacation rentals, or for rentals of fewer than 30 days.",
+   "id": "KA-02317",
+   "title": "Housing Used for Short-Term Rental (Vacation Rentals or Illegal Home-Sharing)"
+  },
+  {
+   "description": "Learn about Housing Quality Inspections for HPD Section 8.",
+   "id": "KA-01976",
+   "title": "HPD Section 8 Housing Quality Standards (HQS) Inspections"
+  },
+  {
+   "description": "Appeal land use and construction laws for a specific site or project regulated by the Board of Standards and Appeals.",
+   "id": "KA-02837",
+   "title": "Land Use and Development Appeal"
+  },
+  {
+   "description": "Apply to make a historic building or site a landmark.",
+   "id": "KA-02838",
+   "title": "Landmark Application"
+  },
+  {
+   "description": "Apply for a permit to repair and alter a landmark building or site.",
+   "id": "KA-02043",
+   "title": "Landmark Building Alteration Permit"
+  },
+  {
+   "description": "Report the alteration of landmark buildings without permission.",
+   "id": "KA-02257",
+   "title": "Landmark Building Complaint"
+  },
+  {
+   "description": "Learn about funding to restore landmark buildings.",
+   "id": "KA-01722",
+   "title": "Landmark Building Restoration Grant"
+  },
+  {
+   "description": "Report bright lights from a parking lot shining into an apartment or building. The City does not accept complaints about bright lights from residences.",
+   "id": "KA-02259",
+   "title": "Light from Parking Lot Complaint"
+  },
+  {
+   "description": "Learn how to store, charge, and get rid of lithium-ion batteries safely. Report someone not following guidelines or counterfeit batteries.",
+   "id": "KA-03565",
+   "title": "Lithium-Ion Battery Safety and Complaint"
+  },
+  {
+   "description": "Apply for a building to become an Interim Multiple Dwelling.",
+   "id": "KA-01723",
+   "title": "Loft Law Application"
+  },
+  {
+   "description": "Learn about enforcement of the loft law.",
+   "id": "KA-01724",
+   "title": "Loft Law Enforcement"
+  },
+  {
+   "description": "Learn about the New York City Municipal Water Finance Authority.",
+   "id": "KA-01730",
+   "title": "Municipal Water Finance Authority"
+  },
+  {
+   "description": "Make a complaint about social services provided in a Naturally Occurring Retirement Community (NORC).",
+   "id": "KA-02265",
+   "title": "Naturally Occurring Retirement Community (NORC) Complaints"
+  },
+  {
+   "description": "Learn about the Department of Buildings (DOB) annual no penalty inspection programs.",
+   "id": "KA-03725",
+   "title": "No Penalty Inspection Programs"
+  },
+  {
+   "description": "Order a No Smoking and Electronic Cigarette Use sign.",
+   "id": "KA-02883",
+   "title": "No Smoking Sign"
+  },
+  {
+   "description": "Report noise from street or building construction, including jackhammer noise.",
+   "id": "KA-01091",
+   "title": "Noise from Construction"
+  },
+  {
+   "description": "Report a maintenance problem in a commercial or non-residential building.",
+   "id": "KA-02268",
+   "title": "Non-Residential Building Maintenance Complaint"
+  },
+  {
+   "description": "Learn about the NYC Accelerator Program, which help building owners make energy and water efficiency improvements.",
+   "id": "KA-02895",
+   "title": "NYC Accelerator"
+  },
+  {
+   "description": "Report a problem with an older adult center.",
+   "id": "KA-01900",
+   "title": "Older Adult Center Complaint"
+  },
+  {
+   "description": "Report a pay phone that is broken, damaged, dirty, or has graffiti.",
+   "id": "KA-01054",
+   "title": "Pay Phone Complaint"
+  },
+  {
+   "description": "Report a public pedestrian plaza that needs maintenance.",
+   "id": "KA-03623",
+   "title": "Pedestrian Plazas"
+  },
+  {
+   "description": "Apply for a permit for 75 or more people to gather indoors or 200 or more outdoors.",
+   "id": "KA-02099",
+   "title": "Place of Assembly Permit"
+  },
+  {
+   "description": "Report an establishment that does not have a Place of Assembly permit posted.",
+   "id": "KA-01914",
+   "title": "Place of Assembly Without Permit Complaint"
+  },
+  {
+   "description": "Report broken or leaking plumbing in a commercial building.",
+   "id": "KA-01915",
+   "title": "Plumbing Complaint in a Commercial Building"
+  },
+  {
+   "description": "Report plumbing work done without a permit.",
+   "id": "KA-01988",
+   "title": "Plumbing Work Without Permit"
+  },
+  {
+   "description": "Learn about HPD's program for homeowners to build or convert Accessory Dwelling Units (ADUs) on their property.",
+   "id": "KA-03609",
+   "title": "Plus One Accessory Dwelling Unit (ADU) Program"
+  },
+  {
+   "description": "Report poison ivy in a park or tree, on school property, or on private property.",
+   "id": "KA-02281",
+   "title": "Poison Ivy"
+  },
+  {
+   "description": "Make a complaint about pool or sauna maintenance, water quality, safety equipment, or unpermitted pool use.",
+   "id": "KA-02282",
+   "title": "Pool or Sauna Complaint"
+  },
+  {
+   "description": "Report signs, stickers, or decals posted on public property.",
+   "id": "KA-02140",
+   "title": "Poster or Sticker Complaint"
+  },
+  {
+   "description": "Report a power outage or blackout to a utility company. File a ConEd claim for food or medicine spoiled during a power outage.",
+   "id": "KA-02283",
+   "title": "Power Outage"
+  },
+  {
+   "description": "Report a problem with a licensed private elevator or escalator inspector.",
+   "id": "KA-01438",
+   "title": "Private Elevator or Escalator Inspector Complaint"
+  },
+  {
+   "description": "Report a privately owned public space (POPS) that is poorly maintained or not open to the public during posted hours.",
+   "id": "KA-01061",
+   "title": "Privately Owned Public Space (POPS) Complaint"
+  },
+  {
+   "description": "Order a property card that provides information about a building's ownership, classification, and assessed valuation from the 1930s through the 1970s.",
+   "id": "KA-03666",
+   "title": "Property Card"
+  },
+  {
+   "description": "Search for or get copies of property ownership records, such as deeds and mortgages. Get copies of tax maps.",
+   "id": "KA-01665",
+   "title": "Property Deed or Record"
+  },
+  {
+   "description": "Report deed theft or learn how to prevent it.",
+   "id": "KA-02936",
+   "title": "Property Deed or Record Theft"
+  },
+  {
+   "description": "Report improper or unapproved changes to a property's grade, slope, or ground level.",
+   "id": "KA-01907",
+   "title": "Property Grade Change Complaint"
+  },
+  {
+   "description": "Request to combine or divide a lot or to amend a condo declaration.",
+   "id": "KA-02937",
+   "title": "Property Lot Size Change"
+  },
+  {
+   "description": "Challenge the City's assessment of your property's market value on your Notice of Property Value (NOPV).",
+   "id": "KA-03138",
+   "title": "Property Market Value Review"
+  },
+  {
+   "description": "Request a correction of the property or vacant land data on your Notice of Property Value (NOPV).",
+   "id": "KA-03139",
+   "title": "Property or Vacant Land Description Update"
+  },
+  {
+   "description": "Learn about property tax exemptions, abatements, and credits for homeowners, including eligibility and types of benefit programs.",
+   "id": "KA-01795",
+   "title": "Property Tax Benefits for Homeowners"
+  },
+  {
+   "description": "Learn about a property's values, tax class, exemptions, and descriptions.",
+   "id": "KA-01250",
+   "title": "Property Value and Assessment"
+  },
+  {
+   "description": "Appeal the assessed value, tax class, or exemption listed on your Notice of Property Value (NOPV).",
+   "id": "KA-03125",
+   "title": "Property Value Appeal"
+  },
+  {
+   "description": "Learn how to file the Real Property Income and Expense Statement for income-producing properties, including utilities.",
+   "id": "KA-02287",
+   "title": "Real Property Income and Expense (RPIE)"
+  },
+  {
+   "description": "Report a leaking or overflowing roof tank.",
+   "id": "KA-01938",
+   "title": "Roof Tank Leak or Overflow"
+  },
+  {
+   "description": "Learn about rooftop systems that temporarily store and slowly drain rainwater off a building's rooftop.",
+   "id": "KA-01751",
+   "title": "Rooftop Detention"
+  },
+  {
+   "description": "Report a problem with a pipe scaffold, suspended or hanging scaffold, or sidewalk shed.",
+   "id": "KA-02291",
+   "title": "Scaffold or Sidewalk Shed Complaint"
+  },
+  {
+   "description": "Report a problem with a private, on-site sewage disposal system (septic or cesspool).",
+   "id": "KA-01916",
+   "title": "Septic or Cesspool Complaint"
+  },
+  {
+   "description": "Local Law 18 requires Short-Term Rental hosts to register with the City and Airbnb, VRBO, and other booking services to verify valid registration.",
+   "id": "KA-03559",
+   "title": "Short-Term Rental Registration"
+  },
+  {
+   "description": "Report illegal tobacco or marijuana smoking or vaping.",
+   "id": "KA-02295",
+   "title": "Smoking or Vaping Complaint"
+  },
+  {
+   "description": "Report snow or ice on a building or construction site.",
+   "id": "KA-03706",
+   "title": "Snow or Ice on Building"
+  },
+  {
+   "description": "Report a problem with an obstructed or locked exit, overcrowding, lack of exits, or lack of alarms or sprinklers.",
+   "id": "KA-01624",
+   "title": "Social Club Safety Complaint"
+  },
+  {
+   "description": "Report roof construction that does not comply with Local Law 92 or 94 of 2019.",
+   "id": "KA-03610",
+   "title": "Solar or Green Roof Non-Compliance"
+  },
+  {
+   "description": "Learn about laws and benefits for solar panels and green roofs.",
+   "id": "KA-03611",
+   "title": "Solar Panels and Green Roofs"
+  },
+  {
+   "description": "Report a tree removal or natural feature change in a Special Natural Area District (SNAD).",
+   "id": "KA-01917",
+   "title": "Special Natural Area District (SNAD) Complaint"
+  },
+  {
+   "description": "Apply for a permit to alter or construct a sprinkler system or standpipe.",
+   "id": "KA-02107",
+   "title": "Sprinkler System and Standpipe Permit"
+  },
+  {
+   "description": "Report a problem with a broken sprinkler system in a 1 or 2 family home or commercial building.",
+   "id": "KA-01904",
+   "title": "Sprinkler System Complaint"
+  },
+  {
+   "description": "Report standing water outdoors during Mosquito Season.",
+   "id": "KA-02298",
+   "title": "Standing Water"
+  },
+  {
+   "description": "Learn about a Stop Work Order. Report work being done while an order is in effect.",
+   "id": "KA-01911",
+   "title": "Stop Work Order"
+  },
+  {
+   "description": "Learn about annual registration for property owners of ground floor or second floor commercial spaces.",
+   "id": "KA-03275",
+   "title": "Storefront Registration"
+  },
+  {
+   "description": "Learn about rules for installing a swimming pool.",
+   "id": "KA-01375",
+   "title": "Swimming Pool Installation Rules"
+  },
+  {
+   "description": "Get information or make a maintenance complaint about a Tenant Interim Lease Program (TIL) building.",
+   "id": "KA-03052",
+   "title": "Tenant Interim Lease (TIL) Program"
+  },
+  {
+   "description": "Report a building that doesn't follow trash, recycling, or compost disposal rules.",
+   "id": "KA-01504",
+   "title": "Trash, Recycling, or Compost Disposal Complaint"
+  },
+  {
+   "description": "Report trash, recycling, or compost stored incorrectly on private property.",
+   "id": "KA-02250",
+   "title": "Trash, Recycling, or Compost Storage Complaint"
+  },
+  {
+   "description": "Report someone damaging or destroying City trees on a street or in a park.",
+   "id": "KA-01990",
+   "title": "Tree Destruction"
+  },
+  {
+   "description": "Learn about applications for the Uniform Land Use Review Procedure (ULURP).",
+   "id": "KA-01768",
+   "title": "Uniform Land Use Review Procedure Application"
+  },
+  {
+   "description": "Report unsafe storage of flammable or explosive material at a construction site or in a building.",
+   "id": "KA-01905",
+   "title": "Unsafe Construction Material Storage"
+  },
+  {
+   "description": "Report a new building under construction that is unsafe.",
+   "id": "KA-01906",
+   "title": "Unsafe New Building Structure"
+  },
+  {
+   "description": "Report a building that is shaking, vibrating, leaning, unstable, or has a defective or cracked building exterior facade.",
+   "id": "KA-01918",
+   "title": "Unstable Building"
+  },
+  {
+   "description": "Report an open vacant building.",
+   "id": "KA-01901",
+   "title": "Vacant Building Complaint"
+  },
+  {
+   "description": "Report a vacant lot that is dirty or not fenced.",
+   "id": "KA-01210",
+   "title": "Vacant Lot Complaint"
+  },
+  {
+   "description": "Report a stand-alone or retaining wall that is bulging, cracked, defective, or inadequate.",
+   "id": "KA-02314",
+   "title": "Wall Complaint"
+  },
+  {
+   "description": "Learn about the requirement for large buildings to show how they will manage waste generated by their residents.",
+   "id": "KA-03479",
+   "title": "Waste Management Plan"
+  },
+  {
+   "description": "Report a problem with building or property drainpipe or drainage.",
+   "id": "KA-01992",
+   "title": "Water Drainage Complaint"
+  },
+  {
+   "description": "Learn about HPD's Zombie Homes Initiative that works to address problems of neglected or deteriorated vacant and abandoned small homes.",
+   "id": "KA-03365",
+   "title": "Zombie Homes Initiative"
+  }
+ ]
+}

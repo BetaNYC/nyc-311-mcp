@@ -1,0 +1,274 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn about how to dispose of batteries. Report a business selling rechargeable batteries that doesn't accept them for recycling.",
+   "id": "KA-02078",
+   "title": "Battery Recycling"
+  },
+  {
+   "description": "Learn about NYC Bin reimbursement.",
+   "id": "KA-03685",
+   "title": "Bin Reimbursement"
+  },
+  {
+   "description": "Learn how to get rid of large, bulky items.",
+   "id": "KA-01969",
+   "title": "Bulk Item Disposal"
+  },
+  {
+   "description": "Call 911 to report burning garbage either outdoors or in an illegal incinerator.",
+   "id": "KA-01518",
+   "title": "Burning Garbage"
+  },
+  {
+   "description": "Schedule an appointment for curbside disposal of appliances with chlorofluorocarbon gas, including refrigerators and air conditioners.",
+   "id": "KA-01792",
+   "title": "CFC and Freon Removal"
+  },
+  {
+   "description": "Learn how to get rid of a Christmas tree.",
+   "id": "KA-02489",
+   "title": "Christmas Tree Disposal"
+  },
+  {
+   "description": "Learn about hearings for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-02019",
+   "title": "City-Issued Summons Hearing"
+  },
+  {
+   "description": "Pay a summons for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-03622",
+   "title": "City-Issued Summons Payment"
+  },
+  {
+   "description": "Pay New York City bills and fees online.",
+   "id": "KA-02520",
+   "title": "CityPay"
+  },
+  {
+   "description": "Apply to use sealed, on-street containers to hold commercial waste.",
+   "id": "KA-03477",
+   "title": "Clean Curbs"
+  },
+  {
+   "description": "Learn about the CleaNYC program for major commercial areas.",
+   "id": "KA-03003",
+   "title": "CleaNYC Sidewalk Cleaning"
+  },
+  {
+   "description": "Learn how to donate and recycle clothing, shoes, linens and accessories.",
+   "id": "KA-03510",
+   "title": "Clothing Disposal"
+  },
+  {
+   "description": "Learn how to get rid of used cooking oil and grease.",
+   "id": "KA-02662",
+   "title": "Cooking Oil and Grease Disposal"
+  },
+  {
+   "description": "Learn about the proper disposal of leaf and yard waste, food scraps, and food-soiled paper. Find a Compost Giveback Event near you.",
+   "id": "KA-02030",
+   "title": "Curbside Composting"
+  },
+  {
+   "description": "Request for a Department of Sanitation speaker or participation in an event.",
+   "id": "KA-01287",
+   "title": "Department of Sanitation Public Outreach"
+  },
+  {
+   "description": "Request or download Department of Sanitation materials, including decals for recycling and compost bins, brochures, flyers, and signs.",
+   "id": "KA-02022",
+   "title": "Department of Sanitation Signs and Decals"
+  },
+  {
+   "description": "Report an accident or property damage involving a garbage truck, snow plow, or other City sanitation vehicle.",
+   "id": "KA-01186",
+   "title": "Department of Sanitation Vehicle Accident"
+  },
+  {
+   "description": "Report a problem with a Department of Sanitation employee's behavior or operation of a Sanitation vehicle.",
+   "id": "KA-02363",
+   "title": "Department of Sanitation Worker or Vehicle Complaint"
+  },
+  {
+   "description": "Learn how to donate goods.",
+   "id": "KA-02424",
+   "title": "Donate Goods"
+  },
+  {
+   "description": "Find a drop-off location near you to dispose of food and plant waste.",
+   "id": "KA-02007",
+   "title": "Drop-Off Composting"
+  },
+  {
+   "description": "Learn how to get rid of electronics.",
+   "id": "KA-02385",
+   "title": "Electronics Disposal"
+  },
+  {
+   "description": "Learn how to get rid of flammable liquids.",
+   "id": "KA-02467",
+   "title": "Flammable Liquid Disposal"
+  },
+  {
+   "description": "Learn about the City's foam ban and report an establishment using or selling single-use foam products.",
+   "id": "KA-01373",
+   "title": "Foam Ban"
+  },
+  {
+   "description": "Learn about yard waste disposal rules for landscapers.",
+   "id": "KA-02482",
+   "title": "Landscaper Waste Requirements"
+  },
+  {
+   "description": "Report an item lost in trash that has been collected by the Department of Sanitation.",
+   "id": "KA-01197",
+   "title": "Lost Item in Trash"
+  },
+  {
+   "description": "Learn how to get rid of a mattress or box spring.",
+   "id": "KA-02378",
+   "title": "Mattress or Box Spring Disposal"
+  },
+  {
+   "description": "Learn how to get rid of medical waste, including syringes and lancets.",
+   "id": "KA-02423",
+   "title": "Medical Waste Disposal"
+  },
+  {
+   "description": "Report waste that was not picked up on your collection day or at a scheduled appointment.",
+   "id": "KA-01788",
+   "title": "Missed Trash, Recycling, or Compost Collection"
+  },
+  {
+   "description": "Learn how to get rid of an oxygen or acetylene tank.",
+   "id": "KA-01340",
+   "title": "Oxygen or Acetylene Tank Disposal"
+  },
+  {
+   "description": "Learn about the ban on plastic carryout bags and fee for paper bags.",
+   "id": "KA-02484",
+   "title": "Plastic Bag Ban and Paper Bag Fee"
+  },
+  {
+   "description": "Learn about or report a violation of the Plastic Bag Recycling Law.",
+   "id": "KA-02080",
+   "title": "Plastic Bag Recycling"
+  },
+  {
+   "description": "Learn about rules for plastic straws, splash sticks, or stirrers at food establishments. Report a food establishment violating the rules.",
+   "id": "KA-03462",
+   "title": "Plastic Straw Rules"
+  },
+  {
+   "description": "Report a problem with a commercial waste disposal company.",
+   "id": "KA-02135",
+   "title": "Private Carter Complaint"
+  },
+  {
+   "description": "Learn how to store or get rid of a propane tank.",
+   "id": "KA-02476",
+   "title": "Propane Tank Storage and Disposal"
+  },
+  {
+   "description": "Learn about recycling in public spaces.",
+   "id": "KA-01347",
+   "title": "Public Recycling"
+  },
+  {
+   "description": "Learn about materials that must be recycled and how to place them out for collection.",
+   "id": "KA-02013",
+   "title": "Recycling Rules"
+  },
+  {
+   "description": "Report theft of recyclable materials.",
+   "id": "KA-02479",
+   "title": "Recycling Theft"
+  },
+  {
+   "description": "Learn about the proper disposal of household trash.",
+   "id": "KA-02086",
+   "title": "Residential Trash Rules"
+  },
+  {
+   "description": "Learn about plans, timelines, and rules for residential non-recyclable waste containerization.",
+   "id": "KA-03602",
+   "title": "Residential Waste Containerization"
+  },
+  {
+   "description": "Gap service for former Sanitation Salvage customers has ended.",
+   "id": "KA-02963",
+   "title": "Sanitation Salvage License Suspension"
+  },
+  {
+   "description": "Get recycling materials and educational resources for K-12 schools.",
+   "id": "KA-01357",
+   "title": "School Recycling Education"
+  },
+  {
+   "description": "Learn about the restrictions on providing utensils, condiments, napkins, and extra containers for take-out or delivery.",
+   "id": "KA-03588",
+   "title": "Skip the Stuff"
+  },
+  {
+   "description": "Report a condition at a private solid waste transfer station.",
+   "id": "KA-02336",
+   "title": "Solid Waste Transfer Station Complaint"
+  },
+  {
+   "description": "Learn how to get rid of potentially harmful household or automotive products, such as batteries, oil, or paint. Learn about SAFE Disposal Events.",
+   "id": "KA-01973",
+   "title": "Special Waste Disposal"
+  },
+  {
+   "description": "Learn how to get rid of rubber tires.",
+   "id": "KA-02421",
+   "title": "Tire Disposal"
+  },
+  {
+   "description": "Request trash and recycling services at a new residential or institutional address.",
+   "id": "KA-02473",
+   "title": "Trash and Recycling Collection Request for Residence or Non-Profit"
+  },
+  {
+   "description": "Learn about trash, recycling, and compost bins and purchase official NYC Bins.",
+   "id": "KA-01303",
+   "title": "Trash, Recycling, and Compost Bins"
+  },
+  {
+   "description": "Look up the trash, recycling, and compost collection days for a residential or non-profit address.",
+   "id": "KA-01801",
+   "title": "Trash, Recycling, and Compost Collection Schedule"
+  },
+  {
+   "description": "Report a building that doesn't follow trash, recycling, or compost disposal rules.",
+   "id": "KA-01504",
+   "title": "Trash, Recycling, or Compost Disposal Complaint"
+  },
+  {
+   "description": "Report trash, recycling, or compost stored incorrectly on private property.",
+   "id": "KA-02250",
+   "title": "Trash, Recycling, or Compost Storage Complaint"
+  },
+  {
+   "description": "Learn about how to get rid of a motor vehicle.",
+   "id": "KA-02474",
+   "title": "Vehicle Disposal"
+  },
+  {
+   "description": "Learn about trash, recycling, and organics rules for businesses, including any business operating in a residential building, and Commercial Waste Zones.",
+   "id": "KA-01787",
+   "title": "Waste Disposal for Businesses"
+  },
+  {
+   "description": "Learn about the requirement for large buildings to show how they will manage waste generated by their residents.",
+   "id": "KA-03479",
+   "title": "Waste Management Plan"
+  },
+  {
+   "description": "Learn how to get rid of treated wood debris, including lumber, particle board, plywood, and other wood composites.",
+   "id": "KA-01800",
+   "title": "Wood Disposal"
+  }
+ ]
+}

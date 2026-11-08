@@ -1,0 +1,214 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Report a problem with a boiler.",
+   "id": "KA-02047",
+   "title": "Boiler Complaint"
+  },
+  {
+   "description": "Learn about hearings for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-02019",
+   "title": "City-Issued Summons Hearing"
+  },
+  {
+   "description": "Pay a summons for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-03622",
+   "title": "City-Issued Summons Payment"
+  },
+  {
+   "description": "Pay New York City bills and fees online.",
+   "id": "KA-02520",
+   "title": "CityPay"
+  },
+  {
+   "description": "Report noise or other problems with a film or television production.",
+   "id": "KA-01461",
+   "title": "Film or Television Production Complaint"
+  },
+  {
+   "description": "Report the sale, use, storage, or transport of illegal fireworks.",
+   "id": "KA-02249",
+   "title": "Fireworks Complaint"
+  },
+  {
+   "description": "Get a list of legal fireworks displays and their locations.",
+   "id": "KA-01301",
+   "title": "Fireworks Displays"
+  },
+  {
+   "description": "Learn about Gowanus Canal Construction Project. Report excessive or after hours construction noise.",
+   "id": "KA-03601",
+   "title": "Gowanus Canal Construction Project"
+  },
+  {
+   "description": "Report a shifted, missing, or broken steel plate on a highway.",
+   "id": "KA-01237",
+   "title": "Highway Plate Complaint"
+  },
+  {
+   "description": "Report a missing, sunken, raised, damaged, noisy, or steaming manhole cover.",
+   "id": "KA-01669",
+   "title": "Manhole Cover Complaint"
+  },
+  {
+   "description": "Free mediation service dedicated to resolving quality of life disputes between restaurants, bars, and nightlife establishments and their neighbors.",
+   "id": "KA-03336",
+   "title": "Mediating Establishment and Neighbor Disputes (MEND) NYC"
+  },
+  {
+   "description": "Get free and confidential help to resolve a dispute.",
+   "id": "KA-01016",
+   "title": "Mediation"
+  },
+  {
+   "description": "Learn about the noise code and current noise reduction projects.",
+   "id": "KA-03641",
+   "title": "Noise Code"
+  },
+  {
+   "description": "Learn how to report noise in New York City.",
+   "id": "KA-02125",
+   "title": "Noise Complaints"
+  },
+  {
+   "description": "Report noise from an air conditioner, ventilation equipment, exhaust device, or battery energy storage system (BESS).",
+   "id": "KA-01933",
+   "title": "Noise from Air Conditioner or Ventilation Equipment"
+  },
+  {
+   "description": "Report noise from an airplane.",
+   "id": "KA-02884",
+   "title": "Noise from Airplane"
+  },
+  {
+   "description": "Report an alarm in progress or an alarm that goes off too often or for too long.",
+   "id": "KA-01089",
+   "title": "Noise from Alarm"
+  },
+  {
+   "description": "Report noise, including music, coming from a bar, club, or restaurant. Learn how mediation can help quality of life disputes between restaurants, bars,",
+   "id": "KA-01085",
+   "title": "Noise from Bar, Club, or Restaurant"
+  },
+  {
+   "description": "Report noise from a boat.",
+   "id": "KA-01934",
+   "title": "Noise from Boat"
+  },
+  {
+   "description": "Report noise from business equipment.",
+   "id": "KA-01935",
+   "title": "Noise from Business Equipment"
+  },
+  {
+   "description": "Report noise from street or building construction, including jackhammer noise.",
+   "id": "KA-01091",
+   "title": "Noise from Construction"
+  },
+  {
+   "description": "Report noise from a dog or other domestic animals.",
+   "id": "KA-01087",
+   "title": "Noise from Dog or Other Animal"
+  },
+  {
+   "description": "Report noise from a City-owned garbage truck or a private carter.",
+   "id": "KA-01096",
+   "title": "Noise from Garbage Truck"
+  },
+  {
+   "description": "Report noise from a helicopter.",
+   "id": "KA-02267",
+   "title": "Noise from Helicopter"
+  },
+  {
+   "description": "Report noise from inside a house of worship.",
+   "id": "KA-01086",
+   "title": "Noise from House of Worship"
+  },
+  {
+   "description": "Report music from an ice cream truck that isn't moving.",
+   "id": "KA-01097",
+   "title": "Noise from Ice Cream Truck"
+  },
+  {
+   "description": "Report noise from an intercity or interstate bus.",
+   "id": "KA-01098",
+   "title": "Noise from Intercity or Interstate Bus"
+  },
+  {
+   "description": "Call 911 to report a large, loud party that has potential for danger.",
+   "id": "KA-01591",
+   "title": "Noise from Large Party or Crowd"
+  },
+  {
+   "description": "Report noise from lawn care equipment.",
+   "id": "KA-01101",
+   "title": "Noise from Lawn Equipment"
+  },
+  {
+   "description": "Report a noisy neighbor.",
+   "id": "KA-01017",
+   "title": "Noise from Neighbor"
+  },
+  {
+   "description": "Report noise from a park.",
+   "id": "KA-01088",
+   "title": "Noise from Park"
+  },
+  {
+   "description": "Report noise (other than an alarm or equipment) from a store or commercial location.",
+   "id": "KA-01090",
+   "title": "Noise from Store or Business"
+  },
+  {
+   "description": "Report noise from the street or sidewalk.",
+   "id": "KA-01092",
+   "title": "Noise from Street or Sidewalk"
+  },
+  {
+   "description": "Report noise from a vehicle, including horn honking, engine idling, or loud music.",
+   "id": "KA-01102",
+   "title": "Noise from Vehicle"
+  },
+  {
+   "description": "Learn about noise and how to prevent noise-induced hearing loss.",
+   "id": "KA-03636",
+   "title": "Noise Safety and Health"
+  },
+  {
+   "description": "Learn about a citywide effort to resolve persistent quality-of-life concerns through the newly created NYPD Quality of Life Division.",
+   "id": "KA-03672",
+   "title": "NYPD Quality of Life Division"
+  },
+  {
+   "description": "Learn about Second Avenue Subway construction. You can also make a complaint.",
+   "id": "KA-01492",
+   "title": "Second Avenue Subway Construction"
+  },
+  {
+   "description": "Report a damaged, sunken, or noisy utility access cover on a sidewalk.",
+   "id": "KA-01956",
+   "title": "Sidewalk Utility Hardware Complaint"
+  },
+  {
+   "description": "Report a steel street plate that is shifted, noisy, missing anti-skid material, or missing during excavation of a City street.",
+   "id": "KA-01511",
+   "title": "Street Plate Complaint"
+  },
+  {
+   "description": "Report a damaged, sunken, or noisy utility access cover on a street.",
+   "id": "KA-01670",
+   "title": "Street Utility Hardware Complaint"
+  },
+  {
+   "description": "Report noise or a bad smell from a wastewater treatment plant, sewage treatment plant, or pumping station.",
+   "id": "KA-02126",
+   "title": "Wastewater Treatment Plant Complaint"
+  },
+  {
+   "description": "Learn about DEP's Water Tunnel No. 3 construction project and related controlled blasting in Long Island City, Queens.",
+   "id": "KA-03483",
+   "title": "Water Tunnel No. 3 Construction"
+  }
+ ]
+}

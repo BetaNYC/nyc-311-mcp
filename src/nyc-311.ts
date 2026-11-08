@@ -1,8 +1,8 @@
-const BASE_URL = "https://api.nyc.gov/public/api";
+export const BASE_URL = "https://api.nyc.gov/public/api";
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
-function getApiKey(): string {
+export function getApiKey(): string {
   const key = process.env.NYC_311_API_KEY;
   if (!key) {
     throw new Error(
@@ -50,7 +50,7 @@ export function retryAfterMs(header: string | null): number {
   return 1000;
 }
 
-async function errorFromResponse(res: Response): Promise<Error> {
+export async function errorFromResponse(res: Response): Promise<Error> {
   let bodyText = "";
   try {
     bodyText = (await res.text()).trim();
