@@ -1,0 +1,144 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01107",
+   "Title": "Rat or Mouse Complaint",
+   "Description": "Report rats, mice, and conditions that might attract them.",
+   "Section": [
+    {
+     "Name": "Rat or Mouse Complaint Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01110\">Pest Control Guidance</a>&nbsp;for tips to keep&nbsp;rodents away</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01109\">Animal Bite</a></li></ul></div><p><!--StartFragment -->You can report rats or mice and conditions that attract them.<!--EndFragment --></p><p><!--StartFragment --><span style=\"font-size:20px;\"><strong>Select a location type</strong></span><!--EndFragment --></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Residential Property",
+     "Content": "<p><!--StartFragment -->Property owners are responsible for keeping their properties clean and free of pests.</p><p>To report New York City Housing Authority (NYCHA) property, go to the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01076\">NYCHA Public Housing Maintenance Complaint</a>&nbsp;page instead.</p><p><strong>What You Need</strong></p><p>You must provide your contact information.</p><p><strong>Indoors</strong></p><p><!--StartFragment -->You can report rodent conditions inside a residential apartment building.</p><p><strong>Mice inside an apartment</strong></p><p><!--EndFragment --></p><p><strong>Mice in a public area</strong></p><p><strong>Outdoors</strong></p><p>You can report rodent conditions in outdoor areas of a residential property, including yards and alleys, to the NYC Health Department.</p><p><strong>Rats inside a residential property</strong></p>",
+     "ContentAction": [
+      {
+       "Name": "Mice Inside Residential Apartment",
+       "Agency": "Department of Housing Preservation and Development",
+       "Problem": "Unsanitary Condition",
+       "ProblemDetail": "Pests"
+      },
+      {
+       "Name": "Mice Inside Residential Building Public Area",
+       "Agency": "Department of Housing Preservation and Development",
+       "Problem": "Unsanitary Condition",
+       "ProblemDetail": "Pests"
+      },
+      {
+       "Name": "Mice Outside Residential Building",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Rodent"
+      },
+      {
+       "Name": "Rats Residential Building",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Rodent"
+      }
+     ]
+    },
+    {
+     "Name": "Sidewalk or Street",
+     "Content": "<p style=\"margin-bottom:8.25pt;line-height:normal;background:white;\"><strong><span style=\"color:#333333;\">Street Trees</span></strong></p>",
+     "ContentAction": [
+      {
+       "Name": "Rat or Mouse Complaint on a Sidewalk or Street",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Rodent"
+      },
+      {
+       "Name": "Rat or Mouse Complaint in a Street Tree Bed",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Maintenance or Facility",
+       "ProblemDetail": "Rodent Sighting"
+      }
+     ]
+    },
+    {
+     "Name": "Food Establishment or Vendor",
+     "Content": "<p><!--StartFragment -->You can report rats or mice in a restaurant or other place where food is served&nbsp;to&nbsp;the NYC Health Department. You can also report conditions that may attract them, like improper food or trash storage.</p><p>Types of food establishments include:</p><ul><li>Bakery</li><li>Bar</li><li>Bodega</li><li>Caf&eacute;</li><li>Cafeteria or lunchroom</li><li>Deli</li><li>Restaurant</li><li>Soup kitchen</li></ul><p><!--EndFragment --></p><p>To report rats, mice, or droppings in food itself, go to the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01111\">Food Safety Complaint</a> page.</p>",
+     "ContentAction": [
+      {
+       "Name": "Rat or Mouse in Food Establishment",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Food Establishment",
+       "ProblemDetail": "Rodents/Insects/Garbage"
+      },
+      {
+       "Name": "Rat or Mouse Complaint Street Food Vendor",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Mobile Food Vendor",
+       "ProblemDetail": "Insects / Pests"
+      }
+     ]
+    },
+    {
+     "Name": "Food Retailer, Processor, or Warehouse",
+     "Content": "<p><!--StartFragment -->You can report rats or mice or their droppings in places where food is sold, processed, or stored.</p><p>This includes retailers such as:</p><ul><li>Grocery stores</li><li>Markets</li><li>Bodegas or convenience stores</li><li>Beverage stores</li></ul><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://agriculture.ny.gov/contact-us\">Report rats or mice at a food retailer, processor, or warehouse.</a></p><p><strong>By Phone</strong></p><p><!--EndFragment --></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Metropolitan Transportation Authority Customer Service IVR Transfer",
+     "Content": "<p><!--StartFragment -->You can report rats or mice on public transit.</p><p><span style=\"font-size:20px;\"><strong>MTA Subway, Bus, or Rail</strong></span></p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://new.mta.info/customer-feedback\">Report rats or mice at an MTA location.</a></p><p><strong>By Phone</strong></p><p><!--EndFragment --></p><p><span style=\"font-size:20px;\"><strong>New Jersey Transit</strong></span></p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://njtransit.my.salesforce-sites.com/customerservice/site_app#/contactus\">Report rats or mice at a NJ Transit location.</a></p><p><strong>By Phone</strong></p><p><span style=\"font-size:20px;\"><strong>Port Authority Bus or PATH Train</strong></span></p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.panynj.gov/content/forms/af/port-authority/contact-us.html\">Report rats or mice at a Port Authority location.</a></p><p><strong>By Phone</strong></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Parks",
+     "ContentAction": [
+      {
+       "Name": "Rat or Mouse Complaint in Park",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Maintenance or Facility",
+       "ProblemDetail": "Rodent Sighting"
+      }
+     ]
+    },
+    {
+     "Name": "School",
+     "Content": "<p>You can report rats or mice in a public school&nbsp;or conditions that might attract them.</p>",
+     "ContentAction": [
+      {
+       "Name": "Rat or Mouse Complaint in School",
+       "Agency": "Department of Education",
+       "Problem": "School Maintenance",
+       "ProblemDetail": "Rodents/Mice"
+      }
+     ]
+    },
+    {
+     "Name": "Rat or Mouse Complaint Vacant Building DOHMH SR",
+     "Content": "<p><strong><span style=\"font-size:20px;\">Vacant Building</span></strong></p><p><!--StartFragment -->You can report rats or mice in an unoccupied building.<!--EndFragment --></p><p><span style=\"font-size:20px;\"><strong>Dirty Vacant Lot</strong></span></p><p><!--StartFragment -->You can report a rodent condition on a vacant lot without any building or a building foundation, such as a concrete floor.</p><p>Owners of vacant lots are required to keep them clean and free of trash and debris.</p><p>You can report excessive trash and debris in a vacant lot that is attracting or may attract rats or mice to the Department of Sanitation (DSNY).</p><p><strong>What You Need</strong></p><p>Your report should describe:</p><ul><li>The contents of the lot</li><li>If the lot is fenced or not</li></ul><p><!--EndFragment --></p><p><strong>What Happens Next</strong></p><p>The Department of Sanitation (DSNY) will inspect the lot. If the lot needs cleaning, DSNY will research the ownership of the property.</p><p>Then the NYC Health Department will give the owner a deadline to clean it. If the owner fails to meet the deadline, DSNY may clean the lot and charge the owner.</p><p><span style=\"font-size:20px;\"><strong>Vacant Lot Without Trash or Debris</strong></span></p><p>You can report rats or mice in vacant lots that don&rsquo;t contain trash or debris to the NYC Health Department.</p>",
+     "ContentAction": [
+      {
+       "Name": "Rat or Mouse Complaint Vacant Building",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Rodent"
+      },
+      {
+       "Name": "Rat or Mouse in Dirty Vacant Lot",
+       "Agency": "Department of Sanitation",
+       "Problem": "Lot Condition"
+      },
+      {
+       "Name": "Rat or Mouse in Vacant Lot",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Rodent"
+      }
+     ]
+    },
+    {
+     "Name": "Other Non-Residential Property",
+     "Content": "<p>You can report rats or mice on non-residential property to&nbsp;the NYC Health Department, such as:</p><ul><li>Office buildings</li><li>Day cares or nurseries</li><li>Hospitals</li><li>Government property</li><li>Parking lots or garages</li></ul><p><!--EndFragment --><!--StartFragment --></p><p><!--EndFragment --></p>",
+     "ContentAction": [
+      {
+       "Name": "Rat or Mouse Complaint Other Non-Residential",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Rodent"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

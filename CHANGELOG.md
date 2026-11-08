@@ -26,6 +26,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (`CONCEPTS` in `src/how-to-report.ts`). Reviewed on the 20 most common problem types:
   the right article 20 of 20; the article names the open-data problem type in 14
   (`docs/how-to-report.md`).
+- QA round 1 on #23 (safety first): `src/emergency.ts` (`assessDanger`, `emergencyLead`,
+  `SAFETY_LINE`, `CITY_988`, `CRIME_POINTER`) detects many more dangers and leads with 911;
+  a City "Call 911" article is quoted only when it is the danger detected, otherwise BetaNYC's
+  own line, labeled. Every answer carries `safety_line`. Negation, smoking, odors and past
+  crimes do not lead with 911. 988 for suicide (from KA-01635). `crime` pointer to the City's
+  articles. `other_problems` for several problems; Spanish keywords with `language_help`;
+  one-edit typo correction (`spelling_corrected`). New concepts (harassment, fire escape,
+  broken detector, broken sidewalk, elevator, fireworks, missed collection, crash, smoking).
+  Article date in every answer; time-sensitive articles refreshed daily; a missing key is named
+  as such. 46 phrasings in `test/how-to-report-phrasings.test.mjs`.
 
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 

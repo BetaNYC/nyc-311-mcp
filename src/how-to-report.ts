@@ -19,38 +19,88 @@ import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
 import { articleUrl, contentClient, NotFoundError, CATEGORY_ID, PORTAL, type Article, type ArticleSummary, type Category, type ContentAction, type ContentClient, type Fetched } from "./content-311.js";
 import { BOROUGHS, boardstatData, DISTRICT_JSON, DISTRICT_SHAPE, problemTrend } from "./district-tools.js";
 import type { BoardStatData } from "./boardstat-data.js";
+import { assessDanger, CRIME_POINTER, CRIME_WORDS, emergencyLead, normalize, SAFETY_LINE, SAFETY_LINE_SOURCE, type DangerAssessment } from "./emergency.js";
 
 // ─── words ────────────────────────────────────────────────────────────────────
 
 const STOP = new Set(
-  "a an the my our your his her their its on in at of to is are was were and or for from there here it this that these those me i we you he she they has have had been be by with as am pm all some any very just really so too about into onto over under up down out off again won't wont can't cant don't dont isn't not no yes what when where who how why which while because since every each would could should will can do does did get got keep keeps kept still now today tonight night day week weeks month months year years ago one two three four five lot lots".split(
+  "a an the my our your his her their its on in at of to is are was were and or for from there here it this that these those me i we you he she they has have had been be by with as am pm all some any very just really so too about into onto over under up down out off again won't wont can't cant don't dont isn't not no yes what when where who how why which while because since every each would could should will can do does did get got keep keeps kept still now today tonight night day week weeks month months year years ago one two three four five lot lots el la los las de del en mi mis un una muy hay y que es por con".split(
     " "
   )
 );
 const IRREGULAR: Record<string, string> = { mice: "mouse", neighbour: "neighbor", neighbours: "neighbor", mould: "mold", children: "child", people: "person", geese: "goose" };
 
-/** A word reduced the same way on both sides: lower case, plural and -ing/-ed endings dropped. */
+/** A word reduced the same way on both sides: lower case, plural, -ment, -ing and -ed endings dropped. */
 export function stem(word: string): string {
   let w = word.toLowerCase().replace(/['’]s$/, "").replace(/['’]/g, "");
   if (IRREGULAR[w]) return IRREGULAR[w];
   if (w.length > 4 && w.endsWith("ies")) w = w.slice(0, -3) + "y";
   else if (w.length > 4 && /(ch|sh|x|ss)es$/.test(w)) w = w.slice(0, -2);
   else if (w.length > 3 && w.endsWith("s") && !w.endsWith("ss") && !w.endsWith("us")) w = w.slice(0, -1);
-  if (w.length > 5 && w.endsWith("ing")) w = w.slice(0, -3);
+  if (w.length > 7 && w.endsWith("ment")) w = w.slice(0, -4); // harassment → harass
+  else if (w.length > 5 && w.endsWith("ing")) w = w.slice(0, -3);
   else if (w.length > 4 && w.endsWith("ed")) w = w.slice(0, -2);
   if (/([b-df-hj-np-tv-z])\1$/.test(w) && w.length > 3 && !/(ll|ss|ff|zz)$/.test(w)) w = w.slice(0, -1); // running → run
   return w;
 }
 
 export function words(text: string): string[] {
-  return (text.toLowerCase().match(/[a-z0-9’']+/g) ?? []).filter((w) => !/^\d+$/.test(w));
+  return (text.toLowerCase().match(/[a-z0-9’'áéíóúñü]+/g) ?? []).filter((w) => !/^\d+$/.test(w));
 }
 
 const stems = (text: string) => new Set(words(text).filter((w) => !STOP.has(w)).map(stem));
 
+// ─── typos ────────────────────────────────────────────────────────────────────
+
+/**
+ * Words a typo is corrected to: one edit (insert, delete, change, or swap two
+ * neighbors) away, on words of 5 letters or more. Chosen so that no common word is
+ * one edit from one of them ("barking" is not corrected to "parking", "beating" not
+ * to "heating", "leaning" not to "leaking", "night" not to "light"); TYPO_SAFE guards
+ * the near misses we know of.
+ */
+export const TYPO_VOCAB = [
+  "pothole", "potholes", "street", "streets", "sidewalk", "music", "noise", "neighbor", "neighbors", "garbage", "apartment",
+  "landlord", "ceiling", "driveway", "hydrant", "abandoned", "construction", "homeless", "encampment", "traffic", "signal",
+  "plumbing", "toilet", "roaches", "elevator", "harassing", "graffiti", "recycling", "collection", "shoveled", "illegal",
+  "sanitation", "radiator", "cockroach", "mattress", "blocking", "parking",
+];
+const TYPO_SAFE = new Set(["barking", "parked", "barked", "beating", "leaning", "night", "broke", "streak", "ceilings", "noisy", "musics", "hydrants", "signals", "sidewalks", "toilets", "landlords", "elevators", "mattresses"]);
+
+function oneEdit(a: string, b: string): boolean {
+  if (a === b || Math.abs(a.length - b.length) > 1) return false;
+  if (a.length === b.length) {
+    const diff: number[] = [];
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) diff.push(i);
+    if (diff.length === 1) return true;
+    return diff.length === 2 && diff[1] === diff[0] + 1 && a[diff[0]] === b[diff[1]] && a[diff[1]] === b[diff[0]];
+  }
+  const [s, l] = a.length < b.length ? [a, b] : [b, a];
+  let i = 0;
+  while (i < s.length && s[i] === l[i]) i++;
+  return s.slice(i) === l.slice(i + 1);
+}
+
+/** The description with likely typos of known words corrected ("pothoel on my stret" → "pothole on my street"). */
+export function correctTypos(text: string): { text: string; corrected: string[] } {
+  const corrected: string[] = [];
+  const out = text.replace(/[a-z]{5,}/g, (w) => {
+    if (TYPO_SAFE.has(w) || TYPO_VOCAB.includes(w)) return w;
+    const hit = TYPO_VOCAB.find((v) => oneEdit(w, v));
+    if (!hit) return w;
+    corrected.push(`${w} → ${hit}`);
+    return hit;
+  });
+  return { text: out, corrected };
+}
+
+// ─── concepts ─────────────────────────────────────────────────────────────────
+
 type Concept = {
   /** Matched against the description, lower case. */
   when: RegExp;
+  /** The concept does not apply when this also matches ("cracked" with "sidewalk" is not an apartment repair). */
+  unless?: RegExp;
   /** Words (any form; stemmed here) that 311's titles use for this, with a weight. */
   terms: string[];
   weight?: number;
@@ -58,88 +108,144 @@ type Concept = {
   against?: string[];
   /** 311 category names (end nodes) to search. */
   categories?: string[];
-  /** Suggests danger: the answer leads with the City's "Call 911" wording. */
-  danger?: boolean;
+  /**
+   * The kind of problem, for descriptions with more than one ("no hot water and the
+   * elevator is broken"). Concepts without a family (a place, a vehicle) only add context.
+   */
+  family?: string;
+  /** A Spanish word for the problem (the answer then points to 311's language help). */
+  spanish?: boolean;
 };
 
 // Written against 311's category tree and article titles of 2026-11-07. Each line's
 // words are taken from the titles and summaries of the article it should find.
+// Spanish words cover the top problems only; matching is by keyword, not translation.
 export const CONCEPTS: Concept[] = [
   // Noise (category "Noise")
-  { when: /\b(noise|noisy|loud|music|blasting|bass|yell|shout|scream|bang|pound|stomp|stereo|speakers?|tv|television|racket|barks?\b|barking)/, terms: ["noise"], categories: ["Noise"] },
-  { when: /\b(neighbou?rs?|next door|upstairs|downstairs|apartment (above|below)|across the hall|my building|the building)\b/, terms: ["neighbor"], weight: 2 },
+  { when: /\b(noise|noisy|loud|music|blasting|bass|yell|shout|scream|bang|pound|stomp|stereo|speakers?|tv|television|racket|barks?\b|barking)/, terms: ["noise"], categories: ["Noise"], family: "noise" },
+  { when: /\b(ruido|música alta|musica alta|fiesta|gritos)/, terms: ["noise"], categories: ["Noise"], family: "noise", spanish: true },
+  { when: /\b(neighbou?rs?|next ?do?or|upstairs|downstairs|apartment (above|below)|across the hall|my building|the building|vecin[oa]s?)\b/, terms: ["neighbor"], weight: 2 },
   { when: /\b(bar|bars|club|nightclub|lounge|restaurant)\b/, terms: ["bar", "club", "restaurant"], weight: 2, against: ["neighbor"] },
   { when: /\b(store|shop|bodega|deli|business)\b/, terms: ["store", "business"], weight: 1 },
-  { when: /\b(sidewalk|on the street|in the street|outside|on my block|corner)\b/, terms: ["street", "sidewalk"], weight: 1 },
-  { when: /\b(car|cars|truck|vehicle|motorcycle|moped|horn|honk|engine|idling)/, terms: ["vehicle"], weight: 2 },
-  { when: /\b(construction|jackhammer|drilling|demolition|crane|scaffold)/, terms: ["construction"], weight: 3, categories: ["Noise", "Buildings & Property"] },
-  { when: /\balarm/, terms: ["alarm"], weight: 2 },
-  { when: /\b(dog|dogs|barking|barks|animal)\b/, terms: ["dog", "animal"], weight: 2 },
+  { when: /\b(sidewalk|on the street|in the street|outside|on my block|corner|acera|calle)\b/, terms: ["street", "sidewalk"], weight: 1 },
+  { when: /\b(car|cars|truck|vehicle|motorcycle|moped|horn|honk|engine|idling|carro|coche)/, terms: ["vehicle"], weight: 2 },
+  { when: /\b(construction|jackhammer|drilling|demolition|crane|scaffold)/, terms: ["construction"], weight: 3, categories: ["Noise", "Buildings & Property"], family: "noise" },
+  { when: /\b(alarm)/, unless: /\b(smoke|carbon monoxide|co) (alarm|detector)/, terms: ["alarm", "noise"], weight: 2, categories: ["Noise"], family: "noise" },
+  { when: /\b(car (was |got )?hit|hit my car|accident|crash(ed)?|collision|fender[- ]bender)\b/, terms: ["accident", "vehicle"], weight: 3, categories: ["Safety & Crime"], family: "crash" },
+  { when: /\bsmok(e|es|ing)\b[^.]{0,25}\b(cigarettes?|cigars?|weed|marijuana|hallway|stairwell|lobby|building)\b|\b(cigarette|secondhand|second-hand) smoke\b/, terms: ["smoke", "free", "air", "act", "complaint"], weight: 3, categories: ["Tenants", "Public Health"], family: "smoking" },
+  { when: /\b(smell|smells|odor|odour|stink\w*|fumes|exhaust)\b/, unless: /\bgas\b/, terms: ["odor", "smell", "ventilation", "chimney"], weight: 2, categories: ["Air"], family: "odor" },
+  { when: /\b(dog|dogs|barking|barks|animal|perro)\b/, terms: ["dog", "animal"], weight: 2 },
+  { when: /\bfireworks?\b|\bfuegos artificiales\b/, terms: ["fireworks"], weight: 3, categories: ["Noise", "Safety & Crime"], family: "fireworks" },
   // Parking and vehicles
-  { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally)\b/, terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"] },
+  { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally|mal estacionad\w*|estacionad\w*)\b/, terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"], family: "parking" },
   { when: /\bhydrant/, terms: ["hydrant"], weight: 2, categories: ["Water", "Sidewalks"] },
-  { when: /\bdriveway/, terms: ["driveway", "blocked"], weight: 3, against: ["commercial"], categories: ["Parking"] },
-  { when: /\b(abandoned|derelict|junk car|no (license )?plates?|hasn'?t moved|not moved|been (sitting|there) for)/, terms: ["abandoned", "vehicle"], weight: 3, categories: ["Tickets & Tows", "Parking"] },
+  { when: /\bdriveway/, terms: ["driveway", "blocked"], weight: 3, against: ["commercial"], categories: ["Parking"], family: "parking" },
+  { when: /\b(abandoned|derelict|junk car|no (license )?plates?|hasn'?t moved|not moved|been (sitting|there) for)/, terms: ["abandoned", "vehicle"], weight: 3, categories: ["Tickets & Tows", "Parking"], family: "parking" },
   { when: /\b(no|without|missing) (license )?plates?\b/, terms: ["without"], weight: 3 },
   { when: /\bwith (a )?(license )?plates?\b/, terms: ["with"], weight: 3 },
+  { when: /\bbike lane\b/, terms: ["bike", "lane"], weight: 3, categories: ["Bikes", "Parking"], family: "bike_lane" },
   // Housing (category "Tenants")
-  { when: /\b(heat|heating|radiators?|boiler|freezing|cold apartment|no heat)\b/, terms: ["heat"], weight: 3, categories: ["Tenants"] },
-  { when: /\bhot water\b/, terms: ["hot", "water", "heat"], weight: 2, categories: ["Tenants"] },
-  { when: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building|rent)\b/, terms: ["apartment", "residential", "building"], weight: 1, against: ["commercial", "nycha", "loft"], categories: ["Tenants"] },
-  { when: /\b(mice|mouse|rats?|roach(es)?|cockroach(es)?|bed ?bugs?|pests?|vermin|fleas|flies)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"] },
-  { when: /\b(mold|mould|mildew)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"] },
-  { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"] },
-  { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"] },
-  { when: /\b(door|doors|locks?|windows?)\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"] },
-  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|flooding|flooded)\b/, terms: ["leak", "water"], weight: 2, categories: ["Tenants", "Water"] },
+  { when: /\b(heat|heating|radiators?|boiler|freezing|cold apartment|no heat|calefacci[oó]n|no hay calor)\b/, terms: ["heat"], weight: 3, categories: ["Tenants"], family: "heat" },
+  { when: /\b(hot water|agua caliente)\b/, terms: ["hot", "water", "heat"], weight: 2, categories: ["Tenants"], family: "heat" },
+  { when: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building|rent|apartamento|casero|due[ñn]o|edificio)\b/, terms: ["apartment", "residential", "building"], weight: 1, against: ["commercial", "nycha", "loft"], categories: ["Tenants"] },
+  { when: /\b(harass\w*|forcing (me|us) out|trying to (evict|force)|acoso|acosando)\b/, terms: ["harass", "tenant"], weight: 3, categories: ["Tenants"], family: "harassment" },
+  { when: /\b(mice|mouse|rats?|roach(es)?|cockroach(es)?|bed ?bugs?|pests?|vermin|fleas|flies|ratas?|ratones|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
+  { when: /\b(mold|mould|mildew|moho|hongos)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"], family: "mold" },
+  { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
+  { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
+  { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
+  { when: /\b(smoke|carbon monoxide|co) (detector|alarm)s?\b[^.]{0,30}\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\w*|needs? (a )?batter\w*)|\b(no|missing|broken) (smoke|carbon monoxide|co) (detector|alarm)/, terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
+  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, terms: ["leak", "water"], weight: 2, categories: ["Tenants", "Water"], family: "leak" },
+  { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, terms: ["elevator", "escalator"], weight: 3, categories: ["Buildings & Property"], family: "elevator" },
+  { when: /\bfire escapes?\b|\b(blocked|locked) (building )?exits?\b/, terms: ["fire", "escape", "exit", "blocked"], weight: 3, categories: ["Buildings & Property"], family: "exit" },
   // Streets and sidewalks
-  { when: /\b(pothole|potholes|hole in the (road|street)|cave[- ]?in|sinkhole|crater)/, terms: ["pothole", "cave", "street"], weight: 3, categories: ["Streets & Highways"] },
-  { when: /\b(traffic (light|signal)|stop ?light|signal|walk sign|red light)\b/, terms: ["traffic", "signal"], weight: 3, categories: ["Streets & Highways", "Sidewalks"] },
-  { when: /\b(street ?lights?|lamp ?posts?|light poles?)\b/, terms: ["street", "light"], weight: 3, categories: ["Streets & Highways", "Sidewalks"] },
-  { when: /\b(trees?|branch|branches)\b/, terms: ["tree", "branch"], weight: 3, categories: ["Sidewalks", "Streets & Highways"] },
-  { when: /\b(snow|ice|icy|unshoveled|shovel|slush|plow)/, terms: ["snow", "ice"], weight: 3, categories: ["Sidewalks", "Streets & Highways"] },
+  { when: /\b(pothole|potholes|hole in the (road|street)|cave[- ]?in|sinkhole|crater|bache|baches|hoyo en la calle)/, terms: ["pothole", "cave", "street"], weight: 3, categories: ["Streets & Highways"], family: "pothole" },
+  { when: /\b(sidewalk|acera)\b[^.]{0,30}\b(crack\w*|broken|uneven|raised|trip\w*|damaged|hole)\b|\b(crack\w*|broken|uneven|damaged) (sidewalk|acera)\b/, terms: ["broken", "sidewalk"], weight: 3, categories: ["Sidewalks"], family: "sidewalk" },
+  { when: /\b(traffic (light|signal)|stop ?light|signal|walk sign|red light|sem[aá]foro)\b/, terms: ["traffic", "signal"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "signal" },
+  { when: /\b(street ?lights?|lamp ?posts?|light poles?|poste de luz)\b/, terms: ["street", "light"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "street_light" },
+  { when: /\b(trees?|branch|branches|[aá]rbol)\b/, terms: ["tree", "branch"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "tree" },
+  { when: /\b(snow|ice|icy|unshoveled|shovel|slush|plow|nieve|hielo)/, terms: ["snow", "ice"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "snow" },
   // Water
-  { when: /\b(water main|gushing|water (all )?over the street|water in the street)/, terms: ["water", "main", "break"], weight: 2, categories: ["Water", "Sidewalks"] },
-  { when: /\bhydrant\b.*\b(open|running|leak|spraying|gushing)|\b(open|running|leaking) (fire )?hydrant/, terms: ["hydrant", "leak", "running"], weight: 3, categories: ["Water", "Sidewalks"] },
+  { when: /\b(water main|gushing|water (all )?over the street|water in the street)/, terms: ["water", "main", "break"], weight: 2, categories: ["Water", "Sidewalks"], family: "water" },
+  { when: /\bhydrant\b.*\b(open|running|leak|spraying|gushing)|\b(open|running|leaking) (fire )?hydrant/, terms: ["hydrant", "leak", "running"], weight: 3, categories: ["Water", "Sidewalks"], family: "water" },
   // Trash
-  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste))/, terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"] },
-  { when: /\b(dump|dumped|dumping)\b/, terms: ["dump"], weight: 3, categories: ["Cleaning"] },
-  { when: /\b(missed (pickup|collection)|not picked up|wasn'?t (picked up|collected)|not collected)/, terms: ["collection", "missed"], weight: 3, categories: ["Collection & Disposal"] },
+  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: /\b(not picked up|wasn'?t (picked up|collected)|missed (pickup|collection))/, terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
+  { when: /\b(dump|dumped|dumping|mattress|couch|sofa)\b/, terms: ["dump", "illegal"], weight: 3, categories: ["Cleaning"], family: "dumping" },
+  { when: /\b(missed (pickup|collection)|not picked up|wasn'?t (picked up|collected)|not collected|no recogieron)/, terms: ["collection", "missed"], weight: 3, categories: ["Collection & Disposal"], family: "collection" },
   // Homelessness
-  { when: /\b(homeless|encampments?|tents?|unhoused|sleeping (on|in) the|living on the street)/, terms: ["homeless", "encampment"], weight: 3, categories: ["Safety & Crime", "Homelessness"] },
-  // Danger: the City's own articles for these say "Call 911" (category "Safety & Crime").
-  { when: /\b(on fire|fire\b(?!\s*(hydrant|escape|alarm|department|code|safety|truck|house|station|inspection))|flames|burning|smoke\b(?!\s*(detector|alarm|free)))/, terms: ["fire", "smoke", "emergency"], weight: 3, categories: ["Safety & Crime"], danger: true },
-  { when: /\b(gas (smell|leak)|smells? (of|like) gas|smell gas|gas is leaking)/, terms: ["gas", "leak"], weight: 3, categories: ["Safety & Crime"], danger: true },
-  { when: /\bcarbon monoxide\b/, terms: ["carbon", "monoxide"], weight: 3, categories: ["Safety & Crime"], danger: true },
-  { when: /\b(hurt|injured|injury|bleeding|unconscious|not breathing|overdos|heart attack|collapsed|ambulance|medical emergency)/, terms: ["medical", "emergency", "injury"], weight: 3, categories: ["Safety & Crime"], danger: true },
-  { when: /\b(break[- ]?in|breaking in|burglar|robbery|robbing|being robbed|mugg|assault|attacking|attacked|stabb|shooting|shots fired|gunshots?|gunfire|a gun|weapon|knife)/, terms: ["assault", "gunshot", "crime"], weight: 3, categories: ["Safety & Crime"], danger: true },
-  { when: /\b(down(ed)? (power )?lines?|live wire|wires? (down|sparking)|sparking)/, terms: ["dangerous", "electrical"], weight: 2, categories: ["Safety & Crime"], danger: true },
-  { when: /\b(crash|collision|hit by a car|car accident)\b/, terms: ["accident", "injury"], weight: 3, categories: ["Safety & Crime"], danger: true },
+  { when: /\b(homeless|encampments?|tents?|unhoused|sleeping (on|in) the|living on the street|person sleeping|sin hogar|campamento)/, terms: ["homeless", "encampment", "outreach"], weight: 3, categories: ["Safety & Crime", "Homelessness"], family: "homeless" },
+  // Records
+  { when: /\bbirth certificate|acta de nacimiento/, terms: ["birth", "certificate", "order"], weight: 3, categories: ["Public Health", "Birth & Adoption"], family: "records" },
+  // Crime that is not happening now (danger is handled in emergency.ts)
+  { when: /\b(report a crime|crime|criminal|police report|denunciar)\b/, terms: ["crime", "tip"], weight: 3, categories: ["Safety & Crime"], family: "crime" },
 ];
 
-type Query = { terms: Map<string, number>; against: Set<string>; categories: string[]; danger: string[]; matched: string[] };
+type Query = {
+  terms: Map<string, number>;
+  against: Set<string>;
+  categories: string[];
+  matched: string[];
+  families: string[];
+  spanish: boolean;
+  danger: DangerAssessment;
+  corrected: string[];
+};
 
 /** The description as weighted search words. The description itself is not kept. */
 export function parseQuery(description: string): Query {
-  const text = description.toLowerCase().replace(/\s+/g, " ");
+  const fixed = correctTypos(normalize(description));
+  const text = fixed.text;
+  const danger = assessDanger(text);
   const terms = new Map<string, number>();
   const against = new Set<string>();
   const categories: string[] = [];
-  const danger: string[] = [];
   const matched: string[] = [];
+  const families: string[] = [];
+  let spanish = false;
   const add = (t: string, w: number) => terms.set(stem(t), Math.max(terms.get(stem(t)) ?? 0, w));
   for (const c of CONCEPTS) {
     const m = text.match(c.when);
-    if (!m) continue;
+    if (!m || (c.unless && c.unless.test(text))) continue;
     matched.push(m[0].trim());
     for (const t of c.terms) add(t, c.weight ?? 2);
     for (const t of c.against ?? []) against.add(stem(t));
     for (const cat of c.categories ?? []) if (!categories.includes(cat)) categories.push(cat);
-    if (c.danger) danger.push(m[0].trim());
+    if (c.family && !families.includes(c.family)) families.push(c.family);
+    if (c.spanish) spanish = true;
+  }
+  // A danger adds its words and always searches Safety & Crime, where the City's "Call 911" articles are.
+  for (const k of danger.kinds) {
+    for (const t of k.terms) add(t, 3);
+    if (!categories.includes("Safety & Crime")) categories.unshift("Safety & Crime");
+    matched.push(...danger.suggested_by);
   }
   for (const w of words(text)) if (!STOP.has(w) && w.length > 2) add(w, 1);
   for (const t of terms.keys()) if (against.has(t)) against.delete(t);
-  return { terms, against, categories, danger, matched: [...new Set(matched)] };
+  spanish = spanish || SPANISH.test(text);
+  return { terms, against, categories, matched: [...new Set(matched)], families, spanish, danger, corrected: fixed.corrected };
+}
+
+const SPANISH = /[áéíóúñ¿¡]|\b(ruido|vecin[oa]s?|calefaccion|basura|baches?|cucarachas|apartamento|edificio|hay|muy|los|del|tengo|necesito)\b/;
+
+/**
+ * A description with more than one problem, split into one description per kind of
+ * problem ("no hot water and the elevator is broken" → the hot water, the elevator).
+ * Parts with no kind of their own ("my building", "the landlord won't fix it") go with
+ * each. Returns one part when there is only one kind.
+ */
+export function splitProblems(description: string): string[] {
+  const parts = normalize(description).split(/\s*(?:,|;|\band also\b|\balso\b|\bplus\b|\band\b|\by también\b|\by\b)\s*/).filter((x) => x.length > 1);
+  if (parts.length < 2) return [description];
+  const fam = parts.map((p) => parseQuery(p).families);
+  const kinds = [...new Set(fam.flat())];
+  if (kinds.length < 2) return [description];
+  const context = parts.filter((_, i) => fam[i].length === 0).join(" ");
+  const out: string[] = [];
+  for (const k of kinds) {
+    const own = parts.filter((_, i) => fam[i][0] === k);
+    if (own.length) out.push([...own, context].filter(Boolean).join(" "));
+  }
+  return out.length > 1 ? out.slice(0, 3) : [description];
 }
 
 // ─── scoring ──────────────────────────────────────────────────────────────────
@@ -163,7 +269,7 @@ export function scoreArticle(q: Query, a: ArticleSummary): { score: number; hits
   for (const t of q.against) if (title.has(t)) score -= 4;
   if (!hits.length) return { score: 0, hits };
   const call911 = /^call 911\b/i.test(a.description);
-  if (call911) score += q.danger.length ? 6 : -3;
+  if (call911) score += q.danger.kinds.length ? 6 : -3;
   else if (/^(report|request|make a complaint)\b/i.test(a.description)) score += 1;
   else if (INFORMATIONAL.test(a.description)) score -= 2;
   return { score, hits };
@@ -189,9 +295,8 @@ export function routeCategories(q: Query, all: Category[], max = MAX_CATEGORIES)
   // its name, or several in its description), so a stray word does not add a category.
   const scored = leaves.map((c) => ({ c, s: scoreCategory(q, c) })).filter((x) => x.s >= 5);
   scored.sort((a, b) => b.s - a.s || (a.c.id < b.c.id ? -1 : 1));
-  // A danger word always searches Safety & Crime, where the City's "Call 911" articles are.
   const out = scored.map((x) => x.c);
-  if (q.danger.length) {
+  if (q.danger.kinds.length) {
     const sc = leaves.find((c) => c.name === "Safety & Crime");
     if (sc) return [sc, ...out.filter((c) => c.id !== sc.id)].slice(0, max);
   }
@@ -321,29 +426,44 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
 // ─── reaching 311 (City text, read 2026-11-07) ────────────────────────────────
 
 /**
- * From portal.311.nyc.gov/about-nyc-311/, read 2026-11-07: "Call 311 or 212-NEW-YORK
- * (212-639-9675) to connect with us: Outside of New York City; Using a Voice over
- * Internet Protocol (VoIP) provider; Using 711 or a teletypewriter (TTY) service;
- * Using a Video Relay Service (VRS)". "Text 311-692". "Download the NYC311 App: File
- * and track service requests on the go using your smartphone or tablet." (store links
- * from the same page). Online reporting is on each article's page.
+ * From portal.311.nyc.gov/about-nyc-311/, read 2026-11-07, word for word:
+ *   "We’re here to answer your call 24 hours a day, 7 days a week, 365 days a year.
+ *    Call 311 or 212-NEW-YORK (212-639-9675) to connect with us: Outside of New York
+ *    City / Using a Voice over Internet Protocol (VoIP) provider / Using 711 or a
+ *    teletypewriter (TTY) service / Using a Video Relay Service (VRS)"
+ *   "Send a text to 311-692 24 hours a day, 7 days a week, 365 days a year. Message and
+ *    data rates may apply."
+ *   "Download the NYC311 App: File and track service requests on the go using your
+ *    smartphone or tablet." (Android and Apple store links on the same page)
+ *   "NYC311 speaks your language! Our call center can help you in over 175 languages and
+ *    dialects when you ask to speak to an interpreter. Our website can be translated into
+ *    more than 100 languages using the menu at the top right corner of each page."
+ * Online reporting is on each article's page.
  */
+const ABOUT = "https://portal.311.nyc.gov/about-nyc-311/";
+export const LANGUAGE_HELP = {
+  says: "NYC311 speaks your language! Our call center can help you in over 175 languages and dialects when you ask to speak to an interpreter. Our website can be translated into more than 100 languages using the menu at the top right corner of each page.",
+  source: `quote of ${ABOUT}`,
+};
 export const REACH_311 = {
-  source: "https://portal.311.nyc.gov/about-nyc-311/",
+  source: ABOUT,
   checked: "2026-11-07",
   ways: [
-    { method: "311 Online", how: "Open the article's page (portal_url) and use its report option.", url: `${PORTAL}/` },
+    { method: "311 Online", how: "Open the article's page (portal_url) and use its report option.", url: `${PORTAL}/`, source: "BetaNYC wording" },
     {
       method: "NYC311 app",
-      how: "\"File and track service requests on the go using your smartphone or tablet.\"",
+      how: "File and track service requests on the go using your smartphone or tablet.",
       android: "https://play.google.com/store/apps/details?id=gov.nyc.doitt.ThreeOneOne",
       apple: "https://apps.apple.com/us/app/nyc-311/id324897619",
+      source: `quote of ${ABOUT}`,
     },
     {
       method: "phone",
-      how: "Call 311, or 212-NEW-YORK (212-639-9675) from outside New York City, with a VoIP provider, or with 711, TTY, or a Video Relay Service. 24 hours a day, 7 days a week.",
+      how: "Call 311, or 212-NEW-YORK (212-639-9675) from outside New York City, with a VoIP provider, or with 711, TTY, or a Video Relay Service. Answered 24 hours a day, 7 days a week, 365 days a year.",
+      source: `paraphrase of ${ABOUT}`,
     },
-    { method: "text", how: "Text 311-692, 24 hours a day, 7 days a week. Message and data rates may apply." },
+    { method: "text", how: "Send a text to 311-692 24 hours a day, 7 days a week, 365 days a year. Message and data rates may apply.", source: `quote of ${ABOUT}` },
+    { method: "language help", how: LANGUAGE_HELP.says, source: LANGUAGE_HELP.source },
   ],
 } as const;
 
@@ -364,22 +484,24 @@ export const CATEGORIES_SHAPE = { category_id: z.string().regex(CATEGORY_ID).opt
 
 const oldest = (xs: Fetched<unknown>[]) => xs.map((x) => x.fetched_at).sort()[0] ?? null;
 
-export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, client: ContentClient = contentClient(), data: BoardStatData = boardstatData()) {
-  if (args.community_district !== undefined && args.council_district !== undefined) throw new Error("Give community_district or council_district, not both.");
-  if (args.last_days !== undefined && args.community_district === undefined && args.council_district === undefined) {
-    throw new Error("last_days counts reports in a district; give community_district or council_district with it.");
-  }
-  const q = parseQuery(args.description);
-  const used: Fetched<unknown>[] = [];
-  const cats = await client.categories();
-  used.push(cats);
+type OneMatch = {
+  routed: Category[];
+  articlesScored: number;
+  pool: ArticleSummary[];
+  best: Match | null;
+  alternatives: Alternative[];
+  unreadable: string | null;
+};
+
+/** One description against 311's articles: route, score, read the best in full. */
+async function matchOne(q: Query, client: ContentClient, cats: Category[], used: Fetched<unknown>[], categoryId: string | undefined, limit: number): Promise<OneMatch> {
   let routed: Category[];
-  if (args.category_id) {
-    const c = cats.value.find((x) => x.id === args.category_id);
-    if (!c) throw new Error(`311 has no category ${args.category_id}. list_311_categories lists them.`);
+  if (categoryId) {
+    const c = cats.find((x) => x.id === categoryId);
+    if (!c) throw new Error(`311 has no category ${categoryId}. list_311_categories lists them.`);
     routed = [c];
   } else {
-    routed = routeCategories(q, cats.value);
+    routed = routeCategories(q, cats);
   }
   const pool = new Map<string, { a: ArticleSummary; cats: string[] }>();
   for (const c of routed) {
@@ -395,12 +517,12 @@ export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, 
     .map((x) => ({ ...x, ...scoreArticle(q, x.a) }))
     .filter((x) => x.score >= MIN_SCORE)
     .sort((x, y) => y.score - x.score || (x.a.title < y.a.title ? -1 : x.a.title > y.a.title ? 1 : 0));
-  const top = ranked.slice(0, args.limit ?? 3);
+  const top = ranked.slice(0, limit);
   const s1 = top[0]?.score ?? 0;
   const s2 = top[1]?.score ?? 0;
   // Only the best match is read in full (one GetContent request); the others are
   // listed from their summaries, which keeps a question to a few requests.
-  const matches: Match[] = [];
+  let best: Match | null = null;
   const alternatives: Alternative[] = [];
   let unreadable: string | null = null;
   for (const [i, x] of top.entries()) {
@@ -414,44 +536,64 @@ export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, 
             : s1 >= 9
               ? "close call: the next match scored nearly as well; read both"
               : "possible: few of your words matched; check the article";
-        matches.push(describeArticle(q, art.value, 1, x.score, x.hits, conf, x.cats, art));
+        best = describeArticle(q, art.value, 1, x.score, x.hits, conf, x.cats, art);
         continue;
       } catch (err) {
         if (!(err instanceof NotFoundError)) throw err;
         unreadable = `${x.a.ka_number} is listed in its category but the API returned no article for it.`;
       }
     }
-    alternatives.push({
-      rank: i + 1,
-      title: x.a.title,
-      ka_number: x.a.ka_number,
-      portal_url: articleUrl(x.a.ka_number),
-      summary: x.a.description,
-      score: x.score,
-      matched_words: x.hits,
-      found_in_categories: x.cats,
-    });
+    alternatives.push({ rank: i + 1, title: x.a.title, ka_number: x.a.ka_number, portal_url: articleUrl(x.a.ka_number), summary: x.a.description, score: x.score, matched_words: x.hits, found_in_categories: x.cats });
+  }
+  return { routed, articlesScored: pool.size, pool: [...pool.values()].map((x) => x.a), best, alternatives, unreadable };
+}
+
+function matchLine(m: Match): string {
+  return (
+    `Best match: "${m.title}" (${m.ka_number})` +
+    (m.agency ? `, handled by the ${m.agency}` : "") +
+    (m.problem_type ? `, 311 problem type "${m.problem_type}"` : "") +
+    `. Confidence ${m.confidence.split(":")[0]}. Article text as of ${m.article_fetched_at.slice(0, 10)}.`
+  );
+}
+
+export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, client: ContentClient = contentClient(), data: BoardStatData = boardstatData()) {
+  if (args.community_district !== undefined && args.council_district !== undefined) throw new Error("Give community_district or council_district, not both.");
+  if (args.last_days !== undefined && args.community_district === undefined && args.council_district === undefined) {
+    throw new Error("last_days counts reports in a district; give community_district or council_district with it.");
+  }
+  const q = parseQuery(args.description);
+  const used: Fetched<unknown>[] = [];
+  const cats = await client.categories();
+  used.push(cats);
+  const limit = args.limit ?? 3;
+
+  // More than one problem: one match per problem (the first is the main answer).
+  const parts = args.category_id ? [args.description] : splitProblems(args.description);
+  const mainQ = parts.length > 1 ? withDanger(parseQuery(parts[0]), q) : q;
+  const main = await matchOne(mainQ, client, cats.value, used, args.category_id, limit);
+  const others: { for_words: string[]; best_match: Match | null; alternatives: Alternative[] }[] = [];
+  for (const part of parts.slice(1)) {
+    const pq = parseQuery(part);
+    const m = await matchOne(pq, client, cats.value, used, undefined, 2);
+    if (m.best && m.best.ka_number === main.best?.ka_number) continue;
+    others.push({ for_words: pq.matched, best_match: m.best, alternatives: m.alternatives });
   }
 
-  const lead = matches[0];
+  const lead = main.best;
+  const alternatives = main.alternatives;
+  // Safety first (QA round 1 on #23): a danger leads with 911, quoting the City only
+  // when the City article is the danger detected; every answer carries SAFETY_LINE.
+  const atHand = [...main.pool];
+  const noMatch = !lead && !alternatives.length;
+  const emergency = emergencyLead(q.danger, atHand, { noMatch });
   let first_line: string;
-  let emergency: { suggested_by: string[]; call_911: string; source: string } | null = null;
-  const leadCall = lead ? call911Text({ description: lead.summary, sections: [] }) : null;
-  if (q.danger.length || leadCall) {
-    const fromCity = [...matches, ...alternatives].find((m) => /^call 911\b/i.test(m.summary));
-    const text = fromCity?.summary ?? (q.danger.length ? "If anyone is in danger, call 911 now. 311 is for problems that are not emergencies." : (leadCall as string));
-    emergency = {
-      suggested_by: q.danger,
-      call_911: text,
-      source: fromCity ? `311 article ${fromCity.ka_number}, ${fromCity.portal_url}` : "BetaNYC wording: no City article with a \"Call 911\" summary matched. 311's own articles tell people to call 911 for fires (KA-01543), gas leaks (KA-02048) and medical emergencies (KA-01581).",
-    };
-    first_line = text.startsWith("Call 911") || text.startsWith("If anyone") ? text : `Call 911: ${text}`;
+  if (emergency) {
+    first_line = emergency.call_911;
+  } else if (lead && /^call 911\b/i.test(lead.summary) && lead.confidence.startsWith("strong")) {
+    first_line = lead.summary; // the matched article itself says to call 911 (e.g. "Drug Sale")
   } else if (lead) {
-    first_line =
-      `Best match: "${lead.title}" (${lead.ka_number})` +
-      (lead.agency ? `, handled by the ${lead.agency}` : "") +
-      (lead.problem_type ? `, 311 problem type "${lead.problem_type}"` : "") +
-      `. Confidence ${lead.confidence.split(":")[0]}.`;
+    first_line = matchLine(lead);
   } else if (alternatives.length) {
     first_line = `Possible match: "${alternatives[0].title}" (${alternatives[0].ka_number}). Its details could not be read; open the link.`;
   } else {
@@ -459,13 +601,15 @@ export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, 
   }
 
   const searchWords = [...q.terms.entries()].filter(([, w]) => w > 1).map(([t]) => t).slice(0, 6);
-  const no_match = lead || alternatives.length
+  const no_match = !noMatch
     ? null
     : {
-        message: first_line,
+        message: "No 311 article matched this description well enough to suggest one. Try other words, browse with list_311_categories, or search 311 Online.",
         portal_search_url: `${PORTAL}/search/?q=${encodeURIComponent(searchWords.join(" ") || "report a problem")}`,
         portal_search_note: "The search link carries the matched words, not your description, so no address goes into the link.",
       };
+
+  const crimeAsked = q.danger.past_crime || q.danger.kinds.some((k) => k.id === "crime") || CRIME_WORDS.test(normalize(args.description));
 
   let in_your_district: unknown = null;
   if (lead?.problem_type && (args.community_district !== undefined || args.council_district !== undefined)) {
@@ -495,34 +639,47 @@ export async function howToReport(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, 
   const stale = used.filter((x) => x.stale);
   const out = {
     first_line,
+    safety_line: SAFETY_LINE,
+    safety_line_source: SAFETY_LINE_SOURCE,
     emergency,
-    best_match: lead ?? null,
+    best_match: lead,
     alternatives,
-    ...(unreadable ? { note: unreadable } : {}),
+    ...(others.length ? { other_problems: others, other_problems_note: "Your description names more than one problem; each is matched on its own. Report each one separately." } : {}),
+    ...(main.unreadable ? { note: main.unreadable } : {}),
     no_match,
+    ...(crimeAsked ? { crime: CRIME_POINTER } : {}),
+    ...(q.spanish ? { language_help: LANGUAGE_HELP } : {}),
+    ...(q.corrected.length ? { spelling_corrected: q.corrected } : {}),
     how_to_reach_311: REACH_311,
     not_filed: NOT_FILED,
     ...(args.borough ? { borough: args.borough, borough_note: "311's articles apply citywide; the borough does not change the match. Give it when you report." } : {}),
     in_your_district,
     searched: {
-      categories: routed.map((c) => ({ id: c.id, name: c.name })),
-      articles_scored: pool.size,
+      categories: main.routed.map((c) => ({ id: c.id, name: c.name })),
+      articles_scored: main.articlesScored,
       words_recognized: q.matched,
     },
     source: {
       name: "NYC 311 Public API, content operations (GetCategory, GetContentList, GetContent): the articles on 311 Online",
       url: "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
       fetched_at: oldest(used),
+      ...(lead ? { best_match_article_as_of: lead.article_fetched_at } : {}),
     },
     caveats: [
       "The match is made by BetaNYC from keywords, not by the City. Read the article before you report.",
+      lead ? `The article's text is as of ${lead.article_fetched_at}. 311 articles change with the season (for example, when DSNY takes snow complaints); the link shows the current page.` : null,
       "The 311 problem type is the one the article names. NYC Open Data calls it complaint_type and sometimes writes it in capitals (\"HEAT/HOT WATER\"). Some articles name an agency but no problem type.",
       `Only the categories listed under searched were read. If the match looks wrong, list_311_categories shows the rest, and category_id searches one of them.`,
       NOT_FILED,
-    ],
+    ].filter((x): x is string => Boolean(x)),
     ...(stale.length ? { stale: true as const, warning: stale[0].warning } : {}),
   };
   return redactAll(out);
+}
+
+/** A part of a split description keeps the whole description's danger reading. */
+function withDanger(part: Query, whole: Query): Query {
+  return { ...part, danger: whole.danger, terms: new Map([...part.terms, ...[...whole.terms].filter(([t]) => whole.danger.kinds.some((k) => k.terms.map(stem).includes(t)))]) };
 }
 
 export async function list311Categories(args: z.infer<z.ZodObject<typeof CATEGORIES_SHAPE>>, client: ContentClient = contentClient()) {

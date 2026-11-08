@@ -29,11 +29,16 @@ endpoints `/developer/apis/nyc-311-public-api/operations/<id>` and `/schemas/<id
 An article's link is `https://portal.311.nyc.gov/article/?kanumber=KA-#####` (200 on the portal).
 The `ContentAction.Problem` is the open-data `complaint_type` (`erm2-nwe9` describes that column as
 "Problem (formerly Complaint Type)"), except where noted below. The ways to reach 311 come from
-<https://portal.311.nyc.gov/about-nyc-311/>, read 2026-11-07: "Call 311 or 212-NEW-YORK
-(212-639-9675) to connect with us: Outside of New York City, Using a Voice over Internet Protocol
-(VoIP) provider, Using 711 or a teletypewriter (TTY) service, Using a Video Relay Service (VRS)";
-"Text 311-692"; and "Download the NYC311 App: File and track service requests on the go", with
-its Google Play and App Store links. The 311 Online search link is the portal's own search form
+<https://portal.311.nyc.gov/about-nyc-311/>, read 2026-11-07, word for word: "We’re here to answer
+your call 24 hours a day, 7 days a week, 365 days a year. Call 311 or 212-NEW-YORK (212-639-9675)
+to connect with us: Outside of New York City, Using a Voice over Internet Protocol (VoIP) provider,
+Using 711 or a teletypewriter (TTY) service, Using a Video Relay Service (VRS)"; "Send a text to
+311-692 24 hours a day, 7 days a week, 365 days a year. Message and data rates may apply.";
+"Download the NYC311 App: File and track service requests on the go using your smartphone or
+tablet", with its Google Play and App Store links; and "NYC311 speaks your language! Our call
+center can help you in over 175 languages and dialects when you ask to speak to an interpreter."
+Each way in the answer is labeled `quote of` or (the phone line, shortened) `paraphrase of` that
+page. The 311 Online search link is the portal's own search form
 (`/search?q=`, which answers at `/search/?q=`).
 
 Not used: `vwpc-kje2` (the old service catalog, frozen since 2019) and the Service Level
@@ -68,13 +73,46 @@ Deterministic, no model call, no new dependency (`src/how-to-report.ts`):
 
 Confidence: *strong* (score 9 or more and 2 ahead of the next), *close call*, or *possible*.
 
-**Emergencies.** If the description suggests danger (fire, smoke, gas, carbon monoxide, someone
-hurt, a crime in progress, downed wires, a crash), `first_line` is the City's own summary of the
-matched "Call 911" article, for example "Call 911 to report a gas leak or any gas-related
-emergency or dangerous condition." (KA-02048). If no such article matched, it says "If anyone is
-in danger, call 911 now. 311 is for problems that are not emergencies." and labels that as BetaNYC
-wording. A matched article whose summary starts "Call 911" leads the same way even without a
-danger word. `call_911` on a match carries the article's own 911 section.
+**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer carries
+`safety_line`: "If anyone is in danger right now, call 911." (BetaNYC wording). A description that
+suggests danger leads with a 911 line: fire, smoke pouring out, gas, carbon monoxide going off,
+downed or sparking wires, an explosion, water near electricity, a crime in progress (robbery,
+break-in, assault, a gun or knife, shots), someone hurt, unconscious, not breathing or
+overdosing, a person hit by a car, a child alone or someone missing, suicide or self-harm, a
+collapse, or someone trapped. Spanish words for fire, gas, injury and robbery count too.
+
+The line quotes a City article **only when that article is the danger detected**: "Gas Leak"
+(KA-02048) for a gas smell, "Fire Emergency" (KA-01543), "Carbon Monoxide" (KA-02608), "Medical
+Emergency" (KA-01581), "Overdose", "Assault" (only for an assault), "Gunshot" (only for shots),
+"Accident with Injury" (KA-01513, a crash with someone hurt), "Missing Person" (only when someone
+is missing), "Suicide" (KA-01635). Its first sentence is quoted. Otherwise the line is "If anyone
+is in danger right now, call 911. 311 is for problems that are not emergencies.", labeled BetaNYC
+wording. For suicide and self-harm, `also_988` quotes KA-01635: "When people call, text, or chat
+988, they will be connected to trained counselors".
+
+Not danger: "no one was hurt", "nobody got hurt", "not an emergency"; smoking as an activity
+("smoke cigarettes in the hallway"); an odor ("a burning smell"); "the noise hurts my sleep"; a
+crash with no word about injury ("my car was hit"), which gets the standing line only. A past crime
+("robbed last week") gets no 911 lead. A no-match answer with an urgent word ("help", "right now",
+"emergency") leads with the BetaNYC 911 line.
+
+**Crime.** When the description is about a crime, `crime` points to the City's own articles: "Crime
+Stoppers Tip" (KA-02668: "You can anonymously report a tip about a crime ... The City accepts tips
+regarding individuals wanted for past felony crimes.") and "Police Precincts and PSAs" (KA-01027).
+It gives no phone number of its own; "Call 911" for a crime happening now is BetaNYC wording.
+
+**Several problems, Spanish, typos.** A description with several kinds of problem ("no hot water
+and the elevator is broken") gets one match per kind (`other_problems`, at most three). Spanish
+words for the top problems (ruido, vecinos, calefacción, agua caliente, bache, basura, cucarachas,
+moho, gotera) are matched by keyword, and the answer adds `language_help`, quoting the about page.
+A word of five letters or more that is one edit from a known word (`TYPO_VOCAB`: "pothoel",
+"stret", "musik") is corrected and listed in `spelling_corrected`; words that are one edit from a
+known word but mean something else ("barking", "beating", "leaning", "night") are never changed.
+
+**Freshness.** `first_line` and `source.best_match_article_as_of` give the date of the article
+text. An article whose text says something holds "right now", "currently" or "at this time" (on
+2026-11-07, KA-01397: "DSNY isn't taking complaints right now") is refreshed daily, others weekly.
+Without `NYC_311_API_KEY`, a saved copy still answers and the warning says the key is not set.
 
 **Privacy.** The description is not stored, logged, echoed, or sent anywhere; only 311 content is
 fetched. The no-match search link carries the recognized words, not the description. ZIP codes in
@@ -137,15 +175,24 @@ BoardStat's detail files. For each, a description a resident might type, the top
 | 20 | Encampment | 46,279 | NYPD (DHS about a third) | a homeless encampment under the overpass | KA-02253 Homeless Encampment | DHS | Encampment | yes | yes; **agency differs: the article says DHS, two thirds of the requests are NYPD's** |
 
 **Result: the right article 20 of 20. The article names the open-data problem type in 14 of 20.
-The agency matches open data in 18 of 20** (row 20 differs; row 9's article splits by plate, and
-all 12 months of open data are NYPD's "With License Plate"). None of the six problem-type misses
+The agency matches open data in 17 of 20.** The three that do not: row 9 (the article splits NYPD
+with plates and DSNY without; open data's 12 months are all NYPD "With License Plate", so only the
+with-plate case matches), row 13 (the sidewalk article names no DSNY action today; open data says
+DSNY), and row 20 (the article says DHS; two thirds of the requests are NYPD's). None of the six problem-type misses
 can be fixed with synonyms: in each, the City's article does not state the type, or states a
 different name. They are listed here and the tool says so in each answer (`problem_type: null`,
 `no_reportable_action`, or `file_a_complaint`).
 
+## More phrasings
+
+`test/how-to-report-phrasings.test.mjs` runs 46 more descriptions (a reviewer's 36 and 10 more):
+emergencies, near misses that are not emergencies, Spanish, typos, several problems in one
+description, and requests 311 handles that are not complaints ("a copy of my birth certificate").
+Each row states whether the answer leads with 911 and with which City article.
+
 ## Live calls
 
-46 read-only calls to the content operations on 2026-11-07, all 200: 1 `GetCategory`, 23
-`GetContentList` (two of them, a parent category and "A to Z", to confirm they are empty), 22
-`GetContent` (one of them the free-text observation above). No other 311 operation, no request
-filed, no portal form opened.
+59 read-only calls to the content operations on 2026-11-07, all 200: 1 `GetCategory`, 23
+`GetContentList` (two of them, a parent category and "A to Z", to confirm they are empty), 35
+`GetContent` (one of them the free-text observation above; 13 recorded for QA round 1). No other
+311 operation, no request filed, no portal form opened.

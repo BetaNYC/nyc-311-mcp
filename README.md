@@ -10,7 +10,7 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ## What it does
 
-Exposes 19 tools over MCP. Six use the NYC 311 Public API (they need an API key):
+Exposes 20 tools over MCP. Six use the NYC 311 Public API (they need an API key):
 
 | Tool | Description |
 |---|---|
@@ -18,7 +18,7 @@ Exposes 19 tools over MCP. Six use the NYC 311 Public API (they need an API key)
 | `get_status` | Current city status for an emergency or weather condition (Code Blue, fire hydrants, OEM alerts, snow) |
 | `get_service_request` | Look up one 311 service request by its 311 number, with BetaNYC's plain-language reading of its status (the City publishes no definitions) and the agency's resolution text; for other requests at its address, use `address_history` |
 | `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
-| `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content. Leads with the City's "Call 911" wording when the description suggests danger. Matching is BetaNYC's, by keyword. **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
+| `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer carries "If anyone is in danger right now, call 911."; a description that suggests danger leads with 911, in the City's words only when the City article is that danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
 | `list_311_categories` | 311's own topic categories, or the articles in one, to browse when a match looks wrong |
 
 Eleven answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
@@ -202,7 +202,7 @@ list_311_categories(category_id="311-12")                               → ever
 
 ## API key
 
-**For the four 311 API tools, yes — a free API key is required.** The ten district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
+**For the six 311 API tools (the four lookup tools, `how_to_report` and `list_311_categories`), yes — a free API key is required.** The eleven district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
 
 1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and register / sign in.
 2. Subscribe to the **NYC 311 Public Developers** product (see the table below for which product to choose).
@@ -328,7 +328,7 @@ send (#18) is next; the server will not file requests on anyone's behalf.
 
 ## Data source
 
-The four lookup tools and the two reporting-help tools (`how_to_report`, `list_311_categories`, through the API's content operations GetCategory, GetContentList and GetContent) use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The ten district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data.
+The four lookup tools and the two reporting-help tools (`how_to_report`, `list_311_categories`, through the API's content operations GetCategory, GetContentList and GetContent) use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The eleven district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data.
 
 This is an independent, community-built project from BetaNYC. It is not affiliated with, endorsed by, or an official product of the City of New York.
 

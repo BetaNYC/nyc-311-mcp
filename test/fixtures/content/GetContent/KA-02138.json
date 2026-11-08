@@ -1,0 +1,50 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02138",
+   "Title": "Fallen Tree or Branch",
+   "Description": "Request the removal of a fallen tree or branch, cracked branches in danger of falling, or a tree in poor condition.",
+   "Section": [
+    {
+     "Name": "911 Fallen Tree or Branch",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <font color=\"#ff0004\"><b>911</b></font> to report a damaged tree that poses an immediate threat to a person&#39;s life.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01794\">Tree Pruning</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02030\">Curbside Composting</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02006\">Dead Tree</a> to request the removal of a standing dead or dying tree</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01386\">Tree Stump</a>&nbsp;to request the removal of a tree stump uprooted due to a weather event</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01094\">City Claim</a> to report property damage from a City tree</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01990\">Tree Destruction</a>&nbsp;to report someone intentionally damaging a tree</li></ul></div><p>You can report City trees and branches that have fallen to the ground on public property to NYC Parks.&nbsp;Public property includes streets, sidewalks, parks, and other public places.</p><p>NYC Parks&nbsp;officials also remove trees or branches that are blocking sidewalks or streets, as well as branches that are cracked or hanging and about to fall. Trees that are located along streets in front of houses will be investigated and removed if necessary.</p><p>NYC Parks is not responsible for:</p><ul><li>Any non-City tree that falls on private property</li><li>Any small non-City tree branch that falls on private property</li><li>Any tree that is located on private property</li></ul><style type=\"text/css\">.asp {\n  max-width: 100%;\n  height: auto;\n}</style>",
+     "ContentAction": [
+      {
+       "Name": "Large Branch or Tree Removal",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Damaged Tree"
+      },
+      {
+       "Name": "Small Branch Removal",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Damaged Tree",
+       "ProblemDetail": "Branch or Limb Has Fallen Down"
+      }
+     ]
+    },
+    {
+     "Name": "Wood Debris from Weather Event",
+     "Content": "<p>NYC Parks will clean up all or part of a curbside tree that is damaged as a result of weather related activity or other causes.</p><p>When a&nbsp;forestry crew cannot immediately remove the debris resulting from their work, they will leave the brush or logs neatly piled near the curb. A crew will be assigned to the debris removal, and the matter will be resolved as soon as possible. The worksites are left as clean as possible, but the area may not always be completely free of small twigs, leaves, chippings, or sawdust.</p>",
+     "ContentAction": [
+      {
+       "Name": "Wood Pile Remaining",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Wood Pile Remaining",
+       "ProblemDetail": "Remove Debris"
+      }
+     ]
+    },
+    {
+     "Name": "After Requesting Removal of City Tree Debris",
+     "Content": "<p>NYC Parks&nbsp;uses one team to cut and clear trees or branches to the curb. A separate team is later scheduled to pick up the wood debris.</p><p>Removal of trees, branches, and related debris may be delayed during a storm if the tree debris is&nbsp;not blocking streets or sidewalks. NYC Parks&nbsp;may give priority to the removal of trees or branches blocking passage on streets or highways.</p><p>You can check your&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01066\">service request status</a>&nbsp;if you have already reported a fallen tree or branches.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Removal of Trees or Branches on Private Property",
+     "Content": "<p>NYC Parks&nbsp;does not perform tree work on private property trees. Property owners must consult with a private landscape contractor to arrange for the removal of non-City trees or tree branches.</p><p>Property owners are responsible for knowing whether a tree is on their property or on the City&#39;s property. Trees can appear to be growing on your property but actually be on City property. Reference your title survey to verify property lines before removing a tree or conducting any tree work on or around trees in your front yard.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

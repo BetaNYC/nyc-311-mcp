@@ -1,0 +1,16 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02233",
+   "Title": "Blocked Building Exit or Fire Escape",
+   "Description": "Report partially or fully blocked building exits or fire escapes.",
+   "Section": [
+    {
+     "Name": "911 Blocked Building Exit or Fire Escape",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report an emergency situation or condition that might cause danger to life or personal property.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01466\">Fire Hazard</a>&nbsp;to report potential fire related issues</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01074\">Apartment Maintenance Complaint</a>&nbsp;to report a broken door in a residential building</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01076\">NYCHA Public Housing Maintenance Complaint</a>&nbsp;to report a problem at a NYCHA public housing building</li></ul></div><p>You can report a partially or fully blocked fire escape or secondary exit (also known as an egress). You also can report a secondary exit that&#39;s locked, sealed, or missing.</p><p>Include in your report:</p><ul><li>What is blocking the exit</li><li>If the door is locked or sealed</li><li>If there is another way to get out of the building</li></ul><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> to report the problem.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

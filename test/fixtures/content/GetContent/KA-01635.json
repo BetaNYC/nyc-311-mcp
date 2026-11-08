@@ -1,0 +1,21 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01635",
+   "Title": "Suicide",
+   "Description": "Call 911 to report that someone is considering suicide or endangering themselves.",
+   "Section": [
+    {
+     "Name": "911 Suicide",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report a person endangering or threatening to kill themselves.</div></div></div></div>",
+     "ContentAction": []
+    },
+    {
+     "Name": "988",
+     "Content": "<p>988 is the three-digit dialing code across the country that will route callers to the 988 Suicide and Crisis Lifeline, previously known as the National Suicide Prevention Lifeline.</p><p>In New York City, this service is provided through NYC 988. When people call, text, or chat 988, they will be connected to trained counselors that are part of the existing Lifeline network.</p><p>These trained counselors will listen, understand how the problems are affecting the individual or their loved one, provide support, and connect them to resources if necessary.</p><p>Learn more on the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01682\">988 Mental Health Support</a>&nbsp;page.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}
