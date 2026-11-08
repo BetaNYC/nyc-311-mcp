@@ -30,7 +30,7 @@ What this server does about it:
   `sr_number`, which wrongly implied a 311 number), with a caveat.
 - `get_service_request` adds a `plain_language.about_the_number` note, and on a 404 it says that
   an 8-digit Open Data id is not a 311 number.
-- **No link by number is made**: none is published, and the two checked pairs show no formula. Instead, `plain_language.address_lookup`
+- **No link by number is made**: none is published, and the two checked pairs show no fixed offset. Instead, `plain_language.address_lookup`
   gives the request's street address (as the API wrote it, ZIP removed) and borough, and
   `next_step` says to call `address_history` with them. That finds the address and its
   district, not this request. A match by address and time to the second would usually find the
