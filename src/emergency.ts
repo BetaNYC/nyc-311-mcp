@@ -53,7 +53,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "gas",
     label: "a gas smell or leak",
-    when: /\b(gas (smell|leak|odor|odour)|smells? (of|like) gas|smell(ing)? (of )?gas|gas is leaking|leaking gas|rotten eggs?|smells? (of|like) sulfur|gas\b[^.]{0,40}\b(smell|odor)\w*|(smell|odor)\w*[^.]{0,30}\bgas\b(?! station)|olor a gas|fuga de gas)/,
+    when: /\b(gas (smell|leak|odor|odour)|smells? (of|like) gas|smell(ing)? (of )?gas|gas is leaking|leaking gas|rotten eggs?|(reeks|stinks) (of|like) gas|huele a gas|smells? (of|like) sulfur|gas\b[^.]{0,40}\b(smell|odor)\w*|(smell|odor)\w*[^.]{0,30}\bgas\b(?! station)|olor a gas|fuga de gas)/,
     city: /^Gas Leak$/,
     terms: ["gas", "leak"],
   },
@@ -87,14 +87,14 @@ export const DANGERS: DangerKind[] = [
     id: "crime",
     label: "a crime in progress",
     when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
-    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun (permit|license|laws?)|knife sharpening|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
+    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
     city: /^(Assault|Gunshot)$/,
     terms: ["dangerous", "situation", "location"],
   },
   {
     id: "hurt",
     label: "someone hurt or in medical danger",
-    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|choking|fainted|not moving|turning blue|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
+    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|od'?ing|odeing|choking|fainted|not moving|turning blue|(isn'?t|not) responding|swallowed (a |an |some )?(battery|batteries|bleach|poison|magnets?|pills)|poisoned|fell (out of|off|from) (a |the |his |her |my )?(window|roof|fire escape|scaffold\w*|balcony|ledge|building|stairs)|se cay[oó]|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
     unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b/,
     city: /^(Medical Emergency|Overdose)$/,
     terms: ["medical", "emergency"],
@@ -124,7 +124,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "collapse",
     label: "a collapse",
-    when: /\b(building|ceiling|wall|roof|scaffold\w*|balcony|stairs?|staircase|floor|facade|façade|crane|sidewalk shed)\b[^.]{0,20}\b(collaps\w*|caving in|caved in|falling down|about to (fall|collapse)|is falling|fell( in| down| onto| on| off)?|shaking|swaying|cracking|tipping|buckling)\b|\bcollapse\b|\bderrumb\w*/,
+    when: /\b(building|ceiling|wall|roof|scaffold\w*|balcony|stairs?|staircase|floor|facade|façade|crane|sidewalk shed)\b[^.]{0,20}\b(collaps\w*|caving in|caved in|falling down|about to (fall|collapse)|is falling|fell( in| down| onto| on| off)?|shaking|swaying|cracking|tipping|buckling)\b|\bcollapse\b|\b(came|coming|come) crashing down\b|\bderrumb\w*/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -136,7 +136,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "at_risk",
     label: "a person at risk",
-    when: /\b(on the (subway |train )?tracks|fell (into|in) the (river|water|harbor|ocean|lake|pool|east river|hudson)|drowning|(basement|cellar|apartment) is flood\w*[^.]{0,40}\b(is|are) (down there|inside|in there)|(baby|infant|toddler|newborn|elderly|grandm\w*|grandf\w*|grandparent)[^.]{0,30}\b(freezing|too cold|hypotherm\w*|turning blue)|(freezing|too cold)[^.]{0,30}\b(baby|infant|toddler|newborn))\b/,
+    when: /\b(on the (subway |train )?tracks|jump(ed|ing)? in front of (a |the )?(train|subway|bus|car)|(yelling|screaming|calling|crying|shouting|begging) for help|help me\b|pidiendo ayuda|fell (into|in) the (river|water|harbor|ocean|lake|pool|east river|hudson)|drowning|(basement|cellar|apartment) is flood\w*[^.]{0,40}\b(is|are) (down there|inside|in there)|(baby|infant|toddler|newborn|elderly|grandm\w*|grandf\w*|grandparent)[^.]{0,30}\b(freezing|too cold|hypotherm\w*|turning blue)|(freezing|too cold)[^.]{0,30}\b(baby|infant|toddler|newborn))\b/,
     // No search words of its own: a baby freezing with no heat still gets the 311 heat article.
     terms: [],
   },
