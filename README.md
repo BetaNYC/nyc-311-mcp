@@ -54,7 +54,7 @@ report**. Details, and a comparison with the City's own 311 Reporting dashboards
 |---|---|---|
 | `ll47_service_request_report` | Former § 1075(b): for a month and the fiscal year to date, totals by category and agency, by status, and average (and median) days to close per category per agency. Citywide, a borough, a community or Council district, or a table of every district | BoardStat |
 | `ll47_directory_assistance_report` | Former § 1075(c): calls to 311 agents by topic, month and fiscal year to date. **Limited**: the open data cannot pick out directory-assistance calls, and its agency column is blank | NYC Open Data `wewp-mm3p`, one query per month, cached |
-| `cb_monthly_list` | § 1075(d), current law: one community district's requests for a month plus every older one still unresolved, with category, agency and status; pages, or CSV | BoardStat |
+| `cb_monthly_list` | § 1075(d), current law: one community district's requests for a month, every older one still unresolved, and those unresolved at the month's end and closed since, with category, agency and status; pages tied to one build, or CSV | BoardStat |
 
 ---
 

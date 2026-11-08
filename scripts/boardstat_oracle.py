@@ -274,4 +274,11 @@ class Oracle:
             WHERE created_date >= CAST({lit(self.win_start)} AS DATE) AND created_date < CAST({lit(month_start)} AS DATE)
               AND status IS DISTINCT FROM 'Closed'
             ORDER BY created_date, unique_key""")
-        return {"new_this_month": [r["unique_key"] for r in fresh], "unresolved_from_prior_months": [r["unique_key"] for r in prior]}
+        # Unresolved at the month's end, closed since: created before the month, closed after it.
+        since = self.q(f"""
+            SELECT unique_key FROM {t}
+            WHERE created_date >= CAST({lit(self.win_start)} AS DATE) AND created_date < CAST({lit(month_start)} AS DATE)
+              AND status = 'Closed' AND closed_date >= CAST({lit(month_end)} AS DATE) + INTERVAL 1 DAY
+            ORDER BY created_date, unique_key""")
+        return {"new_this_month": [r["unique_key"] for r in fresh], "unresolved_from_prior_months": [r["unique_key"] for r in prior],
+                "unresolved_at_month_end_now_closed": [r["unique_key"] for r in since]}

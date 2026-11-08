@@ -30,7 +30,7 @@ optional `warning`/`stale`, `data`) plus a `mandate` block:
 
 - `charter_section`, `rebuilds`, `law`, `status` (`current` or `repealed`), `repealed_by` (for (b) and (c)), and `text` (the law's words);
 - `note`: "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.";
-- `omissions`: the ZIP code breakdown, **omitted by BetaNYC's decision** (ZIP codes are a poor way to organize NYC data), and anything before 2020-01-01 (the law counted from April 1, 2004).
+- `omissions`: the ZIP code breakdown, **omitted by BetaNYC's decision** (ZIP codes are postal delivery areas, not City districts, so this server does not use them), and anything before 2020-01-01 (the law counted from April 1, 2004).
 
 No ZIP code appears anywhere: no key names one (`assertNoZip`), no string holds one
 (`assertNoZipValues`; free text goes through `redactZip`), no Parquet read names or filters a
@@ -76,7 +76,7 @@ center representative used to resolve the customer's inquiry"), `brief_descripti
 Agency, CSMS SR, Routed to Web Page, Internal Transfer, Caller Hung Up, Hot Transfer 911,
 Universal Intake SR, Referral, Agency Closed, Alert Information Provided).
 
-**It ships marked `limited: true`**, because the data cannot honestly support the report as the
+**It ships marked `limited: true`**, because the data cannot support the report as the
 law wrote it:
 
 1. Nothing in the dataset marks a call as entered "in the directory assistance category". The
@@ -94,8 +94,19 @@ Queries, built from Socrata's SoQL documentation: one per month,
 `$select=inquiry_name, agency, agency_name, call_resolution, count(*) AS n`, `$where` on `date`
 for the month, `$group` and `$order` on the four columns, paged with `$limit=50000`/`$offset`
 (October 2026: 1,732 rows, about 13 s). Socrata leaves null values out of each row, so a missing
-key is a blank. A fiscal year to date is the sum of its months. Each month's answer is cached
-on disk until the dataset's `rowsUpdatedAt` changes; the metadata is re-read at most hourly.
+key is a blank. A fiscal year to date is the sum of its months. Each month's answer is saved on
+disk. A month that ended more than 7 days ago is answered from the saved copy for 30 days, whatever
+the dataset version (its `rowsUpdatedAt` moves every night, so keying on it alone re-asked every
+month daily). A recent month is asked again when the dataset changes. The metadata is re-read at
+most hourly and saved too.
+
+**When the portal is slow or down.** One call has a 45 s budget, waits and retries included. The
+asked-for month is fetched first, then the rest of the fiscal year. Months not reached are listed in
+`months_missing`, the fiscal-year section says `complete: false` and gives no partial total, and
+asking again finishes from the saved months. Requests are never sent in parallel (engineering
+standards §6 forbids it for one portal), so this is how a cold fiscal year stays inside client
+timeouts. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
+and a caveat; with no saved copy for the asked-for month, the tool says so and does not answer.
 Politeness (engineering standards §6): one request at a time, at least 2 s between request
 starts, the gap doubled after a 429 (to 60 s) and halved after a success, `Retry-After` honored
 on 429 and 503 (capped at 60 s), capped backoff on 5xx, a 120 s timeout, a package User-Agent,
@@ -103,15 +114,28 @@ and `X-App-Token` when `SOCRATA_APP_TOKEN` is set.
 
 ## `cb_monthly_list`
 
-One community district. `new_this_month`: every request created in the month (default: the
-newest complete month, the law's "immediately preceding month"). `unresolved_from_prior_months`:
-every request created earlier (2020 on) whose status is not Closed. Each row: `section`,
-`sr_number`, `created`, `category`, `description`, `agency`, `agency_name`, `status` (current, as
-of the build, which is what § 1075(d)(3) asks), `address` (as the City wrote it, ZIP codes
-removed). Ordered by created time, then number. `limit` (up to 1,000) and `offset`, with
-`next_offset`; `part` keeps one half; `format: "csv"` returns the page as CSV text with the same
-columns. The answer links to the BoardStat page for the month, and gives a second link for the
-unresolved requests.
+One community district, in three parts, in this order:
+
+- `new_this_month`: every request created in the month (default: the newest complete month,
+  the law's "immediately preceding month");
+- `unresolved_from_prior_months`: every request created earlier (2020 on) whose status is not
+  Closed **when the BoardStat data was built**;
+- `unresolved_at_month_end_now_closed`: every request created earlier that was closed *after* the
+  month ended, so it was unresolved at the month's end, by its own created and closed dates.
+
+Open data keeps only each request's current status, so a past status cannot be rebuilt. For any
+month other than the newest complete one the answer says so plainly (`status_note`, and a
+caveat): "unresolved" is as of `status_as_of` (the build), and the City's § 1075(d) list would
+show the status when it was sent. The third part is what can be rebuilt of the month-end view.
+
+Each row: `section`, `sr_number`, `created`, `closed`, `category`, `description`, `agency`,
+`agency_name`, `status` (current, as of the build, which is what § 1075(d)(3) asks), `address`
+(as the City wrote it, ZIP codes removed). Ordered by created time, then number, within each
+part. `limit` (up to 1,000) and `offset`; the answer gives `next_page` (`offset` and
+`data_as_of`). A page asked for with a `data_as_of` that is not the current build is refused
+with a message to start again, so a list is never stitched from two builds. `part` keeps one
+part; `format: "csv"` returns the page as CSV text with the same columns. The answer links to the
+BoardStat page for the month, and gives a second link for the unresolved requests.
 
 ## Checking the numbers
 
@@ -128,17 +152,19 @@ written from the law's list and BoardStat's columns. Build 2026-11-07T10:36:39Z:
 | L3 | Service request report, citywide, every district file, same | 2,860 | 0 |
 | L4 | Service request report, citywide, month file, same | 680 | 0 |
 | L5 | Service request report, Queens, month file, 2026-10 | 295 | 0 |
-| L6 | § 1075(d) list, Manhattan CD 1, 2026-10, first page of 1,000 | 1,003 | 0 |
-| L7 | § 1075(d) list, Manhattan CD 1, 2026-10, the page where the two parts meet | 1,003 | 0 |
+| L6 | § 1075(d) list, Manhattan CD 1, 2026-10, first page of 1,000 | 1,004 | 0 |
+| L7 | § 1075(d) list, Manhattan CD 1, 2026-10, the page where the parts meet | 1,004 | 0 |
 | L8 | § 1075(d) list, Bronx CD 5, 2026-09, unresolved part | 1,001 | 0 |
+| L9 | § 1075(d) list, Brooklyn CD 1, 2024-03, unresolved at month end and closed since | 1,001 | 0 |
 
 Mutation check: counting every status except Open as closed, in `dist/`, gives 58, 152 and 312
 mismatches in L1 to L3 and fails 4 unit tests.
 
 ### Against the City's 311 Reporting dashboards
 
-The City still publishes these reports voluntarily, as Power BI dashboards on
-[311 Reporting](https://www.nyc.gov/site/311reporting/311-reports/service-requests.page). They were
+§ 1075(b) no longer requires them, but the City still publishes them as Power BI dashboards on
+[311 Reporting](https://www.nyc.gov/site/311reporting/311-reports/service-requests.page), and Admin Code
+§ 23-306(d) requires a monthly public report by type and agency. They were
 read on 2026-11-07 ("Data as of Nov-02-2026 ... October FY2027"). The full reports open on
 **FY2022** and had to be set to 2027. The captured numbers are in
 `docs/city-311-reporting/2026-11-02/`. The rebuild used BoardStat build 2026-11-07T10:36:39Z and
@@ -254,5 +280,5 @@ Progress 21,031, Assigned 1,034, Pending 67, Unspecified 26; average 2.1 days to
 | In the 183 pairs both have, the rebuild is 2.1% lower (FYTD 2.3%), and lower in every pair where they differ, never higher | 7,287 | BoardStat leaves out requests with no usable location; the City counts them (1.9% of all requests since 2020 have none). Large in DOT "Street Condition" (7,522 vs 5,508) and DOB types, where locations such as highways may not geocode. | Consistent with BoardStat's manifest counts; not checked per request. |
 | Complaint-type spelling: "Elevator" / "ELEVATOR", "PLUMBING" / "Plumbing" (DOB) | 0 | The dashboard and the open data capitalize some types differently. The comparison ignores case. | Yes |
 | The City's data is as of Nov-02; the rebuild's of Nov-07 | small | Requests published after Nov 2 would make the rebuild higher, not lower; none is higher. | Yes (direction) |
-| Inquiries: 18 topics are each exactly one call higher on the dashboard | 18 (FYTD 94) | Unknown. Possibly calls withheld from the public dataset, or a difference between refreshes. | No |
+| Inquiries: 18 topics are each exactly one call higher on the dashboard | 18 (FYTD 94) | Unknown. Possibly calls not included in the public dataset, or a difference between refreshes. | No |
 | "Calls to 311" (1,018,589) | | All calls, including those that never reach an agent; the open dataset holds agent-handled calls only. Not comparable. | n/a |

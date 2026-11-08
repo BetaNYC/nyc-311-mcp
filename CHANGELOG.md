@@ -23,6 +23,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `scripts/run-call-center-report.mjs` runs the call-center report live and records fixtures.
 - Several helpers in `district-tools.ts` are now exported for reuse; their behavior is unchanged.
 
+### Fixed (QA round 1 on #21)
+
+- A fiscal year cut to the data is labeled with the dates it covers ("FY2027 to date (2026-07-01
+  to 2026-11-04)"), in every district tool (`resolvePeriod`).
+- `cb_monthly_list`: a third part, requests unresolved at the month's end and closed since; for an
+  older month the answer says "unresolved" is as of the build; pages carry `data_as_of`, and a page
+  from another build is refused.
+- `ll47_directory_assistance_report`: settled months are kept 30 days whatever the dataset version;
+  a 45 s budget per call (the asked-for month first, the rest listed as missing); a saved copy
+  answers, marked stale, when NYC Open Data is down.
+- The service-request report's caveats say negative and future close times are left out.
+
 ### Added: ten district tools (Phase 1, #14; closes #11)
 
 - `find_district`, `district_summary`, `top_problems`, `problem_trend`, `agency_response`,

@@ -98,9 +98,10 @@ def main() -> int:
 
     def cb(cd, offset, limit):
         ids = o.cb_list(cd, oct_s, oct_e)
-        rows = ids["new_this_month"] + ids["unresolved_from_prior_months"]
+        rows = ids["new_this_month"] + ids["unresolved_from_prior_months"] + ids["unresolved_at_month_end_now_closed"]
         return {"counts": {"new_this_month": len(ids["new_this_month"]),
-                           "unresolved_from_prior_months": len(ids["unresolved_from_prior_months"]), "rows": len(rows)},
+                           "unresolved_from_prior_months": len(ids["unresolved_from_prior_months"]),
+                           "unresolved_at_month_end_now_closed": len(ids["unresolved_at_month_end_now_closed"]), "rows": len(rows)},
                 "rows": [{"sr_number": k} for k in rows[offset:offset + limit]]}
 
     questions += [
@@ -130,6 +131,10 @@ def main() -> int:
          {"name": "cb_monthly_list", "args": {"community_district": 205, "month": "2026-09", "part": "unresolved_from_prior_months", "offset": 0, "limit": 1000}},
          lambda: (lambda ids: {"counts": {"unresolved_from_prior_months": len(ids["unresolved_from_prior_months"])},
                                "rows": [{"sr_number": k} for k in ids["unresolved_from_prior_months"][:1000]]})(o.cb_list(205, "2026-09-01", "2026-09-30")), "ll47"),
+        ("L9", "§ 1075(d) list, Brooklyn CD 1, 2024-03: unresolved at month end, closed since",
+         {"name": "cb_monthly_list", "args": {"community_district": 301, "month": "2024-03", "part": "unresolved_at_month_end_now_closed", "limit": 1000}},
+         lambda: (lambda ids: {"counts": {"unresolved_at_month_end_now_closed": len(ids["unresolved_at_month_end_now_closed"])},
+                               "rows": [{"sr_number": k} for k in ids["unresolved_at_month_end_now_closed"][:1000]]})(o.cb_list(301, "2024-03-01", "2024-03-31")), "ll47"),
     ]
 
     calls = [q[2] for q in questions]

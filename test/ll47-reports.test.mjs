@@ -18,6 +18,7 @@ import {
   toCsv,
   callSection,
   cbMonthlyList,
+  directoryAssistanceReport,
   MANDATES,
   LL47_TOOLS,
 } from "../dist/ll47-reports.js";
@@ -112,6 +113,7 @@ test("by_district lists every district from the month file, honors borough and l
 
 test("with no month, the report is for the newest complete month, and says so", async () => {
   const { data, env } = await run("ll47_service_request_report", { community_district: 484 });
+  assert.ok(env.caveats.some((c) => /closed before they were created, or with a close date in the future, are left out/.test(c)));
   assert.equal(data.month.start, "2026-10-01");
   assert.equal(data.fiscal_year.label, "FY2027 to date (2026-07-01 to 2026-10-31)");
   assert.ok(env.caveats.some((c) => /newest complete month in the data, 2026-10/.test(c)));
@@ -153,7 +155,7 @@ test("every report carries the Phase 0 envelope and a mandate block naming the s
     assert.ok(env.mandate.charter_section.includes(section));
     assert.equal(env.mandate.status, status);
     assert.equal(env.mandate.note, "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.");
-    assert.ok(env.mandate.omissions.some((o) => /ZIP code breakdown: omitted by BetaNYC's decision/.test(o) && /poor way to organize NYC data/.test(o)));
+    assert.ok(env.mandate.omissions.some((o) => /ZIP code breakdown: omitted by BetaNYC's decision/.test(o) && /postal delivery areas, not City districts/.test(o)));
     assert.ok(env.mandate.omissions.some((o) => /before 2020-01-01/.test(o) && /April 1, 2004/.test(o)));
     if (status === "repealed") assert.match(env.mandate.repealed_by, /Local Law 69 of 2023/);
     else assert.equal(env.mandate.repealed_by, undefined);
@@ -180,7 +182,17 @@ for (const [cd, month, key] of [[484, "2025-10", "cb_484_2025_10"], [101, "2026-
     const { data } = await run("cb_monthly_list", { community_district: cd, month, limit: 1000 });
     assert.equal(data.counts.new_this_month, want.new_this_month.length);
     assert.equal(data.counts.unresolved_from_prior_months, want.unresolved_from_prior_months.length);
-    assert.deepEqual(data.rows.map((r) => r.sr_number), [...want.new_this_month, ...want.unresolved_from_prior_months]);
+    assert.equal(data.counts.unresolved_at_month_end_now_closed, want.unresolved_at_month_end_now_closed.length);
+    assert.deepEqual(data.rows.map((r) => r.sr_number), [
+      ...want.new_this_month,
+      ...want.unresolved_from_prior_months,
+      ...want.unresolved_at_month_end_now_closed,
+    ]);
+    const monthEnd = `${month}-${month === "2025-10" ? "31" : "04"}`;
+    for (const r of data.rows.filter((x) => x.section === "unresolved_at_month_end_now_closed")) {
+      assert.equal(r.status, "Closed");
+      assert.ok(r.closed > `${monthEnd} 23:59:59` && r.created < `${month}-01`, JSON.stringify(r));
+    }
     for (const r of data.rows) {
       assert.deepEqual(Object.keys(r), data.columns);
       assert.ok(r.category && r.agency && r.created, JSON.stringify(r));
@@ -191,16 +203,38 @@ for (const [cd, month, key] of [[484, "2025-10", "cb_484_2025_10"], [101, "2026-
 
 test("cb_monthly_list pages with offset and limit, and next_offset walks the whole list once", async () => {
   const want = EXPECTED.cb_484_2025_10;
-  const all = [...want.new_this_month, ...want.unresolved_from_prior_months];
+  const all = [...want.new_this_month, ...want.unresolved_from_prior_months, ...want.unresolved_at_month_end_now_closed];
   const { data: fd } = await fixtureData();
   const seen = [];
-  let offset = 0;
-  for (let i = 0; i < 50 && offset !== null; i++) {
-    const env = await runLl47Tool("cb_monthly_list", parseToolArgs("cb_monthly_list", { community_district: 484, month: "2025-10", limit: 25, offset }), { data: fd });
+  let page = { offset: 0 };
+  for (let i = 0; i < 50 && page !== null; i++) {
+    const env = await runLl47Tool("cb_monthly_list", parseToolArgs("cb_monthly_list", { community_district: 484, month: "2025-10", limit: 25, ...page }), { data: fd });
     seen.push(...env.data.rows.map((r) => r.sr_number));
-    offset = env.data.next_offset;
+    assert.equal(env.data.next_offset, env.data.next_page?.offset ?? null);
+    page = env.data.next_page;
+    if (page) assert.equal(page.data_as_of, MANIFEST.generated_at);
   }
   assert.deepEqual(seen, all);
+});
+
+test("cb_monthly_list refuses a next page from a different build, so a list is never stitched from two", async () => {
+  const { data } = await fixtureData();
+  await assert.rejects(
+    runLl47Tool("cb_monthly_list", parseToolArgs("cb_monthly_list", { community_district: 484, month: "2025-10", offset: 25, data_as_of: "2026-11-06T10:00:00Z" }), { data }),
+    /published new data since the first page.*Start again at offset 0/
+  );
+});
+
+test("cb_monthly_list for an older month says plainly that 'unresolved' is as of the build, not the month's end", async () => {
+  const old = await run("cb_monthly_list", { community_district: 484, month: "2025-10" });
+  assert.equal(old.data.status_as_of, MANIFEST.generated_at);
+  assert.match(old.data.status_note, /not closed when this data was built .* not at the end of 2025-10/);
+  assert.match(old.data.status_note, /City's § 1075\(d\) list would show the status when it was sent/);
+  assert.ok(old.env.caveats.some((c) => c === old.data.status_note));
+  const newest = await run("cb_monthly_list", { community_district: 484 });
+  assert.equal(newest.data.month.start, "2026-10-01");
+  assert.equal(newest.data.status_note, undefined);
+  assert.ok(newest.env.caveats.some((c) => /current status, as of when this data was built/.test(c)));
 });
 
 test("cb_monthly_list part= keeps one half; format csv gives the same page as CSV text", async () => {
@@ -210,6 +244,9 @@ test("cb_monthly_list part= keeps one half; format csv gives the same page as CS
   assert.equal(fresh.data.counts.unresolved_from_prior_months, null);
   const old = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "unresolved_from_prior_months", limit: 5 });
   assert.deepEqual(old.data.rows.map((r) => r.sr_number), want.unresolved_from_prior_months.slice(0, 5));
+  const since = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "unresolved_at_month_end_now_closed" });
+  assert.deepEqual(since.data.rows.map((r) => r.sr_number), want.unresolved_at_month_end_now_closed);
+  assert.equal(since.data.counts.new_this_month, null);
   const csv = await run("cb_monthly_list", { community_district: 484, month: "2025-10", format: "csv", limit: 5 });
   assert.equal(csv.data.rows, undefined);
   const lines = csv.data.csv.trimEnd().split("\r\n");
@@ -278,13 +315,18 @@ test("reportPeriods: a month and its fiscal year to date; a fiscal year; the new
 
 // ── ll47_directory_assistance_report (wewp-mm3p, recorded responses) ─────────
 
-async function fixtureSoda({ token, respond } = {}) {
+async function fixtureSoda({ token, respond, cost = 0, cacheDir, rowsUpdatedAt } = {}) {
   const requests = [];
   const sleeps = [];
   let clock = Date.parse("2026-11-07T12:00:00Z");
   const fetch = async (url, init) => {
     const u = new URL(url);
     requests.push({ url: u, headers: init.headers, at: clock });
+    clock += cost;
+    if (rowsUpdatedAt && u.pathname === "/api/views/wewp-mm3p.json") {
+      const v = JSON.parse(await readFile(path.join(SODA_FIX, "view.json"), "utf8"));
+      return Response.json({ ...v, rowsUpdatedAt });
+    }
     if (respond) {
       const r = await respond(u, requests.length);
       if (r) return r;
@@ -303,7 +345,7 @@ async function fixtureSoda({ token, respond } = {}) {
     fetch,
     token,
     logger: () => {},
-    cacheDir: await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-test-")),
+    cacheDir: cacheDir ?? (await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-test-"))),
     now: () => clock,
     sleep: async (ms) => {
       sleeps.push(ms);
@@ -385,7 +427,6 @@ test("SOCRATA_APP_TOKEN is optional but must not be blank; no query may name a Z
 
 test("with no month, the call-center report is for the newest complete month (New York time)", async () => {
   const { soda } = await fixtureSoda();
-  const { directoryAssistanceReport } = await import("../dist/ll47-reports.js");
   const env = await directoryAssistanceReport({}, soda, NOW);
   assert.equal(env.data.month.start, "2026-10-01");
 });
@@ -403,4 +444,66 @@ test("callSection reports agencies and call resolutions when the dataset has the
   assert.deepEqual(s.by_agency.map((a) => [a.agency, a.calls]), [["DOF", 3], ["HPD", 2], ["(blank)", 1]]);
   assert.equal(s.calls_with_blank_agency, 1);
   assert.deepEqual(s.by_call_resolution.map((r) => r.call_resolution), ["Information Provided", "CSMS SR", "(blank)"]);
+});
+
+// ── The call-center report when NYC Open Data is slow, down, or has changed (QA on #21) ──
+
+const daArgs = (a) => parseToolArgs("ll47_directory_assistance_report", a);
+
+test("when NYC Open Data is down, a warm cache answers, marked stale with a warning", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-down-"));
+  const warm = await fixtureSoda({ cacheDir: dir });
+  const first = await directoryAssistanceReport(daArgs({ month: "2026-10" }), warm.soda, NOW);
+  // A new client, as after a restart: nothing in memory, the portal unreachable.
+  const down = await fixtureSoda({ cacheDir: dir, respond: async () => { throw new TypeError("fetch failed"); } });
+  const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), down.soda, NOW);
+  assert.equal(env.stale, true);
+  assert.match(env.warning, /could not be reached/);
+  assert.ok(env.caveats.some((c) => /could not be reached just now/.test(c)));
+  assert.equal(env.data.month.calls, first.data.month.calls);
+  assert.equal(env.data.fiscal_year.calls, first.data.fiscal_year.calls);
+  assert.equal(env.data.months_queried, 0);
+});
+
+test("when NYC Open Data is down and nothing is saved, it says so instead of answering", async () => {
+  const down = await fixtureSoda({ respond: async () => { throw new TypeError("fetch failed"); } });
+  await assert.rejects(directoryAssistanceReport(daArgs({ month: "2026-10" }), down.soda, NOW), /fetch failed|NYC Open Data/);
+});
+
+test("settled months are not asked again when the dataset's nightly version changes; recent months are", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-settled-"));
+  await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir })).soda, NOW);
+  const next = await fixtureSoda({ cacheDir: dir, rowsUpdatedAt: 1794200000 });
+  const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), next.soda, NOW);
+  const asked = next.requests.filter((r) => r.url.pathname.startsWith("/resource/")).map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
+  assert.deepEqual(asked, ["2026-10"], "July to September ended over a week ago and are kept; October is re-asked");
+  assert.equal(env.data.months_queried, 1);
+  assert.equal(env.data.months_from_cache, 3);
+});
+
+test("one call stops at its time budget: the asked month answers, the fiscal year says which months are missing, and asking again finishes", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-budget-"));
+  const slow = await fixtureSoda({ cacheDir: dir, cost: 13_000 });
+  const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), slow.soda, NOW, { budgetMs: 45_000 });
+  assert.equal(env.data.month.complete, true);
+  assert.equal(env.data.month.calls, await monthSum("2026-10"));
+  assert.equal(env.data.fiscal_year.complete, false);
+  assert.ok(env.data.fiscal_year.months_missing.length >= 1);
+  assert.equal(env.data.fiscal_year.calls, undefined, "no partial total is given");
+  const last = slow.requests.at(-1).at - slow.requests[0].at;
+  assert.ok(last <= 45_000, `requests ran ${last} ms past the start`);
+  const again = await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
+  const third = again.data.fiscal_year.complete
+    ? again
+    : await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
+  assert.equal(third.data.fiscal_year.complete, true);
+  let fy = 0;
+  for (const ym of ["2026-07", "2026-08", "2026-09", "2026-10"]) fy += await monthSum(ym);
+  assert.equal(third.data.fiscal_year.calls, fy);
+});
+
+test("the Socrata client's deadline bounds retries and waits", async () => {
+  const { soda, requests } = await fixtureSoda({ respond: async () => new Response("busy", { status: 503 }), cost: 10_000 });
+  await assert.rejects(soda.getJson("/resource/wewp-mm3p.json", { $limit: "1" }, { deadline: soda.clock() + 15_000 }), /Ran out of time/);
+  assert.ok(requests.length <= 2, `${requests.length} requests`);
 });

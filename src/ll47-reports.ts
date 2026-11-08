@@ -53,7 +53,7 @@ import {
 } from "./district-tools.js";
 import { assertNoZip, assertNoZipValues, boardstatUrl, districtEnvelope, redactZip, type DistrictEnvelope } from "./envelope.js";
 import { DATA_START, fiscalYearOf, fiscalYearRange, parseFiscalYear, resolvePeriod, type Period } from "./fiscal-year.js";
-import { CALL_CENTER_DATASET, sodaClient, type SodaClient, type SodaMetadata } from "./soda.js";
+import { CALL_CENTER_DATASET, DeadlineError, sodaClient, type SodaClient, type SodaMetadata } from "./soda.js";
 
 // ─── The mandate block every report carries ───────────────────────────────────
 
@@ -61,7 +61,7 @@ const NOT_OFFICIAL =
   "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.";
 
 const OMISSIONS = [
-  "ZIP code breakdown: omitted by BetaNYC's decision. ZIP codes are a poor way to organize NYC data, so this server does not use them anywhere.",
+  "ZIP code breakdown: omitted by BetaNYC's decision. ZIP codes are postal delivery areas, not City districts, so this server does not use them.",
   "Data before 2020-01-01 is not included. The law counted from April 1, 2004.",
 ];
 
@@ -332,6 +332,7 @@ export async function serviceRequestReport(src: Source, args: z.infer<z.ZodObjec
     ...periods.notes,
     "A request is counted in the month it was created (New York time). Its status and close date are as of when this data was built, not as of the month's end.",
     "Category is the City's own complaint type, as written on each request. Average and median days to close count only requests marked Closed with a usable close date; the median is a BetaNYC addition, not in the law.",
+    "Requests closed before they were created, or with a close date in the future, are left out of the time (City data errors).",
     "Only requests with a usable location are in BoardStat's district files, so totals here leave out requests the City could not place. The City's own dashboards count those too.",
   ];
 
@@ -497,10 +498,54 @@ function toGroup(r: Record<string, unknown>): CallGroup {
   return { inquiry_name: s(r.inquiry_name) ?? "(none)", agency: s(r.agency), agency_name: s(r.agency_name), call_resolution: s(r.call_resolution), n };
 }
 
-async function monthCalls(soda: SodaClient, meta: SodaMetadata, ym: string) {
-  return soda.cached(`${CALL_CENTER_DATASET}/${ym}`, meta.rowsUpdatedAt, async () =>
-    (await soda.queryAll(CALL_CENTER_DATASET, monthQuery(ym))).map(toGroup)
-  );
+/** A month is settled once it ended more than this many days ago: late records have landed. */
+export const SETTLED_AFTER_DAYS = 7;
+/** A settled month's saved answer is re-asked after this long, whatever the dataset version. */
+export const SETTLED_TTL_DAYS = 30;
+/** One call's time budget for NYC Open Data, waits and retries included. */
+export const DA_BUDGET_MS = 45_000;
+
+type MonthResult =
+  | { ym: string; groups: CallGroup[]; from: "cache" | "query" | "old_cache"; fetched_at: string }
+  | { ym: string; missing: string };
+
+/**
+ * One month's calls. A settled month (ended over SETTLED_AFTER_DAYS ago) is answered from the
+ * saved copy for SETTLED_TTL_DAYS, whatever the dataset version, because the dataset's
+ * rowsUpdatedAt moves every night (QA on #21). A recent month is re-asked when the dataset
+ * changes. When NYC Open Data cannot be reached, or the call's time is up, any saved copy
+ * answers; with none, the month is reported missing rather than guessed.
+ */
+async function monthCalls(
+  soda: SodaClient,
+  meta: { meta: SodaMetadata; stale: boolean },
+  ym: string,
+  today: string,
+  deadline: number,
+  give: { up: boolean }
+): Promise<MonthResult> {
+  const key = `${CALL_CENTER_DATASET}/${ym}`;
+  const saved = await soda.readCache<CallGroup[]>(key);
+  const settled = addDays(lastOfMonth(ym), SETTLED_AFTER_DAYS) < today;
+  const iso = (ms: number) => new Date(ms).toISOString();
+  if (saved) {
+    const fresh = settled
+      ? soda.clock() - saved.fetched_at_ms < SETTLED_TTL_DAYS * 86_400_000
+      : saved.version === meta.meta.rowsUpdatedAt;
+    if (fresh || meta.stale) return { ym, groups: saved.value, from: fresh ? "cache" : "old_cache", fetched_at: iso(saved.fetched_at_ms) };
+  }
+  if (meta.stale || give.up) {
+    return { ym, missing: meta.stale ? "NYC Open Data could not be reached and no saved copy exists" : "this call ran out of time before reaching it" };
+  }
+  try {
+    const groups = (await soda.queryAll(CALL_CENTER_DATASET, monthQuery(ym), { deadline })).map(toGroup);
+    await soda.writeCache(key, meta.meta.rowsUpdatedAt, groups);
+    return { ym, groups, from: "query", fetched_at: iso(soda.clock()) };
+  } catch (err) {
+    if (err instanceof DeadlineError) give.up = true;
+    if (saved) return { ym, groups: saved.value, from: "old_cache", fetched_at: iso(saved.fetched_at_ms) };
+    return { ym, missing: err instanceof DeadlineError ? "this call ran out of time before reaching it" : `NYC Open Data failed: ${err instanceof Error ? err.message : String(err)}` };
+  }
 }
 
 /** Today in New York, YYYY-MM-DD. */
@@ -564,27 +609,47 @@ export function callSection(groups: CallGroup[], limit: number) {
 export async function directoryAssistanceReport(
   args: z.infer<z.ZodObject<typeof DA_SHAPE>>,
   soda: SodaClient = sodaClient(),
-  now: number = Date.now()
+  now: number = Date.now(),
+  opts: { budgetMs?: number } = {}
 ) {
-  const meta = await soda.metadata(CALL_CENTER_DATASET);
   const today = nycToday(now);
   // The dataset is published daily, through yesterday at best.
   const window = { start: DATA_START, end: addDays(today, -1) };
   const periods = reportPeriods(args, window, lastCompleteMonth(window.end));
   const limit = args.limit ?? 50;
-  const list = periods.month ? [periods.month, periods.fiscal_year] : [periods.fiscal_year];
+  const deadline = soda.clock() + (opts.budgetMs ?? DA_BUDGET_MS);
+  const mr = await soda.metadataOrCached(CALL_CENTER_DATASET, { deadline });
+  const meta = mr.meta;
   const months = monthsBetween(periods.fiscal_year.start, periods.fiscal_year.end);
-  const perMonth = new Map<string, CallGroup[]>();
-  let fromCache = 0;
-  for (const ym of months) {
-    const { value, cached } = await monthCalls(soda, meta, ym);
-    if (cached) fromCache += 1;
-    perMonth.set(ym, value);
+  // The asked-for month first, so a short budget still answers it; then the rest, oldest first.
+  const order = periods.month ? [periods.month.month, ...months.filter((m) => m !== periods.month!.month)] : months;
+  const give = { up: false };
+  const results = new Map<string, MonthResult>();
+  for (const ym of order) results.set(ym, await monthCalls(soda, mr, ym, today, deadline, give));
+  const missing = [...results.values()].filter((r): r is { ym: string; missing: string } => "missing" in r);
+  if (periods.month && results.get(periods.month.month) && "missing" in results.get(periods.month.month)!) {
+    throw new Error(`No answer for ${periods.month.month}: ${(results.get(periods.month.month) as { missing: string }).missing}. Try again later.`);
   }
-  const groupsFor = (p: Period) => monthsBetween(p.start, p.end).flatMap((ym) => perMonth.get(ym) ?? []);
-  const sections = list.map((p) => ({ ...periodOut(p), ...callSection(groupsFor(p), limit) }));
+  const section = (p: Period) => {
+    const ms = monthsBetween(p.start, p.end);
+    const gone = missing.filter((x) => ms.includes(x.ym));
+    if (gone.length) {
+      return {
+        ...periodOut(p),
+        complete: false,
+        months_missing: gone.map((x) => ({ month: x.ym, why: x.missing })),
+        note: "Not every month of this period could be fetched in this call, so no total is given. The months fetched are saved; ask again to finish.",
+      };
+    }
+    const groups = ms.flatMap((ym) => (results.get(ym) as { groups: CallGroup[] }).groups);
+    return { ...periodOut(p), complete: true, ...callSection(groups, limit) };
+  };
+  const list = periods.month ? [periods.month, periods.fiscal_year] : [periods.fiscal_year];
+  const sections = list.map(section);
+  const counts = { query: 0, cache: 0, old_cache: 0 };
+  for (const r of results.values()) if ("from" in r) counts[r.from] += 1;
   const col = (f: string) => meta.columns.find((c) => c.fieldName === f);
-  const allBlank = sections.every((s) => s.by_agency === null);
+  const allBlank = sections.every((s) => !("by_agency" in s) || s.by_agency === null);
   const limitedReasons = [
     "The dataset has no field that says which calls were entered \"in the directory assistance category\", the law's definition. It holds every agent-handled call, so this report counts all of them, by topic (inquiry_name), and shows the one topic named \"Directory Assistance\" separately.",
     ...(allBlank
@@ -592,19 +657,24 @@ export async function directoryAssistanceReport(
           `The agency column is blank for every call in this period (and in every month checked back to January 2022), so there is no breakdown by agency. The column exists: ${col("agency")?.non_null?.toLocaleString("en-US") ?? "some"} older calls have one.`,
         ]
       : []),
-    ...(sections.every((s) => s.by_call_resolution === null)
+    ...(sections.every((s) => !("by_call_resolution" in s) || s.by_call_resolution === null)
       ? ["The call_resolution column (how the call ended: information provided, transferred, service request created, and so on) is blank for every call in this period, so calls that only got information cannot be told apart from calls that became service requests."]
       : []),
     "The dataset's own description says that since March 2020 it \"does not fully represent the agent-handled calls to 311. The actual calls handled are higher.\" It counts agent-handled calls only, not every call to 311.",
   ];
+  const caveats = [
+    ...periods.notes,
+    "Calls are counted by the date they were received (New York time). The topic is the one the 311 representative used to answer the call.",
+    `Months that ended more than ${SETTLED_AFTER_DAYS} days ago are answered from a saved copy for up to ${SETTLED_TTL_DAYS} days; recent months are asked again whenever the dataset changes.`,
+  ];
+  if (mr.stale) caveats.push(`NYC Open Data could not be reached just now, so this answer comes from saved copies (dataset as of ${meta.rowsUpdatedAt_iso}). Newer data may exist.`);
+  if (counts.old_cache && !mr.stale) caveats.push(`${counts.old_cache} month(s) could not be refreshed and come from an older saved copy.`);
   const env = {
     data_as_of: meta.rowsUpdatedAt_iso,
     latest_request: null,
     boardstat_url: null,
-    caveats: [
-      ...periods.notes,
-      "Calls are counted by the date they were received (New York time). The topic is the one the 311 representative used to answer the call.",
-    ],
+    caveats,
+    ...(mr.stale ? { warning: mr.warning, stale: true as const } : {}),
     source: {
       name: "NYC Open Data, 311 Call Center Inquiry (wewp-mm3p), read by BetaNYC",
       url: `https://data.cityofnewyork.us/d/${CALL_CENTER_DATASET}`,
@@ -615,8 +685,9 @@ export async function directoryAssistanceReport(
       limited_because: limitedReasons,
       month: periods.month ? sections[0] : null,
       fiscal_year: sections[periods.month ? 1 : 0],
-      months_queried: months.length - fromCache,
-      months_from_cache: fromCache,
+      months_queried: counts.query,
+      months_from_cache: counts.cache + counts.old_cache,
+      months_missing: missing.map((x) => x.ym),
     },
     mandate: MANDATES.directory_assistance,
   };
@@ -627,19 +698,23 @@ export async function directoryAssistanceReport(
 
 // ─── 3. cb_monthly_list (§ 1075(d), current law) ──────────────────────────────
 
+const CB_PARTS = ["all", "new_this_month", "unresolved_from_prior_months", "unresolved_at_month_end_now_closed"] as const;
+
 const CB_SHAPE = {
   community_district: z.union([z.number().int(), z.string()]),
   month: z.string().optional(),
-  part: z.enum(["all", "new_this_month", "unresolved_from_prior_months"]).optional(),
+  part: z.enum(CB_PARTS).optional(),
   limit: LIMIT(1000),
   offset: z.number().int().min(0).optional(),
   format: z.enum(["rows", "csv"]).optional(),
+  /** The data_as_of of the first page, so later pages cannot silently come from a newer build. */
+  data_as_of: z.string().optional(),
 };
 
-const CB_COLUMNS = ["section", "sr_number", "created", "category", "description", "agency", "agency_name", "status", "address"] as const;
+const CB_COLUMNS = ["section", "sr_number", "created", "closed", "category", "description", "agency", "agency_name", "status", "address"] as const;
 type CbRow = Record<(typeof CB_COLUMNS)[number], string | null>;
 
-const DETAIL_COLS = ["unique_key", "created_date", "complaint_type_raw", "descriptor", "agency", "agency_name", "status", "incident_address", "intersection_street_1", "intersection_street_2"];
+const DETAIL_COLS = ["unique_key", "created_date", "closed_date", "complaint_type_raw", "descriptor", "agency", "agency_name", "status", "incident_address", "intersection_street_1", "intersection_street_2"];
 
 export function toCsv(columns: readonly string[], rows: Record<string, string | null>[]): string {
   const cell = (v: string | null) => (v == null ? "" : /[",\r\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
@@ -653,38 +728,41 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
   const data = await pin(src);
   const mr = await data.manifest();
   const m = mr.manifest;
+  if (args.data_as_of !== undefined && args.data_as_of !== m.generated_at) {
+    throw new Error(
+      `BoardStat published new data since the first page (that page was from ${args.data_as_of}; the data is now from ${m.generated_at}), ` +
+        "so later pages would not line up with earlier ones. Start again at offset 0, without data_as_of."
+    );
+  }
   const d = resolveDistrict(m, { community_district: args.community_district });
   const window = { start: m.window.start, end: lastDataDay(m) };
-  const periods = reportPeriods({ month: args.month }, window, lastCompleteMonth(lastDataDay(m)));
+  const newest = lastCompleteMonth(lastDataDay(m));
+  const periods = reportPeriods({ month: args.month }, window, newest);
   const month = periods.month as Period & { month: string };
   const part = args.part ?? "all";
+  const want = (p: (typeof CB_PARTS)[number]) => part === "all" || part === p;
   const limit = args.limit ?? 100;
   const offset = args.offset ?? 0;
   const monthStart = localAsDate(month.start);
+  const afterMonth = localAsDate(addDays(month.end, 1));
+  const before = { $gte: localAsDate(m.window.start), $lt: monthStart };
+  const hasPrior = month.start > m.window.start;
 
-  const fresh =
-    part === "unresolved_from_prior_months"
-      ? []
-      : (
-          await data.readParquet(d.file, {
-            columns: DETAIL_COLS,
-            filter: { created_date: { $gte: monthStart, $lt: localAsDate(addDays(month.end, 1)) } },
-          })
-        ).rows.sort(sortCreated);
-  const prior =
-    part === "new_this_month" || month.start <= m.window.start
-      ? []
-      : (
-          await data.readParquet(d.file, {
-            columns: [...DETAIL_COLS, "is_closed"],
-            filter: { created_date: { $gte: localAsDate(m.window.start), $lt: monthStart }, is_closed: { $eq: false } },
-          })
-        ).rows.sort(sortCreated);
+  const read = async (filter: Record<string, unknown>, extra: string[] = []) =>
+    (await data.readParquet(d.file, { columns: [...DETAIL_COLS, ...extra], filter })).rows.sort(sortCreated);
+  const fresh = want("new_this_month") ? await read({ created_date: { $gte: monthStart, $lt: afterMonth } }) : [];
+  const stillOpen = want("unresolved_from_prior_months") && hasPrior ? await read({ created_date: before, is_closed: { $eq: false } }, ["is_closed"]) : [];
+  // Created before the month, closed after it ended: unresolved at the month's end, by their own
+  // created and closed dates. This much of the past can be rebuilt; a past status cannot.
+  const closedSince = want("unresolved_at_month_end_now_closed") && hasPrior
+    ? await read({ created_date: before, is_closed: { $eq: true }, closed_date: { $gte: afterMonth } }, ["is_closed"])
+    : [];
 
   const toRow = (section: string) => (r: Row): CbRow => ({
     section,
     sr_number: String(r.unique_key),
     created: fmtLocal(r.created_date),
+    closed: fmtLocal(r.closed_date),
     category: r.complaint_type_raw == null ? null : redactZip(String(r.complaint_type_raw)),
     description: r.descriptor == null ? null : redactZip(String(r.descriptor)),
     agency: r.agency == null ? null : String(r.agency),
@@ -692,10 +770,18 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
     status: r.status == null ? null : String(r.status),
     address: redactZip(addressOf(r)),
   });
-  const all = [...fresh.map(toRow("new_this_month")), ...prior.map(toRow("unresolved_from_prior_months"))];
+  const all = [
+    ...fresh.map(toRow("new_this_month")),
+    ...stillOpen.map(toRow("unresolved_from_prior_months")),
+    ...closedSince.map(toRow("unresolved_at_month_end_now_closed")),
+  ];
   const page = all.slice(offset, offset + limit);
   const next = offset + limit < all.length ? offset + limit : null;
   const unresolvedLink = boardstatUrl(data.siteUrl, { geo: "cd", id: d.id, start: m.window.start, end: addDays(month.start, -1), status: "not_closed" });
+  const older = month.month !== newest;
+  const asOf =
+    `"unresolved_from_prior_months" means not closed when this data was built (${m.generated_at}), not at the end of ${month.month}. ` +
+    "Open data keeps only each request's current status, so a past status cannot be rebuilt. The City's § 1075(d) list would show the status when it was sent.";
 
   const env = districtEnvelope({
     manifest: mr,
@@ -705,24 +791,30 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
       district: districtOut(d),
       month: periodOut(month),
       part,
+      status_as_of: m.generated_at,
+      ...(older ? { status_note: asOf } : {}),
       counts: {
-        new_this_month: part === "unresolved_from_prior_months" ? null : fresh.length,
-        unresolved_from_prior_months: part === "new_this_month" ? null : prior.length,
+        new_this_month: want("new_this_month") ? fresh.length : null,
+        unresolved_from_prior_months: want("unresolved_from_prior_months") ? stillOpen.length : null,
+        unresolved_at_month_end_now_closed: want("unresolved_at_month_end_now_closed") ? closedSince.length : null,
         rows: all.length,
       },
       offset,
       limit,
       next_offset: next,
-      unresolved_boardstat_url: part === "new_this_month" ? null : unresolvedLink,
+      next_page: next === null ? null : { offset: next, data_as_of: m.generated_at },
+      unresolved_boardstat_url: want("unresolved_from_prior_months") ? unresolvedLink : null,
       columns: [...CB_COLUMNS],
       ...(args.format === "csv" ? { csv: toCsv(CB_COLUMNS, page) } : { rows: page }),
     },
     extraCaveats: [
       ...periods.notes,
       ...districtCaveats(d, m),
-      "\"new_this_month\" is every request created in the month. \"unresolved_from_prior_months\" is every request created earlier (2020 on) that is still not closed. Status is the current status, as of when this data was built, which is what § 1075(d)(3) asks for.",
+      "\"new_this_month\" is every request created in the month. \"unresolved_from_prior_months\" is every request created earlier (2020 on) that is still not closed. \"unresolved_at_month_end_now_closed\" is every request created earlier that was closed after the month ended, so it was unresolved at the month's end, by its own created and closed dates.",
+      older ? asOf : `Status is the current status, as of when this data was built (${m.generated_at}), which is what § 1075(d)(3) asks for.`,
       "Unresolved means any status other than Closed (Open, In Progress, Pending, Assigned, Started, Unspecified, or none). Closed does not mean fixed.",
       "Category is the City's complaint type; description is the City's descriptor. The 311 number (sr_number) is the City's Open Data unique_key. Addresses are as the City wrote them.",
+      "To page, pass next_page.offset and next_page.data_as_of. A page asked for with an older data_as_of is refused, so a list is never stitched from two builds.",
       ...(d.jia ? ["A Joint Interest Area has no community board of its own; § 1075(d) lists go to community boards."] : []),
     ],
   });
@@ -782,7 +874,7 @@ export const LL47_TOOLS = [
   {
     name: "cb_monthly_list",
     description:
-      "The monthly list of Charter § 1075(d), current law: for one community district, every 311 request created in a month (default: the newest complete month) plus every request from earlier months that is still not closed, each with its number, date, category, description, agency, current status and address. Pages with limit and offset; format 'csv' returns the page as CSV text. From BoardStat's nightly files. " +
+      "The monthly list of Charter § 1075(d), current law: for one community district, every 311 request created in a month (default: the newest complete month) plus every request from earlier months that is still not closed, and those that were unresolved at the month's end but have closed since, each with its number, date, category, description, agency, current status and address. Pages with limit and offset; format 'csv' returns the page as CSV text. From BoardStat's nightly files. " +
       REBUILD,
     inputSchema: obj(
       {
@@ -790,9 +882,10 @@ export const LL47_TOOLS = [
         month: { type: "string", description: "Calendar month, YYYY-MM. Default: the newest complete month in the data (the 'immediately preceding month' of the law)." },
         part: {
           type: "string",
-          enum: ["all", "new_this_month", "unresolved_from_prior_months"],
-          description: "Which part of the list: both (default), only the month's new requests, or only the still-unresolved requests from earlier months.",
+          enum: CB_PARTS,
+          description: "Which part of the list: all (default); only the month's new requests; only earlier requests still not closed; or only earlier requests that were unresolved at the month's end and have closed since.",
         },
+        data_as_of: { type: "string", description: "For the next page: the data_as_of from next_page. A page from a newer build is refused, so pages always line up." },
         limit: limitJson(100, 1000, "rows"),
         offset: { type: "integer", minimum: 0, description: "Rows to skip, for the next page (the answer gives next_offset)." },
         format: { type: "string", enum: ["rows", "csv"], description: "'rows' (default): a list of objects. 'csv': the same page as CSV text, columns in the order of 'columns'." },

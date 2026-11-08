@@ -3557,6 +3557,13 @@
    "65795074",
    "65942078",
    "66225789"
+  ],
+  "unresolved_at_month_end_now_closed": [
+   "62335839",
+   "65655954",
+   "65736847",
+   "65829974",
+   "65991226"
   ]
  },
  "cb_101_2026_11": {
@@ -3612,6 +3619,7 @@
    "70994273",
    "70993913"
   ],
-  "unresolved_from_prior_months": []
+  "unresolved_from_prior_months": [],
+  "unresolved_at_month_end_now_closed": []
  }
 }

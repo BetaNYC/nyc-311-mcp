@@ -124,8 +124,17 @@ export class SodaClient {
     this.lastStart = this.now();
   }
 
-  /** GET a JSON document from the portal, politely. `pathAndQuery` starts with "/". */
-  async getJson(pathname: string, params: Record<string, string> = {}): Promise<unknown> {
+  /** The client's clock (injectable for tests). */
+  clock(): number {
+    return this.now();
+  }
+
+  /**
+   * GET a JSON document from the portal, politely. `pathname` starts with "/".
+   * `deadline` (epoch ms) bounds the whole call, retries and waits included: an
+   * interactive tool must answer, not wait four timeouts (QA on #21).
+   */
+  async getJson(pathname: string, params: Record<string, string> = {}, opts: { deadline?: number } = {}): Promise<unknown> {
     assertNoZipSoql(params);
     const url = new URL(pathname, this.portal + "/");
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
@@ -133,10 +142,14 @@ export class SodaClient {
     if (this.token) headers["X-App-Token"] = this.token;
     return this.serial(async () => {
       let lastErr: unknown;
+      const left = () => (opts.deadline === undefined ? Infinity : opts.deadline - this.now());
       for (let attempt = 1; attempt <= this.maxTries; attempt++) {
+        if (left() <= 0) throw new DeadlineError(url.pathname, lastErr);
         await this.pace();
+        const limit = Math.min(this.timeout, left());
+        if (limit <= 0) throw new DeadlineError(url.pathname, lastErr);
         const ac = new AbortController();
-        const timer = setTimeout(() => ac.abort(new Error(`NYC Open Data sent no answer within ${this.timeout} ms (${url.pathname}).`)), this.timeout);
+        const timer = setTimeout(() => ac.abort(new Error(`NYC Open Data sent no answer within ${Math.round(limit)} ms (${url.pathname}).`)), limit);
         let status: number | null = null;
         let retryAfter: string | null = null;
         try {
@@ -166,6 +179,7 @@ export class SodaClient {
           (status === 429 || status === 503) && retryAfter
             ? Math.min(RETRY_AFTER_CAP_MS, retryAfterMs(retryAfter))
             : Math.min(60_000, 2 ** attempt * 1000);
+        if (wait >= left()) throw new DeadlineError(url.pathname, lastErr);
         this.log("soda_retry", { path: url.pathname, attempt, status, wait_ms: wait });
         await this.sleep(wait);
       }
@@ -173,50 +187,92 @@ export class SodaClient {
     });
   }
 
-  /** Dataset metadata (/api/views/<id>.json), trusted for an hour. */
-  async metadata(id: string): Promise<SodaMetadata> {
+  /** Dataset metadata (/api/views/<id>.json), trusted for an hour, and saved to disk. */
+  async metadata(id: string, opts: { deadline?: number } = {}): Promise<SodaMetadata> {
     const hit = this.meta.get(id);
     if (hit && this.now() - hit.at < this.metaTtl) return hit.value;
-    const raw = (await this.getJson(`/api/views/${id}.json`)) as Record<string, unknown>;
+    const raw = (await this.getJson(`/api/views/${id}.json`, {}, opts)) as Record<string, unknown>;
     const value = validateMetadata(id, raw);
     this.meta.set(id, { at: this.now(), value });
+    await this.writeCache(`meta/${id}`, value.rowsUpdatedAt, value);
     return value;
+  }
+
+  /**
+   * Metadata, or, when the portal cannot be reached, the last copy saved to disk with
+   * `stale: true` and a plain warning. Throws only when there is no saved copy either.
+   */
+  async metadataOrCached(id: string, opts: { deadline?: number } = {}): Promise<{ meta: SodaMetadata; stale: boolean; warning?: string }> {
+    try {
+      return { meta: await this.metadata(id, opts), stale: false };
+    } catch (err) {
+      const saved = await this.readCache<SodaMetadata>(`meta/${id}`);
+      if (!saved) throw err;
+      const reason = err instanceof Error ? err.message : String(err);
+      this.log("soda_stale", { id, reason });
+      return {
+        meta: saved.value,
+        stale: true,
+        warning: `NYC Open Data could not be reached (${reason}). Answering from the saved copy, as of ${saved.value.rowsUpdatedAt_iso}.`,
+      };
+    }
   }
 
   /**
    * Every row of one SoQL query, paged with $limit/$offset. `params` must include an
    * $order, so pages do not overlap or skip rows.
    */
-  async queryAll(id: string, params: Record<string, string>, pageSize = 50_000): Promise<Record<string, unknown>[]> {
+  async queryAll(id: string, params: Record<string, string>, opts: { pageSize?: number; deadline?: number } = {}): Promise<Record<string, unknown>[]> {
+    const pageSize = opts.pageSize ?? 50_000;
     if (!params.$order) throw new Error("A paged SoQL query needs an $order (https://dev.socrata.com/docs/paging).");
     const out: Record<string, unknown>[] = [];
     for (let offset = 0; ; offset += pageSize) {
-      const page = await this.getJson(`/resource/${id}.json`, { ...params, $limit: String(pageSize), $offset: String(offset) });
+      const page = await this.getJson(`/resource/${id}.json`, { ...params, $limit: String(pageSize), $offset: String(offset) }, opts);
       if (!Array.isArray(page)) throw new Error(`NYC Open Data returned something other than a list of rows for ${id}.`);
       out.push(...(page as Record<string, unknown>[]));
       if (page.length < pageSize) return out;
     }
   }
 
-  /**
-   * A cached query result, kept on disk until the dataset's rowsUpdatedAt changes.
-   * `key` names the cache file (e.g. "wewp-mm3p/2026-10"); only [A-Za-z0-9/_-].
-   */
-  async cached<T>(key: string, version: number, compute: () => Promise<T>): Promise<{ value: T; cached: boolean }> {
+  private cacheFile(key: string): string {
     if (!/^[A-Za-z0-9/_-]+$/.test(key) || key.includes("..")) throw new Error(`Bad cache key '${key}'.`);
-    const file = path.join(this.cacheDir, ...key.split("/")) + ".json";
+    return path.join(this.cacheDir, ...key.split("/")) + ".json";
+  }
+
+  /** A saved result: the dataset version it was computed from, when, and the value. Null if none. */
+  async readCache<T>(key: string): Promise<{ version: number; fetched_at_ms: number; value: T } | null> {
     try {
-      const raw = JSON.parse(await readFile(file, "utf8"));
-      if (raw && raw.version === version) return { value: raw.value as T, cached: true };
+      const raw = JSON.parse(await readFile(this.cacheFile(key), "utf8"));
+      const at = Date.parse(raw?.fetched_at);
+      if (!raw || typeof raw.version !== "number" || Number.isNaN(at) || !("value" in raw)) return null;
+      return { version: raw.version, fetched_at_ms: at, value: raw.value as T };
     } catch {
-      // no cache yet, or unreadable: compute it
+      return null;
     }
-    const value = await compute();
+  }
+
+  /** Save a result atomically (a unique temporary name, then rename). */
+  async writeCache(key: string, version: number, value: unknown): Promise<void> {
+    const file = this.cacheFile(key);
     await mkdir(path.dirname(file), { recursive: true });
     const tmp = `${file}.${process.pid}.${Math.random().toString(36).slice(2)}.tmp`;
     await writeFile(tmp, JSON.stringify({ version, fetched_at: new Date(this.now()).toISOString(), value }));
     await rename(tmp, file);
-    return { value, cached: false };
+  }
+}
+
+/** The call's time budget ran out before NYC Open Data answered. */
+export class DeadlineError extends Error {
+  constructor(
+    readonly where: string,
+    readonly last?: unknown
+  ) {
+    super(
+      `Ran out of time waiting for NYC Open Data (${where})` +
+        (last instanceof Error ? `; last problem: ${last.message}` : "") +
+        ". What was fetched so far is saved; ask again to continue."
+    );
+    this.name = "DeadlineError";
   }
 }
 

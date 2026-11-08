@@ -32,7 +32,7 @@ def main() -> None:
 
     def cb(cd, m_s, m_e):
         ids = o.cb_list(cd, m_s, m_e)
-        return {"new_this_month": ids["new_this_month"], "unresolved_from_prior_months": ids["unresolved_from_prior_months"]}
+        return ids
 
     both = o.files("cd", [101, 484])
     expected = {
