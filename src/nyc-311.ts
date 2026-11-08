@@ -14,24 +14,10 @@ function getApiKey(): string {
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type CalendarItem = {
-  type?: string;
-  status?: string;
-  exceptionName?: string;
-  details?: string;
-};
-
-export type CalendarDay = {
-  today_id?: string;
-  items?: CalendarItem[];
-};
-
-export type CalendarResponse = {
-  days?: CalendarDay[];
-};
-
-// Status and service-request response shapes are not fully documented upstream,
-// so they are typed loosely and returned as raw parsed JSON.
+// Response shapes are not fully documented upstream, so every endpoint is typed
+// loosely and returned as raw parsed JSON. (The calendar result used to carry
+// CalendarItem/CalendarDay/CalendarResponse types, but no field was ever read;
+// results are only serialized. #9.)
 export type StatusType =
   | "CodeBlue"
   | "FireHydrant"
@@ -39,15 +25,7 @@ export type StatusType =
   | "SnowOnSidewalk"
   | "SnowOnStreet";
 
-// ─── Fetch helpers ─────────────────────────────────────────────────────────────
-
-function buildUrl(path: string, params: Record<string, string> = {}): string {
-  const url = new URL(`${BASE_URL}${path}`);
-  for (const [key, value] of Object.entries(params)) {
-    url.searchParams.set(key, value);
-  }
-  return url.toString();
-}
+// ─── Fetch helper ──────────────────────────────────────────────────────────────
 
 const MAX_ERROR_BODY_CHARS = 500;
 const MAX_RETRY_AFTER_MS = 10_000;
@@ -106,37 +84,36 @@ async function fetchWithRetry(
   return res;
 }
 
-async function apiGet<T = unknown>(
+/**
+ * The one request helper (#9 merged apiGet/apiPost/buildUrl). A `body` makes it
+ * a JSON POST; otherwise a GET with `params` as the query string. The request
+ * that goes over the wire is unchanged; test/request-shape.test.mjs pins it.
+ */
+async function apiFetch(
   path: string,
-  params: Record<string, string> = {}
-): Promise<T> {
+  opts: { params?: Record<string, string>; body?: unknown } = {}
+): Promise<unknown> {
   const apiKey = getApiKey();
-  const res = await fetchWithRetry(buildUrl(path, params), {
-    headers: { "Ocp-Apim-Subscription-Key": apiKey },
-  });
+  const url = new URL(`${BASE_URL}${path}`);
+  for (const [key, value] of Object.entries(opts.params ?? {})) {
+    url.searchParams.set(key, value);
+  }
+  const init: RequestInit =
+    opts.body === undefined
+      ? { headers: { "Ocp-Apim-Subscription-Key": apiKey } }
+      : {
+          method: "POST",
+          headers: {
+            "Ocp-Apim-Subscription-Key": apiKey,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(opts.body),
+        };
+  const res = await fetchWithRetry(url.toString(), init);
   if (!res.ok) {
     throw await errorFromResponse(res);
   }
-  return res.json() as Promise<T>;
-}
-
-async function apiPost<T = unknown>(
-  path: string,
-  body: unknown
-): Promise<T> {
-  const apiKey = getApiKey();
-  const res = await fetchWithRetry(buildUrl(path), {
-    method: "POST",
-    headers: {
-      "Ocp-Apim-Subscription-Key": apiKey,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw await errorFromResponse(res);
-  }
-  return res.json() as Promise<T>;
+  return res.json();
 }
 
 // ─── Date helpers ──────────────────────────────────────────────────────────────
@@ -185,19 +162,14 @@ export async function getCalendar(opts: {
   date?: string;
   fromDate?: string;
   toDate?: string;
-}): Promise<CalendarResponse> {
-  let fromIso = opts.fromDate;
-  let toIso = opts.toDate;
-
-  if (!fromIso && !toIso) {
-    const single = opts.date ?? todayIso();
-    fromIso = single;
-    toIso = single;
-  } else {
-    // If a range is partially provided, fall back to date / each other.
-    fromIso = fromIso ?? opts.date ?? toIso ?? todayIso();
-    toIso = toIso ?? opts.date ?? fromIso;
-  }
+}): Promise<unknown> {
+  // A missing end falls back to `date`, then to the other end, then to today.
+  // Same result as the old four-branch ladder for all eight combinations
+  // (test/request-shape.test.mjs). Note: the shorter form suggested in #9,
+  // `from = from ?? date ?? today`, is NOT equivalent: with only to_date set it
+  // would start the range today instead of on to_date.
+  const fromIso = opts.fromDate ?? opts.date ?? opts.toDate ?? todayIso();
+  const toIso = opts.toDate ?? opts.date ?? fromIso;
 
   const span = daysBetween(fromIso, toIso);
   if (span < 0) {
@@ -211,34 +183,27 @@ export async function getCalendar(opts: {
     );
   }
 
-  return apiGet<CalendarResponse>("/GetCalendar", {
-    fromdate: assertIsoDate(fromIso),
-    todate: assertIsoDate(toIso),
+  return apiFetch("/GetCalendar", {
+    params: { fromdate: assertIsoDate(fromIso), todate: assertIsoDate(toIso) },
   });
 }
 
-const STATUS_PATHS: Record<StatusType, string> = {
-  CodeBlue: "/Status/CodeBlue",
-  FireHydrant: "/Status/FireHydrant",
-  OEM: "/Status/OEM",
-  SnowOnSidewalk: "/Status/SnowOnSidewalk",
-  SnowOnStreet: "/Status/SnowOnStreet",
-};
-
 export async function getStatus(type: StatusType): Promise<unknown> {
-  return apiGet<unknown>(STATUS_PATHS[type]);
+  // The StatusType union (and the tool's zod enum) already constrains `type`,
+  // so the path is built directly; there is no lookup table to drift (#9).
+  return apiFetch(`/Status/${type}`);
 }
 
 export async function getServiceRequest(srNumber: string): Promise<unknown> {
-  return apiGet<unknown>("/GetServiceRequest", {
-    srnumber: assertSrNumber(srNumber),
+  return apiFetch("/GetServiceRequest", {
+    params: { srnumber: assertSrNumber(srNumber) },
   });
 }
 
 export async function getServiceRequestList(
   srNumbers: string[]
 ): Promise<unknown> {
-  return apiPost<unknown>("/GetServiceRequestList", {
-    SRNumbers: srNumbers.map(assertSrNumber),
+  return apiFetch("/GetServiceRequestList", {
+    body: { SRNumbers: srNumbers.map(assertSrNumber) },
   });
 }
