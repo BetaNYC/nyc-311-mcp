@@ -110,10 +110,18 @@ is in danger right now, call 911. 311 is for problems that are not emergencies."
 wording. For suicide and self-harm, `also_988` quotes KA-01635: "When people call, text, or chat
 988, they will be connected to trained counselors".
 
-Not danger: "no one was hurt", "nobody got hurt", "not an emergency"; smoking as an activity
-("smoke cigarettes in the hallway"); an odor ("a burning smell"); "the noise hurts my sleep"; a
-crash with no word about injury ("my car was hit"), which gets the standing line only. A past crime
-("robbed last week") gets no 911 lead, and neither does "shooting a video" or "a movie".
+Not danger: "no one was hurt", "nobody got hurt"; smoking as an activity ("smoke cigarettes in
+the hallway"); an odor ("a burning smell"); "the noise hurts my sleep"; a crash with no word about
+injury ("my car was hit"), which gets the standing line only. A past crime ("robbed last week")
+gets no 911 lead, and neither does "shooting a video" or "a movie", or "Gun Hill Road".
+
+**"Not an emergency" and "not urgent."** These quiet only signals that are ambiguous on their own:
+smoke, a crash, water near electricity, a shaking or falling structure ("not an emergency but there
+is smoke coming from a vent" gets the standing line only). They never quiet someone hurt,
+collapsed or not breathing, a gas smell, carbon monoxide, fire, or suicide and self-harm: "not
+urgent, but I smell gas" still leads with 911. A past-time word does not make a crime past when
+the words say the danger is still there ("still inside", "still here", "right now") or name a
+weapon: "broke in last night and he is still inside with a knife" leads with 911.
 
 **Crime.** When the description is about a crime, `crime` points to the City's own articles: "Crime
 Stoppers Tip" (KA-02668: "You can anonymously report a tip about a crime ... The City accepts tips
