@@ -77,6 +77,7 @@ setContentClient((await fixtureContent()).client);
 const VALID_ARGS = {
   how_to_report: { description: "a pothole on my block" },
   list_311_categories: { category_id: "311-12" },
+  draft_311_report: { description: "a pothole on my block", borough: "Queens" },
   find_district: { address: "350 5th Ave" },
   district_summary: { community_district: 484 },
   top_problems: { council_district: 1, last_days: 30 },

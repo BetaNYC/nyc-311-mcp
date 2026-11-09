@@ -10,7 +10,7 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ## What it does
 
-Exposes 20 tools over MCP. Six use the NYC 311 Public API (they need an API key):
+Exposes 21 tools over MCP. Seven use the NYC 311 Public API (they need an API key):
 
 | Tool | Description |
 |---|---|
@@ -20,6 +20,7 @@ Exposes 20 tools over MCP. Six use the NYC 311 Public API (they need an API key)
 | `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
 | `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer and every error starts with "If anyone is in danger right now, call 911."; a description that suggests danger, and every no-match answer, leads with 911, in the City's words only when the City article is that danger. **Danger detection is keyword-based; it will miss some emergencies**, so every answer also tells the calling assistant to send the person to 911 whenever anything suggests danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
 | `list_311_categories` | 311's own topic categories, or the articles in one, to browse when a match looks wrong |
+| `draft_311_report` | A short ready-to-paste 311 report for the person to submit themselves (problem, where, when, what they saw), the 311 Online article link to report it on, questions for anything missing (marked `[add: …]`, never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the article says about contact details and photos, and what happens next. Uses `how_to_report`'s matching and danger check; never drafts when danger is flagged (call 911); safety line first on every answer and error; one draft per problem. **Files nothing, sends nothing, fills no form.** The City does not publish each form's fields, so the form may ask for more. Details: [docs/draft-a-report.md](docs/draft-a-report.md) |
 
 Eleven answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
 publishes every night (no key needed; only `www.beta.nyc` is contacted). Their numbers match
@@ -188,6 +189,8 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 how_to_report(description="no heat in my apartment")                   → KA-01036, HPD, "Heat/Hot Water", how to report
 how_to_report(description="a pothole on my block", community_district=306)  → plus how often it was reported in Brooklyn CD 6
 list_311_categories(category_id="311-12")                               → every Noise article, to pick another
+draft_311_report(description="a pothole on my block", location="Broadway and W 96 St", borough="Manhattan")
+                                                                        → paste-ready text, the KA-01093 link, what to add
 ```
 
 ---
@@ -195,14 +198,14 @@ list_311_categories(category_id="311-12")                               → ever
 ## Prerequisites
 
 - Node.js 18 or later
-- An NYC 311 Public API subscription key (free), for the four 311 API tools only. The district tools and the Local Law 47 reports need no key.
+- An NYC 311 Public API subscription key (free), for the seven tools that use the 311 API only (the four lookups and the three reporting-help tools). The district tools and the Local Law 47 reports need no key.
 - Optional: a Socrata app token as `SOCRATA_APP_TOKEN`, sent as `X-App-Token` by `ll47_directory_assistance_report` (the only tool that queries NYC Open Data). It works without one.
 
 ---
 
 ## API key
 
-**For the six 311 API tools (the four lookup tools, `how_to_report` and `list_311_categories`), yes — a free API key is required.** The eleven district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
+**For the seven 311 API tools (the four lookup tools, `how_to_report`, `list_311_categories` and `draft_311_report`), yes — a free API key is required.** The eleven district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
 
 1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and register / sign in.
 2. Subscribe to the **NYC 311 Public Developers** product (see the table below for which product to choose).
@@ -321,14 +324,14 @@ Once connected, you can ask your AI assistant things like:
 More district work is planned under epic
 [#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12): the monthly reports that
 [Local Law 47 of 2005](https://intro.nyc/0174-2004) (Int 0174-2004) asked for (#15), request lookup by address and district (#16), and help reporting a
-problem to 311 (#17, #18). None of those are released yet. Drafting a report for a person to
-send (#18) is next; the server will not file requests on anyone's behalf.
+problem to 311 (#17, #18). None of those are released yet. The draft (#18) still needs testing
+with real people on real problems. The server will not file requests on anyone's behalf.
 
 ---
 
 ## Data source
 
-The four lookup tools and the two reporting-help tools (`how_to_report`, `list_311_categories`, through the API's content operations GetCategory, GetContentList and GetContent) use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The eleven district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data.
+The four lookup tools and the three reporting-help tools (`how_to_report`, `list_311_categories`, `draft_311_report`, through the API's content operations GetCategory, GetContentList and GetContent) use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The eleven district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data. `draft_311_report` also reads NYC Open Data's [311 Service Level Agreements](https://data.cityofnewyork.us/d/cs9t-e3x8) (`cs9t-e3x8`, no key; last updated by the City 2024-03-05) for Problem Detail options, kept 30 days.
 
 This is an independent, community-built project from BetaNYC. It is not affiliated with, endorsed by, or an official product of the City of New York.
 

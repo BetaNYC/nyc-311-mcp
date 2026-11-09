@@ -1,0 +1,483 @@
+{
+ "id": "cs9t-e3x8",
+ "name": "311 Service Level Agreements",
+ "description": "Provides the time commitments that City Agencies have made to respond to 311 Service Requests that are assigned to them.",
+ "rowsUpdatedAt": 1709669453,
+ "columns": [
+  {
+   "fieldName": "agency",
+   "dataTypeName": "text",
+   "description": "City Agency that responds to the condition or request.",
+   "cachedContents": {
+    "non_null": "3563",
+    "largest": "Taxi and Limousine Commission",
+    "null": "0",
+    "top": [
+     {
+      "item": "Department of Consumer and Worker Protection",
+      "count": "892"
+     },
+     {
+      "item": "Department of Finance",
+      "count": "653"
+     },
+     {
+      "item": "Department of Health and Mental Hygiene",
+      "count": "319"
+     },
+     {
+      "item": "Department of Parks and Recreation",
+      "count": "293"
+     },
+     {
+      "item": "Department of Transportation",
+      "count": "288"
+     },
+     {
+      "item": "Taxi and Limousine Commission",
+      "count": "263"
+     },
+     {
+      "item": "Department of Housing Preservation and Development",
+      "count": "196"
+     },
+     {
+      "item": "Department of Sanitation",
+      "count": "182"
+     },
+     {
+      "item": "Department of Buildings",
+      "count": "167"
+     },
+     {
+      "item": "Department of Environmental Protection",
+      "count": "99"
+     },
+     {
+      "item": "New York City Police Department",
+      "count": "96"
+     },
+     {
+      "item": "Office of Technology and Innovation",
+      "count": "34"
+     },
+     {
+      "item": "Department of Education",
+      "count": "31"
+     },
+     {
+      "item": "Human Resources Administration",
+      "count": "21"
+     },
+     {
+      "item": "NYC Emergency Management",
+      "count": "11"
+     },
+     {
+      "item": "Economic Development Corporation",
+      "count": "9"
+     },
+     {
+      "item": "Department of Homeless Services",
+      "count": "3"
+     },
+     {
+      "item": "Department for the Aging",
+      "count": "3"
+     },
+     {
+      "item": "Small Business Services",
+      "count": "1"
+     },
+     {
+      "item": "Administration for Children's Services",
+      "count": "1"
+     }
+    ],
+    "smallest": "Administration for Children's Services",
+    "count": "3563",
+    "cardinality": "21"
+   }
+  },
+  {
+   "fieldName": "problem",
+   "dataTypeName": "text",
+   "description": "This is the first level of a hierarchy identifying the topic of the incident or condition. Problem may have associated Problem Details and Additional Details (below) or may stand alone.",
+   "cachedContents": {
+    "non_null": "3563",
+    "largest": "Zoning Violation",
+    "null": "0",
+    "top": [
+     {
+      "item": "Consumer Complaint",
+      "count": "890"
+     },
+     {
+      "item": "Taxpayer Advocate Inquiry",
+      "count": "140"
+     },
+     {
+      "item": "Maintenance or Facility",
+      "count": "99"
+     },
+     {
+      "item": "Advocate-Commercial Exemptions",
+      "count": "96"
+     },
+     {
+      "item": "Food Establishment",
+      "count": "86"
+     },
+     {
+      "item": "Advocate - Other",
+      "count": "80"
+     },
+     {
+      "item": "DPR Internal",
+      "count": "59"
+     },
+     {
+      "item": "Found Property",
+      "count": "58"
+     },
+     {
+      "item": "Lost Property",
+      "count": "58"
+     },
+     {
+      "item": "Advocate-Personal Exemptions",
+      "count": "56"
+     },
+     {
+      "item": "Advocate-SCRIE/DRIE",
+      "count": "56"
+     },
+     {
+      "item": "Violation of Park Rules",
+      "count": "51"
+     },
+     {
+      "item": "Plumbing",
+      "count": "45"
+     },
+     {
+      "item": "Advocate-Business Tax",
+      "count": "32"
+     },
+     {
+      "item": "Animal in a Park",
+      "count": "32"
+     },
+     {
+      "item": "Advocate-UBT",
+      "count": "32"
+     },
+     {
+      "item": "School Maintenance",
+      "count": "31"
+     },
+     {
+      "item": "Sidewalk Condition",
+      "count": "30"
+     },
+     {
+      "item": "Outdoor Dining",
+      "count": "29"
+     },
+     {
+      "item": "Damaged Tree",
+      "count": "28"
+     }
+    ],
+    "smallest": "Abandoned Bike",
+    "count": "3563",
+    "cardinality": "274"
+   }
+  },
+  {
+   "fieldName": "problem_details",
+   "dataTypeName": "text",
+   "description": "This is associated to the Problem, and provides further detail on the incident or condition. Problem Details are dependent on the Problem, and are not always required in the SR. ",
+   "cachedContents": {
+    "non_null": "3552",
+    "largest": "Zoning Violation",
+    "null": "11",
+    "top": [
+     {
+      "item": "Driver Complaint - Passenger",
+      "count": "36"
+     },
+     {
+      "item": "Driver Report - Passenger",
+      "count": "33"
+     },
+     {
+      "item": "Department Store or Megastore",
+      "count": "27"
+     },
+     {
+      "item": "Hardware Store",
+      "count": "23"
+     },
+     {
+      "item": "Electronics Store",
+      "count": "23"
+     },
+     {
+      "item": "Other",
+      "count": "23"
+     },
+     {
+      "item": "Structure - Outdoors",
+      "count": "22"
+     },
+     {
+      "item": "Drug Store or Pharmacy",
+      "count": "22"
+     },
+     {
+      "item": "Supermarket or Grocery Store",
+      "count": "22"
+     },
+     {
+      "item": "Bodega, Deli, or Convenience Store",
+      "count": "21"
+     },
+     {
+      "item": "Gas Station Convenience Store",
+      "count": "20"
+     },
+     {
+      "item": "Used Car Dealer",
+      "count": "20"
+     },
+     {
+      "item": "Art Supply Store",
+      "count": "20"
+     },
+     {
+      "item": "Bag/Wallet",
+      "count": "20"
+     },
+     {
+      "item": "Dry Cleaner",
+      "count": "19"
+     },
+     {
+      "item": "Car Wash",
+      "count": "19"
+     },
+     {
+      "item": "N/A",
+      "count": "17"
+     },
+     {
+      "item": "Pet Store",
+      "count": "17"
+     },
+     {
+      "item": "Graffiti or Vandalism",
+      "count": "17"
+     },
+     {
+      "item": "Pawnbroker",
+      "count": "17"
+     }
+    ],
+    "smallest": "1 or 2",
+    "count": "3563",
+    "cardinality": "988"
+   }
+  },
+  {
+   "fieldName": "additional_details",
+   "dataTypeName": "text",
+   "description": "This is associated to the Problem Details, and provides further detail on the incident or condition. Additional Details are dependent on the Problem Details and are not always required in the SR.",
+   "cachedContents": {
+    "non_null": "3418",
+    "largest": "Wrought Iron Corroded",
+    "null": "145",
+    "top": [
+     {
+      "item": "N/A",
+      "count": "614"
+     },
+     {
+      "item": "DOF Action is Unjust, Wrong or Violates Rights",
+      "count": "73"
+     },
+     {
+      "item": "DOF System or Process - Affects Other Taxpayers",
+      "count": "73"
+     },
+     {
+      "item": "Public Policy Requires Change",
+      "count": "73"
+     },
+     {
+      "item": "Debt Incorrect",
+      "count": "73"
+     },
+     {
+      "item": "No Response or Delayed Response",
+      "count": "73"
+     },
+     {
+      "item": "Unique and Rare Case",
+      "count": "73"
+     },
+     {
+      "item": "Debt not Owed or Illegal",
+      "count": "73"
+     },
+     {
+      "item": "Other",
+      "count": "68"
+     },
+     {
+      "item": "Advertising False or Misleading",
+      "count": "60"
+     },
+     {
+      "item": "Overcharge",
+      "count": "57"
+     },
+     {
+      "item": "Refund, Return, or Exchange Refused",
+      "count": "54"
+     },
+     {
+      "item": "Serious Harm - Cannot be Corrected",
+      "count": "53"
+     },
+     {
+      "item": "Cash Payment Not Accepted",
+      "count": "45"
+     },
+     {
+      "item": "Receipt Inaccurate, Incomplete, or Not Given",
+      "count": "41"
+     },
+     {
+      "item": "Goods or Services Not Delivered",
+      "count": "40"
+     },
+     {
+      "item": "Unlicensed",
+      "count": "35"
+     },
+     {
+      "item": "License or Complaint Sign Not Displayed",
+      "count": "32"
+     },
+     {
+      "item": "Refund or Return Policy Not Posted",
+      "count": "28"
+     },
+     {
+      "item": "Price Gouging",
+      "count": "27"
+     }
+    ],
+    "smallest": "1-2 Family Home",
+    "count": "3563",
+    "cardinality": "929"
+   }
+  },
+  {
+   "fieldName": "sla_days",
+   "dataTypeName": "text",
+   "description": "Amount of time the Agency needs to address the request.",
+   "cachedContents": {
+    "non_null": "3563",
+    "largest": "SLA Not Managed by 311",
+    "null": "0",
+    "top": [
+     {
+      "item": "4 days",
+      "count": "920"
+     },
+     {
+      "item": "SLA Not Managed by 311",
+      "count": "761"
+     },
+     {
+      "item": "14 days",
+      "count": "325"
+     },
+     {
+      "item": "7 days",
+      "count": "230"
+     },
+     {
+      "item": "3 days",
+      "count": "176"
+     },
+     {
+      "item": "30 days",
+      "count": "163"
+     },
+     {
+      "item": "37 days",
+      "count": "135"
+     },
+     {
+      "item": "10 days",
+      "count": "131"
+     },
+     {
+      "item": "8 days",
+      "count": "105"
+     },
+     {
+      "item": "8 hours",
+      "count": "97"
+     },
+     {
+      "item": "5 days",
+      "count": "96"
+     },
+     {
+      "item": "2 days",
+      "count": "93"
+     },
+     {
+      "item": "40 days",
+      "count": "67"
+     },
+     {
+      "item": "1 day",
+      "count": "46"
+     },
+     {
+      "item": "60 days",
+      "count": "43"
+     },
+     {
+      "item": "21 days",
+      "count": "41"
+     },
+     {
+      "item": "45 days",
+      "count": "30"
+     },
+     {
+      "item": "90 days",
+      "count": "20"
+     },
+     {
+      "item": "28 days",
+      "count": "18"
+     },
+     {
+      "item": "180 days",
+      "count": "9"
+     }
+    ],
+    "smallest": "10 days",
+    "count": "3563",
+    "cardinality": "35"
+   }
+  }
+ ]
+}

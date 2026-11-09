@@ -152,8 +152,10 @@ test("round 3 wording and borderline cases", async () => {
   assert.equal(sparks.emergency.ka_number, null);
   // Borderline, kept as 911 on purpose: a trash can on fire, even in an old picture.
   assert.ok((await howToReport({ description: "the trash can is on fire with graffiti tags (old picture)" }, client)).emergency);
-  // Indirect: no keyword, but a no-match answer still leads with 911, and the assistant is told to judge.
+  // Indirect: detected since the Phase 4 follow-up on #24 (hopelessness phrasings), so it
+  // leads with the City's own 911 line; the assistant is still told to judge.
   const indirect = await howToReport({ description: "nobody would care if I disappeared" }, client);
-  assert.match(indirect.first_line, /call 911/);
+  assert.match(indirect.first_line, /call 911/i);
+  assert.ok(indirect.emergency);
   assert.match(indirect.assistant_instruction, /tell them to call 911 first/);
 });
