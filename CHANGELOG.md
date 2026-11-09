@@ -7,6 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.1] - 2026-11-08
+
+A beta, installed from the `beta` branch (`npx -y github:BetaNYC/nyc-311-mcp#beta`). Not
+published to npm; the released package stays at 1.1.0. Everything below this heading, down
+to 1.0.1, is in this beta.
+
+### Fixed (beta test round 1, 2026-11-08)
+
+From a test of all 21 tools on a second Mac (106 calls):
+
+- **District codes.** `community_district` accepts board codes and names as well as
+  BoardStat's number: `309`, `BK09`, `bk9`, `Brooklyn 9`, `Brooklyn CD 9`, `Brooklyn
+  Community District 9`, `Kings 9`. A form it cannot read gets a plain error with the
+  accepted forms and an example. `council_district` accepts `Council District 7`.
+- **Fair year-over-year numbers** (`top_problems`, `problem_trend`). With a `status`
+  filter there is no year-earlier comparison: the data has each request's status today,
+  not a year ago, so open-now against year-old requests that are open now is not like for
+  like (the test saw "+18,100%"). A year-earlier count under 30 shows both counts and
+  `change_note: "small numbers; percent change not shown"` instead of a percent.
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles: graffiti goes to Graffiti (KA-02070), with the section that fits quoted (USPS
+  Mailbox); rats in a park go to the Parks report option, not HPD's at-home form, and the
+  place named (park, sidewalk, school, highway, home) picks the option in general; park
+  equipment (a bench, swings, a fountain) goes to Park Maintenance Complaint (KA-01060), so
+  "a trash can and a broken bench" lists both; a grill goes to Barbecuing (KA-02228), the
+  closest the City has, and because its only report option is for parks, a neighbor's grill
+  gets "no exact match" and the closest articles, not a draft. 25 everyday phrasings added
+  to the tests; the 911 rules are unchanged.
+- **Built-in 911 lines.** With no API key and an empty cache, "I smell gas" now leads with
+  the City's own gas line (KA-02048), built in from the 2026-11-07 recording, and no draft.
+- **Names.** Street, neighborhood and park names ("Gun Hill Road", "Crown Heights") no
+  longer set off "This draft names someone"; a person's name still does.
+- **Plain errors.** Argument errors are sentences (which argument, what was wrong, the
+  allowed values), not zod JSON. An empty `sr_numbers` list is refused before any request.
+- **Rate limits.** `get_service_request` asks `GetServiceRequestList` for the same number
+  when the single lookup is rate limited (HTTP 429); the portal documents that the two
+  return the same request. Other 429s are retried twice at most, honoring `Retry-After`,
+  with no more than 20 s of waiting; the error says how long to wait.
+- **Truncation in words.** `ll47_service_request_report` with `by_district` says "Showing 5
+  of 18 districts, because limit is 5" when `limit` cuts the table.
+- **Smaller answers.** `list_311_categories` with no arguments is a summary (33,050 to about
+  7,600 characters); a category's articles come 20 at a time with `offset` and `next_page`.
+- **Open Data outages.** `ll47_directory_assistance_report` stops at the first failing month
+  instead of spending its whole 45 s budget, with a plain "try again in a few minutes".
+- **Version.** The server reports `1.2.0-beta.1`, so a tester can tell the beta from 1.1.0.
+
 ### Added: draft a 311 report (Phase 5, #18; closes #10)
 
 - `draft_311_report`: a short ready-to-paste report the person submits themselves (problem,
