@@ -1,0 +1,87 @@
+{
+ "id": "wewp-mm3p",
+ "name": "311 Call Center Inquiry",
+ "description": "<b>Please note: Due to pandemic call handling modifications, the activity data since March 2020 does not fully represent the agent-handled calls to 311. The actual calls handled are higher.</b>\r\n\r\nThe 311 Call Center Inquiry dataset contains information on all agent-handled calls to the City\u2019s 311 information line, including date, time and topic.\r\n\r\nClick <a href=\"https://data.cityofnewyork.us/api/views/wewp-mm3p/files/5ec79733-6c0b-4f84-b511-936142db396e?download=true&filename=Call%20Center%20Inquiry%20Data%20Dictionary.xlsx\">here </a>for the data dictionary.",
+ "rowsUpdatedAt": 1794103577,
+ "attribution": "311",
+ "columns": [
+  {
+   "fieldName": "unique_id",
+   "dataTypeName": "text",
+   "description": "",
+   "cachedContents": {
+    "non_null": "105625415",
+    "null": "0"
+   }
+  },
+  {
+   "fieldName": "date",
+   "dataTypeName": "calendar_date",
+   "cachedContents": {
+    "non_null": "105625415",
+    "null": "0"
+   }
+  },
+  {
+   "fieldName": "time",
+   "dataTypeName": "text",
+   "description": "Time the call was received.",
+   "cachedContents": {
+    "non_null": "105625415",
+    "null": "0"
+   }
+  },
+  {
+   "fieldName": "date_time",
+   "dataTypeName": "calendar_date",
+   "cachedContents": {
+    "non_null": "105614240",
+    "null": "0"
+   }
+  },
+  {
+   "fieldName": "agency",
+   "dataTypeName": "text",
+   "description": "Agency associated with the specific topic",
+   "cachedContents": {
+    "non_null": "74923274",
+    "null": "30702141"
+   }
+  },
+  {
+   "fieldName": "agency_name",
+   "dataTypeName": "text",
+   "cachedContents": {
+    "non_null": "74923274",
+    "null": "30702141"
+   }
+  },
+  {
+   "fieldName": "inquiry_name",
+   "dataTypeName": "text",
+   "description": "Topic the call center representative used to resolve the customer's inquiry",
+   "cachedContents": {
+    "non_null": "105625415",
+    "null": "0"
+   }
+  },
+  {
+   "fieldName": "brief_description",
+   "dataTypeName": "text",
+   "description": "Brief description of the topic.",
+   "cachedContents": {
+    "non_null": "105625410",
+    "null": "5"
+   }
+  },
+  {
+   "fieldName": "call_resolution",
+   "dataTypeName": "text",
+   "description": "How the call ended/was resolved.",
+   "cachedContents": {
+    "non_null": "74820479",
+    "null": "30804936"
+   }
+  }
+ ]
+}

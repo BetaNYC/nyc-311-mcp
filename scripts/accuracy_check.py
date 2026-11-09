@@ -1,4 +1,4 @@
-"""Accuracy check for the district tools (#14): each tool's numbers against DuckDB SQL.
+"""Accuracy check for the district tools (#14) and the Local Law 47 reports (#15): each tool's numbers against DuckDB SQL.
 
 For the "BoardStat in Action" questions Q1, Q3, Q4, Q9, Q13 and Q17 (plus Q2), runs the
 tool (dist/, through scripts/run-district-tools.mjs) and the independent DuckDB queries in
@@ -87,6 +87,59 @@ def main() -> int:
         ("Q17", "Top complaints, Council District 4, last 30 days",
          {"name": "top_problems", "args": {"council_district": 4, "last_days": 30, "limit": 10}},
          lambda: o.top_problems("cc", 4, d30, o.last_day, 10), "data"),
+    ]
+
+    # Phase 2 (#15): the Local Law 47 reports, against the same oracle's ll47 queries.
+    cd_all = f"read_parquet('{o.dir / 'detail' / 'cd'}/*.parquet')"
+    oct_s, oct_e = "2026-10-01", "2026-10-31"
+
+    def sr(src, lim=50):
+        return {"month": o.sr_report(src, oct_s, oct_e, lim), "fiscal_year": o.sr_report(src, fy_start, oct_e, lim)}
+
+    def cb(cd, offset, limit):
+        ids = o.cb_list(cd, oct_s, oct_e)
+        rows = ids["new_this_month"] + ids["unresolved_from_prior_months"] + ids["unresolved_at_month_end_now_closed"]
+        return {"counts": {"new_this_month": len(ids["new_this_month"]),
+                           "unresolved_from_prior_months": len(ids["unresolved_from_prior_months"]),
+                           "unresolved_at_month_end_now_closed": len(ids["unresolved_at_month_end_now_closed"]), "rows": len(rows)},
+                "record_problems": ids["record_problems"],
+                "rows": [{"sr_number": k} for k in rows[offset:offset + limit]]}
+
+    questions += [
+        ("L1", "LL47 service request report, Manhattan CD 1, 2026-10 and FY2027 to date",
+         {"name": "ll47_service_request_report", "args": {"community_district": 101, "month": "2026-10"}},
+         lambda: sr(o.detail("cd", 101)), "ll47"),
+        ("L2", "LL47 service request report, Council District 4, 2026-10 and FY2027 to date",
+         {"name": "ll47_service_request_report", "args": {"council_district": 4, "month": "2026-10", "limit": 200}},
+         lambda: sr(o.detail("cc", 4), 200), "ll47"),
+        ("L3", "LL47 service request report, citywide (every district file), 2026-10 and FY2027 to date",
+         {"name": "ll47_service_request_report", "args": {"month": "2026-10", "read_every_district": True, "limit": 300}},
+         lambda: sr(cd_all, 300), "ll47"),
+        ("L4", "LL47 service request report, citywide from the month file, 2026-10 and FY2027 to date",
+         {"name": "ll47_service_request_report", "args": {"month": "2026-10", "limit": 300}},
+         lambda: {"month": o.agg_report("city", None, "2026-10", "2026-10", 300),
+                  "fiscal_year": o.agg_report("city", None, "2026-07", "2026-10", 300)}, "ll47"),
+        ("L5", "LL47 service request report, Queens from the month file, 2026-10",
+         {"name": "ll47_service_request_report", "args": {"month": "2026-10", "borough": "Queens", "limit": 300}},
+         lambda: {"month": o.agg_report("borough", "Queens", "2026-10", "2026-10", 300)}, "ll47"),
+        ("L6", "§ 1075(d) list, Manhattan CD 1, 2026-10, first page of 1,000",
+         {"name": "cb_monthly_list", "args": {"community_district": 101, "month": "2026-10", "limit": 1000}},
+         lambda: cb(101, 0, 1000), "ll47"),
+        ("L7", "§ 1075(d) list, Manhattan CD 1, 2026-10, the page where new rows end and unresolved ones begin",
+         {"name": "cb_monthly_list", "args": {"community_district": 101, "month": "2026-10", "offset": 3500, "limit": 1000}},
+         lambda: cb(101, 3500, 1000), "ll47"),
+        ("L8", "§ 1075(d) list, Bronx CD 5, 2026-09, unresolved part only",
+         {"name": "cb_monthly_list", "args": {"community_district": 205, "month": "2026-09", "part": "unresolved_from_prior_months", "offset": 0, "limit": 1000}},
+         lambda: (lambda ids: {"counts": {"unresolved_from_prior_months": len(ids["unresolved_from_prior_months"])},
+                               "rows": [{"sr_number": k} for k in ids["unresolved_from_prior_months"][:1000]]})(o.cb_list(205, "2026-09-01", "2026-09-30")), "ll47"),
+        ("L10", "§ 1075(d) list, Manhattan CD 1, 2024-03, record problems",
+         {"name": "cb_monthly_list", "args": {"community_district": 101, "month": "2024-03", "limit": 1}},
+         lambda: {"record_problems": o.cb_list(101, "2024-03-01", "2024-03-31")["record_problems"]}, "ll47"),
+        ("L9", "§ 1075(d) list, Brooklyn CD 1, 2024-03: unresolved at month end, closed since",
+         {"name": "cb_monthly_list", "args": {"community_district": 301, "month": "2024-03", "part": "unresolved_at_month_end_now_closed", "limit": 1000}},
+         lambda: (lambda ids: {"counts": {"unresolved_at_month_end_now_closed": len(ids["unresolved_at_month_end_now_closed"])},
+                               "record_problems": {"closed_without_close_date": ids["record_problems"]["closed_without_close_date"]},
+                               "rows": [{"sr_number": k} for k in ids["unresolved_at_month_end_now_closed"][:1000]]})(o.cb_list(301, "2024-03-01", "2024-03-31")), "ll47"),
     ]
 
     calls = [q[2] for q in questions]

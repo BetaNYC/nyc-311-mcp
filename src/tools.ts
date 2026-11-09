@@ -6,6 +6,7 @@ import {
   getServiceRequestList,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
+import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -82,6 +83,8 @@ export const TOOLS = [
   },
   // The ten district tools, from BoardStat's published files (#14).
   ...DISTRICT_TOOLS,
+  // The three Local Law 47 of 2005 reports (Charter § 1075), rebuilt from open data (#15).
+  ...LL47_TOOLS,
 ];
 
 const ARG_SHAPES = {
@@ -94,6 +97,7 @@ const ARG_SHAPES = {
   get_service_request: { sr_number: z.string() },
   get_service_request_list: { sr_numbers: z.array(z.string()) },
   ...DISTRICT_ARG_SHAPES,
+  ...LL47_ARG_SHAPES,
 };
 
 /**
@@ -156,6 +160,11 @@ export async function callTool(name: string, args: unknown) {
       }
 
       default:
+        if (name in LL47_ARG_SHAPES) {
+          const parsed = parseToolArgs(name as Ll47ToolName, args) as Record<string, unknown>;
+          const result = await runLl47Tool(name as Ll47ToolName, parsed);
+          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+        }
         if (name in DISTRICT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as DistrictToolName, args) as Record<string, unknown>;
           const result = await runDistrictTool(name as DistrictToolName, parsed);

@@ -404,3 +404,9 @@ test("citySpellings: only a house number left is refused; 'New York' / 'NY, NY' 
   assert.equal(citySpellings("1 Broadway New York City").borough_hint, null);
   assert.equal(citySpellings("1 Broadway, NY").borough_hint, null, "NY alone is the state");
 });
+
+test("a fiscal year cut to the data is labeled to date in every district answer (QA on #21)", async () => {
+  const { data } = await run("top_problems", { council_district: 1, fiscal_year: 2027 });
+  assert.equal(data.period.end, EXPECTED.last_day);
+  assert.equal(data.period.label, `FY2027 to date (2026-07-01 to ${EXPECTED.last_day})`);
+});
