@@ -909,3 +909,92 @@ test("fiscal-year call, portal failing: the months tried say not responding, the
   assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 1, "a slow 503 is not retried, and no other month is tried");
 });
 
+
+// ── Beta retest 5 (2026-11-09): a failed background month cost a whole extra call, and a
+// partial fiscal-year answer showed no numbers for the months it had saved. ──
+
+test("a background month load that fails during the next call is retried in that call, one request at a time", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-retry-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  let active = 0;
+  let most = 0;
+  const asked = [];
+  let firstAug = true;
+  const offset = Date.now() - NOW;
+  const real = new SodaClient({
+    logger: () => {},
+    cacheDir: dir,
+    minIntervalMs: 5,
+    now: () => Date.now() - offset,
+    fetch: async (url, init) => {
+      const u = new URL(url);
+      if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
+      const m = /date >= '(\d{4}-\d{2})-01/.exec(u.searchParams.get("$where"));
+      asked.push(m[1]);
+      most = Math.max(most, ++active);
+      try {
+        if (m[1] === "2026-08" && firstAug) {
+          firstAug = false;
+          await hang(init); // the first August request times out (requestTimeoutMs below)
+        }
+        await pause(20);
+      } finally {
+        active--;
+      }
+      if (u.searchParams.get("$offset") !== "0") return Response.json([]);
+      const body = await readFile(path.join(SODA_FIX, `${m[1]}.json`)).catch(() => null);
+      return body ? new Response(body) : Response.json([]);
+    },
+  });
+  // Call 1 answers at once and leaves August loading in the background.
+  const first = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 10, requestTimeoutMs: 250 });
+  assert.equal(first.data.fiscal_year.complete, false);
+  // Call 2 starts while August is still loading; it fails during call 2's wait, and the
+  // months it held up are retried in the same call rather than left for a third.
+  const t0 = Date.now();
+  const second = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 3_000, requestTimeoutMs: 250 });
+  const took = Date.now() - t0;
+  assert.equal(second.data.fiscal_year.complete, true, JSON.stringify(second.data.fiscal_year.months_missing));
+  assert.ok(took < 3_000, `answered after ${took} ms`);
+  assert.equal(most, 1, "one request at a time (standards §6)");
+  assert.deepEqual(asked, ["2026-08", "2026-08", "2026-09", "2026-11"]);
+  let total = 0;
+  for (const ym of FY27_TO_OCT) total += await monthSum(ym);
+  assert.equal(second.data.fiscal_year.calls, total);
+});
+
+test("an incomplete fiscal year shows each saved month's count and a labeled partial sum, never a total", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-partial-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  const { soda } = await fixtureSoda({
+    cacheDir: dir,
+    respond: async (u, _n, init) => (u.pathname === "/resource/wewp-mm3p.json" && /2026-08-01/.test(u.searchParams.get("$where")) ? hang(init) : null),
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW, { requestTimeoutMs: 20 });
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.equal(fy.calls, undefined, "no fiscal-year total");
+  const jul = await monthSum("2026-07");
+  const oct = await monthSum("2026-10");
+  const julDa = await monthSum("2026-07", (r) => r.inquiry_name === "Directory Assistance");
+  assert.deepEqual(fy.saved_months.map((m) => [m.month, m.calls]), [["2026-07", jul], ["2026-10", oct]]);
+  assert.equal(fy.saved_months[0].directory_assistance_topic_calls, julDa);
+  assert.equal(fy.saved_months_so_far.calls, jul + oct);
+  assert.equal(fy.saved_months_so_far.months, 2);
+  assert.equal(fy.saved_months_so_far.of_months, 5);
+  assert.match(fy.saved_months_so_far.label, /^Saved months so far \(2 of 5\): a partial sum, not the total/);
+  assert.match(fy.note, /full total is not ready yet/);
+  assert.match(fy.note, /partial sum of the saved months so far, not the total/);
+});
+
+test("an incomplete fiscal year with nothing saved has an empty saved_months and no partial sum", async () => {
+  const { soda } = await fixtureSoda({
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+    cost: 6_000,
+  });
+  const fy = (await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW)).data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.deepEqual(fy.saved_months, []);
+  assert.equal(fy.saved_months_so_far, null);
+  assert.doesNotMatch(fy.note, /saved_months/);
+});

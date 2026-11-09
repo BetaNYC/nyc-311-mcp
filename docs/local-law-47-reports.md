@@ -118,8 +118,13 @@ is listed in `months_missing` as "still loading … ask again in a minute"; it k
 answer and is saved when it lands, for up to 4 minutes in all (`DA_BACKGROUND_MS`), each request
 still limited to 55 s. A second call while a month loads waits on the same request rather than
 sending another. After a month is too slow or fails, the months not yet started are listed as "not
-tried" and left for the next call. Every month missing has a plain reason; the section says
-`complete: false` and gives no partial total. Beta retest 4 (2026-11-09): the first FY2027 call
+tried" and left for the next call. When a load an earlier call started has failed (or was not
+tried after one did), the next call retries those months at once, within its own 12 s, still one at
+a time; a month this call itself tried and that failed is not asked twice in one call. Every month
+missing has a plain reason; the section says `complete: false` and gives no `calls` total. It does
+show what it has: `saved_months` (each saved month's calls and Directory Assistance topic calls)
+and `saved_months_so_far`, their sum, labeled "Saved months so far (n of m): a partial sum, not the
+total for the period" (beta retest 5, 2026-11-09). Beta retest 4 (2026-11-09): the first FY2027 call
 used to wait about 55 s on one slow month; on a cold cache that night it answered in 12 s. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
 and a caveat; with no saved copy for the asked-for month, the tool says so and does not answer.
 Politeness (engineering standards §6): one request at a time, at least 2 s between request

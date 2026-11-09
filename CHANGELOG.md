@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.6] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 5, 2026-11-09)
+
+- **Park restrooms** (`how_to_report`, `draft_311_report`). A restroom, bathroom, toilet or
+  comfort station in a park, playground, beach, pool or recreation center that is locked,
+  closed, dirty or broken goes to Park Maintenance Complaint (KA-01060, Parks), whose City
+  text covers "unclean conditions" and a park facility "closed to the public during posted
+  hours". Before, "public bathroom in the park is locked" got Breaking Park Rules and "the
+  playground bathroom is dirty" got Unlocked Park or Playground. A bathroom at home is
+  unchanged.
+- **Agency named in an article's text.** A possessive is no longer part of the name:
+  "Department of Housing Preservation and Development's (HPD)" (the Carbon Monoxide
+  article) now reads "Department of Housing Preservation and Development (HPD)". Fixed for
+  every article, straight or curly apostrophe, singular or plural.
+- **`ll47_directory_assistance_report`, fiscal year: a failed month is retried at once.**
+  When a month an earlier call started loading fails (or was "not tried" after one did),
+  the next call retries those months within its own 12 s answer, still one request at a
+  time (engineering standards §6). Before, that call only reported the failure and the load
+  restarted on the call after. A month the call itself tried is still not asked twice.
+- **`ll47_directory_assistance_report`, partial answer.** An incomplete period still has no
+  `calls` total, and says the full total is not ready yet. It now shows `saved_months` (each
+  saved month's calls and Directory Assistance topic calls) and `saved_months_so_far`, their
+  sum, labeled "Saved months so far (n of m): a partial sum, not the total for the period".
+
 ## [1.2.0-beta.5] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

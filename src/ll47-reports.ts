@@ -781,6 +781,21 @@ function monthsBetween(start: string, end: string): string[] {
   return out;
 }
 
+/** Why an incomplete period lists saved months' counts: they are a partial sum only. */
+export const SAVED_SO_FAR_NOTE =
+  "saved_months gives each saved month's calls, and saved_months_so_far adds them up: a partial sum of the saved months so far, not the total for the period.";
+
+/** One month's call count and its "Directory Assistance" topic count. */
+function monthCounts(groups: CallGroup[]): { calls: number; directory_assistance_topic_calls: number } {
+  let calls = 0;
+  let da = 0;
+  for (const g of groups) {
+    calls += g.n;
+    if (g.inquiry_name === "Directory Assistance") da += g.n;
+  }
+  return { calls, directory_assistance_topic_calls: da };
+}
+
 export function callSection(groups: CallGroup[], limit: number) {
   const byName = new Map<string, number>();
   const byAgency = new Map<string, { name: string | null; n: number }>();
@@ -858,10 +873,26 @@ export async function directoryAssistanceReport(
       if (r) results.set(ym, r);
       else todo.push(ym);
     }
+    const wait = opts.answerWaitMs ?? DA_ANSWER_WAIT_MS;
+    const waitUntil = Date.now() + wait;
+    // Months an earlier call started and that are still loading: this call waits on them.
+    const inherited = new Set(todo.filter((ym) => loading.get(soda)?.has(ym)));
     const started = loadMonths(soda, meta, todo, request, soda.clock() + DA_BACKGROUND_MS);
     const done = new Map<string, MonthResult>();
     for (const [ym, p] of started) p.then((r) => done.set(ym, r));
-    await waitFor([...started.values()], opts.answerWaitMs ?? DA_ANSWER_WAIT_MS);
+    await waitFor([...started.values()], wait);
+    // A load an earlier call started failed (or was not tried after one did): retry those
+    // months now, within this call's answer wait, rather than only reporting the failure
+    // and restarting on the call after (beta retest 5, 2026-11-09). Once per call, and only
+    // for earlier calls' loads, so a portal failing now is not asked twice in one call.
+    // Still one month at a time (loadMonths; standards §6).
+    const retry = todo.filter((ym) => inherited.has(ym) && "missing" in (done.get(ym) ?? { groups: [] }));
+    if (retry.length && Date.now() < waitUntil) {
+      const again = loadMonths(soda, meta, retry, request, soda.clock() + DA_BACKGROUND_MS);
+      for (const ym of retry) done.delete(ym);
+      for (const [ym, p] of again) p.then((r) => done.set(ym, r));
+      await waitFor([...again.values()], Math.max(0, waitUntil - Date.now()));
+    }
     for (const ym of todo) results.set(ym, done.get(ym) ?? { ym, missing: STILL_LOADING, trouble: null });
   }
   for (const ym of periods.month ? order : []) {
@@ -879,19 +910,43 @@ export async function directoryAssistanceReport(
     }
   }
   const missing = [...results.values()].filter((r): r is Extract<MonthResult, { missing: string }> => "missing" in r);
+  // An incomplete period still shows what it has: each saved month's count, and their sum,
+  // labeled as a partial sum, never as the period's total (beta retest 5, 2026-11-09).
+  const savedSoFar = (ms: string[]) => {
+    const have = ms.flatMap((ym) => {
+      const r = results.get(ym);
+      return r && "groups" in r ? [{ month: ym, ...monthCounts(r.groups) }] : [];
+    });
+    return {
+      saved_months: have,
+      saved_months_so_far: have.length
+        ? {
+            label: `Saved months so far (${have.length} of ${ms.length}): a partial sum, not the total for the period`,
+            months: have.length,
+            of_months: ms.length,
+            calls: have.reduce((a, m) => a + m.calls, 0),
+            directory_assistance_topic_calls: have.reduce((a, m) => a + m.directory_assistance_topic_calls, 0),
+          }
+        : null,
+    };
+  };
   const section = (p: Period) => {
     const ms = monthsBetween(p.start, p.end);
     const gone = missing.filter((x) => ms.includes(x.ym));
     if (gone.length) {
+      const saved = savedSoFar(ms);
       return {
         ...periodOut(p),
         complete: false,
         months_missing: gone.map((x) => ({ month: x.ym, why: x.missing })),
-        note: gone.every((x) => x.missing === ONE_MONTH_ONLY)
-          ? "A one-month call fetches only its own month, so no total is given for the year to date. Ask with fiscal_year (and no month) to fetch the other months; they are saved for later calls."
-          : gone.some((x) => x.missing === STILL_LOADING)
-            ? "Some months are still loading from NYC Open Data, so no total is given yet. The saved months are used; the others keep loading and are saved when done. Ask again in a minute."
-            : "Not every month of this period could be fetched in this call, so no total is given. The months fetched are saved; ask again to finish.",
+        ...saved,
+        note:
+          (gone.every((x) => x.missing === ONE_MONTH_ONLY)
+            ? "A one-month call fetches only its own month, so no total is given for the year to date. Ask with fiscal_year (and no month) to fetch the other months; they are saved for later calls."
+            : gone.some((x) => x.missing === STILL_LOADING)
+              ? "Some months are still loading from NYC Open Data, so the full total is not ready yet. The others keep loading and are saved when done. Ask again in a minute."
+              : "Not every month of this period could be fetched in this call, so the full total is not ready yet. The months fetched are saved; ask again to finish.") +
+          (saved.saved_months.length ? ` ${SAVED_SO_FAR_NOTE}` : ""),
       };
     }
     const groups = ms.flatMap((ym) => (results.get(ym) as { groups: CallGroup[] }).groups);
@@ -1146,7 +1201,7 @@ export const LL47_TOOLS = [
   {
     name: "ll47_directory_assistance_report",
     description:
-      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A month call fetches only that month; its fiscal year to date uses saved months. A fiscal_year call answers within about 12 s: saved months at once, others listed as still loading while they keep loading; asking again a minute later finishes it. " +
+      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A month call fetches only that month; its fiscal year to date uses saved months. A fiscal_year call answers within about 12 s: saved months at once, others listed as still loading while they keep loading (an incomplete period shows each saved month's count and a partial sum, labeled, never a total); asking again a minute later finishes it. " +
       REBUILD,
     inputSchema: obj({ month: MONTH_JSON, fiscal_year: FY_JSON, limit: limitJson(50, 2000, "topics") }),
   },

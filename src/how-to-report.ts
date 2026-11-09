@@ -155,6 +155,15 @@ const TRASH_INDOORS = new RegExp(`\\b${TRASH_WORDS}\\b[^.]{0,60}\\b${INDOORS}\\b
 const SIGN_DOWN = "(knocked (down|over)|fell|fallen|falling|fall(ing)? down|dangling|leaning|hanging|bent|toppled|on the ground)";
 const STREET_SIGN = /\b(stop|street|traffic|parking|yield|one[- ]way|no parking|no standing|street name|bus stop|speed limit|school zone|do not enter) signs?\b/;
 
+// A restroom in a park or playground that is locked, closed, dirty or broken: the City's Park
+// Maintenance Complaint (KA-01060), which covers "unclean conditions" and a "park facility
+// closed to the public during posted hours"; not Breaking Park Rules, not Unlocked Park or
+// Playground (a park left open after hours), not a home repair. Beta retest 5, 2026-11-09:
+// "public bathroom in the park is locked" got Breaking Park Rules.
+const RESTROOM = "(restrooms?|bathrooms?|toilets?|comfort stations?|washrooms?|ba[nñ]os?)";
+const PARK_PLACE = "(parks?|playgrounds?|greenway|ball ?fields?|beach(es)?|pools?|recreation cent(er|re)s?|rec cent(er|re)s?)";
+export const PARK_RESTROOM = new RegExp(`\\b${RESTROOM}\\b[^.]{0,40}\\b${PARK_PLACE}\\b|\\b${PARK_PLACE}\\b[^.]{0,30}\\b${RESTROOM}\\b`);
+
 // Hours outside the City's allowed construction hours ("between 7 AM and 6 PM on weekdays", KA-01091).
 const AFTER_HOURS = "\\b(([1-6]|1[0-2]) ?(am|a\\.m\\.)|([6-9]|1[01]) ?(pm|p\\.m\\.)|early (in the )?morning|late at night|at night|overnight|after hours|midnight|before 7|on (a )?(saturday|sunday)|weekends?)\\b";
 // A dead animal in a public place: the City's Dead Animal on Public Property (KA-02245), with
@@ -211,7 +220,7 @@ export const CONCEPTS: Concept[] = [
   { when: DEAD_ANIMAL, unless: /\b(apartment|my (home|house|yard|backyard|basement)|in (my|the|our) building|inside)\b/, terms: ["dead", "animal", "public", "property"], weight: 3, against: ["private"], categories: ["Pests & Wildlife", "Sidewalks"], family: "dead_animal" },
   { when: /\b(mice|mouse|rats?|rodents?|roach(es)?|cockroach(es)?|pests?|vermin|fleas|flies|ratas?|ratones|roedores|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
   { when: /\b(mold|mould|mildew|moho|hongos)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"], family: "mold" },
-  { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
+  { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, unless: PARK_RESTROOM, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle|graffiti)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b|\b(coming|blowing|getting|comes|blows) (in|into|through) (my |the |our )?(windows?|doors?)\b|\bgraffiti\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
   { when: /\b(smoke|carbon monoxide|co) (detector|alarm)s?\b[^.]{0,30}\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\w*|needs? (a )?batter\w*)|\b(no|missing|broken) (smoke|carbon monoxide|co) (detector|alarm)/, terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
@@ -246,7 +255,7 @@ export const CONCEPTS: Concept[] = [
   { when: STREET_LEAK, onlyIf: isStreetLeak, terms: ["water", "leak", "street", "sidewalk"], weight: 3, against: ["building", "apartment", "meter", "commercial", "drinking"], categories: ["Sidewalks", "Streets & Highways"], family: "water" },
   // Trash
   { when: TRASH_INDOORS, unless: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\bbaskets?\b/, terms: ["apartment", "maintenance", "complaint"], weight: 3, against: ["gutter", "sidewalk", "street", "basket", "lot"], categories: ["Tenants"], family: "building_trash" },
-  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: new RegExp(`${MISSED_COLLECTION.source}|${TRASH_INDOORS.source}`), terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
+  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: new RegExp(`${MISSED_COLLECTION.source}|${TRASH_INDOORS.source}|${PARK_RESTROOM.source}`), terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
   // Trash inside a building is not a public litter basket ("trash in the lobby" got Litter
   // Basket once that article was recorded, 2026-11-08); a can, basket or bin said wins.
   { when: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\b(litter )?baskets?\b/, terms: ["basket"], weight: 3 },
@@ -264,6 +273,7 @@ export const CONCEPTS: Concept[] = [
   // go to Parks, not to HPD's at-home form). "Park" alone, never "parking" or "parked".
   { when: /\b(parks?|playgrounds?|greenway|ball ?fields?)\b/, terms: ["park"], weight: 2, categories: ["Parks & Recreation"] },
   { when: /\b(bench|benches|swings?|slides?|see-?saws?|jungle gym|monkey bars|water fountains?|drinking fountains?|(basketball|handball|tennis) (court|hoop)s?)\b/, terms: ["park", "maintenance"], weight: 3, categories: ["Parks & Recreation"], family: "park_maintenance" },
+  { when: PARK_RESTROOM, terms: ["park", "maintenance"], weight: 3, against: ["apartment", "residential", "meter", "garage", "illegal"], categories: ["Parks & Recreation"], family: "park_maintenance" },
   // Illness from food: the City's Food Poisoning article (KA-02051). Beta retest 2026-11-08.
   { when: /\bfood poisoning\b|\bintoxicaci[oó]n alimentaria\b|\b(sick|ill|vomit\w*|threw up|throwing up)\b[^.]{0,40}\b(ate|eating|food|meal|restaurant|takeout)\b|\b(ate|eating)\b[^.]{0,40}\b(sick|ill|vomit\w*|threw up|throwing up)\b/, terms: ["food", "poisoning", "illness"], weight: 3, against: ["noise"], categories: ["Public Health"], family: "food_illness" },
   // Records
@@ -483,7 +493,17 @@ function whatHappensNext(text: string): string | null {
 const PHONE_ONLY = /(by phone only|must be reported by phone|can only be (reported|made) by phone)/i;
 const CALL_311 = /Call 311 or 212-NEW-YORK \(212-639-9675\)/;
 const NOT_HANDLED = /(The City does not|does not accept|doesn'?t accept|is not handled by|contact the [^.]* directly)/i;
-const AGENCY_IN_TEXT = /\b((?:Department|Office|Administration|Commission|Police Department|Fire Department) (?:of |for )?[A-Z][A-Za-z&' ]+?)\s\(([A-Z]{2,6})\)/g;
+const AGENCY_IN_TEXT = /\b((?:Department|Office|Administration|Commission|Police Department|Fire Department) (?:of |for )?[A-Z][A-Za-z&'’ ]+?)\s\(([A-Z]{2,6})\)/g;
+
+/**
+ * Agencies an article's own text names, as "Name (ACRONYM)". A possessive is not part of
+ * the name: "the Department of Housing Preservation and Development's (HPD) ..." is the
+ * Department of Housing Preservation and Development (HPD). Beta retest 5, 2026-11-09:
+ * the Carbon Monoxide article's agency carried the stray "'s".
+ */
+export function agenciesNamedIn(text: string): string[] {
+  return [...new Set([...text.matchAll(AGENCY_IN_TEXT)].map((m) => `${m[1].trim().replace(/['’]s?$/, "")} (${m[2]})`))];
+}
 
 function scoreAction(q: Query, x: ContentAction, section: string, ignore: Set<string>): number {
   const s = stems(`${x.name ?? ""} ${x.problem_detail ?? ""} ${section}`);
@@ -524,7 +544,7 @@ export const AGENCY_DEPENDS = "depends on which report option fits; see agencies
 function agencyOf(fromAction: string | null, actionCount: number, text: string): { agency: string; agency_source: string } {
   if (fromAction) return { agency: fromAction, agency_source: "report option" };
   if (actionCount) return { agency: AGENCY_DEPENDS, agency_source: "the article's report options go to more than one agency or place" };
-  const named = [...new Set([...text.matchAll(AGENCY_IN_TEXT)].map((m) => `${m[1].trim()} (${m[2]})`))];
+  const named = agenciesNamedIn(text);
   if (named.length === 1) return { agency: named[0], agency_source: "named in the article's text; 311 lists no report option for it" };
   return { agency: AGENCY_NOT_LISTED, agency_source: "311 lists no report option for this article" };
 }
@@ -582,7 +602,7 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
   const all = a.sections.map((s) => s.text).join("\n");
   const problems = [...new Set(actions.map((x) => x.problem).filter((p): p is string => Boolean(p)))];
   const agencies = [...new Set(actions.map((x) => x.agency).filter((p): p is string => Boolean(p)))];
-  const named = [...new Set([...all.matchAll(AGENCY_IN_TEXT)].map((m) => `${m[1].trim()} (${m[2]})`))].slice(0, 4);
+  const named = agenciesNamedIn(all).slice(0, 4);
   const phoneOnly = sentences(all).find((s) => PHONE_ONLY.test(s)) ?? null;
   const callLine = sentences(all).find((s) => CALL_311.test(s)) ?? null;
   const notHandled = [...new Set(sentences(all).filter((s) => NOT_HANDLED.test(s)))].slice(0, 3);
