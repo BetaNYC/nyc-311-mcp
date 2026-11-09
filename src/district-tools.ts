@@ -189,7 +189,7 @@ const DISTRICT_PERIOD_JSON = {
     minimum: 1,
     maximum: 3660,
     description:
-      "The last N days of data, ending on the day of the newest request (311 data is published with a delay of a few days, so this is not 'until today'). Do not combine with the other date parameters.",
+      "The last N days of data, ending on the newest request's day, not today. On its own.",
   },
 } as const;
 
@@ -472,11 +472,11 @@ export const DISTRICT_JSON = {
   community_district: {
     type: ["integer", "string"],
     description:
-      "BoardStat community district id: borough digit + district number. Manhattan 101-112, Bronx 201-212, Brooklyn 301-318, Queens 401-414, Staten Island 501-503 (Brooklyn Community District 6 is 306). Joint Interest Areas (parks and areas outside every community district): 164, 226, 227, 228, 355, 356, 480-484, 595. Give this or council_district, not both.",
+      "BoardStat id: borough digit + district number, e.g. 306 = Brooklyn CD 6 (list in the server instructions). This or council_district, not both.",
   },
   council_district: {
     type: ["integer", "string"],
-    description: "City Council district, 1 to 51. Give this or community_district, not both.",
+    description: "City Council district, 1 to 51. This or community_district, not both.",
   },
 } as const;
 
@@ -491,19 +491,19 @@ const FILTER_JSON = {
   problems: {
     type: "array",
     items: { type: "string" },
-    description: "BoardStat problem names (its grouped 311 complaint types), e.g. ['HEAT/HOT WATER'] or ['Illegal Parking']. Matched without regard to case.",
+    description: "BoardStat problem names (grouped 311 complaint types), e.g. ['HEAT/HOT WATER']. Any case.",
   },
   descriptions: {
     type: "array",
     items: { type: "string" },
-    description: "311 descriptions (the descriptor field), e.g. ['Blocked Bike Lane'] under 'Illegal Parking'. A missing description is '(none)'.",
+    description: "311 descriptors, e.g. ['Blocked Bike Lane'] (under Illegal Parking). A missing one is '(none)'.",
   },
-  exclude_descriptions: { type: "boolean", description: "If true, leave out the given descriptions instead of keeping only them." },
-  agency: { type: "string", description: "Agency code as 311 writes it, e.g. 'NYPD', 'HPD', 'DSNY', 'DOT'." },
+  exclude_descriptions: { type: "boolean", description: "If true, leave out these descriptions instead of keeping only them." },
+  agency: { type: "string", description: "Agency code as 311 writes it, e.g. 'NYPD', 'HPD'." },
   status: {
     type: "string",
     enum: ["closed", "not_closed"],
-    description: "'closed' = marked Closed; 'not_closed' = any other status, as BoardStat's 'Not yet closed'.",
+    description: "'closed' = marked Closed; 'not_closed' = any other status (BoardStat's 'Not yet closed').",
   },
 } as const;
 
@@ -512,12 +512,11 @@ export const LIMIT_JSON = (def: number, max: number) => ({
   type: "integer",
   minimum: 1,
   maximum: max,
-  description: `How many rows to list (default ${def}, at most ${max}). The answer says when more were left out.`,
+  description: `Rows to list (default ${def}); the answer says when more were left out.`,
 });
 
-// Plain-language sentence shared by every description.
-const ABOUT =
-  "Read from files built nightly from NYC Open Data by BoardStat (BetaNYC; 311 requests from 2020 on), so the numbers match the BoardStat page it links to. It is not an official City report. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
+// Short sentence on every district tool; the full text is ABOUT_BOARDSTAT in the server instructions.
+const ABOUT = "From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.";
 
 // ─── 1. find_district ─────────────────────────────────────────────────────────
 
@@ -1304,17 +1303,15 @@ export const obj = (properties: Record<string, unknown>, required: string[] = []
   ...(required.length ? { required } : {}),
 });
 
-const PERIOD_DESC = "Dates: from_date/to_date, a City fiscal_year (July to June), or last_days.";
-
 export const DISTRICT_TOOLS = [
   {
     name: "find_district",
     description:
-      "Which community district and City Council district an address is in. Type the address as you would ('350 5th Ave'); it is converted to the City's spelling ('350 5 AVENUE') and looked up in the addresses that appear in 311 requests since 2020. If it is not found, says so and suggests close City spellings. Not a geocoder. ZIP codes are ignored. " + ABOUT,
+      "Which community district and City Council district an address is in. Type it as usual ('350 5th Ave'); it is converted to the City's spelling ('350 5 AVENUE') and looked up among addresses in 311 requests since 2020. If not found, says so and suggests close City spellings. Not a geocoder. ZIP codes are ignored. " + ABOUT,
     inputSchema: obj(
       {
-        address: { type: "string", description: "Street address, e.g. '350 5th Ave' or '10 W 42nd St'. Anything after a comma is ignored." },
-        borough: { type: "string", enum: BOROUGHS, description: "Optional, to choose when the same address exists in several boroughs." },
+        address: { type: "string", description: "Street address, e.g. '350 5th Ave'. Anything after a comma is ignored." },
+        borough: { type: "string", enum: BOROUGHS, description: "Optional; picks one when the address exists in several boroughs." },
       },
       ["address"]
     ),
@@ -1322,19 +1319,19 @@ export const DISTRICT_TOOLS = [
   {
     name: "district_summary",
     description:
-      "Totals for a community or council district and period: requests, how many are not yet closed, median and average days to close, the top problems, and each top problem's share compared with the borough and the whole city. " + PERIOD_DESC + " " + ABOUT,
+      "Totals for a community or council district and period: requests, how many are not yet closed, median and average days to close, the top problems, and each top problem's share compared with the borough and the whole city. " + ABOUT,
     inputSchema: obj({ ...DISTRICT_JSON, ...DISTRICT_PERIOD_JSON, limit: LIMIT_JSON(10, 50) }),
   },
   {
     name: "top_problems",
     description:
-      "The most-reported problems in a community or council district for a period, each with the count for the same days a year earlier and the median days to close. Optional agency and status filters. " + PERIOD_DESC + " " + ABOUT,
+      "The most-reported problems in a community or council district for a period, each with the count for the same days a year earlier and the median days to close. Optional agency and status filters. " + ABOUT,
     inputSchema: obj({ ...DISTRICT_JSON, ...DISTRICT_PERIOD_JSON, agency: FILTER_JSON.agency, status: FILTER_JSON.status, limit: LIMIT_JSON(10, 100) }),
   },
   {
     name: "problem_trend",
     description:
-      "Requests per month for one problem in one district, with the same days a year earlier. Optional description, agency and status filters. Months only partly covered are marked. " + PERIOD_DESC + " " + ABOUT,
+      "Requests per month for one problem in one district, with the same days a year earlier. Optional description, agency and status filters. Months only partly covered are marked. " + ABOUT,
     inputSchema: obj(
       {
         ...DISTRICT_JSON,
@@ -1351,7 +1348,7 @@ export const DISTRICT_TOOLS = [
   {
     name: "agency_response",
     description:
-      "For each agency in a district and period: requests, how many are closed and not yet closed, and the median and average days to close (closed requests only). Optional problem and description filters. " + PERIOD_DESC + " " + ABOUT,
+      "For each agency in a district and period: requests, how many are closed and not yet closed, and the median and average days to close (closed requests only). Optional problem and description filters. " + ABOUT,
     inputSchema: obj({
       ...DISTRICT_JSON,
       ...DISTRICT_PERIOD_JSON,
@@ -1364,7 +1361,7 @@ export const DISTRICT_TOOLS = [
   {
     name: "still_open",
     description:
-      "Requests in a district that are not yet closed, oldest first, with days open, plus a count and the oldest date for each agency. With no dates, covers every request since 2020. Optional problem, description and agency filters. " + PERIOD_DESC + " " + ABOUT,
+      "Requests in a district that are not yet closed, oldest first, with days open, plus a count and the oldest date for each agency. With no dates, covers every request since 2020. Optional problem, description and agency filters. " + ABOUT,
     inputSchema: obj({
       ...DISTRICT_JSON,
       ...DISTRICT_PERIOD_JSON,
@@ -1378,20 +1375,20 @@ export const DISTRICT_TOOLS = [
   {
     name: "top_addresses",
     description:
-      "The addresses in a district with the most requests for a period, optionally for given problems or descriptions (for example HEAT/HOT WATER, or 'Blocked Bike Lane' under Illegal Parking). Addresses are as the City spelled them. " + PERIOD_DESC + " " + ABOUT,
+      "The addresses in a district with the most requests for a period, optionally for given problems or descriptions. Addresses are as the City spelled them. " + ABOUT,
     inputSchema: obj({ ...DISTRICT_JSON, ...DISTRICT_PERIOD_JSON, ...FILTER_JSON, limit: LIMIT_JSON(15, 100) }),
   },
   {
     name: "address_history",
     description:
-      "Every request at one address, newest first, with its status, days to close or days open, and the agency's resolution text, plus counts by problem. The address is converted to the City's spelling as in find_district. With no dates, covers every request since 2020. " + PERIOD_DESC + " " + ABOUT,
+      "Every request at one address, newest first, with its status, days to close or days open, and the agency's resolution text, plus counts by problem. The address is converted to the City's spelling as in find_district. With no dates, covers every request since 2020. " + ABOUT,
     inputSchema: obj(
       {
         address: { type: "string", description: "Street address, e.g. '1000 5th Ave'." },
         borough: { type: "string", enum: BOROUGHS, description: "Needed when the same address exists in several boroughs." },
         community_district: {
           type: ["integer", "string"],
-          description: "Optional. When an address straddles a district line, the district to use (BoardStat id, e.g. 205). Without it, the district with the most requests at the address is used, and the answer names the other.",
+          description: "Optional: the district to use when the address straddles a district line (BoardStat id, e.g. 205). Default: the one with the most requests there; the answer names the other.",
         },
         ...DISTRICT_PERIOD_JSON,
         problems: FILTER_JSON.problems,
@@ -1404,7 +1401,7 @@ export const DISTRICT_TOOLS = [
   {
     name: "boardstat_link",
     description:
-      "A link to BoardStat's district page with the given district, dates, problems, descriptions, agency and status already set, so a person can see and check the numbers. Problem and description names are checked against BoardStat's data. " + PERIOD_DESC,
+      "A link to BoardStat's district page with the given district, dates, problems, descriptions, agency and status already set, so a person can see and check the numbers. Problem and description names are checked against BoardStat's data.",
     inputSchema: obj({ ...DISTRICT_JSON, ...DISTRICT_PERIOD_JSON, ...FILTER_JSON }),
   },
   {
