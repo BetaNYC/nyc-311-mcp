@@ -1,0 +1,55 @@
+name: Beta feedback
+description: Tell us how a beta build of this MCP worked for you.
+title: "[Beta feedback]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing. GitHub issues are public, so please **leave out personal information**: names, phone numbers, email addresses, home addresses, and your API key. A street corner or a district is enough. **Don't paste a 311 request number or an answer about a home address. Replace the address with the nearest corner.**
+
+        **In an emergency, call 911.** This form is not watched around the clock, and the MCP never files anything with 311.
+  - type: input
+    id: tool
+    attributes:
+      label: Tool
+      description: Which tool answered, if you know (for example `top_problems` or `draft_311_report`). "Not sure" is fine.
+      placeholder: draft_311_report
+    validations:
+      required: true
+  - type: textarea
+    id: asked
+    attributes:
+      label: What you asked
+      description: Your question or request, in your own words.
+    validations:
+      required: true
+  - type: textarea
+    id: got
+    attributes:
+      label: What you got
+      description: The answer, or the part that went wrong. Pasting the assistant's reply is helpful.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: What a right answer would have looked like. If you compared a number with BoardStat, include the BoardStat link.
+    validations:
+      required: true
+  - type: dropdown
+    id: client
+    attributes:
+      label: App you used
+      options:
+        - Claude Desktop
+        - Claude Code
+        - Another MCP app
+    validations:
+      required: true
+  - type: input
+    id: beta
+    attributes:
+      label: Beta branch
+      description: From the install command, the part after `#`.
+      value: beta

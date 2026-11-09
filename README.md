@@ -328,6 +328,8 @@ See the full directory, with install details for each, at
 
 Issues and pull requests welcome at [github.com/BetaNYC/nyc-311-mcp](https://github.com/BetaNYC/nyc-311-mcp).
 
+Want to try unreleased features before they ship? See [testing beta MCPs](https://betanyc.github.io/nyc-311-mcp/beta/).
+
 ## Releases
 
 Releases are automated. Pushing a tag `vX.Y.Z` that matches the version in
