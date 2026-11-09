@@ -887,11 +887,22 @@ async function list311CategoriesInner(args: z.infer<z.ZodObject<typeof CATEGORIE
     category: { id: c.id, name: c.name, description: c.description, portal_url: c.url },
     articles: page.map((a) => ({ ka_number: a.ka_number, title: a.title, summary: a.description, portal_url: articleUrl(a.ka_number) })),
     count: list.value.length,
-    showing: list.value.length ? `${Math.min(offset + 1, list.value.length)} to ${offset + page.length} of ${list.value.length}` : "none",
+    showing: !list.value.length
+      ? "none"
+      : page.length
+        ? `${offset + 1} to ${offset + page.length} of ${list.value.length}`
+        : pastTheEnd(offset, list.value.length),
     next_page: next === null ? null : { category_id: c.id, offset: next },
     source: { ...source, fetched_at: list.fetched_at },
     ...(list.stale || cats.stale ? { stale: true as const, warning: list.warning ?? cats.warning } : {}),
   });
+}
+
+/** Plain words for an offset past the last article (beta retest 1: "showing 42 to 500 of 42"). */
+export function pastTheEnd(offset: number, count: number): string {
+  const pages = Math.ceil(count / ARTICLE_PAGE);
+  const offsets = Array.from({ length: pages }, (_, i) => i * ARTICLE_PAGE).join(", ");
+  return `Offset ${offset} is past the end: there ${count === 1 ? "is 1 article" : `are ${count} articles`}, ${ARTICLE_PAGE} per page, so ${pages === 1 ? "1 page (offset 0)" : `pages 1 to ${pages} (offsets ${offsets})`}.`;
 }
 
 /** Every string redacted of ZIP codes (City article text carries mailing addresses), then checked. */

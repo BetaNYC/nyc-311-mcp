@@ -45,3 +45,12 @@ test("offset is accepted by the tool's argument parser", async () => {
   assert.equal(r.isError, true);
   assert.match(r.content[0].text, /'offset' must be at least 0/);
 });
+
+test("an offset past the end says so in plain words, not 'showing 42 to 500 of 42'", async () => {
+  const { client } = await fixtureContent();
+  const out = await list311Categories({ category_id: "311-12", offset: 500 }, client);
+  assert.deepEqual(out.articles, []);
+  assert.equal(out.next_page, null);
+  assert.equal(out.showing, `Offset 500 is past the end: there are ${out.count} articles, 20 per page, so pages 1 to ${Math.ceil(out.count / 20)} (offsets 0, 20, 40).`);
+  assert.doesNotMatch(out.showing, /to 500 of/);
+});
