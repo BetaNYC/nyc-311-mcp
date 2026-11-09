@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.15] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 14, 2026-11-09: three missed emergencies, five small wrong answers)
+
+- **Weapons, any kind, anywhere:** a blade or a gun being swung, waved, pointed or shown, and a
+  blunt object (a bat, a pipe, a hammer, a bottle, a chain) swung at or used against people.
+  Selling or displaying weapons is not a danger.
+- **Heights:** a worker dangling, stuck or swinging off a building or scaffold after something
+  broke is a danger; a worker simply working is not. Someone hanging from a pipe, a beam, a
+  rope or a ledge is a danger.
+- **Someone in a hole or a collapse** (new class `fell_in`): fallen into a manhole, a trench, a
+  shaft, a sinkhole; trapped under rubble; crushed or pinned by something falling. A dropped
+  phone or keys is not. Under a danger the hazard's repair complaint is never the answer.
+- **Shorthand and typos** a worried person types are read for danger words ("kid in strt",
+  "baby not breathng", "guy w gun lobby", "cant get up").
+- **Figures of speech:** "drowning in" anything but water, "fire sale", "choking on the dust",
+  "the heat is killing us" are not emergencies.
+- **Small wrong answers:** an animal in the trash → Wild Animal; a kid's (yellow) bus → School
+  Bus Complaint, not the MTA; a place that is not a home (a rec center, a school, a library, a
+  hospital) never gets a residential housing article, and a rec center or public pool problem
+  is Park Maintenance; "a car parked outside" playing music is Noise from Vehicle, not Illegal
+  Parking; construction noise on a scaffold is noise, not a scaffold complaint.
+- **Measured** on 921 phrasings (rounds 6 to 15, with the report's 50 and 60 new: weapons, work
+  dangers, figures of speech, non-residential places and typo fragments): on beta.14, 20 missed
+  emergencies, 6 ordinary complaints leading with 911 and 14 wrong answers rated strong; now
+  none.
+
 ## [1.2.0-beta.14] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

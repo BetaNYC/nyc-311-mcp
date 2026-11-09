@@ -61,7 +61,7 @@ const PERSON_WORD = /\b(i|i'?m|me|my (mom|dad|mother|father|son|daughter|wife|hu
 /** An animal hit or run over by a vehicle. */
 const ANIMAL_HIT = /\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|deer|geese|goose|ducks?|possums?|opossums?|coyotes?|fox(es)?)\b[^.]{0,20}\b(got |was |been |just )?(hit|struck|run over|ran over)\b/;
 /** A person as the object of violence: "a woman", "his girlfriend", "the old man", "someone". */
-const PERSON_OBJ = "(an? |the |my |his |her |their |our |some |another )?(woman|man|women|men|girl|boy|kid|child|children|person|people|someone|somebody|guy|lady|wife|husband|girlfriend|boyfriend|partner|mother|father|mom|dad|son|daughter|brother|sister|grandm\\w*|grandf\\w*|neighbor|teenager|teen|student|baby|elderly (man|woman)|old (man|woman|lady)|homeless (man|woman|person)|delivery (worker|guy)|driver|passenger)\\b(?! (dolls?|toys?))";
+const PERSON_OBJ = "(an? |the |my |his |her |their |our |some |another )?(woman|man|women|men|girls?|boys?|kids|kid|child|children|teens|person|people|someone|somebody|guy|lady|wife|husband|girlfriend|boyfriend|partner|mother|father|mom|dad|son|daughter|brother|sister|grandm\\w*|grandf\\w*|neighbor|teenager|teen|student|baby|elderly (man|woman)|old (man|woman|lady)|homeless (man|woman|person)|delivery (worker|guy)|driver|passenger)\\b(?! (dolls?|toys?))";
 /** Someone forcing their way in, an intruder inside, someone following the person. */
 const FORCED_ENTRY = [
   "(break|breaking|broke|kick|kicking|kicked|bust|busting|force|forcing|pry|prying|smash|smashing)\\w* (down|in|open|into|through) (my|the|our|her|his|their|a) (front |back |apartment |building |bedroom )?(doors?|windows?|apartment|house|home|place)",
@@ -72,6 +72,13 @@ const FORCED_ENTRY = [
   // of my building" got Heat or Hot Water and no 911).
   "(is |are |'s |'re )?(beating|hitting|punching|kicking|choking|strangling|stabbing|slashing|attacking|assaulting|slapping|stomping|dragging|shoving|pushing|throwing) (up )?" + PERSON_OBJ,
   "(holding|pushing|forcing|keeping) " + PERSON_OBJ + " (head )?(under|beneath) (the )?water",
+  // A weapon being used or shown, anywhere (beta retest 14: "a guy swinging a machete on the
+  // platform" found nothing). A blade or a gun is a weapon on its own; a blunt object only when
+  // it is swung, waved or used against someone.
+  "(swinging|waving|brandishing|pointing|wielding|holding up|pulled out|pulls out|has|with|carrying) (a |an |his |her |their |some kind of )?(big |huge |long )?(machete|axe|ax|hatchet|sword|box ?cutter|razor|blade|switchblade|meat cleaver|cleaver|knife|knives|gun|pistol|rifle|shotgun|firearm|weapon)s?",
+  "(swinging|waving|brandishing|wielding) (a |an |his |her |their )?([\\w-]+ )?(baseball )?(bat|pipe|hammer|crowbar|tire iron|metal pole|stick|chain|bottle|brick|chair|shovel|golf club) (at|around|toward|towards|near|in|on|and)",
+  "(chasing|threatening|attacking|hitting|beating|going after) " + PERSON_OBJ + " with (a |an |his |her )?(machete|axe|hatchet|knife|bat|pipe|hammer|crowbar|bottle|brick|chain|stick|box ?cutter|gun)",
+  "(threatening|robbing|holding up) (the )?(cashier|clerk|driver|people|customers|passengers|someone|me|us) with (a |an )?(box ?cutter|knife|gun|razor|blade|machete)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|intruders?|people) (is |are |was |were |keeps? )?(trying|tried) to (get|climb|come) (in|into)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|an? intruders?|intruders?) (is |are |was |'s )?(in|inside|hiding in) (my|our|the) (apartment|house|home|room|bedroom|bathroom|closet|basement)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|he|she|they) (is |are |'s |keeps? )?(following|stalking|chasing) (me|us|my (kid|son|daughter|child))",
@@ -108,7 +115,7 @@ export const DANGERS: DangerKind[] = [
     when: /\b(on fire|fire\b(?!\s*(hydrant|escape|alarm box|extinguisher|department|code|safety|truck|house|station|inspection|exit|drill|pit|place|lane|zone|works?))|flames?|blaze|incendio|fuego|something('s| is) burning|(house|building|car|apartment|kitchen) is burning)/,
     // A building fire alarm that keeps going off for no reason is a noise complaint (stage 9 stress
     // set); any smoke or flame said with it is still a danger (the smoke kind, or "fire" again).
-    unless: /\bfire alarms?\b[^.]{0,60}\b(every|whenever|each time|all the time|always|constantly|cook\w*|burnt|toast|shower\w*|steam)\b|\b(fireplace|fireworks?|fired (me|him|her|them)|ceasefire|campfire)\b|\bfire alarms?\b[^.]{0,40}\b(for no reason|false alarms?|keeps? going off|goes off all the time|always going off|every (day|night|morning|week)|constantly|randomly|chirp\w*|beep\w*)\b/,
+    unless: /\bfire (sales?|deals?|prices?)\b|\bfired up\b|\b(on fire)\b (deals?|sales?|today with)|\bfire alarms?\b[^.]{0,60}\b(every|whenever|each time|all the time|always|constantly|cook\w*|burnt|toast|shower\w*|steam)\b|\b(fireplace|fireworks?|fired (me|him|her|them)|ceasefire|campfire)\b|\bfire alarms?\b[^.]{0,40}\b(for no reason|false alarms?|keeps? going off|goes off all the time|always going off|every (day|night|morning|week)|constantly|randomly|chirp\w*|beep\w*)\b/,
     city: /^Fire Emergency$/,
     terms: ["fire", "emergency"],
   },
@@ -174,18 +181,18 @@ export const DANGERS: DangerKind[] = [
     // Forced entry, an intruder, being followed (beta retest 9, 2026-11-09: "someone is trying to
     // break down my front door right now" got Apartment Maintenance and no 911).
     when: new RegExp(`\\b(${FORCED_ENTRY})\\b|${CRIME_WORDS_IN_PROGRESS.source}`),
-    unless: /\b(heart|panic|asthma|anxiety) attacks?\b|\b(dogs?|cats?|animals?)\b[^.]{0,20}\b(attack(ed|ing|s)?|bit|bitten|bites|biting)\b[^.]{0,10}\b(my|a|the|our|another|other|his|her|their) (dogs?|cats?|pets?|puppy|kitten)\b|\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun hill|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
+    unless: /\b(sell(s|ing)?|sold|buy(s|ing)?|display\w*) (\w+ ){0,2}(knives|guns|weapons|machetes|axes|bats|hammers)\b|\b(heart|panic|asthma|anxiety) attacks?\b|\b(dogs?|cats?|animals?)\b[^.]{0,20}\b(attack(ed|ing|s)?|bit|bitten|bites|biting)\b[^.]{0,10}\b(my|a|the|our|another|other|his|her|their) (dogs?|cats?|pets?|puppy|kitten)\b|\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun hill|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
     city: /^(Assault|Gunshot)$/,
     terms: ["dangerous", "situation", "location"],
   },
   {
     id: "hurt",
     label: "someone hurt or in medical danger",
-    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|od'?ing|odeing|choking|fainted|not moving|isn'?t moving|won'?t move|turning blue|(isn'?t|not) responding|swallowed (a |an |some )?(battery|batteries|bleach|poison|magnets?|pills)|poisoned|fell (out of|off|from) (a |the |his |her |my )?(window|roof|fire escape|scaffold\w*|balcony|ledge|building|stairs)|se cay[oó]|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
+    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|od'?ing|odeing|choking|fainted|not moving|isn'?t moving|won'?t move|turning blue|(isn'?t|not) responding|swallowed (a |an |some )?(battery|batteries|bleach|poison|magnets?|pills)|poisoned|fell (out of|off|from) (a |the |his |her |my )?(window|roof|fire escape|scaffold\w*|balcony|ledge|building|stairs)|se cay[oó]|fell and (can'?t|cannot|can not) get up|fell\b[^.]{0,15}\b(can'?t|cannot) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
     // Not denied ("nobody was hurt"), not a figure of speech ("yowls like it's being hurt"), and
     // not an animal (beta retest 12: a stray cat's yowling got the medical 911 line). The whole
     // excused phrase is removed before the danger words are read again (otherMatch).
-    unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b|\b(like|as if|as though|sounds? like|looks? like)\b[^.]{0,30}\b(hurt|injured|dying|bleeding|in pain|can'?t breathe|choking|having a heart attack|heart attack|being (hurt|killed|murdered|attacked))\b|\bcan'?t breathe (with|because of|from|due to|in) (the |all the |this |that |my )?(dust|smoke|smell|fumes|heat|odor|exhaust|pollen|construction|garbage|mold)\b|\b(my )?(back|feet|head|knees?|ears?) (is |are )?(hurt|hurting|killing me)\b|\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|horses?|deer|geese|goose|ducks?|rats?|possums?|opossums?)\b(?:(?!\b(driver|man|woman|person|kid|child|someone|somebody|he|she|they|people|owner|boy|girl|guy|lady|i|we)\b)[^.]){0,40}\b(hurt|injured|bleeding|limping|sick|dying|hit by a (car|truck|bus))\b|\b(hurt|injured|bleeding|limping|sick|dying)\b[^.]{0,15}\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|horses?|deer|geese|ducks?)\b/,
+    unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b|\b(like|as if|as though|sounds? like|looks? like)\b[^.]{0,30}\b(hurt|injured|dying|bleeding|in pain|can'?t breathe|choking|having a heart attack|heart attack|being (hurt|killed|murdered|attacked))\b|\b(can'?t breathe|choking|coughing) (with|because of|from|due to|in|on) (the |all the |this |that |my )?(dust|smoke|smell|fumes|heat|odor|exhaust|pollen|construction|garbage|mold)\b|\b(my )?(back|feet|head|knees?|ears?) (is |are )?(hurt|hurting|killing me)\b|\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|horses?|deer|geese|goose|ducks?|rats?|possums?|opossums?)\b(?:(?!\b(driver|man|woman|person|kid|child|someone|somebody|he|she|they|people|owner|boy|girl|guy|lady|i|we)\b)[^.]){0,40}\b(hurt|injured|bleeding|limping|sick|dying|hit by a (car|truck|bus))\b|\b(hurt|injured|bleeding|limping|sick|dying)\b[^.]{0,15}\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|horses?|deer|geese|ducks?)\b/,
     city: /^(Medical Emergency|Overdose)$/,
     terms: ["medical", "emergency"],
   },
@@ -245,9 +252,10 @@ export const DANGERS: DangerKind[] = [
     // Suicide article, only when the person's words say so.
     id: "height",
     label: "someone at risk of falling or jumping",
-    when: /\b(standing|sitting|hanging|climbing|leaning|stuck|dangling|perched|walking) (on|over|off|out of|outside( of)?|along|on top of|on the outside of|from) (the |a |an |his |her )?(outside of the )?(\w+ (floor|story) )?(bridge|roof|rooftop|ledge|railing|rail|edge|window ?sill|window|balcony|fire escape|parapet|overpass|scaffold\w*|crane|building)\b|\b(on|over) the (edge|ledge|railing) of (the |a )?(bridge|roof|building|overpass|platform|balcony)\b|\b(threatening|about|going|trying|wants?) to (jump|fall) (off|from|out)\b|\b(climbed|climbing) (over|onto|up) the (railing|fence|ledge) (of|on) (the |a )?(bridge|roof|overpass)\b|\b(child|kid|toddler|baby|boy|girl) (is )?(hanging|climbing|leaning|sitting) (out|on|over) (of )?(the |a |an |her |his )?([\w-]+ ){0,2}(window|balcony|ledge|fire escape|railing)\b/,
+    when: /\b(standing|sitting|hanging|climbing|leaning|stuck|dangling|perched|walking|swinging) (on|over|off|out of|outside( of)?|along|on top of|on the outside of|from|off the side of) (the |a |an |his |her )?(outside of the )?(side of the )?(\w+ (floor|story) )?(bridge|roof|rooftop|ledge|railing|rail|edge|window ?sill|window|balcony|fire escape|parapet|overpass|scaffold\w*|crane|building)\b|\b(on|over) the (edge|ledge|railing) of (the |a )?(bridge|roof|building|overpass|platform|balcony)\b|\b(threatening|about|going|trying|wants?) to (jump|fall) (off|from|out)\b|\b(he|she|someone|somebody|a (man|woman|guy|worker|kid|child|person)|worker) (is |'s )?(hanging|dangling|holding on) (from|off|onto|on to|by) (the |a |an )?([\w-]+ )?(pipe|beam|rope|ledge|railing|edge|gutter|scaffold\w*|crane|cable|bar|pole|sign|balcony|fire escape|window)\b|\b(climbed|climbing) (over|onto|up) the (railing|fence|ledge) (of|on) (the |a )?(bridge|roof|overpass)\b|\b(child|kid|toddler|baby|boy|girl) (is )?(hanging|climbing|leaning|sitting) (out|on|over) (of )?(the |a |an |her |his )?([\w-]+ ){0,2}(window|balcony|ledge|fire escape|railing)\b/,
     // Workers at height doing their job are not a danger; the whole sentence is excused.
-    unless: /[^.]*\b(window washers?|window cleaners?|construction workers? (with|in) (a )?harness|wearing a harness|painters?|in a harness)\b[^.]*/,
+    // ...unless something has gone wrong: dangling, stuck, a rig or rope that snapped or broke.
+    unless: /^(?![^.]*\b(dangling|stuck|snapped|broke|broken|fell|falling|swinging|trapped|can'?t get (down|up|back)|hanging (by|on to|onto))\b)[^.]*\b(window washers?|window cleaners?|construction workers? (with|in) (a )?harness|wearing a harness|painters?|in a harness)\b[^.]*/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -257,7 +265,7 @@ export const DANGERS: DangerKind[] = [
     id: "medical_symptoms",
     label: "a medical emergency",
     when: /\b(chest (feels|felt) (like|heavy|tight|crushed)|can'?t (lift|raise|move) (his|her|their|my) (left |right )?(arm|leg|hand)|words (are |were )?(coming out wrong|garbled|jumbled)|not making (any )?sense|(pain|ache) (is )?(going|spreading|shooting|radiating) (down|into|to|up) (his|her|their|my) (left |right )?(arm|jaw|neck|back)|wheez\w*|inhaler (isn'?t|is not|doesn'?t|does not|didn'?t) (work\w*|help\w*)|shaking all over|foaming at the mouth|(breathing|breath) (is |sounds |seems )?(slow|shallow|weird|strange|labored|rattling)|barely breathing|(took|swallowed|ate) (some|a bunch of|a lot of|too many|a handful of) (pills|tablets|gummies|medicine)|swallowed (a |some )?(battery|batteries|bleach|detergent|pods?|chemicals|poison|magnets?)|(on|lying on) the floor and (can'?t|won'?t|isn'?t able to) (move|get up|talk|speak)|can'?t move (or|and) (talk|speak)|hit (his|her|their|my) head\b[^.]{0,50}\b(throwing up|vomit\w*|confused|can'?t remember|passed out|unconscious|bleeding|not making sense)|(pregnant)\b[^.]{0,30}\b(bleeding|contractions|water broke)|high fever\b[^.]{0,30}\b(seizure|limp|unresponsive|not waking)|clutch\w* (his|her|their|my) chest|chest (pain|pains|pressure|tightness|is (tight|hurting|crushing))|crushing (chest )?(pain|pressure)|pain (in|spreading (to|down)) (his|her|their|my) (chest|left arm|jaw)|(arm|face|side of (his|her|their|my) (face|body)) (is |went |going )?(numb|drooping|droops?|paralyzed)|face (is )?drooping|slurr\w* (speech|words|his words|her words)|(speech|words) (is |are )?slurred|can'?t (talk|speak|breathe|swallow|move (his|her|their|my) (arm|leg|side))|(struggling|gasping|fighting) (to breathe|for (air|breath))|having (a |an )?(seizure|stroke|heart attack|asthma attack|allergic reaction)|seiz(ing|ure)|convuls\w*|choking|(lips|face|skin) (are |is )?(turning )?(blue|gray|grey)|bleeding (heavily|badly|a lot|everywhere|from (his|her|their|my|the) (head|neck|chest))|(throat|tongue|lips|face) (is |are )?(swelling|swollen|closing)|anaphyla\w*|pupils (are )?(tiny|pinpoint)|(not|isn'?t|won'?t) (breathing|respond\w*|waking up|wake up)|overdos\w*|(took|swallowed) (a whole|all (the|his|her|my)|a bottle of|too many) \w*)\b/,
-    unless: /[^.]*\b(dogs?|cats?|pets?|pupp(y|ies)|kittens?|birds?|animals?|horses?)\b[^.]*|\b(like|as if|as though|feel like|feels like|makes? me (feel )?like)\b[^.]{0,30}\b(can'?t breathe|choking|heart attack|seizure|stroke|dying)\b|[^.]*\b(stress\w*|anxiety|anxious|worried|nervous|panic about|rent|bills|traffic noise|heat|ventilation|smell|dust|fumes|smoke from|construction|odor|pollen|exhaust)\b[^.]*\b(chest|breathe)\b[^.]*|[^.]*\b(chest|breathe)\b[^.]*\b(stress\w*|anxiety|anxious|worried|rent|bills|heat|ventilation|no ac|dust|fumes|construction|odor|smell|exhaust|pollen)\b[^.]*/,
+    unless: /[^.]*\b(dogs?|cats?|pets?|pupp(y|ies)|kittens?|birds?|animals?|horses?)\b[^.]*|\b(like|as if|as though|feel like|feels like|makes? me (feel )?like)\b[^.]{0,30}\b(can'?t breathe|choking|heart attack|seizure|stroke|dying)\b|[^.]*\b(stress\w*|anxiety|anxious|worried|nervous|panic about|rent|bills|traffic noise|heat|ventilation|smell|dust|fumes|smoke from|construction|odor|pollen|exhaust)\b[^.]*\b(chest|breathe)\b[^.]*|\bchoking on (the |all the |this )?(dust|smoke|fumes|smell|exhaust|pollen|construction)\b|[^.]*\b(chest|breathe)\b[^.]*\b(stress\w*|anxiety|anxious|worried|rent|bills|heat|ventilation|no ac|dust|fumes|construction|odor|smell|exhaust|pollen)\b[^.]*/,
     city: /^Medical Emergency$/,
     terms: ["medical", "emergency"],
   },
@@ -270,6 +278,7 @@ export const DANGERS: DangerKind[] = [
       [
         // traffic and the street
         `\\b${CHILD}\\b[^.]{0,40}\\b(wander\\w*|ran|runs|running|walked|walking|crawl\\w*|playing|alone|standing|darted|went|is|was) (out )?(into|in|onto|on|across) (the )?(middle of the )?(street|road|traffic|intersection|highway|avenue|crosswalk)\\b`,
+        `\\b${CHILD} (alone |by (him|her)self )?(in|on) (the |a )?(street|road|traffic|highway|avenue)\\b(?! (fair|festival|party|vendor))`,
         `\\bcars? (are |were )?(swerving|honking|braking|stopping) (around|for|at) (a |the )?(him|her|${CHILD.slice(1, -1)})\\b`,
         `\\b${CHILD}\\b[^.]{0,40}\\b(running|walking|wandering|crawling|playing|darting|standing) (between|among|around) (the )?(cars|traffic|trucks|buses)\\b`,
         `\\b${CHILD}\\b[^.]{0,30}\\b(alone|by (him|her)self|unattended)\\b[^.]{0,30}\\b(edge of the (subway |train )?platform|tracks|curb of the highway)\\b`,
@@ -286,6 +295,15 @@ export const DANGERS: DangerKind[] = [
       ].join("|")
     ),
     unless: /[^.]*\b(every (summer|day|weekend|year)|always|usually|street fair|crying|wants?|hydrant is open|play street|block party)\b[^.]*/,
+    terms: ["dangerous", "situation", "location"],
+  },
+  {
+    // A person fallen into or trapped in a hole, a manhole, a trench, a shaft, a sinkhole or a
+    // collapse (beta retest 14: "a worker fell into a manhole" got Manhole Cover Complaint and no 911).
+    id: "fell_in",
+    label: "someone fallen into a hole or trapped",
+    when: new RegExp(`\\b(${PERSON.slice(1, -1)}|he|she|they|i|worker|workers|man|woman)\\b[^.]{0,25}\\b(fell|fallen|falls|slipped|dropped|is stuck|are stuck|got stuck|is trapped|are trapped|got trapped|trapped|stuck) (down |in(to)? |at the bottom of )(an? |the )?(open )?(manhole|hole|trench|ditch|shaft|elevator shaft|air ?shaft|sinkhole|pit|well|sewer|excavation|construction pit|storm drain|cellar|vault|crawl ?space)s?\\b|\\b(trapped|stuck|pinned|buried) (under|in|beneath) (the )?(rubble|debris|collapse|collapsed \\w+|fallen \\w+|dirt|bricks|concrete|a (wall|ceiling|scaffold\\w*|tree))\\b|\\b(collapsed|caved[- ]in) (trench|ditch|building|wall|ceiling|scaffold\\w*)\\b[^.]{0,30}\\b(people|someone|workers?|man|woman|kids?) (are |is )?(inside|trapped|under|stuck)\\b|\\b(trapped|stuck) in (a |the )?collapsed\\b|\\b(crushed|pinned|trapped|stuck) (by|under|beneath) (a |an |the )?(falling |fallen )?[\\w-]+\\b|\\b(dropped|fell|collapsed)\\b[^.]{0,40}\\b(someone|somebody|a (man|woman|worker|person|guy)|people|workers?) (is |are )?(under|beneath|pinned under|trapped under) (it|them|the \\w+)\\b`),
+    unless: /\b(phone|keys?|wallet|bag|ring|toy|ball|glasses|earrings?|airpods?|card|cat|dog|kitten|puppy)\b[^.]{0,15}\b(fell|dropped|went|is stuck)\b/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -322,7 +340,8 @@ export const DANGERS: DangerKind[] = [
     id: "water_rescue",
     label: "someone in the water",
     when: /\b(holding|held|pushing|pushed|forcing|keeping) ([\w']+ ){0,3}(head )?(under|beneath) (the )?water\b|\bhead (is |was )?(under|beneath) (the )?water\b|\b(fell|fallen|jumped|went|thrown|knocked) (off|overboard( from)?|over the side of) (the |a )?(ferry|boat|pier|dock|kayak|jet ?ski)\b|\b(face ?down|floating) in (the |a )?(pond|lake|river|water|pool|canal|creek|bay|harbor|ocean)\b|\b(pulled|swept|dragged|carried) (out|away|under) by (the )?(current|waves|tide|rip ?(current|tide))\b|\b(waving|yelling|screaming|calling|signaling) for help\b[^.]{0,40}\b(water|beach|pool|lake|river|ocean|surf|bay)\b|\b(went|go(ing)?|slipped) under (in|at) (the |a )?(pool|water|river|lake|ocean|bath\w*|tub)\b|\b(went|go(ing)?) under\b[^.]{0,30}\b(hasn'?t|has not|didn'?t|did not|not) (come|came) (back )?up\b|\b(struggling|thrashing|flailing|going under|calling for help) in the (surf|waves|water|pool|ocean|bay|lake|river)\b|\bface ?down in (the |a )?(water|pool|tub|bathtub|bath)\b|\b(drown\w*) (at|in|off) (the |a )?(beach|pool|bay|surf|ocean|lake)\b|\b(fell|fallen|falls?|went|broke|crashed) (through|thru) (the )?ice\b|\b(ice|frozen (pond|lake|river))\b[^.]{0,60}\b(fell|fallen|went|broke|crashed) (through|thru|in)\b|\bthrough the ice\b|\b(fell|fallen|jumped|slipped|went|is|are|was|were) (into|in|off) (the |a )?(river|pond|water|harbor|harbour|ocean|lake|pool|bay|creek|canal|east river|hudson|pier|dock)\b|\bdrown\w*|\b(struggling|thrashing|can'?t swim|went under|going under|being swept|swept away) (in the water|in the river|in the pool|in the ocean)?|\b(in the (water|river|pool|ocean|lake))\b[^.]{0,30}\b(struggling|can'?t (swim|get out)|went under|going under|not moving|face ?down)\b|\bse est[aá] ahogando\b/,
-    unless: /\b(phone|keys?|wallet|bag|toy|ball|leaves|trash|garbage|car keys)\b[^.]{0,15}\b(fell|went) (into|in)\b/,
+    // A dropped thing is not a person in the water, and "drowning in paperwork" is a figure of speech.
+    unless: /\b(phone|keys?|wallet|bag|toy|ball|leaves|trash|garbage|car keys)\b[^.]{0,15}\b(fell|went) (into|in)\b|[^.]*\bdrown\w* in (?!(the |a |an )?(water|pool|river|lake|ocean|bay|bath\w*|tub|surf|sea|harbor|pond|flood\w*|canal|creek|east river|hudson))[^.]*/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -388,8 +407,30 @@ export function normalize(text: string): string {
   return text.toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, " ").trim();
 }
 
+/**
+ * Shorthand and typos a worried person types, read for the danger words only ("kid in strt",
+ * "baby not breathng", "guy w gun lobby"; beta round 15). The 311 matching has its own typo list.
+ */
+const DANGER_SHORTHAND: [RegExp, string][] = [
+  [/\b(strt|stret|steet|sreet)\b/g, "street"],
+  [/\bbldg\b/g, "building"],
+  [/\bapt\b/g, "apartment"],
+  [/\bw\/? (?=(a |an |the )?(gun|knife|machete|weapon|bat))/g, "with "],
+  [/\b(breathng|breating|breahting|brething|breathin)\b/g, "breathing"],
+  [/\b(drownin|drowing|drownding)\b/g, "drowning"],
+  [/\bpassd\b/g, "passed"],
+  [/\b(bleding|bleedin)\b/g, "bleeding"],
+  [/\b(choakin|chokin)\b/g, "choking"],
+  [/\b(unconcious|unconsious)\b/g, "unconscious"],
+  [/\bcant\b/g, "can't"],
+  [/\bwont\b/g, "won't"],
+  [/\bisnt\b/g, "isn't"],
+  [/\bhes\b/g, "he's"],
+  [/\bshes\b/g, "she's"],
+];
 export function assessDanger(description: string): DangerAssessment {
-  const text = normalize(description);
+  let text = normalize(description);
+  for (const [from, to] of DANGER_SHORTHAND) text = text.replace(from, to);
   const found: DangerKind[] = [];
   const by: string[] = [];
   for (const k of DANGERS) {
