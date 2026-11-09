@@ -54,6 +54,25 @@ You need:
 The first start downloads and builds the beta, so it can take a minute. Later starts
 are faster.
 
+**The beta installs from GitHub, not npm.** `npx` asks git to fetch the `beta` branch.
+That works over HTTPS with no GitHub account. If your computer has GitHub SSH keys set up,
+git may use SSH instead, which also works. If the install stops with
+`Permission denied (publickey)`, git tried SSH without a key: tell us in a feedback issue,
+and in the meantime set up an SSH key or ask us for help.
+
+**It keeps a data cache of about 85 MB** (more if you ask a citywide question with
+`read_every_district`). The district tools download BoardStat's files the first time they
+need them, and the 311 article text is saved for a week, so later answers are fast. The
+cache is in:
+
+- macOS: `~/Library/Caches/nyc-311-mcp`
+- Windows: `%LOCALAPPDATA%\nyc-311-mcp\Cache`
+- Linux: `~/.cache/nyc-311-mcp` (or `$XDG_CACHE_HOME/nyc-311-mcp`)
+
+To use another folder, set `NYC_311_MCP_CACHE_DIR`. To clear the cache, quit your AI app
+and delete that folder (on a Mac: `rm -rf ~/Library/Caches/nyc-311-mcp`). It is rebuilt
+the next time a tool needs it. Nothing in it is personal: it holds public City data only.
+
 ## Install the beta
 
 The beta runs with this command (you do not need to type it yourself; your app runs it):
@@ -119,6 +138,8 @@ Following the Model Context Protocol's guide,
 4. To check it worked: in a chat, open the **+** menu by the message box, then
    **Connectors** › **Manage connectors**, and look for `nyc-311-beta`. Or ask Claude
    "Which nyc-311 tools do you have?" You should see 21, including `draft_311_report`.
+   The beta calls itself version `1.2.0-beta.1` (the released version is 1.1.0); your
+   app's MCP or connector settings show it.
 
 If it does not show up, the same guide's
 [Troubleshooting](https://modelcontextprotocol.io/docs/develop/connect-local-servers#troubleshooting)
@@ -145,7 +166,8 @@ starting points:
 
 ### District tools
 
-- "What were the top 311 problems in Brooklyn Community District 6 last month?"
+- "What were the top 311 problems in Brooklyn Community District 6 last month?" Board
+  codes work too: "BK06", "MN03", "Brooklyn 6".
 - "Which agency is slowest to close requests in Council District 7 this fiscal year?"
 - "How have noise complaints in Manhattan Community District 3 changed over the last
   year, compared with the year before?"
@@ -247,7 +269,7 @@ affiliated with, endorsed by, or an official product of the City of New York.
 
 <!--
 Maintainers: the `beta` branch is not a release. It is updated only by fast-forwarding
-it to the top of the epic #12 stack (currently feature/12-phase5-draft-report), e.g.
-`git push origin origin/<top-of-stack>:refs/heads/beta`. No force pushes, so testers'
-installs never jump backward or to unrelated history.
+it to the branch under test (the epic #12 stack is merged to main; beta fixes go on a
+branch from main), e.g. `git push origin origin/<branch>:refs/heads/beta`. No force
+pushes, so testers' installs never jump backward or to unrelated history.
 -->

@@ -19,7 +19,7 @@ Exposes 21 tools over MCP. Seven use the NYC 311 Public API (they need an API ke
 | `get_service_request` | Look up one 311 service request by its 311 number, with BetaNYC's plain-language reading of its status (the City publishes no definitions) and the agency's resolution text; for other requests at its address, use `address_history` |
 | `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
 | `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer and every error starts with "If anyone is in danger right now, call 911."; a description that suggests danger, and every no-match answer, leads with 911, in the City's words only when the City article is that danger. **Danger detection is keyword-based; it will miss some emergencies**, so every answer also tells the calling assistant to send the person to 911 whenever anything suggests danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
-| `list_311_categories` | 311's own topic categories, or the articles in one, to browse when a match looks wrong |
+| `list_311_categories` | A summary of 311's own topic categories, or the articles in one (20 at a time), to browse when a match looks wrong |
 | `draft_311_report` | A short ready-to-paste 311 report for the person to submit themselves (problem, where, when, what they saw), the 311 Online article link to report it on, questions for anything missing (marked `[add: …]`, never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the article says about contact details and photos, and what happens next. Uses `how_to_report`'s matching and danger check; never drafts when danger is flagged (call 911); safety line first on every answer and error; one draft per problem. **Files nothing, sends nothing, fills no form.** The City does not publish each form's fields, so the form may ask for more. Details: [docs/draft-a-report.md](docs/draft-a-report.md) |
 
 Eleven answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
@@ -189,7 +189,7 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 ```
 how_to_report(description="no heat in my apartment")                   → KA-01036, HPD, "Heat/Hot Water", how to report
 how_to_report(description="a pothole on my block", community_district=306)  → plus how often it was reported in Brooklyn CD 6
-list_311_categories(category_id="311-12")                               → every Noise article, to pick another
+list_311_categories(category_id="311-12")                               → the Noise articles, 20 a page, to pick another
 draft_311_report(description="a pothole on my block", location="Broadway and W 96 St", borough="Manhattan")
                                                                         → paste-ready text, the KA-01093 link, what to add
 ```
