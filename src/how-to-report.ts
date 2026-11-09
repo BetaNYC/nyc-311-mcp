@@ -764,7 +764,7 @@ export const REPORT_TOOLS = [
   {
     name: "how_to_report",
     description:
-      "Find how to report a problem to 311, from a plain description ('a pothole on my block', 'loud music next door at 2 am', 'no heat in my apartment'). Returns the best 311 articles from the City's own 311 content (title, KA number, link on 311 Online), the agency and the 311 problem type each names (the problem type is NYC Open Data's complaint_type), what the article says to do and what happens next, and the ways to report (311 Online, the NYC311 app, phone 311 or 212-NEW-YORK, text 311-692), all from City text. Every answer starts with 'If anyone is in danger right now, call 911.'; a description that suggests danger, and every no-match answer, leads with a 911 line, in the City's words only when the City article is that danger. IMPORTANT: danger detection here is keyword-based and will miss some emergencies. If anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag it. Matching is by keyword, done by BetaNYC, and reads only a few 311 categories (listed in searched). Give community_district or council_district to add how often that problem type was reported there (BoardStat). Does not file anything.",
+      "Find how to report a problem to 311, from a plain description ('a pothole on my block', 'no heat in my apartment'). Returns the best 311 articles from the City's own 311 content (title, KA number, link on 311 Online), the agency and the 311 problem type each names (the problem type is NYC Open Data's complaint_type), what the article says to do and what happens next, and the ways to report (311 Online, the NYC311 app, phone 311 or 212-NEW-YORK, text 311-692), all from City text. Every answer starts with 'If anyone is in danger right now, call 911.'; a description that suggests danger, and every no-match answer, leads with a 911 line, in the City's words only when the City article is that danger. IMPORTANT: danger detection here is keyword-based and will miss some emergencies. If anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag it. Matching is by keyword, done by BetaNYC, and reads only a few 311 categories (listed in searched). Give community_district or council_district to add how often that problem type was reported there (BoardStat). Does not file anything.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -774,7 +774,7 @@ export const REPORT_TOOLS = [
         ...DISTRICT_JSON,
         last_days: { type: "integer", minimum: 1, maximum: 3660, description: "With a district: count reports over the last N days of data (default 365)." },
         category_id: { type: "string", description: "Search only this 311 category (an id from list_311_categories, e.g. '311-12' for Noise)." },
-        limit: { type: "integer", minimum: 1, maximum: 5, description: "How many articles to return (default 3, at most 5)." },
+        limit: { type: "integer", minimum: 1, maximum: 5, description: "How many articles to return (default 3)." },
       },
       required: ["description"],
     },
