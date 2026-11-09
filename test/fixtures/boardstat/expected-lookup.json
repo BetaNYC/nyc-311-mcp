@@ -1,0 +1,951 @@
+{
+ "all_484": {
+  "requests": 867,
+  "by_status": [
+   {
+    "status": "Closed",
+    "requests": 751
+   },
+   {
+    "status": "Pending",
+    "requests": 95
+   },
+   {
+    "status": "In Progress",
+    "requests": 17
+   },
+   {
+    "status": "Open",
+    "requests": 2
+   },
+   {
+    "status": "Assigned",
+    "requests": 1
+   },
+   {
+    "status": "Started",
+    "requests": 1
+   }
+  ],
+  "newest_first": [
+   {
+    "unique_key": "70911406",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "70919184",
+    "status": "Closed",
+    "days_to_close": 0.1
+   },
+   {
+    "unique_key": "70624844",
+    "status": "Closed",
+    "days_to_close": 10.0
+   },
+   {
+    "unique_key": "70450148",
+    "status": "Closed",
+    "days_to_close": 2.2
+   },
+   {
+    "unique_key": "70390675",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70296415",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "70251261",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "70170489",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "70125016",
+    "status": "Closed",
+    "days_to_close": 0.2
+   },
+   {
+    "unique_key": "70104974",
+    "status": "Closed",
+    "days_to_close": 23.0
+   }
+  ]
+ },
+ "all_484_page2": {
+  "requests": 867,
+  "by_status": [
+   {
+    "status": "Closed",
+    "requests": 751
+   },
+   {
+    "status": "Pending",
+    "requests": 95
+   },
+   {
+    "status": "In Progress",
+    "requests": 17
+   },
+   {
+    "status": "Open",
+    "requests": 2
+   },
+   {
+    "status": "Assigned",
+    "requests": 1
+   },
+   {
+    "status": "Started",
+    "requests": 1
+   }
+  ],
+  "newest_first": [
+   {
+    "unique_key": "69928624",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "69925155",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "69858141",
+    "status": "Closed",
+    "days_to_close": 1.0
+   },
+   {
+    "unique_key": "69833811",
+    "status": "Closed",
+    "days_to_close": 0.4
+   },
+   {
+    "unique_key": "69820273",
+    "status": "Closed",
+    "days_to_close": 5.3
+   },
+   {
+    "unique_key": "69738418",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "69705896",
+    "status": "Closed",
+    "days_to_close": 3.6
+   },
+   {
+    "unique_key": "69704041",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "69706990",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "69704009",
+    "status": "Closed",
+    "days_to_close": 0.0
+   }
+  ]
+ },
+ "pending_484": {
+  "requests": 95,
+  "by_status": [
+   {
+    "status": "Pending",
+    "requests": 95
+   }
+  ],
+  "newest_first": [
+   {
+    "unique_key": "68771516",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "68717452",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57655672",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57417353",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57413545",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57422596",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57419982",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57421403",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57413543",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57419900",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57418647",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57421307",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57422428",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57422427",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57416046",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57421305",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57418505",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57421280",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57299354",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57275257",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57248456",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57213083",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "57217726",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56967712",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56832225",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56766526",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56738532",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56661009",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56499702",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56374837",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56294963",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56242124",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56076556",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56065897",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56054857",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56053828",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "56051932",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55875104",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55875124",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55693238",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55599701",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55590834",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55533874",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55504319",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55460348",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55421350",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55419780",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55424633",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55419781",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55424634",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55419782",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55422963",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55424635",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "55319528",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54559538",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54494121",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54492732",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54484865",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54228885",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54228850",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "54042057",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53970180",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53868573",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53581566",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53588920",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53379979",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53165970",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53116950",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53029430",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "53022277",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52805527",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52791424",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52791088",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52597380",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52598598",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52598755",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52594806",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52592428",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52596159",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "52008237",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "51479958",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "51131943",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "51131879",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "51130529",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "50673037",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "50680452",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "49806753",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "48512599",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "48324023",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "48326329",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "46385431",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "46102338",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "46044896",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "45788181",
+    "status": "Pending",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "45358286",
+    "status": "Pending",
+    "days_to_close": null
+   }
+  ]
+ },
+ "closed_dot_484_fy2026": {
+  "requests": 38,
+  "by_status": [
+   {
+    "status": "Closed",
+    "requests": 38
+   }
+  ],
+  "newest_first": [
+   {
+    "unique_key": "69445843",
+    "status": "Closed",
+    "days_to_close": 11.4
+   },
+   {
+    "unique_key": "69054162",
+    "status": "Closed",
+    "days_to_close": 0.7
+   },
+   {
+    "unique_key": "68988891",
+    "status": "Closed",
+    "days_to_close": 0.0
+   },
+   {
+    "unique_key": "68889952",
+    "status": "Closed",
+    "days_to_close": 1.9
+   },
+   {
+    "unique_key": "68886821",
+    "status": "Closed",
+    "days_to_close": 0.8
+   }
+  ]
+ },
+ "not_closed_cc1": {
+  "requests": 50,
+  "by_status": [
+   {
+    "status": "In Progress",
+    "requests": 38
+   },
+   {
+    "status": "Open",
+    "requests": 12
+   }
+  ],
+  "newest_first": [
+   {
+    "unique_key": "70996509",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993913",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70994273",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70996872",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70994838",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70991705",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993554",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993552",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70990991",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70997487",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70991703",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70992254",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "71000067",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "71000058",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70999088",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70992295",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70998779",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70998725",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70991729",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70998717",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993572",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70992076",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70999874",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70996582",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70998560",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993408",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70991356",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70996388",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70999362",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "71000795",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70994236",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70996643",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70995400",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70999264",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70997236",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70995432",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "71001157",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70992217",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993509",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993983",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70995224",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70995230",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70991357",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993038",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70993453",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70991381",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70994773",
+    "status": "Open",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70996529",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "70995956",
+    "status": "In Progress",
+    "days_to_close": null
+   },
+   {
+    "unique_key": "71000739",
+    "status": "Open",
+    "days_to_close": null
+   }
+  ]
+ }
+}

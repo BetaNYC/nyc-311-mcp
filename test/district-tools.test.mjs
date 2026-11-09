@@ -43,7 +43,7 @@ test("address_history matches DuckDB for the busiest address in the fixture dist
   assert.equal(data.address, want.address);
   assert.equal(data.requests, want.requests);
   assert.deepEqual(pick(data.by_problem, want.by_problem), want.by_problem);
-  assert.deepEqual(data.newest_first.map((r) => r.sr_number), want.newest_sr_numbers);
+  assert.deepEqual(data.newest_first.map((r) => r.unique_key), want.newest_unique_keys);
   assert.ok(data.newest_first.every((r) => "resolution" in r && "status" in r));
 });
 
@@ -233,10 +233,10 @@ test("address_history needs a borough when an address is in several places", asy
 
 // ── Tool definitions ─────────────────────────────────────────────────────────
 
-test("the ten district tools are advertised, strict, and say they are not the City's official report", () => {
+test("the eleven district tools are advertised, strict, and say they are not the City's official report", () => {
   assert.deepEqual(DISTRICT_TOOLS.map((t) => t.name), [
     "find_district", "district_summary", "top_problems", "problem_trend", "agency_response",
-    "still_open", "top_addresses", "address_history", "boardstat_link", "boardstat_status",
+    "still_open", "top_addresses", "address_history", "find_requests", "boardstat_link", "boardstat_status",
   ]);
   for (const t of DISTRICT_TOOLS) {
     assert.equal(t.inputSchema.additionalProperties, false, t.name);
@@ -333,7 +333,7 @@ test("address_history: an address straddling a district line uses the district w
   const other = await run("address_history", { address: "Greenwich St", borough: "Manhattan", community_district: 102 });
   assert.equal(other.data.community_district.id, 102);
   assert.equal(other.data.requests, want.other.requests);
-  assert.deepEqual(other.data.newest_first.slice(0, 5).map((r) => r.sr_number), want.other.newest_sr_numbers);
+  assert.deepEqual(other.data.newest_first.slice(0, 5).map((r) => r.unique_key), want.other.newest_unique_keys);
   await assert.rejects(run("address_history", { address: "Greenwich St", community_district: 484 }), /not in Queens Joint Interest Area 484/);
 });
 

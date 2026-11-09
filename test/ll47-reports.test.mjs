@@ -184,7 +184,7 @@ for (const [cd, month, key] of [[484, "2025-10", "cb_484_2025_10"], [101, "2026-
     assert.equal(data.counts.unresolved_from_prior_months, want.unresolved_from_prior_months.length);
     assert.equal(data.counts.unresolved_at_month_end_now_closed, want.unresolved_at_month_end_now_closed.length);
     assert.deepEqual(data.record_problems, want.record_problems);
-    assert.deepEqual(data.rows.map((r) => r.sr_number), [
+    assert.deepEqual(data.rows.map((r) => r.unique_key), [
       ...want.new_this_month,
       ...want.unresolved_from_prior_months,
       ...want.unresolved_at_month_end_now_closed,
@@ -210,7 +210,7 @@ test("cb_monthly_list pages with offset and limit, and next_offset walks the who
   let page = { offset: 0 };
   for (let i = 0; i < 50 && page !== null; i++) {
     const env = await runLl47Tool("cb_monthly_list", parseToolArgs("cb_monthly_list", { community_district: 484, month: "2025-10", limit: 25, ...page }), { data: fd });
-    seen.push(...env.data.rows.map((r) => r.sr_number));
+    seen.push(...env.data.rows.map((r) => r.unique_key));
     assert.equal(env.data.next_offset, env.data.next_page?.offset ?? null);
     page = env.data.next_page;
     if (page) assert.equal(page.data_as_of, MANIFEST.generated_at);
@@ -241,12 +241,12 @@ test("cb_monthly_list for an older month says plainly that 'unresolved' is as of
 test("cb_monthly_list part= keeps one half; format csv gives the same page as CSV text", async () => {
   const want = EXPECTED.cb_484_2025_10;
   const fresh = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "new_this_month" });
-  assert.deepEqual(fresh.data.rows.map((r) => r.sr_number), want.new_this_month);
+  assert.deepEqual(fresh.data.rows.map((r) => r.unique_key), want.new_this_month);
   assert.equal(fresh.data.counts.unresolved_from_prior_months, null);
   const old = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "unresolved_from_prior_months", limit: 5 });
-  assert.deepEqual(old.data.rows.map((r) => r.sr_number), want.unresolved_from_prior_months.slice(0, 5));
+  assert.deepEqual(old.data.rows.map((r) => r.unique_key), want.unresolved_from_prior_months.slice(0, 5));
   const since = await run("cb_monthly_list", { community_district: 484, month: "2025-10", part: "unresolved_at_month_end_now_closed" });
-  assert.deepEqual(since.data.rows.map((r) => r.sr_number), want.unresolved_at_month_end_now_closed);
+  assert.deepEqual(since.data.rows.map((r) => r.unique_key), want.unresolved_at_month_end_now_closed);
   assert.equal(since.data.counts.new_this_month, null);
   const csv = await run("cb_monthly_list", { community_district: 484, month: "2025-10", format: "csv", limit: 5 });
   assert.equal(csv.data.rows, undefined);

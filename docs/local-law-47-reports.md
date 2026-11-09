@@ -136,7 +136,7 @@ part, so they are left out (Manhattan CD 1 before 2024-03: 1,520). Requests not 
 carrying a close date before the month's end are listed as unresolved, by their current status
 (Manhattan CD 1, 2024-03: 391).
 
-Each row: `section`, `sr_number`, `created`, `closed`, `category`, `description`, `agency`,
+Each row: `section`, `unique_key` (NYC Open Data's id, not the 311 number), `created`, `closed`, `category`, `description`, `agency`,
 `agency_name`, `status` (current, as of the build, which is what § 1075(d)(3) asks), `address`
 (as the City wrote it, ZIP codes removed). Ordered by created time, then number, within each
 part. `limit` (up to 1,000) and `offset`; the answer gives `next_page` (`offset` and

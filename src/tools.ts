@@ -6,6 +6,7 @@ import {
   getServiceRequestList,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
+import { describeServiceRequest, describeServiceRequestList, NOT_FOUND_HINT } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 
 const STATUS_TYPES = [
@@ -54,7 +55,7 @@ export const TOOLS = [
   {
     name: "get_service_request",
     description:
-      "Look up one 311 service request by its number (format 311-XXXXXXXX). Returns agency, problem type, status, timestamp, and address.",
+      "Look up one 311 service request by its 311 number (format 311-XXXXXXXX), from the City's 311 Public API. Returns agency, problem, status, submitted time, address (ZIP code removed) and the agency's resolution text, plus a plain_language block: the status in words and what it means. The 311 number is not NYC Open Data's unique_key, so it is not matched to BoardStat's rows by number; for other requests at the same address, pass plain_language.address_lookup to address_history.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -67,7 +68,7 @@ export const TOOLS = [
   {
     name: "get_service_request_list",
     description:
-      "Bulk look up multiple 311 service requests by their numbers in a single call.",
+      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error).",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -149,13 +150,20 @@ export async function callTool(name: string, args: unknown) {
 
       case "get_service_request": {
         const { sr_number } = parseToolArgs("get_service_request", args);
-        const results = await getServiceRequest(sr_number);
+        let results: unknown;
+        try {
+          results = await getServiceRequest(sr_number);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          throw new Error(/ error 404/.test(message) ? `${message} ${NOT_FOUND_HINT}` : message);
+        }
+        results = describeServiceRequest(results);
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
       }
 
       case "get_service_request_list": {
         const { sr_numbers } = parseToolArgs("get_service_request_list", args);
-        const results = await getServiceRequestList(sr_numbers);
+        const results = describeServiceRequestList(await getServiceRequestList(sr_numbers), sr_numbers);
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
       }
 

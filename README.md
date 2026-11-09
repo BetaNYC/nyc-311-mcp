@@ -16,10 +16,10 @@ Exposes 17 tools over MCP. Four use the NYC 311 Public API (they need an API key
 |---|---|
 | `get_calendar` | Alternate Side Parking, Collections (trash/recycling/compost), and Schools status for a date or range (max 90 days) |
 | `get_status` | Current city status for an emergency or weather condition (Code Blue, fire hydrants, OEM alerts, snow) |
-| `get_service_request` | Look up one 311 service request by number |
-| `get_service_request_list` | Bulk look up multiple service requests in one call |
+| `get_service_request` | Look up one 311 service request by its 311 number, with BetaNYC's plain-language reading of its status (the City publishes no definitions) and the agency's resolution text; for other requests at its address, use `address_history` |
+| `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
 
-Ten answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
+Eleven answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
 publishes every night (no key needed; only `www.beta.nyc` is contacted). Their numbers match
 the BoardStat page each answer links to. Details: [docs/district-tools.md](docs/district-tools.md).
 
@@ -32,7 +32,8 @@ the BoardStat page each answer links to. Details: [docs/district-tools.md](docs/
 | `agency_response` | Requests, closed, not yet closed, and median and average days to close, by agency |
 | `still_open` | Requests not yet closed, oldest first, with days open and a count per agency |
 | `top_addresses` | Addresses with the most requests, optionally for given problems or descriptions |
-| `address_history` | Every request at one address, with status and the agency's resolution text |
+| `address_history` | Every request at one address, with status (explained) and the agency's resolution text; pages with `offset` |
+| `find_requests` | Every request in a district, any status, newest first, paged; filters for problem, description, agency, `status` or the City's own `statuses` (such as `Pending`), each status explained |
 | `boardstat_link` | A BoardStat link with the given district, dates, problems, agency and status set |
 | `boardstat_status` | How fresh BoardStat's data is, and whether its nightly run is late |
 
@@ -122,7 +123,9 @@ get_status(type="SnowOnStreet")
 
 ### `get_service_request`
 
-Look up one 311 service request by its number. Returns the agency, problem type, status (Open / In Progress / Closed / Cancelled), timestamp, and address as provided by the API.
+Look up one 311 service request by its 311 number. Returns the API's fields (agency, problem, problem details, status code, submitted time, address, the agency's resolution text) with ZIP codes removed, plus a `plain_language` block: the status in words (the API sends a code, `614110003` = Closed), what it means, the resolution, and the address to pass to `address_history` for other requests there.
+
+The 311 number is **not** NYC Open Data's `unique_key` (two matched requests, 2026-11-07), Open Data does not publish the 311 number, and we found no published source that links them, so a looked-up request is not matched to its BoardStat row by number. Use `address_history` with `plain_language.address_lookup` for its address. Status meanings are BetaNYC's reading (`meaning_source: "BetaNYC"`), not City definitions. Evidence: [docs/service-requests.md](docs/service-requests.md).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -136,7 +139,7 @@ get_service_request(sr_number="311-17323508")
 
 ### `get_service_request_list`
 
-Bulk look up multiple service requests in a single call. Returns the same per-request data as `get_service_request`.
+Look up several service requests in a single call. Each comes back as in `get_service_request`. The API leaves out a number it cannot find, without an error; `not_found` lists them.
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -299,7 +302,8 @@ Once connected, you can ask your AI assistant things like:
 
 - **`get_service_request` looks up by number only.** The 311 API resolves a known SR number (`311-XXXXXXXX`); it does not search by address, agency, or area. For questions by district, address, agency or problem, use the district tools above (`top_problems`, `address_history`, `agency_response` and the rest), which read files built nightly from NYC Open Data by BoardStat, from the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).
 - **Calendar range cap.** `get_calendar` accepts a span of up to 90 days; longer ranges are rejected before the request is sent.
-- **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. The status and service-request endpoints are returned as the API's raw JSON — their exact field set is defined by the upstream API and is passed through unchanged.
+- **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. `get_status` is the API's raw JSON. The service-request tools return the API's fields unchanged except that ZIP codes are removed, plus the added `plain_language` block (and `not_found` for the list).
+- **Two numbers for one request.** The 311 number (`311-XXXXXXXX`) and Open Data's `unique_key` are different numbers (two matched requests, 2026-11-07). District tools list `unique_key`; it cannot be looked up with `get_service_request`. See [docs/service-requests.md](docs/service-requests.md).
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.
 
 ## Roadmap
@@ -307,7 +311,7 @@ Once connected, you can ask your AI assistant things like:
 More district work is planned under epic
 [#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12): the monthly reports that
 [Local Law 47 of 2005](https://intro.nyc/0174-2004) (Int 0174-2004) asked for (#15), request lookup by address and district (#16), and help reporting a
-problem to 311 (#17, #18). None of those ship yet.
+problem to 311 (#17, #18). None of those are released yet.
 
 ---
 

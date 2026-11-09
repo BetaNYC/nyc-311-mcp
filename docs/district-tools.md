@@ -164,7 +164,7 @@ Still open:
 - `top_addresses` keeps placeholder addresses, as the BoardStat page does, and marks them
   `placeholder_address: true`.
 
-## The ten tools (Phase 1)
+## The tools (Phase 1, plus `find_requests` from Phase 3)
 
 | Tool | Reads | Default dates |
 |---|---|---|
@@ -176,6 +176,7 @@ Still open:
 | `still_open` | detail file, open rows only (they sit at the end of the file) | all data, 2020 on |
 | `top_addresses` | detail file | opening view |
 | `address_history` | `addresses.parquet`, then the address's community district file | all data |
+| `find_requests` (#16) | detail file | opening view |
 
 **One address, two districts.** BoardStat places each request by its own point, so an
 address can straddle a district line (`1501 UNDERCLIFF AVENUE`, Bronx: 4,025 requests in
@@ -211,9 +212,35 @@ case and checked against the month file. `descriptions` are the 311 descriptor, 
 same way against the requests read (a missing one is `(none)`); `exclude_descriptions`
 inverts them. A blocked bike lane is a description, `Blocked Bike Lane`, under
 `Illegal Parking`. `status` is `closed` or `not_closed` (every other status, BoardStat's
-"Not yet closed").
+"Not yet closed"). `find_requests` also takes `statuses`, the City's own values (Closed,
+Open, In Progress, Pending, Assigned, Started, Unspecified), matched without regard to case
+against the requests read; a value no request has is refused with the values present. With
+exactly one, the BoardStat link carries it (`district.js` filters `status = '<value>'`); with
+several, the link carries none and a caveat says so.
 
-**Lists** take a `limit` and say `truncated: true` when rows were left out.
+**Lists** take a `limit` and say `truncated: true` when rows were left out. `find_requests`,
+`address_history` and `cb_monthly_list` also page: they return `next_page` (`offset` and
+`data_as_of`), and a page asked for with a `data_as_of` that is not the current build is
+refused, so a list is never stitched from two builds. `find_requests` refuses a `status` and
+`statuses` that cannot both hold (for example `closed` with `Pending`).
+
+**`find_requests` memory.** It reads the district's file one 51,200-row window at a time (the
+row-group size BoardStat writes), keeping counts and only the newest `offset + limit` rows,
+then reads the text columns (resolution, address, description, close date) for the page alone.
+Council District 11, 2020 on, `limit: 1`: about 1.06 GB peak before this, 344 MB after; a
+200-row page of DOT Pending requests spread over 2020 to 2026, 516 MB (BoardStat build of
+2026-11-07, Node 26, macOS arm64). When `agency`, `descriptions` or `statuses` is given, a first
+light pass finds the City's exact spellings, as the other tools match them.
+
+**Request ids.** Every list names a request by `unique_key`, NYC Open Data's id. It is not
+the 311 number (`311-XXXXXXXX`) a person is given when they report, and the 311 API cannot
+look it up (renamed from `sr_number` in Phase 3; [service-requests.md](service-requests.md)).
+Lists that show statuses also return `status_meanings` (or `by_status` with a `meaning`).
+
+**Why `find_requests` is a new tool.** `still_open` lists only requests not yet closed, and
+`address_history` only one address. No tool listed a district's closed requests, or one
+status such as `Pending`, with the agency's resolution. `find_requests` is district-only;
+for an address, `address_history` stays the tool (it gained `offset` rather than a twin).
 
 ## How they count
 
