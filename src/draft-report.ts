@@ -22,7 +22,7 @@ import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
 import { contentClient, PORTAL, type Article, type ContentClient } from "./content-311.js";
 import { BOROUGHS, boardstatData } from "./district-tools.js";
 import { howToReport, REACH_311, splitProblems, stem, words } from "./how-to-report.js";
-import { ASSISTANT_INSTRUCTION, assessDanger, emergencyLead, GENERIC_911, SAFETY_LINE, SAFETY_LINE_SOURCE } from "./emergency.js";
+import { ASSISTANT_INSTRUCTION, assessDanger, BUILT_IN_911, BUILT_IN_911_READ, emergencyLead, GENERIC_911, SAFETY_LINE, SAFETY_LINE_SOURCE } from "./emergency.js";
 import { sodaClient, type SodaClient } from "./soda.js";
 import type { BoardStatData } from "./boardstat-data.js";
 
@@ -271,38 +271,54 @@ export async function draftReport(args: DraftArgs, client: ContentClient = conte
 }
 
 async function draftReportInner(args: DraftArgs, client: ContentClient, soda: SodaClient, data: BoardStatData) {
-  const whole = await howToReport({ description: args.description, borough: args.borough }, client, data);
+  // `details` and `when` go into the paste text too, so they are read for danger as well,
+  // each on its own: "not urgent" in one field does not cancel danger named in another.
+  const dangerWhole = assessDanger(args.description);
+  const dangerOther = [args.details, args.when].map((t) => (t ? assessDanger(t) : null)).find((x) => x?.kinds.length) ?? null;
+  const notDrafted = (first_line: string, emergency: unknown, extra: Record<string, unknown> = {}) =>
+    finish({
+      ...SAFETY,
+      first_line,
+      emergency,
+      drafted: false,
+      reports: [],
+      not_drafted: "No 311 draft is made when the description suggests an emergency. Call 911 first. When the emergency is over and a problem that is not an emergency remains (a pothole after a crash, say), ask again about that problem.",
+      ...extra,
+      how_to_reach_311: REACH_311,
+      not_sent: NOT_SENT,
+    });
 
   // One report per problem, split by how_to_report's own splitProblems; each part is
   // matched on its own, and kept when it lands on an article no other part did.
   const split = splitProblems(args.description);
   const each: { said: string; match: Matched }[] = [];
-  if (split.length > 1) for (const part of split.slice(0, MAX_PROBLEMS)) each.push({ said: part, match: await howToReport({ description: part, borough: args.borough }, client, data) });
+  let whole: Matched;
+  try {
+    whole = await howToReport({ description: args.description, borough: args.borough }, client, data);
+    if (split.length > 1) for (const part of split.slice(0, MAX_PROBLEMS)) each.push({ said: part, match: await howToReport({ description: part, borough: args.borough }, client, data) });
+  } catch (err) {
+    // 311's content could not be read (no key, the API down) and the danger is only in
+    // `details` or `when`: the City's built-in 911 line for that danger, not a bare error
+    // (beta retest 1, 2026-11-08). Without danger, the error stands.
+    if (!dangerOther) throw err;
+    const emergency = emergencyLead(dangerOther, BUILT_IN_911)!;
+    if (emergency.ka_number) emergency.source += ` (the City's words, built into this server as read ${BUILT_IN_911_READ}, because 311's content could not be reached just now)`;
+    return notDrafted(emergency.call_911, emergency, { content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${err instanceof Error ? err.message : String(err)}` });
+  }
 
   // Danger: no draft whenever assessDanger flags it, in the whole description or in any
   // part, or how_to_report leads with 911 (including a matched City article that itself
-  // says "Call 911"). The answer is how_to_report's own 911 answer.
-  const dangerWhole = assessDanger(args.description);
+  // says "Call 911"). The answer is how_to_report's own 911 answer; for danger named only
+  // in `details` or `when`, the City's built-in line for that danger.
   const flaggedPart = each.find((x) => assessDanger(x.said).kinds.length || x.match.emergency);
-  // `details` and `when` go into the paste text too, so they are read for danger as well,
-  // each on its own: "not urgent" in one field does not cancel danger named in another.
-  const dangerOther = [args.details, args.when].map((t) => (t ? assessDanger(t) : null)).find((x) => x?.kinds.length) ?? null;
   const cityCall911 = Boolean(whole.best_match && /^call 911\b/i.test(whole.best_match.summary) && whole.first_line === whole.best_match.summary);
   if (dangerWhole.kinds.length || whole.emergency || flaggedPart || cityCall911 || dangerOther) {
     const emergency =
       whole.emergency ??
       flaggedPart?.match.emergency ??
-      emergencyLead(dangerWhole.kinds.length ? dangerWhole : flaggedPart ? assessDanger(flaggedPart.said) : dangerOther ?? assessDanger(args.description), []);
-    return finish({
-      ...SAFETY,
-      first_line: whole.emergency || cityCall911 ? whole.first_line : (flaggedPart?.match.emergency ? flaggedPart.match.first_line : (emergency?.call_911 ?? GENERIC_911)),
-      emergency,
-      drafted: false,
-      reports: [],
-      not_drafted: "No 311 draft is made when the description suggests an emergency. Call 911 first. When the emergency is over and a problem that is not an emergency remains (a pothole after a crash, say), ask again about that problem.",
-      how_to_reach_311: REACH_311,
-      not_sent: NOT_SENT,
-    });
+      emergencyLead(dangerWhole.kinds.length ? dangerWhole : flaggedPart ? assessDanger(flaggedPart.said) : dangerOther ?? assessDanger(args.description), BUILT_IN_911);
+    if (emergency?.ka_number && !whole.emergency && !flaggedPart?.match.emergency) emergency.source += ` (the City's words, built into this server as read ${BUILT_IN_911_READ})`;
+    return notDrafted(whole.emergency || cityCall911 ? whole.first_line : (flaggedPart?.match.emergency ? flaggedPart.match.first_line : (emergency?.call_911 ?? GENERIC_911)), emergency);
   }
 
   const sla = await slaTable(soda);

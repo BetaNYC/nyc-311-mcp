@@ -67,3 +67,38 @@ test("the built-in City lines are the City's own summaries, each starting 'Call 
   }
   assert.ok(BUILT_IN_911.some((a) => a.title === "Gas Leak"));
 });
+
+// Beta retest 1 (2026-11-08): danger written only in `details` or `when` got the generic
+// 911 line and a missing-key error with no key and an empty cache. It now gets the same
+// built-in City line as danger in the description.
+for (const kind of ["nokey", "down"]) {
+  for (const [field, text, ka, line] of [
+    ["details", "and now I smell gas in the hallway", "KA-02048", /^Call 911 to report a gas leak/],
+    ["when", "right now, and I smell gas too", "KA-02048", /^Call 911 to report a gas leak/],
+    ["details", "a downed power line is sparking on the sidewalk", null, /call 911/i],
+  ]) {
+    test(`${kind}: danger only in ${field} ("${text}") gets the hazard's own 911 line, not a bare error`, async () => {
+      const { c, restore } = await offline(kind);
+      try {
+        const { soda } = await fixtureSla();
+        const { data } = await fixtureData();
+        const d = await draftReport({ description: "a pothole on my street", location: "Broadway and W 96 St", borough: "Manhattan", [field]: text }, c, soda, data);
+        assert.equal(d.drafted, false);
+        assert.equal(d.safety_line, SAFETY_LINE);
+        assert.match(d.first_line, line);
+        // The same answer as when the danger is in the description itself.
+        const same = await howToReport({ description: text }, c);
+        assert.equal(d.first_line, same.first_line);
+        assert.deepEqual(d.emergency.dangers, same.emergency.dangers);
+        assert.ok(d.emergency.dangers.length > 0, "the danger is named");
+        if (ka) {
+          assert.equal(d.emergency.ka_number, ka);
+          assert.match(d.emergency.source, /built into this server/);
+        }
+        assert.match(d.content_unavailable, /could not be reached|NYC_311_API_KEY/);
+      } finally {
+        restore();
+      }
+    });
+  }
+}
