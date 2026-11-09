@@ -249,6 +249,28 @@ function otherMatch(text: string, k: DangerKind): boolean {
 
 export type ArticleLike = { ka_number: string; title: string; description: string };
 
+/**
+ * The City's own "Call 911" summaries for the dangers in DANGERS that name a City article,
+ * built in so a danger is answered in the City's words even when 311's content cannot be
+ * reached (no key, an empty cache, the API down; beta test 2026-11-08). Copied word for
+ * word from GetContentList, read 2026-11-07 (test/fixtures/content/); the live article is
+ * used whenever it can be read.
+ */
+export const BUILT_IN_911_READ = "2026-11-07";
+export const BUILT_IN_911: ArticleLike[] = [
+  { ka_number: "KA-01543", title: "Fire Emergency", description: "Call 911 to report a fire." },
+  { ka_number: "KA-02220", title: "Smoke or Fumes", description: "Call 911 to report smoke or fumes." },
+  { ka_number: "KA-02048", title: "Gas Leak", description: "Call 911 to report a gas leak or any gas-related emergency or dangerous condition." },
+  { ka_number: "KA-02608", title: "Carbon Monoxide", description: "Call 911 to report carbon monoxide emission or poisoning. Learn about carbon monoxide detector requirements." },
+  { ka_number: "KA-01515", title: "Assault", description: "Call 911 to report any type of assault." },
+  { ka_number: "KA-01557", title: "Gunshot", description: "Call 911 to report gunfire." },
+  { ka_number: "KA-01581", title: "Medical Emergency", description: "Call 911 to report any type of medical or health related emergency." },
+  { ka_number: "KA-02907", title: "Overdose", description: "Call 911 to report someone in very bad condition who needs immediate medical help." },
+  { ka_number: "KA-01513", title: "Accident with Injury", description: "Call 911 to report an accident in progress." },
+  { ka_number: "KA-01046", title: "Missing Person", description: "Call 911 to report someone who may be missing, abducted, or kidnapped. Check if a missing person has been found." },
+  { ka_number: "KA-01635", title: "Suicide", description: "Call 911 to report that someone is considering suicide or endangering themselves." },
+];
+
 export type EmergencyLead = {
   call_911: string;
   /** Where the wording comes from: a City article, or BetaNYC. */

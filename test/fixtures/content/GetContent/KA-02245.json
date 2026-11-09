@@ -1,0 +1,73 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02245",
+   "Title": "Dead Animal on Public Property",
+   "Description": "Report a dead animal in a public place, including sidewalks, highways, and parks.",
+   "Section": [
+    {
+     "Name": "911 Dead Animal",
+     "Content": "<style type=\"text/css\">.divTable{\n                display: table;\n                width: 100%;\n                font-family:\"Helvetica Neue\", Helvetica, Arial, \"sans-serif\";\n                margin-bottom:30px;              \n}\n.divTableRow {\n               display: table-row;\n}\n\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color:red;\n                color: white;\n                font-weight: bold;\n                            \n                \n}\n\n                .divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n                                                                                \n                                                                                \n                \n}\n\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\" style=\"text-align: center;\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <strong><span style=\"color:#FF0000;\">911 </span></strong>to report a dead animal blocking highway traffic that could cause an accident.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03451\">Dead Animal on Private Property</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02349\">Rabid Animal</a>&nbsp;if the animal showed signs of rabies before it died</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01109\">Animal Bite</a> if the animal bit a person before it died</li></ul></div><p>You can report dead animals on a public street or area, on highways, in parks, or in bodies of water. You can also report clusters of dead animals for possible disease testing.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Sidewalk or Street",
+     "Content": "<p>If you see a dead animal on a street or sidewalk, you can report it to the Department of Sanitation (DSNY). DSNY will respond on a priority basis.</p>",
+     "ContentAction": [
+      {
+       "Name": "Dead Animal on a Sidewalk or Street",
+       "Agency": "Department of Sanitation",
+       "Problem": "Dead Animal"
+      }
+     ]
+    },
+    {
+     "Name": "Highway",
+     "Content": "<p>You can report a dead animal on the following New York City highways:</p><ul><li>Belt Parkway</li><li>Bronx River Parkway</li><li>Brooklyn Queens Expressway (BQE) / I-287</li><li>Bruckner Expressway / I-278</li><li>Clearview Expressway / I-295</li><li>Cross Bronx Expressway / I-95</li><li>Cross Island Parkway</li><li>FDR Drive (FDR)</li><li>Gowanus Expressway / I-278</li><li>Grand Central Parkway</li><li>Harlem River Drive</li><li>Henry Hudson Parkway / Route 9A</li><li>Hutchinson River Parkway</li><li>Interboro Parkway</li><li>Jackie Robinson Parkway</li><li>Korean War Veterans Expressway</li><li>Laurelton Parkway</li><li>Long Island Expressway (LIE) / I-495</li><li>Major Deegan Expressway / I-87</li><li>Martin Luther King Expressway / Route 440</li><li>Mosholu Parkway</li><li>Nassau Expressway / Route 878</li><li>Prospect Expressway / Route 27</li><li>Richmond Parkway</li><li>Sheridan Expressway / I-895</li><li>Staten Island Expressway / I-278</li><li>Throgs Neck Expressway / I-695</li><li>Van Wyck Expressway / I-678</li><li>West Shore Expressway / Route 440</li><li>Whitestone Expressway / I-678</li><li>Willowbrook Expressway</li></ul><p>Responsibility is shared between the Department of Transportation (DOT) and the Department of Sanitation (DSNY).</p><p><span style=\"font-size:20px;\"><strong>Report on Days, Sundays, and Holidays</strong></span></p><p>You can report a dead animal on a highway to DOT:</p><ul><li>Monday to Friday, 8 AM to 4 PM</li><li>Sunday</li><li>City holidays</li></ul><p><span style=\"font-size:20px;\"><strong>Report on Evenings and Saturdays</strong></span></p><p>You can report a dead animal on a highway to DSNY:</p><ul><li>Monday to Friday, 4 PM to 8 AM</li><li>Saturday</li></ul><p>DSNY will respond within 2 business days.</p>",
+     "ContentAction": [
+      {
+       "Name": "Dead Animal on Highway on Days, Sundays, and Holidays",
+       "Agency": "Department of Transportation",
+       "Problem": "Highway Condition",
+       "ProblemDetail": "Dead Animal"
+      },
+      {
+       "Name": "Dead Animal on a Highway",
+       "Agency": "Department of Sanitation",
+       "Problem": "Dead Animal"
+      }
+     ]
+    },
+    {
+     "Name": "Park or Beach",
+     "Content": "<p>You can report a dead animal on NYC Parks property.</p><p>This includes:</p><ul><li>City parks</li><li>Public beaches</li><li>Recreation Centers</li><li>Sidewalks next to DPR property</li></ul><p>NYC Parks also responds to reports of dead animals on&nbsp;public property such as:</p><ul><li>Ponds</li><li>Streams</li><li>Small bodies of water</li><li>Parkways</li></ul><p><strong>State and Federal Parks</strong></p><p>You can report a dead animal in a park or beach run by New York State or the federal government. Contact the park directly to report the dead animal.</p><p>Popular State parks in the NYC area include:</p><ul><li>East River State Park</li><li>Jones Beach</li><li>Hudson River Park</li></ul><p>Popular parklands in the NYC area operated by the federal government include:</p><ul><li>Jacob Riis Park</li><li>Fort Tilden</li><li>Gateway National Recreation Area</li></ul><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nycgovparks.org/park-features/other-parks-in-nyc\">Find state, national, and other parks in New York City.</a></p>",
+     "ContentAction": [
+      {
+       "Name": "Dead Animal in Park or Beach",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Animal in a Park",
+       "ProblemDetail": "Dead Animal"
+      }
+     ]
+    },
+    {
+     "Name": "Body of Water",
+     "Content": "<p><span style=\"font-size:20px;\"><strong>Fish</strong></span></p><p>You can report large groups of dead fish in the major harbors and bays surrounding New York City, including:</p><ul><li>Jamaica Bay</li><li>Sheepshead Bay</li><li>New York Harbor</li></ul><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"http://www.dec.ny.gov/animals/6957.html\">Report dead fish in a harbor or bay.</a></p><p><strong>By Phone</strong></p><p><span style=\"font-size:20px;\"><strong>Birds</strong></span></p><p>You can report a cluster of dead birds to the&nbsp;NYC Health Department.</p><p>The agency will investigate reports of:</p><ul><li>3 or more dead geese, swans, ducks, chickens, or turkeys</li><li>10 or more other dead birds</li></ul><p>The&nbsp;NYC Health Department may collect some of the animals for West Nile Virus testing. An investigation will determine if the animals will be collected.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p><p><span style=\"font-size:20px;\"><strong>Other Animals</strong></span></p><p><strong>Small Body of Water</strong></p><p>You can report a dead animal in a small body of water, such as a pond or a stream.</p><p><strong>Large Body of Water</strong></p><p>The New York Police Department Harbor Unit responds to reports of dead animals (except for birds, rodents, or fish) in a:</p><ul><li>River</li><li>Lake</li><li>Bay</li><li>Sound</li><li>Ocean</li><li>Other large body of water</li></ul><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": [
+      {
+       "Name": "Dead Animal in a Small Body of Water",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Animal in a Park",
+       "ProblemDetail": "Dead Animal"
+      }
+     ]
+    },
+    {
+     "Name": "Animal Clusters",
+     "Content": "<p>You can report a cluster of dead animals to the NYC Health Department.</p><p>The&nbsp;NYC Health Department will investigate reports of:</p><ul><li>3 or more dead geese, swans, ducks, chickens, or turkeys</li><li>10 or more of other dead animals</li></ul><p>The&nbsp;NYC Health Department may collect some of the animals for testing. An investigation will determine if the animals will be collected.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

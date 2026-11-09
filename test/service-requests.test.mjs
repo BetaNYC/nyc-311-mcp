@@ -265,10 +265,46 @@ test("get_service_request / get_service_request_list through callTool: plain_lan
 
     const miss = await callTool("get_service_request", { sr_number: "311-70999528" });
     assert.equal(miss.isError, true);
-    assert.match(miss.content[0].text, /404.*not a 311 number/s);
+    assert.match(miss.content[0].text, /311 has no service request 311-70999528\. If this number came from NYC Open Data.*not a 311 number/s);
+    // Only the plain sentence: not the City's raw error body (beta retest 1).
+    assert.doesNotMatch(miss.content[0].text, /Response body|wasn't found!|"Error"|NotFound/);
 
     const many = await callTool("get_service_request_list", { sr_numbers: ["311-17323508", "311-17323514", "311-70999528"] });
     assert.deepEqual(JSON.parse(many.content[0].text).not_found, ["311-70999528"]);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("a not-found message keeps a request id the API sent, and nothing else of its body", async () => {
+  const { notFoundMessage, NOT_FOUND_HINT } = await import("../dist/service-requests.js");
+  assert.equal(notFoundMessage("311-1", 'NYC 311 API error 404: Not Found Response body: {"Error":{"Code":"NotFound"}}'), `311 has no service request 311-1. ${NOT_FOUND_HINT}`);
+  assert.match(notFoundMessage("311-1", 'NYC 311 API error 404: Not Found Response body: {"requestId": "abc123-def"}'), /\(311 API request id abc123-def\.\)$/);
+});
+
+// Beta retest 2 (2026-11-09): get_service_request_list with only made-up numbers got a 404
+// from the City and passed its raw text through ("NYC 311 API error 404: Not Found Response
+// body: {…No SR record was found…}"). Now it says the same plain sentence and hint as
+// get_service_request. The 404 body here is a stub shaped like the one the retest saw.
+test("get_service_request_list with only unknown numbers: one plain sentence and the unique_key hint, no raw City text", async () => {
+  const { NOT_FOUND_HINT } = await import("../dist/service-requests.js");
+  process.env.NYC_311_API_KEY = "test-key-never-sent-anywhere";
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = new URL(String(url));
+    if (u.pathname.endsWith("/GetServiceRequestList")) {
+      return new Response(JSON.stringify({ message: "No SR record was found" }), { status: 404, statusText: "Not Found" });
+    }
+    throw new Error(`unexpected request ${u}`);
+  };
+  try {
+    const one = await callTool("get_service_request_list", { sr_numbers: ["311-99999999"] });
+    assert.equal(one.isError, true);
+    assert.equal(one.content[0].text, `Error: 311 has no service request 311-99999999. ${NOT_FOUND_HINT}`);
+    const two = await callTool("get_service_request_list", { sr_numbers: ["311-99999998", "311-99999999"] });
+    assert.equal(two.isError, true);
+    assert.match(two.content[0].text, /^Error: 311 has none of these service requests: 311-99999998, 311-99999999\. /);
+    for (const r of [one, two]) assert.doesNotMatch(r.content[0].text, /Response body|No SR record|error 404|Not Found/);
   } finally {
     globalThis.fetch = realFetch;
   }

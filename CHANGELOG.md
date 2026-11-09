@@ -7,6 +7,176 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.5] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 4, 2026-11-09)
+
+- **`ll47_directory_assistance_report`, fiscal year.** A `fiscal_year` call now answers
+  within about 12 s. Saved months answer at once. Months not saved are fetched one at a
+  time (never in parallel to one portal, engineering standards §6); any not done after 12 s
+  are listed as "still loading … ask again in a minute", keep loading after the answer, and
+  are saved when they land (up to 4 minutes in all). A second call waits on the same request
+  instead of sending another. No total is given until every month is in. Before, the first
+  call waited about 55 s on one slow month.
+- **Water outdoors** (`how_to_report`, `draft_311_report`). Indoor and outdoor words decide.
+  Water leaking from a street or sidewalk goes to Water Leak on Street or Sidewalk
+  (KA-01234, DEP; recorded as a test fixture); a water main break, or water gushing down the
+  block, to Water Main Break (KA-01233); a leaking or open hydrant to Fire Hydrant Complaint
+  (KA-01034); water pooling in the road to Street Flooding (KA-02198). Any indoor word ("my
+  ceiling", "into my apartment", "the hallway of my building") keeps Water Leak in a
+  Building (KA-01509).
+- **Confidence.** One problem word shared by several titles is strong again when it names
+  the article: more than half of the article title's words are the person's, and it scores
+  3 or more above every other title with that word. "No heat in my apartment" and "illegal
+  fireworks every night" are strong again; "construction" alone, or "construction site"
+  for the Construction Site No Smoking Sign article, is still not.
+- **Exit on close.** The server now exits as soon as the app closes it, instead of staying alive while fiscal-year months load in the background. Cache files are written to a temp file and renamed, so nothing is left half-saved; an unfinished month loads again next time.
+- **Version.** The server reports `1.2.0-beta.5`.
+
+## [1.2.0-beta.4] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 3, 2026-11-09)
+
+- **`ll47_directory_assistance_report`, one month.** A one-month call now fetches only
+  that month. Its fiscal year to date uses the months already saved, and lists the others
+  as "not fetched" with a pointer to `fiscal_year`. Before, a call for a saved October still
+  waited about 55 s on the other fiscal-year months. A `fiscal_year` call fetches every
+  month, answers saved months at once, and lists slow ones as missing. A month that cannot
+  be refreshed in a call is answered from its older saved copy, when there is one.
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles, recorded as test fixtures: jackhammering or construction outside the allowed
+  hours goes to Noise from Construction (KA-01091), not Construction Site No Smoking Sign
+  Complaint; a bus stop shelter to Bus Stop Shelters (KA-01071) and its complaint option; a
+  street or food vendor, or selling on the street without a permit, to Street Vendor
+  Complaint (KA-02152); a dead animal on a sidewalk or street to Dead Animal on Public
+  Property (KA-02245), with Rat or Mouse Complaint still offered for a dead rat. A street
+  sign that was knocked down picks the "Fallen, Dangling, or Leaning" option.
+- **Confidence.** "Strong" now needs two of the person's problem words in the article's
+  title or summary, or one word that at most two titles in the searched categories share.
+  One common shared word ("construction") is no longer rated strong.
+- **Agency never blank.** When 311 lists no report option, the agency is the one the
+  article's own text names (Bike Lane, Traffic or Bicycle Signal: the Department of
+  Transportation). When the options go to more than one agency and the words pick none
+  (Water Leak in a Building, Snow or Ice on Sidewalk), it says "depends on which report
+  option fits; see agencies". When the City names none, "agency not listed by 311". A new
+  `agency_source` field says which.
+- **Version.** The server reports `1.2.0-beta.4`.
+
+## [1.2.0-beta.3] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 2, 2026-11-09)
+
+- **ZIP guard false positive** (blocking). `ll47_directory_assistance_report` for FY2027
+  failed with "A ZIP code was about to be returned": a timeout reason said "within 30000
+  ms", and the guard read the number as a ZIP code. Now a five-digit number with a unit
+  after it (ms, seconds, requests, calls, rows…), a dollar sign before it, or a decimal
+  point is a quantity, unless a state, borough or "ZIP" comes first. Timeouts are said in
+  seconds. And the last check on every answer now removes a ZIP-looking number and goes
+  on, instead of throwing the whole answer away; ZIP codes in City text are still removed,
+  and a key that names a ZIP code is still refused.
+- **`ll47_directory_assistance_report` when NYC Open Data is slow.** The City's dataset was
+  slow, not down (a month took 40 to 74 s). Each month is now one lighter query (grouped by
+  topic only, with counts of filled agency and call_resolution); the full breakdown is
+  asked only for a month that has them. A request may take up to 55 s, inside a 58 s
+  budget, and a timeout is not retried. The message says "NYC Open Data is slow right now"
+  after a timeout and "not responding" only after an HTTP 5xx or no connection.
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles, recorded as test fixtures: rodents in a building go to Residential Pest
+  Complaint (KA-02278); trash in a lobby, hallway or basement to Apartment Maintenance
+  Complaint (KA-01074); no water to No Water, Low Water Pressure, or Water Temperature
+  Complaint (KA-01405), not Heat or Hot Water; a stop, street, traffic or parking sign to
+  Street Sign Complaint (KA-01063); an idling vehicle or an engine left running to Idling
+  Vehicle (KA-02222). A car alarm stays Noise from Alarm (KA-01089), with Noise from Vehicle
+  offered as an alternative. All 23 phrasings of the retest table are a regression test.
+- **`get_service_request_list` not found.** When the City finds none of the numbers, one
+  plain sentence and the same hint as `get_service_request`, not the City's raw 404 text.
+- **Version.** The server reports `1.2.0-beta.3`.
+
+## [1.2.0-beta.2] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 1, 2026-11-08)
+
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles: a standing dead or dying tree goes to Dead Tree (KA-02006), not Fallen Tree or
+  Branch; a skipped or missed garbage or recycling pickup goes to Missed Trash, Recycling,
+  or Compost Collection (KA-01788), not Litter Basket. New words for parking meters
+  (KA-01240), street flooding (KA-02198), sidewalk sheds and scaffolds (KA-02291), bed bugs
+  (KA-01236) and food poisoning (KA-02051). Trash inside a building is no longer a litter
+  basket. 20 everyday phrasings are regression tests. The 911 rules are unchanged.
+- **Danger in `details` or `when`, offline** (`draft_311_report`). With no key or 311
+  down, danger written only there gets the City's built-in line for that danger (the gas
+  line, say), the same as danger in the description, instead of the generic line and a
+  missing-key error.
+- **`list_311_categories` past the end.** An offset past the last article says so: "Offset
+  500 is past the end: there are 42 articles, 20 per page, so pages 1 to 3 (offsets 0, 20,
+  40)."
+- **`get_service_request` not found.** One plain sentence and the hint; the City's raw
+  error body is no longer shown. A request id the API sends is kept.
+- **`get_status`** adds a `plain_language` block to the API's answer: yes or no in words,
+  what the status checks (the City's description from the 311 API portal), when it was
+  asked, and a pointer to `get_calendar` for alternate side parking.
+- **`ll47_service_request_report` cut list.** "Showing 5 of 20 areas (18 community
+  districts and 2 Joint Interest Areas)", not "20 districts".
+- **`ll47_directory_assistance_report` outage.** Two tries at most per request, and no
+  retry after a slow failure, so an NYC Open Data outage is reported in seconds rather than
+  after 45. The message says NYC Open Data is not responding and suggests trying later or
+  asking for the fiscal year.
+- **Version.** The server reports `1.2.0-beta.2`.
+
+## [1.2.0-beta.1] - 2026-11-08
+
+A beta, installed from the `beta` branch (`npx -y github:BetaNYC/nyc-311-mcp#beta`). Not
+published to npm; the released package stays at 1.1.0. Everything below this heading, down
+to 1.0.1, is in this beta.
+
+### Fixed (beta test round 1, 2026-11-08)
+
+From a test of all 21 tools on a second Mac (106 calls):
+
+- **District codes.** `community_district` accepts board codes and names as well as
+  BoardStat's number: `309`, `BK09`, `bk9`, `Brooklyn 9`, `Brooklyn CD 9`, `Brooklyn
+  Community District 9`, `Kings 9`. A form it cannot read gets a plain error with the
+  accepted forms and an example. `council_district` accepts `Council District 7`.
+- **Fair year-over-year numbers** (`top_problems`, `problem_trend`). With a `status`
+  filter there is no year-earlier comparison: the data has each request's status today,
+  not a year ago, so open-now against year-old requests that are open now is not like for
+  like (the test saw "+18,100%"). A year-earlier count under 30 shows both counts and
+  `change_note: "small numbers; percent change not shown"` instead of a percent.
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles: graffiti goes to Graffiti (KA-02070), with the section that fits quoted (USPS
+  Mailbox); rats in a park go to the Parks report option, not HPD's at-home form, and the
+  place named (park, sidewalk, school, highway, home) picks the option in general; park
+  equipment (a bench, swings, a fountain) goes to Park Maintenance Complaint (KA-01060), so
+  "a trash can and a broken bench" lists both; a grill goes to Barbecuing (KA-02228), the
+  closest the City has, and because its only report option is for parks, a neighbor's grill
+  gets "no exact match" and the closest articles, not a draft. 25 everyday phrasings added
+  to the tests; the 911 rules are unchanged.
+- **Built-in 911 lines.** With no API key and an empty cache, "I smell gas" now leads with
+  the City's own gas line (KA-02048), built in from the 2026-11-07 recording, and no draft.
+- **Names.** Street, neighborhood and park names ("Gun Hill Road", "Crown Heights") no
+  longer set off "This draft names someone"; a person's name still does.
+- **Plain errors.** Argument errors are sentences (which argument, what was wrong, the
+  allowed values), not zod JSON. An empty `sr_numbers` list is refused before any request.
+- **Rate limits.** `get_service_request` asks `GetServiceRequestList` for the same number
+  when the single lookup is rate limited (HTTP 429); the portal documents that the two
+  return the same request. Other 429s are retried twice at most, honoring `Retry-After`,
+  with no more than 20 s of waiting; the error says how long to wait.
+- **Truncation in words.** `ll47_service_request_report` with `by_district` says "Showing 5
+  of 18 districts, because limit is 5" when `limit` cuts the table.
+- **Smaller answers.** `list_311_categories` with no arguments is a summary (33,050 to about
+  7,600 characters); a category's articles come 20 at a time with `offset` and `next_page`.
+- **Open Data outages.** `ll47_directory_assistance_report` stops at the first failing month
+  instead of spending its whole 45 s budget, with a plain "try again in a few minutes".
+- **Version.** The server reports `1.2.0-beta.1`, so a tester can tell the beta from 1.1.0.
+
 ### Added: draft a 311 report (Phase 5, #18; closes #10)
 
 - `draft_311_report`: a short ready-to-paste report the person submits themselves (problem,

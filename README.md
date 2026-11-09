@@ -19,7 +19,7 @@ Exposes 21 tools over MCP. Seven use the NYC 311 Public API (they need an API ke
 | `get_service_request` | Look up one 311 service request by its 311 number, with BetaNYC's plain-language reading of its status (the City publishes no definitions) and the agency's resolution text; for other requests at its address, use `address_history` |
 | `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
 | `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer and every error starts with "If anyone is in danger right now, call 911."; a description that suggests danger, and every no-match answer, leads with 911, in the City's words only when the City article is that danger. **Danger detection is keyword-based; it will miss some emergencies**, so every answer also tells the calling assistant to send the person to 911 whenever anything suggests danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
-| `list_311_categories` | 311's own topic categories, or the articles in one, to browse when a match looks wrong |
+| `list_311_categories` | A summary of 311's own topic categories, or the articles in one (20 at a time), to browse when a match looks wrong |
 | `draft_311_report` | A short ready-to-paste 311 report for the person to submit themselves (problem, where, when, what they saw), the 311 Online article link to report it on, questions for anything missing (marked `[add: …]`, never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the article says about contact details and photos, and what happens next. Uses `how_to_report`'s matching and danger check; never drafts when danger is flagged (call 911); safety line first on every answer and error; one draft per problem. **Files nothing, sends nothing, fills no form.** The City does not publish each form's fields, so the form may ask for more. Details: [docs/draft-a-report.md](docs/draft-a-report.md) |
 
 Eleven answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
@@ -41,7 +41,8 @@ the BoardStat page each answer links to. Details: [docs/district-tools.md](docs/
 | `boardstat_status` | How fresh BoardStat's data is, and whether its nightly run is late |
 
 Every district tool takes a community district (BoardStat's ids: `101` is Manhattan
-Community District 1, `306` Brooklyn 6) or a Council district (`1` to `51`), and dates as
+Community District 1, `306` Brooklyn 6; board codes and names such as `BK06`, `MN01` or
+`"Brooklyn 6"` work too) or a Council district (`1` to `51`), and dates as
 `from_date`/`to_date`, a City `fiscal_year` (July 1 to June 30; `2027` or `"FY27"`), or
 `last_days`. Every answer carries `data_as_of`, a `boardstat_url`, plain-language `caveats`
 and its `source`. They are built by BetaNYC from NYC Open Data and are **not an official City report**.
@@ -103,19 +104,21 @@ The three `type` values are `Alternate Side Parking`, `Collections` (trash, recy
 
 ### `get_status`
 
-Returns the current city status for one emergency or weather condition.
+Whether one City status is in effect right now. The answer is the API's own JSON (`inEffect` true or false; `OEM` also has `eventName`), plus a `plain_language` block: yes or no in words, what the status checks, and when it was asked. "Not in effect" means not in effect at that moment; ask again later for a change. It is not alternate side parking: use `get_calendar` for that.
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `type` | string | yes | — | One of: `CodeBlue`, `FireHydrant`, `OEM`, `SnowOnSidewalk`, `SnowOnStreet` |
 
-| `type` value | What it reports |
+What each one checks, in the City's words on the 311 API portal (read 2026-11-08):
+
+| `type` value | The City's description |
 |---|---|
-| `CodeBlue` | Extreme-cold-weather shelter alert (Code Blue) |
-| `FireHydrant` | Fire-hydrant clearing status |
-| `OEM` | Office of Emergency Management active alerts |
-| `SnowOnSidewalk` | Snow-on-sidewalk clearing status |
-| `SnowOnStreet` | Snow-on-street clearing status |
+| `CodeBlue` | "API to determine if Code Blue status is currently active" |
+| `FireHydrant` | "API to determine if Fire Hydrant emergency is currently active" |
+| `OEM` | "API to get OEM event currently active" |
+| `SnowOnSidewalk` | "API to determine if Snow or Ice on Sidewalk emergency is currently active" |
+| `SnowOnStreet` | "API to determine if Snow or Ice on Street emergency is currently active" |
 
 ```
 get_status(type="CodeBlue")
@@ -188,7 +191,7 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 ```
 how_to_report(description="no heat in my apartment")                   → KA-01036, HPD, "Heat/Hot Water", how to report
 how_to_report(description="a pothole on my block", community_district=306)  → plus how often it was reported in Brooklyn CD 6
-list_311_categories(category_id="311-12")                               → every Noise article, to pick another
+list_311_categories(category_id="311-12")                               → the Noise articles, 20 a page, to pick another
 draft_311_report(description="a pothole on my block", location="Broadway and W 96 St", borough="Manhattan")
                                                                         → paste-ready text, the KA-01093 link, what to add
 ```
@@ -315,7 +318,7 @@ Once connected, you can ask your AI assistant things like:
 
 - **`get_service_request` looks up by number only.** The 311 API resolves a known SR number (`311-XXXXXXXX`); it does not search by address, agency, or area. For questions by district, address, agency or problem, use the district tools above (`top_problems`, `address_history`, `agency_response` and the rest), which read files built nightly from NYC Open Data by BoardStat, from the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).
 - **Calendar range cap.** `get_calendar` accepts a span of up to 90 days; longer ranges are rejected before the request is sent.
-- **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. `get_status` is the API's raw JSON. The service-request tools return the API's fields unchanged except that ZIP codes are removed, plus the added `plain_language` block (and `not_found` for the list).
+- **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. `get_status` is the API's raw JSON plus a `plain_language` block. The service-request tools return the API's fields unchanged except that ZIP codes are removed, plus the added `plain_language` block (and `not_found` for the list).
 - **Two numbers for one request.** The 311 number (`311-XXXXXXXX`) and Open Data's `unique_key` are different numbers (two matched requests, 2026-11-07). District tools list `unique_key`; it cannot be looked up with `get_service_request`. See [docs/service-requests.md](docs/service-requests.md).
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.
 

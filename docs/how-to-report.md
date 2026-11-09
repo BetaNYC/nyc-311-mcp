@@ -10,6 +10,29 @@ at a guide and a draft (#18), and the server will not file requests on anyone's 
 
 `list_311_categories` lists 311's own categories, or the articles in one, so a person (or an
 assistant) can browse when a match looks wrong and pass `category_id` back to `how_to_report`.
+With no arguments it is a summary: each top category with its description and its
+subcategories by id and name (about 7,600 characters; the whole tree was 33,050). A parent's
+`category_id` lists its subcategories with descriptions; an end node's lists its articles,
+20 at a time (`offset`, `next_page`).
+
+### Places, and no exact match (beta test round 1, 2026-11-08)
+
+Many articles split their report options by place: Rat or Mouse Complaint (KA-01107) has
+Residential Property, Sidewalk or Street, Parks, School and more; Graffiti (KA-02070) has
+Park and Highway. When the words name a place (`PLACES` in `src/how-to-report.ts`: park,
+sidewalk or street, school, highway, a food place, a vacant lot, a home), the option for
+that place wins, and a public place never gets the at-home option. An option for a venue
+the person did not name (a park, a school, a highway) is never picked: Barbecuing (KA-02228)
+is the closest article to a neighbor's grill, but its only report option is for a park or
+beach, so the answer marks `exact_match: false` and says so, and `draft_311_report`
+answers `no_exact_match` with the closest City articles instead of a draft. The City's only
+non-emergency smoke route is for chimneys and vents (KA-02219), so grill smoke does not go
+there. When no option is picked, the section whose name fits the words is quoted as
+`matched_section` (Graffiti's USPS Mailbox section says the Postal Service takes those).
+
+When 311's content cannot be read (no key, an empty cache, the API down) and the words
+suggest danger, the answer is the City's own "Call 911" line from `BUILT_IN_911` in
+`src/emergency.ts`, copied from the 2026-11-07 recording and labeled as the built-in copy.
 It is a separate tool because browsing has a different input and answer from matching; folding
 it into `how_to_report` would give that tool two unrelated modes.
 
@@ -71,7 +94,11 @@ Deterministic, no model call, no new dependency (`src/how-to-report.ts`):
    title; otherwise none is picked and all are listed (`no_best_action`). An action for a narrower
    case ("City Vehicle …", "Commercial …") does not win unless the description says so.
 
-Confidence: *strong* (score 9 or more and 2 ahead of the next), *close call*, or *possible*.
+Confidence: *strong* (score 9 or more and 2 ahead of the next, with enough of the person's own
+problem words: two in the article's title or summary, or one that at most two titles share, or one
+that names the article, meaning more than half of its title's words are the person's and it scores
+3 or more above every other title with that word), *close call*, or *possible*. "No heat in my
+apartment" and "illegal fireworks every night" are strong; "construction" alone never is.
 
 **Danger detection is keyword-based; it will miss some emergencies.** No word list covers every
 way a person describes an emergency. So the calling assistant is made responsible: the tool

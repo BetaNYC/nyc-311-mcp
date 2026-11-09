@@ -72,9 +72,48 @@ export function manifestDistricts(m: BoardStatManifest): { cd: DistrictEntry[]; 
   return { cd: d.cd, cc: d.cc };
 }
 
-function toId(v: number | string, name: string): number {
-  const s = String(v).trim();
-  if (!/^\d{1,3}$/.test(s)) throw new Error(`Invalid ${name} '${v}': expected a number such as 101 or 4.`);
+// Community district codes as boards, the City and Council staff write them. The two-letter
+// codes are the City's (Department of City Planning: MN, BX, BK, QN, SI); the borough digit
+// is the one BoardStat's ids start with. County names are accepted too (Kings 9 = BK09).
+const BOROUGH_DIGIT: Record<string, number> = {
+  mn: 1, manhattan: 1, "new york": 1, "new york county": 1,
+  bx: 2, bronx: 2, "the bronx": 2, "bronx county": 2,
+  bk: 3, brooklyn: 3, kings: 3, "kings county": 3,
+  qn: 4, queens: 4, "queens county": 4,
+  si: 5, "staten island": 5, richmond: 5, "richmond county": 5,
+};
+const BOROUGH_WORDS = Object.keys(BOROUGH_DIGIT).sort((a, b) => b.length - a.length).join("|");
+const CD_WORDS = "(?:community\\s+(?:district|board)|cd|cb|district|board)?\\s*(?:#|no\\.?)?";
+const CD_BOROUGH_FIRST = new RegExp(`^(${BOROUGH_WORDS})\\s*[-,]?\\s*${CD_WORDS}\\s*-?\\s*(\\d{1,2})$`, "i");
+const CD_NUMBER_FIRST = new RegExp(`^${CD_WORDS}\\s*(\\d{1,2})\\s*,?\\s*(?:in\\s+)?(${BOROUGH_WORDS})$`, "i");
+
+/** The forms community_district accepts, said in every error about one. */
+export const CD_FORMS =
+  "Give BoardStat's number (309), the board code (BK09 or BK9; MN, BX, BK, QN, SI), or the borough and number (Brooklyn 9, Brooklyn CD 9, Brooklyn Community District 9). " +
+  "For example, Brooklyn Community District 9 is 309 or BK09.";
+
+const code = (id: number) => `${["MN", "BX", "BK", "QN", "SI"][Math.floor(id / 100) - 1]}${String(id % 100).padStart(2, "0")}`;
+
+/**
+ * A community district in any of the accepted forms, as BoardStat's id (borough digit +
+ * district number: BK09 = 309). Throws a plain error with the accepted forms otherwise.
+ */
+export function parseCommunityDistrict(v: number | string): number {
+  const s = String(v).trim().replace(/\s+/g, " ");
+  if (/^\d{1,3}$/.test(s)) return Number(s);
+  const a = CD_BOROUGH_FIRST.exec(s);
+  const b = a ? null : CD_NUMBER_FIRST.exec(s);
+  const borough = a ? a[1] : b ? b[2] : null;
+  const n = a ? a[2] : b ? b[1] : null;
+  if (borough && n && Number(n) > 0) return BOROUGH_DIGIT[borough.toLowerCase().replace(/\s+/g, " ")] * 100 + Number(n);
+  throw new Error(`'${v}' is not a community district this tool can read. ${CD_FORMS}`);
+}
+
+function toCouncilId(v: number | string): number {
+  const s = String(v).trim().replace(/^(?:(?:nyc\s+)?(?:city\s+)?council\s+)?(?:district\s*)?(?:#|no\.?)?\s*/i, "");
+  if (!/^\d{1,2}$/.test(s)) {
+    throw new Error(`'${v}' is not a Council district. Give its number, 1 to 51 (for example 7 or 'Council District 7').`);
+  }
   return Number(s);
 }
 
@@ -91,15 +130,17 @@ export function resolveDistrict(
   }
   const all = manifestDistricts(m);
   const geo: Geo = hasCd ? "cd" : "cc";
-  const id = toId((hasCd ? args.community_district : args.council_district) as number | string, hasCd ? "community_district" : "council_district");
+  const id = hasCd ? parseCommunityDistrict(args.community_district as number | string) : toCouncilId(args.council_district as number | string);
   const entry = all[geo].find((e) => Number(e.id) === id);
   if (!entry) {
     if (geo === "cc") throw new Error(`There is no Council District ${id}. Council districts are numbered 1 to 51.`);
     const jias = all.cd.filter((e) => e.jia).map((e) => e.id).join(", ");
+    const asked = String(args.community_district).trim();
+    const named = /^\d+$/.test(asked) ? `${id}` : `${asked} (${id}${id >= 100 && id < 600 ? `, ${code(id)}` : ""})`;
     throw new Error(
-      `There is no community district ${id} in BoardStat. Community districts are numbered borough digit + district number: ` +
+      `There is no community district ${named} in BoardStat. Community districts are numbered borough digit + district number: ` +
         `Manhattan 101-112, Bronx 201-212, Brooklyn 301-318, Queens 401-414, Staten Island 501-503 ` +
-        `(so Brooklyn Community District 6 is 306). Joint Interest Areas (parks and other areas outside every community district): ${jias}.`
+        `(so Brooklyn Community District 6 is 306, or BK06). Joint Interest Areas (parks and other areas outside every community district): ${jias}. ${CD_FORMS}`
     );
   }
   if (!entry.file) throw new Error(`${entry.label} has no requests in BoardStat's data, so there is nothing to count.`);
@@ -464,6 +505,33 @@ function countBy<T extends string>(rows: Row[], key: (r: Row) => T): Map<T, Row[
   return m;
 }
 
+/**
+ * Below this many requests in the year-earlier count, a percent change is not shown: a
+ * small base makes a big percent that means little (21 to 2,712 is "+12,814%", often a
+ * City category that is new or renamed). The two counts are still shown. 30 is the usual
+ * rule of thumb for "enough to compare"; it is a BetaNYC choice, not a City rule.
+ */
+export const SMALL_BASE = 30;
+export const SMALL_BASE_NOTE = "small numbers; percent change not shown";
+const SMALL_BASE_CAVEAT = `Percent change is not shown when the year-earlier count is under ${SMALL_BASE}: a small number makes a big percent that means little (often a City category that is new or renamed). Both counts are still shown.`;
+
+/** Change against a year earlier: always the counts, the percent only on a base of SMALL_BASE or more. */
+export function yearChange(now: number, before: number | null) {
+  if (before === null) return { change: null, change_pct: null };
+  const change = now - before;
+  if (before < SMALL_BASE) return { change, change_pct: null, change_note: SMALL_BASE_NOTE };
+  return { change, change_pct: Number(((change / before) * 100).toFixed(1)) };
+}
+
+/**
+ * Why a status filter turns the year-earlier comparison off. The data has each request's
+ * current status and close date, not its status history, so "open a year ago" cannot be
+ * rebuilt exactly; comparing open-now with year-old requests that are open now is not like
+ * for like, because most of those closed in the year since.
+ */
+export const STATUS_NO_COMPARISON =
+  "With a status filter there is no year-earlier comparison. The data has each request's status today, not what it was a year ago, and year-old requests have had a year to close, so open-now (or closed-now) against a year earlier is not like for like. Leave out status to compare all requests.";
+
 /** List cap: `limit`, and whether more rows were left out. */
 export function capped<T>(items: T[], limit: number) {
   return { items: items.slice(0, limit), truncated: items.length > limit, total_items: items.length };
@@ -479,7 +547,7 @@ export const DISTRICT_JSON = {
   community_district: {
     type: ["integer", "string"],
     description:
-      "BoardStat id, borough digit + district: 306 = Brooklyn CD 6 (all ids: server instructions). Not with council_district.",
+      "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district.",
   },
   council_district: {
     type: ["integer", "string"],
@@ -756,7 +824,7 @@ export async function topProblems(src: Source, args: z.infer<z.ZodObject<typeof 
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
   const limit = args.limit ?? 10;
-  const prior = priorWindow(p, m);
+  const prior: ReturnType<typeof priorWindow> = args.status ? { none: STATUS_NO_COMPARISON } : priorWindow(p, m);
   const from = "none" in prior ? localAsDate(p.start) : prior.from;
   const { rows, manifest } = await readDetail(data, d, ["complaint_type", "status", "days_to_close", "agency"], {
     from,
@@ -775,14 +843,14 @@ export async function topProblems(src: Source, args: z.infer<z.ZodObject<typeof 
         requests: rs.length,
         median_days_to_close: days1(median(rs.map(closedDays).filter((v): v is number => v !== null))),
         same_days_a_year_earlier: before,
-        change: before === null ? null : rs.length - before,
-        change_pct: before ? Number((((rs.length - before) / before) * 100).toFixed(1)) : null,
+        ...yearChange(rs.length, before),
       };
     })
     .sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem));
   const top = capped(list, limit);
   const extra = [...p.notes, ...districtCaveats(d, m)];
   if ("none" in prior) extra.push(prior.none);
+  if (top.items.some((x) => "change_note" in x)) extra.push(SMALL_BASE_CAVEAT);
   return districtEnvelope({
     manifest,
     siteUrl: data.siteUrl,
@@ -868,14 +936,15 @@ export async function problemTrend(src: Source, args: z.infer<z.ZodObject<typeof
       month: ym,
       requests: cur.get(ym)?.length ?? 0,
       partial_month: partial,
-      same_days_a_year_earlier: priorStart >= m.window.start ? prev.get(ym)?.length ?? 0 : null,
+      same_days_a_year_earlier: !args.status && priorStart >= m.window.start ? prev.get(ym)?.length ?? 0 : null,
     });
   }
   const extra = [...p.notes, ...districtCaveats(d, m)];
   if (months.some((x) => x.partial_month)) {
     extra.push("A month marked partial_month covers only some days, so it is lower than a full month would be. Year-earlier values cover the same days, up to the same time.");
   }
-  if ("none" in prior) extra.push("Months whose same days a year earlier fall before 2020-01-01 have no comparison (null).");
+  if (args.status) extra.push(STATUS_NO_COMPARISON);
+  else if ("none" in prior) extra.push("Months whose same days a year earlier fall before 2020-01-01 have no comparison (null).");
   return districtEnvelope({
     manifest,
     siteUrl: data.siteUrl,

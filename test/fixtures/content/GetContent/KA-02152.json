@@ -1,0 +1,79 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02152",
+   "Title": "Street Vendor Complaint",
+   "Description": "Make a complaint about a vendor operating on City streets, sidewalks, or bridges.",
+   "TotalContent": 100,
+   "TotalWeight": 100,
+   "Section": [
+    {
+     "Name": "911 Street Vendor Complaint",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong><span style=\"color:#000000;\">to</span>&nbsp;report street vendors that are selling counterfeit items.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02234\">Breaking Park Rules</a>&nbsp;to report an unlicensed vendor in a City park or on a City boardwalk</li></ul></div><p>You can report issues with vendors that sell food or merchandise&nbsp;on City&nbsp;streets or sidewalks. You can also report vendors operating in a prohibited area, including the Brooklyn Bridge or any other city-owned bridge.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "In a Prohibited Area",
+     "Content": "<p>You can report a vendor operating in a restricted area.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://experience.arcgis.com/experience/730ff429a63c4ba984f337f0ffaf2775?org=DCWP\">View NYC General Vendor Street Restrictions Map.</a></p><p>Your complaint should include:</p><ul><li>The vendor&#39;s exact location</li><li>Date and time of the incident</li><li>The vendor&#39;s Consumer and Worker Protection license number, Health license, or permit number (if a food vendor), if possible</li></ul>",
+     "ContentAction": [
+      {
+       "Name": "Street Vendor in a Prohibited Area",
+       "Agency": "Department of Sanitation",
+       "Problem": "Vendor Enforcement"
+      }
+     ]
+    },
+    {
+     "Name": "Unlicensed",
+     "Content": "<p>You can report a vendor without a City license or permit.</p><p>Your complaint should include:</p><ul><li>The vendor&#39;s exact location</li><li>Date and time of the incident</li></ul><p>As of August 30, 2024,&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01818\">Temporary Street Fair Vendors</a>&nbsp;do not need a temporary vendor permit. Sponsors of street fairs must still follow the requirements of the Mayor&#39;s Office of Citywide Event Coordination and Management Street Activity Permit Office (SAPO).</p>",
+     "ContentAction": [
+      {
+       "Name": "Unlicensed Street Vendor",
+       "Agency": "Department of Sanitation",
+       "Problem": "Vendor Enforcement"
+      }
+     ]
+    },
+    {
+     "Name": "Unsanitary",
+     "Content": "<p>You can report unsafe&nbsp;and unsanitary conditions in food carts, food stands, food trucks, or other types of street vendors operating on City streets or sidewalks.&nbsp;</p><p><strong>Unsafe Food Practices</strong></p><p>You can make a complaint about a broad range of food safety issues, including:</p><ul><li>Bare hand contact with ready-to-eat foods</li><li>Spoiled or contaminated food</li><li>Roaches, mice, or rats</li><li>Unsanitary conditions</li><li>Sick vendor</li><li>Smoke or odor</li></ul><p>To report that someone got sick from eating food, go to the&nbsp;<strong><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02051\">Food Poisoning</a></strong>&nbsp;page.</p><p><strong>Trash</strong></p><p>You can report a&nbsp;vendor that isn&#39;t storing trash properly or is leaving trash, refuse, or other debris around their cart, stand, or truck.</p><p>Your complaint should include:</p><ul><li>The vendor&#39;s exact location</li><li>Date and time of the incident</li><li>Health license number, if applicable (appears on the cart, stand, or truck&#39;s decal)</li></ul>",
+     "ContentAction": [
+      {
+       "Name": "Vendor Food Safety Complaint",
+       "Agency": "Department of Health and Mental Hygiene",
+       "Problem": "Mobile Food Vendor"
+      },
+      {
+       "Name": "Improper Trash Storage by a Food Vendor",
+       "Agency": "Department of Sanitation",
+       "Problem": "Vendor Enforcement",
+       "ProblemDetail": "Food Vendor"
+      }
+     ]
+    },
+    {
+     "Name": "Rude Employee",
+     "Content": "<p>The Department of Consumer and Worker Protection (DCWP)&nbsp;does not accept reports of rude employees. Report&nbsp;this type of complaint to the business.</p><p>For reports of discrimination, go to the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01783\">Discrimination</a> page.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Other Complaints",
+     "Content": "<p>You can also report:</p><ul><li>goods damaged or defective</li><li>license or complaint sign not displayed</li><li>price gouging</li><li>refund or return policy not posted</li><li>refund, return, or exchange refused</li><li>scale inaccurate or broken</li><li>scale inspection seal missing or expired</li><li>unlicensed</li></ul>",
+     "ContentAction": [
+      {
+       "Name": "Street Fair Vendor Complaint",
+       "Agency": "Department of Consumer and Worker Protection",
+       "Problem": "Consumer Complaint",
+       "ProblemDetail": "Street Fair Vendor"
+      }
+     ]
+    },
+    {
+     "Name": "Business Outside of NYC",
+     "Content": "<p>The New York City Department of Consumer and Worker Protection (DCWP)&nbsp;can help you with complaints about businesses in New York City. For complaints about businesses elsewhere, contact the local consumer affairs office or the State Attorney General.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.usa.gov/complaints\">Learn how to file a complaint about a business outside of NYC.</a></p><p><strong>By Phone</strong></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

@@ -6,11 +6,13 @@ import {
   getServiceRequestList,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
-import { describeServiceRequest, describeServiceRequestList, NOT_FOUND_HINT } from "./service-requests.js";
+import { describeStatus } from "./status.js";
+import { describeServiceRequest, describeServiceRequestList, listNotFoundMessage, notFoundMessage } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
 import { SAFETY_LINE } from "./emergency.js";
+import { plainArgsError } from "./plain-errors.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -41,7 +43,7 @@ export const TOOLS = [
   {
     name: "get_status",
     description:
-      "Get the current city status for an emergency or weather condition: Code Blue (cold weather), Fire Hydrant, OEM emergency notifications, Snow on Sidewalk, or Snow on Street.",
+      "Whether a City status is in effect right now, from the 311 Public API: Code Blue (cold weather), Fire Hydrant emergency, an OEM emergency event, Snow or Ice on Sidewalk, or Snow or Ice on Street. Returns the API's answer plus plain_language: yes or no in words, what it checks, and when it was asked. Not alternate side parking: use get_calendar for that.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -79,6 +81,7 @@ export const TOOLS = [
         sr_numbers: {
           type: "array",
           items: { type: "string" },
+          minItems: 1,
           description: "Array of service request numbers, e.g. ['311-17323508', '311-17323514']",
         },
       },
@@ -103,7 +106,10 @@ const ARG_SHAPES = {
   },
   get_status: { type: z.enum(STATUS_TYPES) },
   get_service_request: { sr_number: z.string() },
-  get_service_request_list: { sr_numbers: z.array(z.string()) },
+  // An empty list is refused here, never sent to the City (the API answers it with a raw 400).
+  get_service_request_list: {
+    sr_numbers: z.array(z.string()).min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508']."),
+  },
   ...DISTRICT_ARG_SHAPES,
   ...LL47_ARG_SHAPES,
   ...REPORT_ARG_SHAPES,
@@ -128,7 +134,7 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
   const rejected = parsed.error.issues.flatMap((issue) =>
     issue.code === "unrecognized_keys" ? issue.keys : []
   );
-  if (rejected.length === 0) throw parsed.error;
+  if (rejected.length === 0) throw plainArgsError(tool, parsed.error, shape as Record<string, z.ZodTypeAny>, args);
   throw new Error(
     `${tool} does not accept ${rejected.map((k) => `'${k}'`).join(", ")}. ` +
       `The parameters it accepts are: ${Object.keys(shape).join(", ")}. ` +
@@ -153,7 +159,7 @@ export async function callTool(name: string, args: unknown) {
 
       case "get_status": {
         const { type } = parseToolArgs("get_status", args);
-        const results = await getStatus(type);
+        const results = describeStatus(type, await getStatus(type));
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
       }
 
@@ -164,7 +170,7 @@ export async function callTool(name: string, args: unknown) {
           results = await getServiceRequest(sr_number);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          throw new Error(/ error 404/.test(message) ? `${message} ${NOT_FOUND_HINT}` : message);
+          throw new Error(/ error 404/.test(message) ? notFoundMessage(sr_number, message) : message);
         }
         results = describeServiceRequest(results);
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
@@ -172,7 +178,14 @@ export async function callTool(name: string, args: unknown) {
 
       case "get_service_request_list": {
         const { sr_numbers } = parseToolArgs("get_service_request_list", args);
-        const results = describeServiceRequestList(await getServiceRequestList(sr_numbers), sr_numbers);
+        let raw: unknown;
+        try {
+          raw = await getServiceRequestList(sr_numbers);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          throw new Error(/ error 404/.test(message) ? listNotFoundMessage(sr_numbers, message) : message);
+        }
+        const results = describeServiceRequestList(raw, sr_numbers);
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
       }
 

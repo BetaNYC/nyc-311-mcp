@@ -28,3 +28,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) =>
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
+
+// Exit when the app closes our stdin. Without this, a fiscal-year 411 call that is still
+// loading months in the background would keep the process alive for minutes after the app
+// quit. Cache writes go to a temp file and are renamed into place, so stopping is safe;
+// an unfinished month just loads again next time.
+const exit = () => process.exit(0);
+process.stdin.on("end", exit);
+process.stdin.on("close", exit);
+server.onclose = exit;

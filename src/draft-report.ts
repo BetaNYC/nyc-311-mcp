@@ -18,11 +18,11 @@
 // ZIP codes: none in any answer. A ZIP the person typed is left out of the draft.
 
 import { z } from "zod";
-import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
+import { assertNoZip, redactZip, scrubZipValues } from "./envelope.js";
 import { contentClient, PORTAL, type Article, type ContentClient } from "./content-311.js";
 import { BOROUGHS, boardstatData } from "./district-tools.js";
 import { howToReport, REACH_311, splitProblems, stem, words } from "./how-to-report.js";
-import { ASSISTANT_INSTRUCTION, assessDanger, emergencyLead, GENERIC_911, SAFETY_LINE, SAFETY_LINE_SOURCE } from "./emergency.js";
+import { ASSISTANT_INSTRUCTION, assessDanger, BUILT_IN_911, BUILT_IN_911_READ, emergencyLead, GENERIC_911, SAFETY_LINE, SAFETY_LINE_SOURCE } from "./emergency.js";
 import { sodaClient, type SodaClient } from "./soda.js";
 import type { BoardStatData } from "./boardstat-data.js";
 
@@ -182,11 +182,25 @@ export function cleanText(s: string): { text: string; contact_removed: boolean; 
 const PLACE_NAME = /^(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Pl|Place|Park|Pkwy|Parkway|Sq|Square|Ln|Lane|Dr|Drive|Ct|Court|Broadway|Concourse|Bridge|Island|Staten|New|York|NY|NYC|Brooklyn|Queens|Manhattan|Bronx|Harlem|East|West|North|South|Upper|Lower|City|Hall|Station|Center|Centre|Building|Houses|Apt|Apartment|Unit|Floor|I|I'm|DOT|DSNY|NYPD|HPD|DEP|DOB|MTA|NYCHA|ConEd|Con|Edison|The|My)$/;
 const ROLE_THEN_NAME = /\b(?:neighbou?r|landlord|super|superintendent|roommate|tenant|owner|manager|husband|wife|boyfriend|girlfriend|partner|ex|son|daughter|brother|sister|mother|father|mom|dad|named|called|name is)\s+(?:is\s+)?[A-Z][a-z]+/;
 
-/** Whether the person's words seem to name someone (a role then a name, or two capitalized words not a place). */
+// Words that end a place name: streets, neighborhoods, parks and buildings ("Gun Hill Road",
+// "Crown Heights", "Bay Ridge", "Morris Park"). Beta test 2026-11-08: "Gun Hill" was read
+// as a person's name. Matched on any word of a capitalized pair, or on the word after it.
+const PLACE_END = /^(Hill|Hills|Heights|Ridge|Village|Point|Beach|Bay|Harbor|Harbour|Gardens?|Slope|Hook|Neck|Terrace|Junction|Woods?|Meadows?|Flats?|Falls|Creek|Valley|Kills?|Rockaways?|Side|Town|Yards?|Plaza|Mall|Oval|Circle|Way|Row|Walk|Expressway|Expy|Tpke|Turnpike|Highway|Hwy|Pier|Ferry|Market|Library|School|Church|Hospital|Tower|Towers|Field|Fields|Playground|Greenway|Island|Heights|Estates|Manor|Commons|Green|Lake|River|Bridge|Tunnel|Terminal)$/;
+const PLACE_BEFORE = /\b(on|at|near|along|off|across|outside|in|around|by)\s*$/i;
+const STREET_AFTER = /^\s+(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Pl|Place|Park|Pkwy|Parkway|Sq|Square|Ln|Lane|Dr|Drive|Ct|Court|Hill|Heights|Ridge|Expressway|Expy|Houses)\b/i;
+
+/** Whether the person's words seem to name someone (a role then a name, or two capitalized words that are not a place). */
 export function namesSomeone(text: string): boolean {
   if (ROLE_THEN_NAME.test(text)) return true;
-  const pairs = text.match(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g) ?? [];
-  return pairs.some((p) => p.split(/\s+/).every((w) => !PLACE_NAME.test(w)));
+  for (const m of text.matchAll(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g)) {
+    const ws = m[0].split(/\s+/);
+    if (ws.some((w) => PLACE_NAME.test(w) || PLACE_END.test(w))) continue;
+    const at = m.index as number;
+    if (STREET_AFTER.test(text.slice(at + m[0].length))) continue;
+    if (PLACE_BEFORE.test(text.slice(Math.max(0, at - 12), at))) continue;
+    return true;
+  }
+  return false;
 }
 export const NAMES_SOMEONE = "This draft names someone; 311 may not need their name.";
 
@@ -257,38 +271,54 @@ export async function draftReport(args: DraftArgs, client: ContentClient = conte
 }
 
 async function draftReportInner(args: DraftArgs, client: ContentClient, soda: SodaClient, data: BoardStatData) {
-  const whole = await howToReport({ description: args.description, borough: args.borough }, client, data);
+  // `details` and `when` go into the paste text too, so they are read for danger as well,
+  // each on its own: "not urgent" in one field does not cancel danger named in another.
+  const dangerWhole = assessDanger(args.description);
+  const dangerOther = [args.details, args.when].map((t) => (t ? assessDanger(t) : null)).find((x) => x?.kinds.length) ?? null;
+  const notDrafted = (first_line: string, emergency: unknown, extra: Record<string, unknown> = {}) =>
+    finish({
+      ...SAFETY,
+      first_line,
+      emergency,
+      drafted: false,
+      reports: [],
+      not_drafted: "No 311 draft is made when the description suggests an emergency. Call 911 first. When the emergency is over and a problem that is not an emergency remains (a pothole after a crash, say), ask again about that problem.",
+      ...extra,
+      how_to_reach_311: REACH_311,
+      not_sent: NOT_SENT,
+    });
 
   // One report per problem, split by how_to_report's own splitProblems; each part is
   // matched on its own, and kept when it lands on an article no other part did.
   const split = splitProblems(args.description);
   const each: { said: string; match: Matched }[] = [];
-  if (split.length > 1) for (const part of split.slice(0, MAX_PROBLEMS)) each.push({ said: part, match: await howToReport({ description: part, borough: args.borough }, client, data) });
+  let whole: Matched;
+  try {
+    whole = await howToReport({ description: args.description, borough: args.borough }, client, data);
+    if (split.length > 1) for (const part of split.slice(0, MAX_PROBLEMS)) each.push({ said: part, match: await howToReport({ description: part, borough: args.borough }, client, data) });
+  } catch (err) {
+    // 311's content could not be read (no key, the API down) and the danger is only in
+    // `details` or `when`: the City's built-in 911 line for that danger, not a bare error
+    // (beta retest 1, 2026-11-08). Without danger, the error stands.
+    if (!dangerOther) throw err;
+    const emergency = emergencyLead(dangerOther, BUILT_IN_911)!;
+    if (emergency.ka_number) emergency.source += ` (the City's words, built into this server as read ${BUILT_IN_911_READ}, because 311's content could not be reached just now)`;
+    return notDrafted(emergency.call_911, emergency, { content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${err instanceof Error ? err.message : String(err)}` });
+  }
 
   // Danger: no draft whenever assessDanger flags it, in the whole description or in any
   // part, or how_to_report leads with 911 (including a matched City article that itself
-  // says "Call 911"). The answer is how_to_report's own 911 answer.
-  const dangerWhole = assessDanger(args.description);
+  // says "Call 911"). The answer is how_to_report's own 911 answer; for danger named only
+  // in `details` or `when`, the City's built-in line for that danger.
   const flaggedPart = each.find((x) => assessDanger(x.said).kinds.length || x.match.emergency);
-  // `details` and `when` go into the paste text too, so they are read for danger as well,
-  // each on its own: "not urgent" in one field does not cancel danger named in another.
-  const dangerOther = [args.details, args.when].map((t) => (t ? assessDanger(t) : null)).find((x) => x?.kinds.length) ?? null;
   const cityCall911 = Boolean(whole.best_match && /^call 911\b/i.test(whole.best_match.summary) && whole.first_line === whole.best_match.summary);
   if (dangerWhole.kinds.length || whole.emergency || flaggedPart || cityCall911 || dangerOther) {
     const emergency =
       whole.emergency ??
       flaggedPart?.match.emergency ??
-      emergencyLead(dangerWhole.kinds.length ? dangerWhole : flaggedPart ? assessDanger(flaggedPart.said) : dangerOther ?? assessDanger(args.description), []);
-    return finish({
-      ...SAFETY,
-      first_line: whole.emergency || cityCall911 ? whole.first_line : (flaggedPart?.match.emergency ? flaggedPart.match.first_line : (emergency?.call_911 ?? GENERIC_911)),
-      emergency,
-      drafted: false,
-      reports: [],
-      not_drafted: "No 311 draft is made when the description suggests an emergency. Call 911 first. When the emergency is over and a problem that is not an emergency remains (a pothole after a crash, say), ask again about that problem.",
-      how_to_reach_311: REACH_311,
-      not_sent: NOT_SENT,
-    });
+      emergencyLead(dangerWhole.kinds.length ? dangerWhole : flaggedPart ? assessDanger(flaggedPart.said) : dangerOther ?? assessDanger(args.description), BUILT_IN_911);
+    if (emergency?.ka_number && !whole.emergency && !flaggedPart?.match.emergency) emergency.source += ` (the City's words, built into this server as read ${BUILT_IN_911_READ})`;
+    return notDrafted(whole.emergency || cityCall911 ? whole.first_line : (flaggedPart?.match.emergency ? flaggedPart.match.first_line : (emergency?.call_911 ?? GENERIC_911)), emergency);
   }
 
   const sla = await slaTable(soda);
@@ -315,7 +345,7 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
         reports.push(await oneReport(x.said, x.match, args, client, sla, true));
       }
     }
-    if (!reports.some((r) => r.status === "drafted" || r.status === "not_a_311_report")) return noMatchAnswer(whole);
+    if (!reports.some((r) => r.status === "drafted" || r.status === "not_a_311_report" || r.status === "no_exact_match")) return noMatchAnswer(whole);
   } else {
     reports.push(await oneReport(args.description, whole, args, client, sla, false));
   }
@@ -328,6 +358,8 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
       ? `${unmatched ? `${SAFETY_LINE} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
       : one.status === "not_a_311_report"
         ? `The City's own article says it does not take this (${one.report_at?.ka_number}); its words are in where_to_go. No draft is made.`
+        : one.status === "no_exact_match"
+          ? "No exact match: no 311 report option fits this. The closest City articles are in closest_options; no draft is made, because it would go to the wrong place."
         : `Draft ready for "${one.report_at!.title}" (${one.report_at!.ka_number}). ${one.placeholders!.length ? `Fill in the ${one.placeholders!.length} [add: …] place${one.placeholders!.length > 1 ? "s" : ""} first. ` : ""}${FIELDS_NOTE}`;
 
   return finish({
@@ -425,8 +457,26 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
     };
   }
 
+  // No exact match: the closest article's only report option is for a place the person did
+  // not name (a neighbor's grill and Barbecuing's park-only option). No draft: a draft would
+  // send the report to the wrong place. The closest City articles are listed instead.
+  if (best && (best as { exact_match?: false }).exact_match === false) {
+    return {
+      status: "no_exact_match" as const,
+      you_said: what.text,
+      closest_options: [
+        { title: best.title, ka_number: best.ka_number, portal_url: best.portal_url, summary: best.summary, why_not_exact: best.no_best_action },
+        ...match.alternatives.slice(0, 3).map((a) => ({ title: a.title, ka_number: a.ka_number, portal_url: a.portal_url, summary: a.summary })),
+      ],
+      ...(best.call_911 ? { the_city_says_call_911_when: best.call_911 } : {}),
+      paste_text: null,
+      placeholders,
+      questions_to_ask: ["No 311 report option fits exactly. Read the closest articles with the person; they say what the City takes and where."],
+    };
+  }
+
   // What
-  const options = best?.problem_type && sla ? detailOptions(sla.rows, best.problem_type, best.agency) : [];
+  const options = best?.problem_type && sla ? detailOptions(sla.rows, best.problem_type, best.agency_source === "report option" ? best.agency : null) : [];
   // The article's report option may name a Problem Detail ("Cave-in" on the pothole
   // article). It goes into the draft only when the person's words say so too.
   const saidAll = [said, args.details ?? ""].join(" ");
@@ -556,17 +606,15 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
       from_the_article: best?.what_happens_next ?? null,
       after_you_report: `Keep the service request number 311 gives you. With it, get_service_request (or 311 Online's "Look Up Service Requests" page, ${CHECK_STATUS_URL}) shows its status.`,
     },
+    ...(best?.matched_section ? { article_section: { ...best.matched_section, note: "The part of the City's article that fits the person's words, quoted. Read it first: it may say another office takes this report." } } : {}),
     ...(best?.the_city_says_it_does_not.length ? { the_city_says_it_does_not: best.the_city_says_it_does_not } : {}),
     ...(best?.file_a_complaint && NOT_NOW.test(best.file_a_complaint) ? { the_city_says_right_now: best.file_a_complaint } : {}),
   };
 }
 
 function finish<T>(value: T): T {
-  const walk = (v: unknown): unknown =>
-    typeof v === "string" ? redactZip(v) : Array.isArray(v) ? v.map(walk) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : v;
-  const out = walk(value) as T;
+  const out = scrubZipValues(value);
   assertNoZip(out);
-  assertNoZipValues(out);
   return out;
 }
 

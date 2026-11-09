@@ -90,6 +90,14 @@ const ZIP_CONTEXT_BEFORE = new RegExp(
 );
 // The next word in capitals, as the City writes a street: "4 AVENUE", "WEST 42 STREET".
 const STREET_AFTER = /^\s+[A-Z0-9][A-Z0-9'&.-]*(?=\s|$)/;
+// A quantity, not a ZIP code: a unit after it ("30000 ms", "12345 requests"), a dollar sign
+// before it, or a decimal point on either side. Only when no state, borough or "ZIP" comes
+// first: "Brooklyn" then five digits then "requests" is still a ZIP code. Beta retest 2 (2026-11-09): our own
+// timeout text "within 30000 ms" was read as a ZIP code and killed a whole report.
+const UNIT_AFTER =
+  /^\s*(?:ms|msec|milliseconds?|s|secs?|seconds?|min|mins|minutes?|hours?|days?|requests?|service requests?|calls?|rows?|records?|reports?|complaints?|times|bytes?|chars?|characters?|kb|mb|%)(?![A-Za-z0-9])/i;
+const MONEY_BEFORE = /(?:\$|USD)\s*$/i;
+const DECIMAL_AROUND = (text: string, start: number, end: number) => /\d\.$/.test(text.slice(Math.max(0, start - 2), start)) || /^\.\d/.test(text.slice(end, end + 2));
 
 function zipSpans(text: string): Array<[number, number]> {
   const spans: Array<[number, number]> = [];
@@ -97,8 +105,13 @@ function zipSpans(text: string): Array<[number, number]> {
     const start = m.index as number;
     const end = start + m[0].length;
     const afterContext = ZIP_CONTEXT_BEFORE.test(text.slice(Math.max(0, start - 24), start));
-    const houseNumber = !afterContext && STREET_AFTER.test(text.slice(end));
-    if (!houseNumber) spans.push([start, end]);
+    if (afterContext) {
+      spans.push([start, end]);
+      continue;
+    }
+    const houseNumber = STREET_AFTER.test(text.slice(end));
+    const quantity = UNIT_AFTER.test(text.slice(end)) || MONEY_BEFORE.test(text.slice(Math.max(0, start - 4), start)) || DECIMAL_AROUND(text, start, end);
+    if (!houseNumber && !quantity) spans.push([start, end]);
   }
   return spans;
 }
@@ -128,6 +141,24 @@ export function assertNoZipValues(value: unknown, where = "response"): void {
   } else if (value && typeof value === "object") {
     for (const [k, v] of Object.entries(value)) assertNoZipValues(v, `${where}.${k}`);
   }
+}
+
+/**
+ * `value` with every string, at any depth, passed through redactZip. The last step of every
+ * answer: a ZIP-looking number that got this far is removed and the answer goes on, rather
+ * than one stray number throwing away a whole report (beta retest 2, 2026-11-09). Numbers
+ * and keys are left alone; assertNoZip still refuses a key that names a ZIP code.
+ */
+export function scrubZipValues<T>(value: T): T {
+  const walk = (v: unknown): unknown =>
+    typeof v === "string"
+      ? redactZip(v)
+      : Array.isArray(v)
+        ? v.map(walk)
+        : v && typeof v === "object"
+          ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)]))
+          : v;
+  return walk(value) as T;
 }
 
 /** Throws if any key anywhere in `value` names a ZIP code. No ZIP codes, by decision (#12). */
@@ -174,6 +205,5 @@ export function districtEnvelope<T>(args: {
     env.caveats.push(`BoardStat could not be reached just now, so this answer comes from a saved copy of the data built ${m.generated_at}. Newer data may exist.`);
   }
   assertNoZip(env);
-  assertNoZipValues(env);
-  return env;
+  return scrubZipValues(env);
 }

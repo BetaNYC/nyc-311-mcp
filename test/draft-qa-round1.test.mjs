@@ -35,14 +35,19 @@ test("no article matched: no draft, how_to_report's no-match answer with 911 fir
 });
 
 test("every part of a split description is listed: a draft if it matched, else 'couldn't match'", async () => {
-  const o = await draft({ description: "no hot water and the elevator is broken and there is trash in the lobby" });
+  // Beta retest 2 (2026-11-09): "trash in the lobby" now finds Apartment Maintenance Complaint
+  // (KA-01074), so the unmatched part here is one with no recorded City article.
+  const o = await draft({ description: "no hot water and the elevator is broken and I need a copy of my birth certificate" });
   assert.deepEqual(o.reports.map((r) => r.status), ["drafted", "drafted", "not_matched"]);
-  assert.deepEqual(o.reports.map((r) => r.this_problem), ["no hot water", "the elevator is broken", "there is trash in the lobby"]);
+  assert.deepEqual(o.reports.map((r) => r.this_problem), ["no hot water", "the elevator is broken", "i need a copy of my birth certificate"]);
   assert.match(o.reports[2].note, /^Couldn't match this part/);
   assert.equal(o.reports[2].paste_text, undefined);
   assert.equal(o.drafted, true);
   assert.ok(o.first_line.startsWith(SAFETY_LINE), "an unmatched part leads with the safety line");
   assert.match(o.first_line, /\(2 of 3\)/);
+  const lobby = await draft({ description: "no hot water and the elevator is broken and there is trash in the lobby" });
+  assert.deepEqual(lobby.reports.map((r) => r.status), ["drafted", "drafted", "drafted"]);
+  assert.equal(lobby.reports[2].report_at.ka_number, "KA-01074");
 });
 
 test("PII: no leftover 'zip' label, apartment number kept, and a note when the draft names someone", async () => {

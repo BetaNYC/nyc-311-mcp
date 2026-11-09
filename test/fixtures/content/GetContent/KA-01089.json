@@ -1,0 +1,33 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01089",
+   "Title": "Noise from Alarm",
+   "Description": "Report an alarm in progress or an alarm that goes off too often or for too long.",
+   "Section": [
+    {
+     "Name": "911 Noise from Alarm",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n\ncolor: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911&nbsp;</strong></span>to report an alarm going off right now.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03641\">Noise Code</a>&nbsp;to learn about the noise code</li></ul></div><p>You can report a car, house, or other alarm that goes off too often or for too long. You should provide as much detail as possible about when the alarm goes off, what causes it, and in the case of a car alarm, a description of the car and its license plate number.</p><p><strong>Picture or Video Attachments</strong></p><p>Picture or video attachments may be used for informational purposes only. A condition must be observed in person by a DEP inspector for a summons or Commissioner&#39;s order to be issued.</p>",
+     "ContentAction": [
+      {
+       "Name": "Noise from Alarm Chronic or Past",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Noise",
+       "ProblemDetail": "Alarm"
+      }
+     ]
+    },
+    {
+     "Name": "Noise Inspection Report",
+     "Content": "<p>If you have submitted a noise service request to the Department of Environmental Protection (DEP), and DEP has completed an inspection, you can request a Noise Inspection Report (NIR) be sent to you.</p><p>DEP responds to service requests for noise from:</p><ul><li>Air Conditioner or Ventilation Equipment</li><li>Battery energy storage system (BESS)</li><li>Boats</li><li>Business Equipment</li><li>Chronic Alarms</li><li>Construction</li><li>Dog or Other Animals</li><li>Ice Cream Trucks</li><li>Lawn Equipment</li><li>Private Garbage Trucks</li><li>Wastewater Treatment Plants</li></ul><p>To have the NIR sent to you, you must include:</p><ul><li>The service request number</li><li>The date of DEP&#39;s inspection</li><li>An email or mailing address</li></ul><p>The NIR will be sent to you 14 days after the inspection has been completed or 14 days after your request, whichever is later. Requests submitted with insufficient information cannot be fulfilled.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/about/email-the-commissioner.page\">Email DEP to request a Noise Inspection Report.</a></p><p>Use &quot;Request for Information&quot; as Message Type and &quot;Noise Control&quot; as Message Topic.</p><p><strong>By Phone</strong></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "DEP NYC Noise App",
+     "Content": "<p>NYC Noise is New York City&rsquo;s Department of Environmental Protection (DEP) free iPhone and Android mobile app. The app will collect noise data for DEP to better understand noise levels, sources, and patterns.</p><p>The app does not submit noise complaint services requests.</p><p>NYC Noise is for data collection only. It provides DEP with:</p><ul><li>Noise decibel level</li><li>Date, time, and source of noise</li><li>Defines noise by types:<ul><li>Alarm</li><li>Car and bus traffic</li><li>Construction</li><li>Dog/animal</li><li>HVAC/fan</li><li>Loud music</li><li>Siren</li><li>Vehicle horn</li></ul></li></ul><p>Submitted data appears in map and table formats. Data will help DEP identify noise hotspots and guide their targeted enforcement efforts.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/news/25-030/dep-launches-new-innovative-mobile-app-better-understand-city-s-noise#/0\">Learn more about DEP&#39;s NYC Noise App.</a></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

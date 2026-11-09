@@ -1,0 +1,38 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02222",
+   "Title": "Idling Vehicle",
+   "Description": "Report a vehicle parked with its engine running for more than three minutes. Learn how to file a Citizen's Air Complaint.",
+   "Section": [
+    {
+     "Name": "Idling Vehicle Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01102\">Noise from Vehicle</a>&nbsp;to report noise from engine idling</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02019\">City-Issued Summons Hearing</a>&nbsp;to dispute an idling vehicle violation</li></ul></div><p>You can report a vehicle, other than an authorized emergency vehicle, that is parked with its engine running for more than three minutes, or parked next to a school with its engine running more than one minute.</p><p><strong>Picture or Video Attachments</strong></p><p>Picture or video attachments may be used for informational purposes only. A condition must be observed in person by a DEP inspector for a summons or Commissioner&#39;s order to be issued.</p>",
+     "ContentAction": [
+      {
+       "Name": "Idling Vehicle",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Air Quality",
+       "ProblemDetail": "Vehicle Idling Odor"
+      }
+     ]
+    },
+    {
+     "Name": "Citizens Air Complaint",
+     "Content": "<p>If you are aware of any activities or conditions which may violate the New York City Air Code, and you would like to potentially receive an award for your enforcement efforts, you can submit a Citizen&#39;s Air Complaint to the Department of Environmental Protection (DEP). You should first file an Idling Vehicle&nbsp;complaint.</p><p>To participate, you will need to login to DEP&#39;s Idling Complaint System to file and track your complaint.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/environment/idling-citizens-air-complaint-program.page\">Learn more about the Citizen Air Complaint Program and login to the DEP Idling Complaint System.</a></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Anti-Idling Laws",
+     "Content": "<p><strong>New York City Anti-Idling Law</strong></p><p>In New York City, vehicle idling is illegal if it lasts more than 3 minutes or more than 1 minute when adjacent to a school. This includes buses and delivery trucks.</p><p>There are a few exceptions:&nbsp;</p><ul><li>When the temperature is less than 40 degrees F (for vehicles having a seating capacity of 15 or more passengers, such as a bus)&nbsp;</li><li>When the engine is powering a loading, unloading, or processing device&nbsp;</li><li>When the vehicle is a legally authorized emergency vehicle, such as an ambulance.&nbsp;</li></ul><p>The Department of Environmental Protection (DEP) enforces the idling law. Fines range from $350 to $2,000.</p><p><strong>New York State Anti-Idling Law</strong></p><p>Under New York State law, heavy duty diesel trucks and buses may not idle for more than 5 minutes in a row unless the temperature is less than 25 degrees F and the vehicle is stopped for 2 hours.</p><p>There are exceptions to the law, including:&nbsp;</p><ul><li>When the engine is powering an auxiliary function such as loading cargo, unloading cargo, or mixing concrete</li><li>When running the engine is required for maintenance</li><li>When fire, police, utility, or other vehicles are performing emergency services</li></ul><p>The New York State Department of Environmental Conservation (NYSDEC) enforces this law. Fines range from $250 to $15,000.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Idling Emergency Vehicles",
+     "Content": "<p>When responding to an emergency, response agencies will attempt to position their idling vehicles in locations where the fumes will have the least impact on the surrounding neighborhood. Unless operating in response to an emergency, ambulances and first response vehicles are required to obey New York City and State environmental conservation laws.</p><p>The penalties for violation of these laws may include fines ranging from $250 to $15,000.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

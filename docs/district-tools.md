@@ -254,6 +254,16 @@ Each rule is BoardStat's, from `v2/site/js/district.js`, so the numbers are the 
 - The same days a year earlier: the same filters with the dates moved back 12 months, the day
   clamped as DuckDB's `INTERVAL` does; when the period reaches the newest data it stops at the
   same minute a year earlier (`renderMonthly`). No comparison when that reaches before 2020.
+- Percent change (`top_problems`): shown only when the year-earlier count is 30 or more
+  (`SMALL_BASE`). Below that the two counts and `change` are still shown, with `change_note`
+  "small numbers; percent change not shown", because a small base makes a big percent that
+  means little (21 to 2,712 is "+12,814%", usually a City category that is new or renamed).
+  30 is BetaNYC's rule of thumb, not a City rule.
+- With a `status` filter there is no year-earlier comparison (`top_problems` and
+  `problem_trend`). The data has each request's status today, not its history, so "open a year
+  ago" cannot be rebuilt; open-now against year-old requests that are open now compares a
+  week of open requests with a year of closing (the beta test saw "+18,100%"). The answer says
+  so in its caveats. Decided 2026-11-08.
 - Days open: to the build time in New York local time.
 - Comparison with borough and city: whole months from the month file, shares of located
   requests, top 10 by the district's count (`renderCompare`).

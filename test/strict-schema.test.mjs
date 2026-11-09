@@ -44,7 +44,10 @@ test("get_status rejects an unknown parameter instead of silently dropping it", 
 test("get_status still answers a valid call", async () => {
   const result = await callTool("get_status", { type: "CodeBlue" });
   assert.notEqual(result.isError, true, result.content[0].text);
-  assert.deepEqual(JSON.parse(result.content[0].text), STUB_BODY);
+  // The API's answer is kept as returned; plain_language and source are added (beta retest 1).
+  const { plain_language, source, ...asReturned } = JSON.parse(result.content[0].text);
+  assert.deepEqual(asReturned, STUB_BODY);
+  assert.ok(plain_language.answer);
 });
 
 test("get_status still rejects a missing required type", async () => {

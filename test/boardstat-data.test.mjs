@@ -225,7 +225,7 @@ test("polite: one request at a time, a timeout on each, and a User-Agent naming 
   assert.equal(server.log.filter((l) => l.rel === "agg/month_type.parquet").length, 1, "same file fetched twice");
   for (const l of server.log) {
     assert.equal(l.hasSignal, true);
-    assert.match(l.headers["User-Agent"], /^@betanyc\/nyc-311-mcp\/\d+\.\d+\.\d+ \(\+https:\/\/github\.com\/BetaNYC\/nyc-311-mcp\)$/);
+    assert.match(l.headers["User-Agent"], /^@betanyc\/nyc-311-mcp\/\d+\.\d+\.\d+(-[0-9A-Za-z.]+)? \(\+https:\/\/github\.com\/BetaNYC\/nyc-311-mcp\)$/);
   }
 });
 

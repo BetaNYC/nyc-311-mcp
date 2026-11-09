@@ -50,6 +50,41 @@ export function retryAfterMs(header: string | null): number {
   return 1000;
 }
 
+/**
+ * How long the API asked to wait, in seconds: the Retry-After header (seconds or an
+ * HTTP-date), else its own body text ("Rate limit is exceeded. Try again in 163 seconds.",
+ * seen 2026-11-08). Null when it said nothing.
+ */
+export function waitSecondsFrom(header: string | null, body: string): number | null {
+  if (header) {
+    const n = Number(header);
+    if (Number.isFinite(n)) return Math.max(0, Math.ceil(n));
+    const d = Date.parse(header);
+    if (!Number.isNaN(d)) return Math.max(0, Math.ceil((d - Date.now()) / 1000));
+  }
+  const m = /try again in (\d+) seconds?/i.exec(body);
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * Rate limits (HTTP 429). The API portal gives no numbers: the "NYC 311 Public Developers"
+ * product is "Available for general public with rate limit in place" (read 2026-11-08).
+ * A wait the API asks for is honored when it is short; a long one is not waited out (a
+ * tool call should not hang for minutes), and the error says how long to wait.
+ */
+const MAX_429_WAIT_S = 20;
+const MAX_429_RETRIES = 2;
+
+export class RateLimitedError extends Error {
+  constructor(readonly waitSeconds: number | null) {
+    super(
+      "The City's 311 API is limiting requests from this API key right now (HTTP 429, too many requests). " +
+        (waitSeconds != null ? `It asked to wait about ${waitSeconds} seconds; try again after that. ` : "Wait a minute and try again. ") +
+        "The limit counts every program that uses the same NYC_311_API_KEY, so other tools on this machine can use it up."
+    );
+  }
+}
+
 export async function errorFromResponse(res: Response): Promise<Error> {
   let bodyText = "";
   try {
@@ -57,6 +92,7 @@ export async function errorFromResponse(res: Response): Promise<Error> {
   } catch {
     // body unreadable; fall through with empty text
   }
+  if (res.status === 429) return new RateLimitedError(waitSecondsFrom(res.headers.get("retry-after"), bodyText));
   if (bodyText.length > MAX_ERROR_BODY_CHARS) {
     bodyText = `${bodyText.slice(0, MAX_ERROR_BODY_CHARS)}… (truncated)`;
   }
@@ -73,12 +109,20 @@ export async function errorFromResponse(res: Response): Promise<Error> {
 
 async function fetchWithRetry(
   url: string,
-  init: RequestInit
+  init: RequestInit,
+  retries = MAX_429_RETRIES
 ): Promise<Response> {
   let res = await fetch(url, init);
-  if (res.status === 429) {
-    // One bounded retry, honoring Retry-After when present.
-    await sleep(retryAfterMs(res.headers.get("retry-after")));
+  let waited = 0;
+  for (let attempt = 0; res.status === 429 && attempt < retries; attempt++) {
+    // Honor the wait the API asks for, backing off at least 0.5 s then 1 s; never more
+    // than MAX_429_WAIT_S in all. A longer wait is reported, not waited out.
+    const asked = waitSecondsFrom(res.headers.get("retry-after"), await res.clone().text().catch(() => ""));
+    const wait = Math.max(asked ?? 1, 0.5 * 2 ** attempt);
+    if (asked != null && asked > MAX_429_WAIT_S) break;
+    if (waited + wait > MAX_429_WAIT_S) break;
+    await sleep(wait * 1000);
+    waited += wait;
     res = await fetch(url, init);
   }
   return res;
@@ -91,7 +135,7 @@ async function fetchWithRetry(
  */
 async function apiFetch(
   path: string,
-  opts: { params?: Record<string, string>; body?: unknown } = {}
+  opts: { params?: Record<string, string>; body?: unknown; retries?: number } = {}
 ): Promise<unknown> {
   const apiKey = getApiKey();
   const url = new URL(`${BASE_URL}${path}`);
@@ -109,7 +153,7 @@ async function apiFetch(
           },
           body: JSON.stringify(opts.body),
         };
-  const res = await fetchWithRetry(url.toString(), init);
+  const res = await fetchWithRetry(url.toString(), init, opts.retries);
   if (!res.ok) {
     throw await errorFromResponse(res);
   }
@@ -194,10 +238,23 @@ export async function getStatus(type: StatusType): Promise<unknown> {
   return apiFetch(`/Status/${type}`);
 }
 
+/**
+ * One request by its 311 number. On a rate limit (429) it asks GetServiceRequestList for
+ * the same number instead of waiting: the portal documents that each request in that list
+ * "is the same as /GetServiceRequest/" (operation api-GetServiceRequestList-post, read
+ * 2026-11-08), and in the beta test the list answered while the single lookup was limited.
+ */
 export async function getServiceRequest(srNumber: string): Promise<unknown> {
-  return apiFetch("/GetServiceRequest", {
-    params: { srnumber: assertSrNumber(srNumber) },
-  });
+  const sr = assertSrNumber(srNumber);
+  try {
+    return await apiFetch("/GetServiceRequest", { params: { srnumber: sr }, retries: 0 });
+  } catch (err) {
+    if (!(err instanceof RateLimitedError)) throw err;
+  }
+  const list = (await getServiceRequestList([sr])) as { SRResponses?: unknown[] } | null;
+  const found = list?.SRResponses?.find((r) => (r as { SRNumber?: string })?.SRNumber === sr) ?? list?.SRResponses?.[0];
+  if (!found) throw new Error(`NYC 311 API error 404: no service request ${sr} was found.`);
+  return found;
 }
 
 export async function getServiceRequestList(

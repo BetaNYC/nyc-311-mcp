@@ -62,7 +62,8 @@ test("the agency comes from the article, and a split article does not pick one b
   assert.equal(noPlate.best_match.problem_type, "Abandoned Vehicle");
   // Traffic signals: no action, so the agency named in the City's text, and phone only.
   const signal = await howToReport({ description: "the traffic light at the corner is broken" }, client);
-  assert.equal(signal.best_match.agency, null);
+  assert.equal(signal.best_match.agency, "Department of Transportation (DOT)");
+  assert.match(signal.best_match.agency_source, /article's text/);
   assert.deepEqual(signal.best_match.agencies_named_in_text.slice(0, 1), ["Department of Transportation (DOT)"]);
   assert.equal(signal.best_match.ways_to_report[0].method, "phone only");
   assert.match(signal.best_match.ways_to_report[0].how, /by phone only\. Call 311 or 212-NEW-YORK \(212-639-9675\)/);
@@ -188,7 +189,9 @@ test("list_311_categories: the tree, and one category's articles", async () => {
   assert.equal(tree.categories.length, 19);
   const noise = await list311Categories({ category_id: "311-12" }, client);
   assert.equal(noise.count, 42);
-  assert.ok(noise.articles.some((a) => a.ka_number === "KA-01092" && a.portal_url.endsWith("KA-01092")));
+  // 20 articles a page since the beta test (2026-11-08); KA-01092 is on the second page.
+  const noise2 = await list311Categories({ category_id: "311-12", offset: 20 }, client);
+  assert.ok(noise2.articles.some((a) => a.ka_number === "KA-01092" && a.portal_url.endsWith("KA-01092")));
   const parent = await list311Categories({ category_id: "311-16" }, client);
   assert.ok(parent.category.subcategories.length > 0);
   await assert.rejects(list311Categories({ category_id: "311-99999" }, client), /no category/);
@@ -303,7 +306,7 @@ test("429: one retry after Retry-After; a second 429 is an error; 404 article is
   assert.equal(calls, 2);
   assert.deepEqual(sleeps.filter((s) => s > 0), [2000]);
   const always = new ContentClient({ apiKey: () => "k", cacheDir: await tmp(), minIntervalMs: 0, logger: () => {}, sleep: async () => {}, fetch: async () => new Response("no", { status: 429 }) });
-  await assert.rejects(always.categories(), /NYC 311 API error 429/);
+  await assert.rejects(always.categories(), /limiting requests from this API key right now \(HTTP 429/);
   const { client } = await fixtureContent();
   await assert.rejects(client.article("KA-99999"), /has no article KA-99999/);
 });
