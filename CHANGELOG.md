@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.10] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 9, 2026-11-09)
+
+- **Missed emergency: forced entry.** "someone is trying to break down my front door right now"
+  got Apartment Maintenance and no 911. The crime-in-progress danger now covers forced entry
+  (breaking, kicking or forcing a door or window), an intruder inside, someone trying to get in,
+  and being followed. A landlord trying to get in is not a danger.
+- **Someone in the water is its own danger** (fell, jumped or slipped into a river, the ocean,
+  a pool; drowning; struggling in the water), leading with 911; a dropped phone is not.
+- **Sensitive articles match only on their own words.** "a child fell into the river and is
+  struggling" best-matched the City's Child Pornography article on the word "child". Articles on
+  abuse, sexual crimes and harassment, exploitation, trafficking, suicide, hate crimes, overdose
+  and minors (`SENSITIVE_ARTICLES`) are now left out unless the description uses their own
+  words; a test fails if any recorded article of that kind has no guard.
+- **Wrong answers rated strong:** bees on a tree → Bees or Wasps Complaint (the tree entry no
+  longer adds "branch"); a rat in the subway → Buses and Subways (the MTA takes "rats and other
+  animals at MTA locations"); tree roots lifting a sidewalk → Broken Sidewalk; a walk signal →
+  Pedestrian Signal Complaint or Request; a neighbor feeding pigeons → Pigeon Droppings or Odor.
+  Also fixed: lockout by padlock, cutting off electricity to force a tenant out, or removing
+  belongings → Illegal Eviction or Lockout; drag racing and burnouts, sewer smell, brown tap water,
+  low water pressure, curb ramps, a crumbling sidewalk, building without a permit, a smoke alarm
+  with a low battery, a fallen tree on a parked car.
+- **Confidence: strong is rarer where it was being wrong.** An information page with nothing to
+  report (`isInfoOnly`) is never strong; neither is an article from another domain than the one
+  the person names (`domainMismatch`: a school, a ticket, immigration, a benefit, taxes, a
+  voucher, insurance, the ferry, an ambulance). "Emergency" in a program's name ("emergency
+  rental assistance") is no longer read as urgency.
+- **A no-match first line is its own sentence:** "No 311 article matched this description. If
+  anyone is in danger right now, call 911." The emergency line is unchanged.
+- **Measured** on every phrasing from rounds 6 to 10 plus 60 new ones across transit, schools,
+  tax and finance, pets, construction, health, consumer, immigration and benefits (390): on
+  beta.9, 11 wrong answers rated strong, 2 missed emergencies and 1 false 911; now none. The
+  measurement runs in the test suite (`test/phrasing-sets.mjs`).
+
 ## [1.2.0-beta.9] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

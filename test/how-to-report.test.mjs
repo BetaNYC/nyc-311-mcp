@@ -127,7 +127,7 @@ test("no match: says so and links 311 Online search with the recognized words on
   const out = await howToReport({ description: "xyzzy plugh at 123 Main Street, Brooklyn 11201" }, client);
   assert.equal(out.best_match, null);
   assert.deepEqual(out.alternatives, []);
-  assert.equal(out.first_line, "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.");
+  assert.equal(out.first_line, "No 311 article matched this description. If anyone is in danger right now, call 911.");
   assert.match(out.no_match.message, /^No 311 article matched/);
   assert.match(out.no_match.portal_search_url, /^https:\/\/portal\.311\.nyc\.gov\/search\/\?q=/);
   const text = JSON.stringify(out);

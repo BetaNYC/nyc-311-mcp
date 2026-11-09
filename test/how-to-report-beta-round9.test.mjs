@@ -206,7 +206,7 @@ const STRESS = [
   ["there's black ice on the sidewalk outside the subway entrance", "KA-01397", "strong", "none"], // Snow or Ice on Sidewalk
   ["a water main broke and the street is flooding", "KA-01233", "strong", "none"], // Water Main Break
   ["there's sewage backing up into my basement", "KA-01510", "strong", "none"], // Sewer Backup
-  ["the sewer grate on my corner smells awful", "KA-02315", "close call", "none"], // Catch Basin or Sewer Odor
+  ["the sewer grate on my corner smells awful", "KA-02315", "strong", "none"], // Catch Basin or Sewer Odor
   ["a car has been parked with its engine running for an hour", "KA-02222", "strong", "none"], // Idling Vehicle
   ["a truck is idling with its engine on in front of the school", "KA-02222", "strong", "none"], // Idling Vehicle
   ["a car is blocking the crosswalk", "KA-01986", "strong", "none"], // Illegal Parking
