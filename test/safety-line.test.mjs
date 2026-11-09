@@ -1,5 +1,5 @@
-// Every response from every tool carries one fixed sentence, Noel's (beta round 17): "If this is an
-// emergency, or if you think this is an emergency, call 911." It is the LAST line of the text, like
+// Every response from every tool carries one fixed text, Noel's (beta round 18): a disclaimer, then
+// "If this is an emergency, or if you think this is an emergency, call 911." It is the LAST line of the text, like
 // the end of a doctor's office phone message, on success and on error, for all 21 tools, whatever
 // was or was not detected; and the first field (safety_line) of every structured answer. Danger
 // spotting is a best effort; a detected danger still leads how_to_report's and draft_311_report's
@@ -19,8 +19,14 @@ import { stressClient } from "./stress-client.mjs";
 import { fixtureSla } from "./sla-fixture.mjs";
 import { fixtureData } from "./district-fixture.mjs";
 
-test("the safety line is Noel's sentence, word for word", () => {
-  assert.equal(SAFETY_LINE, "If this is an emergency, or if you think this is an emergency, call 911.");
+test("the closing text is Noel's, word for word, and is in the server instructions once", async () => {
+  const { SERVER_INSTRUCTIONS } = await import("../dist/instructions.js");
+  assert.equal(SERVER_INSTRUCTIONS.split(SAFETY_LINE).length, 2);
+  assert.equal(
+    SAFETY_LINE,
+    "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911."
+  );
+  assert.equal(SAFETY_LINE.split("call 911").length, 2, "the 911 wording once");
 });
 
 /** Calls that reach each tool without the network: fixtures for content, BoardStat and Socrata; the 311 API tools answer from an argument error or a stubbed fetch. */

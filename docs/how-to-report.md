@@ -108,7 +108,7 @@ in danger or need urgent medical help, tell them to call 911 first, even if this
 it."
 
 **Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer carries
-`safety_line`: "If this is an emergency, or if you think this is an emergency, call 911." (Noel's words, beta round 17). It is
+`safety_line`: "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911." (Noel's words, beta round 18). It is
 the last line of the text of every response from every one of the server's 21 tools, success or
 error, and the first field (`safety_line`) of every structured answer, whatever was or was not
 detected. That sentence is what the server relies on; danger spotting is a best effort and will

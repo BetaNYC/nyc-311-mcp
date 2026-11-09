@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.18] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: Noel's final closing text (beta round 18)
+
+- Every response from all 21 tools, success or error, now ends with exactly: "For
+  informational purposes only. BetaNYC builds these answers from City data; they may contain
+  errors. Check the City's 311 page before you report. If this is an emergency, or if you think
+  this is an emergency, call 911." It replaces beta.17's 911-only line, so the 911 sentence
+  appears once. The structured `safety_line` field carries the same text, and the server
+  instructions sent at connect include it once. Detected dangers still lead `how_to_report`'s
+  and `draft_311_report`'s `first_line` with their stronger 911 line at the top.
+
 ## [1.2.0-beta.17] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

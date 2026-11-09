@@ -20,7 +20,9 @@ async function err(name, args) {
 
 const NOT_RAW = (t) => {
   assert.doesNotMatch(t, /"code"\s*:|"path"\s*:|invalid_type|invalid_enum_value|too_big|too_small|invalid_union|ZodError|\[\s*\{/, t);
-  assert.ok(t.length < 400, `short: ${t.length} chars`);
+  // The error itself stays short; the closing text (SAFETY_LINE) follows it as the last line.
+  const message = t.endsWith(SAFETY_LINE) ? t.slice(0, -SAFETY_LINE.length).trim() : t;
+  assert.ok(message.length < 400, `short: ${message.length} chars`);
 };
 
 const CASES = [

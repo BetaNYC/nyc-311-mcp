@@ -26,9 +26,11 @@
  * On every response from every tool (callTool): the last line of the text, like the end of a
  * doctor's office phone message, and the first field (safety_line) of the structured output,
  * whatever was or was not detected. Danger spotting is a best effort and will miss some wording;
- * this sentence is what the server relies on. Noel's exact words (beta round 17).
+ * this text is what the server relies on. Noel's exact words (beta round 18: a disclaimer, then
+ * the 911 sentence; it replaces the round-17 911-only line).
  */
-export const SAFETY_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
+export const SAFETY_LINE =
+  "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.";
 export const SAFETY_LINE_SOURCE = "BetaNYC wording, on every answer.";
 export const GENERIC_911 = "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.";
 

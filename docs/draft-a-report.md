@@ -33,7 +33,7 @@ up: the draft holds only the person's words and the names the City's article use
 
 ### Safety first, on every answer and error
 
-Every answer carries `safety_line` ("If this is an emergency, or if you think this is an emergency, call 911."), its
+Every answer carries `safety_line` ("For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911."), its
 source, and `assistant_instruction`, the same as `how_to_report` (#23): "Danger detection here
 is keyword-based and will miss some emergencies. If anything the person says suggests someone
 may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did
