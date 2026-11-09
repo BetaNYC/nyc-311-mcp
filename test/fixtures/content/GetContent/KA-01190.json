@@ -1,0 +1,16 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01190",
+      "Title": "Homeless Person or Family Contact",
+      "Description": "Contact a homeless adult or family in a shelter.",
+      "Section": [
+        {
+          "Name": "Homeless Person or Family Contact",
+          "Content": "<p>The Department of Homeless Services (DHS) handles requests for information about a homeless family or single adult that may be receiving DHS services.</p><p>DHS is unable to confirm prior or current status of any individuals or families.</p><p>However, you can share your name and contact information with DHS, along with the following information for the individual or family you are seeking to contact:</p><ul><li>Full Name</li><li>Date of Birth</li></ul><p>If the individual or family is indeed in a shelter, DHS will pass along your message and contact information. The individual or family can choose whether to reach out to you.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

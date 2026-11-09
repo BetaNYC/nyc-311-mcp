@@ -7,6 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.11] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 10, 2026-11-09)
+
+- **A recurring condition is not an emergency in progress.** "black smoke pours out of the
+  chimney next door every morning" and "a man sleeps passed out on a bench in the park every
+  night" led with 911. Now a recurrence word ("every morning", "always", "keeps ...ing", "for
+  weeks") quiets the ambiguous dangers (smoke, a crash, someone passed out or not moving, a theft
+  or break-in that keeps happening) unless something says it is happening now ("right now",
+  "not breathing", "won't wake up"). Fire, gas, carbon monoxide, bleeding, not breathing and
+  weapons are never quieted. The assessment reports `recurring`. 20 now/recurring pairs are
+  tested.
+- **A crime that is over does not lead with "Call 911".** A matched City article whose summary
+  says "Call 911" (Criminal Mischief, Stolen Property, Burning Garbage, Hate Crime) no longer
+  leads for a pattern that recurs, or for a crime told as done ("someone keyed my car",
+  "smashed ... overnight"); the article and its 911 text stay in the answer, with the crime
+  pointer (precinct, Crime Stoppers). Thefts and break-ins in progress ("stealing packages
+  right now", "breaking car windows right now") now lead with 911.
+- **Wrong answers rated strong:** a smashed car window and a stolen bag → Criminal Mischief and
+  Stolen Property ("my parked car" names a car, not a parking problem; a car window is not an
+  apartment window); spray-painted threats → Graffiti (spray paint and tags are graffiti, not
+  paint repairs). Also: a boiler chimney's smoke is Chimney or Ventilation Smoke; crashes that
+  keep happening at a corner are a traffic condition; someone sleeping in an elevator or on a
+  bench is homeless outreach.
+- **Misses:** a daycare with no heat → Child Care Complaint (the Consumers and Early Childhood
+  lists are now recorded); peeling lead paint → Lead Paint; a security deposit → Rent Security
+  Deposits and Interest; a store overcharge → Overcharge; a tow company → Tow Truck Complaint;
+  burning garbage → Burning Garbage.
+- **Alternatives:** "park" no longer matches "parking" or "parked", and a "Call 911" article is
+  lifted under a danger only when it is the danger's own article (no Cannabis Sale Outside under
+  a gun threat).
+- **Measured** on 458 phrasings (rounds 6 to 11, with 60 new ones mixing recurring and
+  in-progress framing, past and in-progress crimes, and property damage): on beta.10, 9 wrong
+  answers rated strong, 3 missed emergencies and 4 ordinary complaints leading with "Call 911";
+  now none. Requiring the person's own words in the article was measured and not adopted: it
+  dropped 81 (one word) or 229 (two words) right answers from strong and caught nothing more.
+
 ## [1.2.0-beta.10] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

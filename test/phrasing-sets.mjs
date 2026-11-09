@@ -36,7 +36,7 @@ export function allPhrasings() {
   for (const d of arrayAfter("how-to-report-beta-round9.test.mjs", "const NEVER_911 =")) add("r9 never 911", d, null, false);
   for (const d of arrayAfter("how-to-report-beta-round9.test.mjs", "const ALWAYS_911 =")) add("r9 always 911", d, null, true);
   for (const [d, ka, , f] of arrayAfter("how-to-report-beta-round9.test.mjs", "const STRESS = [")) add("r9", d, f === "danger" ? null : Array.isArray(ka) ? ka : [ka], f === "danger");
-  for (const f of ["round10-report.json", "round10-stress.json"]) out.push(...JSON.parse(readFileSync(path.join(HERE, "fixtures", "phrasings", f), "utf8")));
+  for (const f of ["round10-report.json", "round10-stress.json", "round11.json"]) out.push(...JSON.parse(readFileSync(path.join(HERE, "fixtures", "phrasings", f), "utf8")));
   // One entry per description (the first wins).
   const seen = new Set();
   return out.filter((r) => !seen.has(r.d) && seen.add(r.d));

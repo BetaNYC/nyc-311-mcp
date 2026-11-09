@@ -1,0 +1,64 @@
+{
+  "ContentArticleList": [
+    {
+      "description": "Learn more about free child care for two-year-olds. Learn about the 2-K Jingle Contest.",
+      "id": "KA-03710",
+      "title": "2-K Enrollment"
+    },
+    {
+      "description": "Learn about 3-K enrollment.",
+      "id": "KA-03141",
+      "title": "3-K Enrollment"
+    },
+    {
+      "description": "Learn about City-funded child care programs, including EarlyLearn NYC. Get referrals to licensed child care providers.",
+      "id": "KA-02516",
+      "title": "Child Care"
+    },
+    {
+      "description": "Apply for financial assistance to pay for child care, get an application status, find a child care program, or re-certify your benefits.",
+      "id": "KA-03118",
+      "title": "Child Care Financial Assistance"
+    },
+    {
+      "description": "Learn about group child care center performance summary cards.",
+      "id": "KA-02618",
+      "title": "Child Care Performance Card"
+    },
+    {
+      "description": "Learn about early intervention services for children under 3 with developmental delays.",
+      "id": "KA-02092",
+      "title": "Developmentally Delayed Infant Services"
+    },
+    {
+      "description": "Learn about Head Start, which provides activities and educational programs for children ages zero to five.",
+      "id": "KA-01563",
+      "title": "Head Start"
+    },
+    {
+      "description": "Find a public library.",
+      "id": "KA-01065",
+      "title": "Libraries"
+    },
+    {
+      "description": "Get help with rent, groceries, and other everyday costs.",
+      "id": "KA-03703",
+      "title": "NYC Affordability Resources"
+    },
+    {
+      "description": "Learn how schools and day care centers can use City streets, play yards, and parks for classes.",
+      "id": "KA-03350",
+      "title": "Outdoor Learning"
+    },
+    {
+      "description": "Learn about pre-kindergarten enrollment.",
+      "id": "KA-02931",
+      "title": "Pre-Kindergarten Enrollment"
+    },
+    {
+      "description": "Request educational support for students who are blind or have limited vision and students who are deaf or hard of hearing.",
+      "id": "KA-02442",
+      "title": "Students with Disabilities"
+    }
+  ]
+}

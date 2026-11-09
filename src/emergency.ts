@@ -54,8 +54,18 @@ const FORCED_ENTRY = [
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|an? intruders?|intruders?) (is |are |was |'s )?(in|inside|hiding in) (my|our|the) (apartment|house|home|room|bedroom|bathroom|closet|basement)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|he|she|they) (is |are |'s |keeps? )?(following|stalking|chasing) (me|us|my (kid|son|daughter|child))",
   "(following|stalking) me (home|right now|down the street)",
+  // A theft or break-in under way (stage 11 stress set).
+  "(is |are |'s |keeps? )?(stealing|robbing|breaking into|breaking (car |the )?windows|smashing (car |the )?windows|trying to (open|steal|break into|get into) (car |the )?(doors?|cars?|windows?))",
 ].join("|");
 const CRIME_WORDS_IN_PROGRESS = /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|(someone|somebody|he|she|they|a (man|guy|woman|person)|people|burglars?|thie(f|ves)) broke in\b|^broke in\b|broke in (last|yesterday|while|and|through|at)\b|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/;
+
+/** A condition that recurs: a habit or a pattern, not one event in progress. */
+export const RECURRING = /\b(every (single )?(morning|night|day|evening|afternoon|week|weekend|time|hour|weekday|sunday|saturday|friday)|every few (days|hours|minutes|nights|weeks)|each (morning|night|day|evening)|always|all the time|most (nights|days|mornings|evenings)|on weekends|daily|nightly|regularly|for (days|weeks|months|years)|constantly|usually|often|whenever|keeps? (on )?\w+ing|again and again|day after day|night after night)\b/;
+/** Words that say a danger is happening now, which a recurrence word does not quiet. */
+const HAPPENING_NOW = /\b(right now|happening now|now|at the moment|currently|this minute|as we speak|just (started|happened|collapsed|fell|passed out)|can'?t (breathe|get out|wake (him|her|them) up)|isn'?t breathing|not breathing|stopped breathing|won'?t wake( up)?|turning blue|bleeding|trapped|spreading|getting worse|is on fire|flames|can'?t see)\b/;
+/** Hurt signals that may be sleep or a habit; the hard ones are never quieted. */
+const SOFT_HURT = /\b(passed out|collapsed|fainted|not moving|unconscious|unresponsive)\b/;
+const HARD_HURT = /\b(bleeding|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|seizures?|heart attack|chest pains?|stroke|overdos\w*|choking|turning blue|injured|hurt)\b/;
 
 export const DANGERS: DangerKind[] = [
   {
@@ -238,6 +248,8 @@ export type DangerAssessment = {
   past_crime: boolean;
   /** The person said it is not an emergency. */
   not_emergency: boolean;
+  /** The description says the condition recurs ("every night", "always") and nothing says it is happening now. */
+  recurring: boolean;
   /** An urgent word with no recognized danger: a no-match answer leads with 911. */
   urgent: boolean;
 };
@@ -271,6 +283,23 @@ export function assessDanger(description: string): DangerAssessment {
   const present = PRESENT_DANGER.test(text.replace(new RegExp(crime.unless!.source, "g"), " "));
   const pastCrime = kinds.some((k) => k.id === "crime") && PAST.test(text) && !present;
   if (pastCrime) kinds = kinds.filter((k) => k.id !== "crime");
+  // A recurring condition ("every morning", "always", "keeps") is not an emergency in progress
+  // for the ambiguous signals: smoke, a crash, and someone passed out or not moving. Beta retest
+  // 10, 2026-11-09: "black smoke pours out of the chimney next door every morning" and "a man
+  // sleeps passed out on a bench in the park every night" led with 911. Clear dangers (fire, gas,
+  // carbon monoxide, not breathing, bleeding, a weapon) stay, and so does anything said to be
+  // happening now ("right now", "can't breathe", "won't wake up").
+  const recurring = RECURRING.test(text) && !HAPPENING_NOW.test(text);
+  if (recurring) {
+    kinds = kinds.filter((k) => {
+      if (k.id === "smoke" || k.id === "crash") return false;
+      if (k.id === "hurt") return !(SOFT_HURT.test(by[found.indexOf(k)]) && !HARD_HURT.test(text));
+      // A theft or break-in that keeps happening ("someone keeps stealing packages") is a pattern
+      // to report, not one in progress; never with a weapon.
+      if (k.id === "crime") return !(/\b(steal|rob|break|smash|trying)\w*/.test(by[found.indexOf(k)]) && !/\b(guns?|knife|knives|weapons?|shoot\w*|stabb\w*|attack\w*)\b/.test(text));
+      return true;
+    });
+  }
   // "Not an emergency" quiets ambiguous signals only, never HIGH_SEVERITY.
   if (notEmergency) kinds = kinds.filter((k) => HIGH_SEVERITY.has(k.id));
   return {
@@ -278,6 +307,7 @@ export function assessDanger(description: string): DangerAssessment {
     suggested_by: by.filter((_, i) => kinds.includes(found[i])),
     past_crime: pastCrime,
     not_emergency: notEmergency,
+    recurring,
     urgent: !notEmergency && URGENT.test(text),
   };
 }
@@ -411,4 +441,4 @@ export const CRIME_POINTER = {
   source: "311 articles KA-02668 and KA-01027 (summaries and text, read 2026-11-07). 'Call 911' for a crime in progress is BetaNYC wording.",
 };
 
-export const CRIME_WORDS = /\b(crime|criminal|police|cops?|nypd|robbed|stolen|theft|burglar\w*|vandal\w*|report a crime|denunciar|polic[ií]a|robo)\b/;
+export const CRIME_WORDS = /\b(crime|criminal|police|cops?|nypd|robbed|stole|stolen|theft|burglar\w*|vandal\w*|mischief|broke into|took my|smashed (my|the)|keyed|slashed|swastikas?|hate crimes?|vandaliz\w*|catalytic|report a crime|denunciar|polic[ií]a|robo)\b/;
