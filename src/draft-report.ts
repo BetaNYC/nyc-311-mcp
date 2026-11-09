@@ -476,7 +476,7 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
   }
 
   // What
-  const options = best?.problem_type && sla ? detailOptions(sla.rows, best.problem_type, best.agency) : [];
+  const options = best?.problem_type && sla ? detailOptions(sla.rows, best.problem_type, best.agency_source === "report option" ? best.agency : null) : [];
   // The article's report option may name a Problem Detail ("Cave-in" on the pothole
   // article). It goes into the draft only when the person's words say so too.
   const saidAll = [said, args.details ?? ""].join(" ");

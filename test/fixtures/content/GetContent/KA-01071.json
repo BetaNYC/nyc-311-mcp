@@ -1,0 +1,39 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01071",
+   "Title": "Bus Stop Shelters",
+   "Description": "Request a new bus stop shelter or report an existing bus stop shelter that needs maintenance or repair.",
+   "Section": [
+    {
+     "Name": "Bus Stop Shelter Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03486\">Bus Arrival Sign</a>&nbsp;to report issues with bus stop signs that show real-time arrival information</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02235\">Broken Sidewalk</a>&nbsp;to report a problem with an extended sidewalk at a bus stop</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01063\">Street Sign Complaint</a>&nbsp;to report issues with all other bus stop signs</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01037\">Homeless Outreach Assistance</a></li></ul></div><p>Bus shelters provide seating and weather protection at bus stops.</p><p>You can:</p><ul><li>Request a new bus stop shelter at an existing bus stop</li><li>Report a repair or maintenance&nbsp;issue with an existing bus stop shelter</li></ul>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Requests",
+     "Content": "<p>The Department of Transportation (DOT) accepts requests for new bus stop shelters at an existing bus stop.</p><p>Bus stop shelter criteria include:</p><ul><li><strong>Clear path:</strong> Shelters must allow a minimum clear path of 7 feet in width.</li><li><strong>Clearance from curb: </strong>All shelters must allow a straight unobstructed path of at least 3 feet between the shelter and the curb.</li><li><strong>Other minimum distances:</strong><ul><li>10 feet from fire hydrants or standpipes</li><li>5 feet from tree trunks, canopies, tree pits, or cellar doors</li><li>3 feet from streetlights or traffic signal poles</li><li>2 feet from ventilation grates or street signs</li></ul></li></ul><p>DOT does not accept requests for benches in existing shelters. Benches are included in all new bus stop shelters.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/infrastructure/streetfurniture.shtml\">Learn more about the bus shelter initiative.</a></p>",
+     "ContentAction": [
+      {
+       "Name": "Bus Stop Shelter Request",
+       "Agency": "Department of Transportation",
+       "Problem": "Bus Stop Shelter Placement",
+       "ProblemDetail": "New Bus Stop Shelter Placement"
+      }
+     ]
+    },
+    {
+     "Name": "Complaints",
+     "Content": "<p>You can report the following issues for repair or maintenance:</p><ul><li>Broken glass</li><li>Burned out lights</li><li>Dirty or damaged bench</li><li>Graffiti on walls</li><li>Missing bus stop address sign</li><li>Shelter floor damage</li><li>Structural damage</li><li>General cleanliness&nbsp;</li></ul><p>The City works with JCDecaux, a private vendor, to maintain its bus stop shelters.</p>",
+     "ContentAction": [
+      {
+       "Name": "Bus Stop Shelter Complaint",
+       "Agency": "Department of Transportation",
+       "Problem": "Bus Stop Shelter Complaint"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

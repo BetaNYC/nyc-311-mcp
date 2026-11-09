@@ -373,6 +373,8 @@ const monthSum = async (ym, pred = () => true) =>
 
 test("ll47_directory_assistance_report adds up the recorded months, by topic, and marks itself limited", async () => {
   const { soda } = await fixtureSoda();
+  // A one-month call fetches only its month; the fiscal year to date adds the saved ones.
+  for (const ym of ["2026-07", "2026-08", "2026-09"]) await runLl47Tool("ll47_directory_assistance_report", { month: ym }, { soda });
   const env = await runLl47Tool("ll47_directory_assistance_report", parseToolArgs("ll47_directory_assistance_report", { month: "2026-10" }), { soda });
   const d = env.data;
   assert.equal(d.month.calls, await monthSum("2026-10"));
@@ -399,8 +401,8 @@ test("the call-center report asks one $group query per month, politely, and serv
   const { soda, requests, sleeps } = await fixtureSoda({ token: "tok123" });
   await runLl47Tool("ll47_directory_assistance_report", { month: "2026-10" }, { soda });
   const data = requests.filter((r) => r.url.pathname.startsWith("/resource/"));
-  assert.equal(requests.length, 5, "metadata + four months");
-  assert.equal(data.length, 4);
+  assert.equal(requests.length, 2, "metadata + the asked month only");
+  assert.equal(data.length, 1);
   for (const r of data) {
     const p = r.url.searchParams;
     assert.match(p.get("$select"), /count\(\*\) AS n/);
@@ -412,10 +414,10 @@ test("the call-center report asks one $group query per month, politely, and serv
     assert.match(r.headers["User-Agent"], /nyc-311-mcp/);
   }
   for (let i = 1; i < requests.length; i++) assert.ok(requests[i].at - requests[i - 1].at >= 2000, "at least 2 s between requests");
-  assert.ok(sleeps.length >= 4);
+  assert.ok(sleeps.length >= 1);
   const again = await runLl47Tool("ll47_directory_assistance_report", { month: "2026-10" }, { soda });
-  assert.equal(requests.length, 5, "the second answer asked nothing new");
-  assert.equal(again.data.months_from_cache, 4);
+  assert.equal(requests.length, 2, "the second answer asked nothing new");
+  assert.equal(again.data.months_from_cache, 1);
 });
 
 test("the call-center client honors Retry-After on 429, widens the gap, and does not retry a 400", async () => {
@@ -461,11 +463,17 @@ test("callSection reports agencies and call resolutions when the dataset has the
 // ── The call-center report when NYC Open Data is slow, down, or has changed (QA on #21) ──
 
 const daArgs = (a) => parseToolArgs("ll47_directory_assistance_report", a);
+/** Saves the given months in `dir`, one one-month call each. */
+async function warmMonths(dir, months) {
+  for (const ym of months) await directoryAssistanceReport(daArgs({ month: ym }), (await fixtureSoda({ cacheDir: dir })).soda, NOW);
+}
+const FY27_TO_OCT = ["2026-07", "2026-08", "2026-09", "2026-10"];
 
 test("when NYC Open Data is down, a warm cache answers, marked stale with a warning", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-down-"));
-  const warm = await fixtureSoda({ cacheDir: dir });
-  const first = await directoryAssistanceReport(daArgs({ month: "2026-10" }), warm.soda, NOW);
+  await warmMonths(dir, FY27_TO_OCT);
+  const first = await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir })).soda, NOW);
+  assert.equal(first.data.fiscal_year.complete, true);
   // A new client, as after a restart: nothing in memory, the portal unreachable.
   const down = await fixtureSoda({ cacheDir: dir, respond: async () => { throw new TypeError("fetch failed"); } });
   const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), down.soda, NOW);
@@ -484,7 +492,7 @@ test("when NYC Open Data is down and nothing is saved, it says so instead of ans
 
 test("settled months are not asked again when the dataset's nightly version changes; recent months are", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-settled-"));
-  await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir })).soda, NOW);
+  await warmMonths(dir, FY27_TO_OCT);
   const next = await fixtureSoda({ cacheDir: dir, rowsUpdatedAt: 1794200000 });
   const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), next.soda, NOW);
   const asked = next.requests.filter((r) => r.url.pathname.startsWith("/resource/")).map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
@@ -493,21 +501,23 @@ test("settled months are not asked again when the dataset's nightly version chan
   assert.equal(env.data.months_from_cache, 3);
 });
 
-test("one call stops at its time budget: the asked month answers, the fiscal year says which months are missing, and asking again finishes", async () => {
+test("one call stops at its time budget: the fiscal year says which months are missing, and asking again finishes", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-budget-"));
   const slow = await fixtureSoda({ cacheDir: dir, cost: 13_000 });
-  const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), slow.soda, NOW, { budgetMs: 45_000 });
-  assert.equal(env.data.month.complete, true);
-  assert.equal(env.data.month.calls, await monthSum("2026-10"));
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), slow.soda, NOW, { budgetMs: 45_000 });
   assert.equal(env.data.fiscal_year.complete, false);
   assert.ok(env.data.fiscal_year.months_missing.length >= 1);
   assert.equal(env.data.fiscal_year.calls, undefined, "no partial total is given");
   const last = slow.requests.at(-1).at - slow.requests[0].at;
   assert.ok(last <= 45_000, `requests ran ${last} ms past the start`);
-  const again = await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
-  const third = again.data.fiscal_year.complete
-    ? again
-    : await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
+  let again = env;
+  for (let i = 0; i < 4 && !again.data.fiscal_year.complete; i++) {
+    again = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
+  }
+  assert.equal(again.data.fiscal_year.complete, true);
+  // Every fiscal-year month is saved now, so the October call's year to date is complete.
+  const third = await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
+  assert.equal(third.data.month.calls, await monthSum("2026-10"));
   assert.equal(third.data.fiscal_year.complete, true);
   let fy = 0;
   for (const ym of ["2026-07", "2026-08", "2026-09", "2026-10"]) fy += await monthSum(ym);
@@ -607,7 +617,7 @@ test("each month is one light query: grouped by topic only, with counts of fille
   const { soda, requests } = await fixtureSoda();
   await directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW);
   const data = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json");
-  assert.equal(data.length, 4, "one query per month, no second query when agency and call_resolution are blank");
+  assert.equal(data.length, 1, "one query for the asked month, no second query when agency and call_resolution are blank");
   for (const r of data) {
     assert.equal(r.url.searchParams.get("$group"), "inquiry_name");
     assert.match(r.url.searchParams.get("$select"), /count\(agency\)/);
@@ -672,4 +682,65 @@ test("timeout text says seconds, never a bare five-digit millisecond count", asy
 test("the report waits long enough for a slow month, and stays under a minute in all", () => {
   assert.ok(DA_REQUEST.timeoutMs >= 50_000 && DA_REQUEST.timeoutMs < 60_000, String(DA_REQUEST.timeoutMs));
   assert.ok(DA_BUDGET_MS >= DA_REQUEST.timeoutMs && DA_BUDGET_MS < 60_000, String(DA_BUDGET_MS));
+});
+
+// ── Beta retest 3 (2026-11-09): a one-month call waited ~55 s even with its month saved ──
+// It also tried to fill in the fiscal year to date, and waited on the months not yet saved.
+// Now a one-month call fetches only its month; the fiscal-year call fetches the rest.
+
+test("a one-month call with its month saved asks NYC Open Data for no rows, even when the portal hangs", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-one-month-"));
+  await warmMonths(dir, ["2026-10"]);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir, respond: async (u, _n, init) => (u.pathname === "/resource/wewp-mm3p.json" ? hang(init) : null) });
+  const t0 = soda.clock();
+  const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW, { requestTimeoutMs: 50 });
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 0, "no row query");
+  assert.ok(soda.clock() - t0 < 5_000, `${soda.clock() - t0} ms`);
+  assert.equal(env.data.month.complete, true);
+  assert.equal(env.data.month.calls, await monthSum("2026-10"));
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.deepEqual(fy.months_missing.map((m) => m.month), ["2026-07", "2026-08", "2026-09"]);
+  for (const m of fy.months_missing) assert.match(m.why, /one-month call fetches only its own month/);
+  assert.match(fy.note, /fiscal_year/);
+  assert.equal(env.data.months_queried, 0);
+});
+
+test("a cold one-month call fetches only that month", async () => {
+  const { soda, requests } = await fixtureSoda();
+  await directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW);
+  const asked = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
+  assert.deepEqual(asked, ["2026-10"]);
+});
+
+test("a one-month call uses every saved month for its fiscal year to date, asking nothing", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-one-month-fy-"));
+  await warmMonths(dir, FY27_TO_OCT);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir });
+  const env = await directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW);
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 0);
+  let fy = 0;
+  for (const ym of FY27_TO_OCT) fy += await monthSum(ym);
+  assert.equal(env.data.fiscal_year.complete, true);
+  assert.equal(env.data.fiscal_year.calls, fy);
+});
+
+test("the fiscal-year call answers saved months at once and lists the slow ones as missing", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-mixed-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  const { soda, requests } = await fixtureSoda({
+    cacheDir: dir,
+    respond: async (u, _n, init) => (u.pathname === "/resource/wewp-mm3p.json" && /2026-08-01/.test(u.searchParams.get("$where")) ? hang(init) : null),
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW, { requestTimeoutMs: 20 });
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  const why = Object.fromEntries(fy.months_missing.map((m) => [m.month, m.why]));
+  assert.match(why["2026-08"], /slow/);
+  assert.match(why["2026-09"], /not tried/);
+  assert.equal(why["2026-07"], undefined);
+  assert.equal(why["2026-10"], undefined);
+  assert.equal(env.data.months_from_cache, 2);
+  const asked = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
+  assert.deepEqual(asked, ["2026-08"], "saved months are not asked; after a slow month, no more are tried");
 });

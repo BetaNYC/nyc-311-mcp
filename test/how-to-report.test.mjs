@@ -62,7 +62,8 @@ test("the agency comes from the article, and a split article does not pick one b
   assert.equal(noPlate.best_match.problem_type, "Abandoned Vehicle");
   // Traffic signals: no action, so the agency named in the City's text, and phone only.
   const signal = await howToReport({ description: "the traffic light at the corner is broken" }, client);
-  assert.equal(signal.best_match.agency, null);
+  assert.equal(signal.best_match.agency, "Department of Transportation (DOT)");
+  assert.match(signal.best_match.agency_source, /article's text/);
   assert.deepEqual(signal.best_match.agencies_named_in_text.slice(0, 1), ["Department of Transportation (DOT)"]);
   assert.equal(signal.best_match.ways_to_report[0].method, "phone only");
   assert.match(signal.best_match.ways_to_report[0].how, /by phone only\. Call 311 or 212-NEW-YORK \(212-639-9675\)/);

@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.4] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 3, 2026-11-09)
+
+- **`ll47_directory_assistance_report`, one month.** A one-month call now fetches only
+  that month. Its fiscal year to date uses the months already saved, and lists the others
+  as "not fetched" with a pointer to `fiscal_year`. Before, a call for a saved October still
+  waited about 55 s on the other fiscal-year months. A `fiscal_year` call fetches every
+  month, answers saved months at once, and lists slow ones as missing. A month that cannot
+  be refreshed in a call is answered from its older saved copy, when there is one.
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles, recorded as test fixtures: jackhammering or construction outside the allowed
+  hours goes to Noise from Construction (KA-01091), not Construction Site No Smoking Sign
+  Complaint; a bus stop shelter to Bus Stop Shelters (KA-01071) and its complaint option; a
+  street or food vendor, or selling on the street without a permit, to Street Vendor
+  Complaint (KA-02152); a dead animal on a sidewalk or street to Dead Animal on Public
+  Property (KA-02245), with Rat or Mouse Complaint still offered for a dead rat. A street
+  sign that was knocked down picks the "Fallen, Dangling, or Leaning" option.
+- **Confidence.** "Strong" now needs two of the person's problem words in the article's
+  title or summary, or one word that at most two titles in the searched categories share.
+  One common shared word ("construction") is no longer rated strong.
+- **Agency never blank.** When 311 lists no report option, the agency is the one the
+  article's own text names (Bike Lane, Traffic or Bicycle Signal: the Department of
+  Transportation). When the options go to more than one agency and the words pick none
+  (Water Leak in a Building, Snow or Ice on Sidewalk), it says "depends on which report
+  option fits; see agencies". When the City names none, "agency not listed by 311". A new
+  `agency_source` field says which.
+- **Version.** The server reports `1.2.0-beta.4`.
+
 ## [1.2.0-beta.3] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

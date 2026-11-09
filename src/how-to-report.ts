@@ -138,7 +138,14 @@ const TRASH_WORDS = "(trash|garbage|litter|rubbish|debris|filth\\w*|dirty|unsani
 const TRASH_INDOORS = new RegExp(`\\b${TRASH_WORDS}\\b[^.]{0,60}\\b${INDOORS}\\b|\\b${INDOORS}\\b[^.]{0,40}\\b${TRASH_WORDS}\\b`);
 // A street, traffic or parking sign: the City's Street Sign Complaint (KA-01063). Beta
 // retest 2, 2026-11-09: "the stop sign at the corner was knocked down" found nothing.
+const SIGN_DOWN = "(knocked (down|over)|fell|fallen|falling|fall(ing)? down|dangling|leaning|hanging|bent|toppled|on the ground)";
 const STREET_SIGN = /\b(stop|street|traffic|parking|yield|one[- ]way|no parking|no standing|street name|bus stop|speed limit|school zone|do not enter) signs?\b/;
+
+// Hours outside the City's allowed construction hours ("between 7 AM and 6 PM on weekdays", KA-01091).
+const AFTER_HOURS = "\\b(([1-6]|1[0-2]) ?(am|a\\.m\\.)|([6-9]|1[01]) ?(pm|p\\.m\\.)|early (in the )?morning|late at night|at night|overnight|after hours|midnight|before 7|on (a )?(saturday|sunday)|weekends?)\\b";
+// A dead animal in a public place: the City's Dead Animal on Public Property (KA-02245), with
+// Rat or Mouse Complaint still offered. Beta retest 3, 2026-11-09.
+const DEAD_ANIMAL = /\bdead (rats?|mice|mouse|birds?|pigeons?|cats?|dogs?|raccoons?|squirrels?|deer|animals?|possums?|opossums?|geese|goose|ducks?|seagulls?|gulls?|skunks?)\b|\b(rats?|mouse|birds?|pigeons?|cats?|dogs?|raccoons?|squirrels?|animals?) (is |was |lying |laying )*dead\b|\b(roadkill|carcass\w*)\b/;
 
 // Written against 311's category tree and article titles of 2026-11-07. Each line's
 // words are taken from the titles and summaries of the article it should find.
@@ -154,6 +161,12 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(car|cars|truck|vehicle|motorcycle|moped|horn|honk|engine|idling|carro|coche)/, terms: ["vehicle"], weight: 2 },
   { when: IDLING, unless: /\b(noise|noisy|loud|music|blasting|honk\w*|horn)\b/, terms: ["idling", "vehicle"], weight: 3, against: ["noise", "illegal", "parking"], categories: ["Air"], family: "idling" },
   { when: /\b(construction|jackhammer|drilling|demolition|crane|scaffold)/, terms: ["construction"], weight: 3, categories: ["Noise", "Buildings & Property"], family: "noise" },
+  // A jackhammer or drill is noise, and work before or after the allowed hours is the City's
+  // "Noise from After Hours Construction" option on Noise from Construction (KA-01091).
+  // Beta retest 3, 2026-11-09: "a construction site starts jackhammering at 6am" got the
+  // Construction Site No Smoking Sign article on the word "construction".
+  { when: /\b(jackhammer\w*|pile[- ]?driv\w*|drilling|demolition)\b/, terms: ["noise", "construction", "jackhammer"], weight: 3, against: ["smoking", "sign", "dust", "permit"], categories: ["Noise"], family: "noise" },
+  { when: new RegExp(`\\b(construction|jackhammer\\w*|drilling|demolition)\\b[^.]*${AFTER_HOURS}|${AFTER_HOURS}[^.]*\\b(construction|jackhammer\\w*|drilling|demolition)\\b`), terms: ["noise", "after", "hours"], weight: 2, against: ["smoking", "sign", "dust"], categories: ["Noise"], family: "noise" },
   { when: /\b(alarm)/, unless: /\b(smoke|carbon monoxide|co) (alarm|detector)/, terms: ["alarm", "noise"], weight: 2, categories: ["Noise"], family: "noise" },
   { when: /\b(car (was |got )?hit|hit my car|accident|crash(ed)?|collision|fender[- ]bender)\b/, terms: ["accident", "vehicle"], weight: 3, categories: ["Safety & Crime"], family: "crash" },
   { when: /\bsmok(e|es|ing)\b[^.]{0,25}\b(cigarettes?|cigars?|weed|marijuana|hallway|stairwell|lobby|building)\b|\b(cigarette|secondhand|second-hand) smoke\b/, terms: ["smoke", "free", "air", "act", "complaint"], weight: 3, categories: ["Tenants", "Public Health"], family: "smoking" },
@@ -181,6 +194,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(harass\w*|forcing (me|us) out|trying to (evict|force)|acoso|acosando)\b/, terms: ["harass", "tenant"], weight: 3, categories: ["Tenants"], family: "harassment" },
   // Bed bugs: the City's Bed Bug Complaint (KA-01236), its own article. Beta retest 2026-11-08.
   { when: /\bbed ?bugs?\b|\bchinches\b/, terms: ["bed", "bug", "complaint"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
+  { when: DEAD_ANIMAL, unless: /\b(apartment|my (home|house|yard|backyard|basement)|in (my|the|our) building|inside)\b/, terms: ["dead", "animal", "public", "property"], weight: 3, against: ["private"], categories: ["Pests & Wildlife", "Sidewalks"], family: "dead_animal" },
   { when: /\b(mice|mouse|rats?|rodents?|roach(es)?|cockroach(es)?|pests?|vermin|fleas|flies|ratas?|ratones|roedores|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
   { when: /\b(mold|mould|mildew|moho|hongos)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"], family: "mold" },
   { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
@@ -195,6 +209,14 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(sidewalk|acera)\b[^.]{0,30}\b(crack\w*|broken|uneven|raised|trip\w*|damaged|hole)\b|\b(crack\w*|broken|uneven|damaged) (sidewalk|acera)\b/, terms: ["broken", "sidewalk"], weight: 3, categories: ["Sidewalks"], family: "sidewalk" },
   { when: /\b(traffic (light|signal)|stop ?light|signal|walk sign|red light|sem[aá]foro)\b/, terms: ["traffic", "signal"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "signal" },
   { when: STREET_SIGN, terms: ["street", "sign", "complaint"], weight: 3, against: ["request", "purchase", "highway", "advertising", "building"], categories: ["Streets & Highways"], family: "street_sign" },
+  // A sign that came down: the "Street Sign Fallen, Dangling, or Leaning" option (KA-01063).
+  { when: new RegExp(`${STREET_SIGN.source}[^.]{0,40}\\b${SIGN_DOWN}\\b|\\b${SIGN_DOWN}\\b[^.]{0,30}${STREET_SIGN.source}`), terms: ["fallen", "dangling", "leaning"], weight: 2 },
+  // A bus stop shelter: the City's Bus Stop Shelters article (KA-01071). Beta retest 3, 2026-11-09.
+  { when: /\bbus (stop )?shelters?\b|\bbus stop\b[^.]{0,30}\b(glass|smashed|broken|shattered|damaged|cracked)\b/, terms: ["bus", "stop", "shelter", "complaint"], weight: 3, against: ["bike", "sheltered"], categories: ["Sidewalks", "Streets & Highways"], family: "bus_shelter" },
+  // A street vendor: the City's Street Vendor Complaint (KA-02152). Beta retest 3, 2026-11-09:
+  // "someone is selling food on the street without a permit" found nothing.
+  { when: /\b(vendors?|vending|peddl\w*|sellers?|hawkers?)\b|\bsell(s|ing)?\b[^.]{0,40}\b(on the street|on the sidewalk|in the street|on my block|on the corner|without a (permit|license))\b|\bfood (carts?|trucks?)\b/, unless: /\b(drugs?|weed|marijuana|counterfeit|fake)\b/, terms: ["street", "vendor", "complaint"], weight: 3, against: ["art", "tax", "contract"], categories: ["Sidewalks", "Streets & Highways"], family: "vendor" },
+  { when: /\b(unlicensed|without a (permit|license)|no (permit|license)|illegal(ly)? (vend\w*|sell\w*))\b/, terms: ["unlicensed"], weight: 2 },
   { when: /\b(street ?lights?|lamp ?posts?|light poles?|poste de luz)\b/, terms: ["street", "light"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "street_light" },
   { when: /\b(trees?|branch|branches|[aá]rbol)\b/, terms: ["tree", "branch"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "tree" },
   // A standing dead or dying tree: the City's Dead Tree article (KA-02006), not Fallen Tree
@@ -364,6 +386,23 @@ function scoreCategory(q: Query, c: Category): number {
   return s;
 }
 
+/**
+ * Enough of the person's own problem words in the article's title or summary to call it
+ * strong: two of them, or one that few titles in the pool share. One shared word that many titles have
+ * ("construction" in Buildings & Property) is never strong (beta retest 3, 2026-11-09: the
+ * Construction Site No Smoking Sign article was rated strong for 6am jackhammering).
+ * Problem words are the word list's (weight 2 or more), not every word of the description.
+ */
+export function strongEvidence(q: Query, best: ArticleSummary, pool: ArticleSummary[]): boolean {
+  const title = stems(best.title);
+  const desc = stems(best.description);
+  const own = [...q.terms].filter(([t, w]) => w >= 2 && (title.has(t) || desc.has(t))).map(([t]) => t);
+  if (own.length >= 2) return true;
+  if (own.length === 0) return false;
+  const sharing = pool.filter((a) => stems(a.title).has(own[0])).length;
+  return sharing <= 2;
+}
+
 export const MAX_CATEGORIES = 5;
 const MIN_SCORE = 4;
 
@@ -440,6 +479,23 @@ function fileAComplaint(text: string): string | null {
   if (i < 0) return null;
   const rest = text.slice(i + "File a Complaint".length).split(/\nWhat Happens Next/)[0];
   return sentences(rest).slice(0, 2).join(" ") || null;
+}
+
+/** When 311 lists no single agency (beta retest 3, 2026-11-09: the field was blank). */
+export const AGENCY_NOT_LISTED = "agency not listed by 311";
+export const AGENCY_DEPENDS = "depends on which report option fits; see agencies";
+
+/**
+ * The agency, never blank. From the report option 311 lists; for an article with no report
+ * option, the one agency its own text names ("The Department of Transportation (DOT)
+ * maintains ..."); else one of the two plain lines above. agency_source says which.
+ */
+function agencyOf(fromAction: string | null, actionCount: number, text: string): { agency: string; agency_source: string } {
+  if (fromAction) return { agency: fromAction, agency_source: "report option" };
+  if (actionCount) return { agency: AGENCY_DEPENDS, agency_source: "the article's report options go to more than one agency or place" };
+  const named = [...new Set([...text.matchAll(AGENCY_IN_TEXT)].map((m) => `${m[1].trim()} (${m[2]})`))];
+  if (named.length === 1) return { agency: named[0], agency_source: "named in the article's text; 311 lists no report option for it" };
+  return { agency: AGENCY_NOT_LISTED, agency_source: "311 lists no report option for this article" };
 }
 
 export type Match = ReturnType<typeof describeArticle>;
@@ -521,7 +577,7 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
     matched_words: hits,
     found_in_categories: categories,
     call_911: call911Text(a),
-    agency: best?.agency ?? (agencies.length === 1 && !otherPlace ? agencies[0] : null),
+    ...agencyOf(best?.agency ?? (agencies.length === 1 && !otherPlace ? agencies[0] : null), actions.length, all),
     problem_type: best?.problem ?? null,
     problem_detail: best?.problem_detail ?? null,
     best_action: best ? { section: best.section, name: best.name } : null,
@@ -657,7 +713,7 @@ async function matchOne(q: Query, client: ContentClient, cats: Category[], used:
         const art = await client.article(x.a.ka_number);
         used.push(art);
         const conf =
-          s1 >= 9 && s1 - s2 >= 2
+          s1 >= 9 && s1 - s2 >= 2 && strongEvidence(q, x.a, ranked.map((r) => r.a))
             ? "strong: the best fit by a clear margin"
             : s1 >= 9
               ? "close call: the next match scored nearly as well; read both"
@@ -682,7 +738,7 @@ function nycDate(iso: string): string {
 function matchLine(m: Match): string {
   return (
     `Best match: "${m.title}" (${m.ka_number})` +
-    (m.agency ? `, handled by the ${m.agency}` : "") +
+    (m.agency_source === "report option" ? `, handled by the ${m.agency}` : "") +
     (m.problem_type ? `, 311 problem type "${m.problem_type}"` : "") +
     `. Confidence ${m.confidence.split(":")[0]}. Article text as of ${nycDate(m.article_fetched_at)}.`
   );

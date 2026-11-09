@@ -162,7 +162,7 @@ export function reportPeriods(
   defaultMonth: string
 ): ReportPeriods {
   if (args.month !== undefined && args.fiscal_year !== undefined) {
-    throw new Error("Give month or fiscal_year, not both. A month's answer already includes its fiscal year to date.");
+    throw new Error("Give month or fiscal_year, not both. A month's answer also gives its fiscal year to date, from saved months.");
   }
   const notes: string[] = [];
   if (args.fiscal_year !== undefined) {
@@ -564,6 +564,9 @@ export const DA_BUDGET_MS = 58_000;
  */
 export const DA_REQUEST = { maxTries: 2, timeoutMs: 55_000, noRetryAfterMs: 5_000 } as const;
 
+/** Why a fiscal-year month is missing from a one-month call's year to date. */
+export const ONE_MONTH_ONLY = "not fetched: a one-month call fetches only its own month; this one is not saved yet";
+
 const TRY_LATER =
   "Try again later, or ask for the fiscal year instead of one month (fiscal_year, without month): months already saved answer it without NYC Open Data.";
 
@@ -608,6 +611,7 @@ async function monthCalls(
       : saved.version === meta.meta.rowsUpdatedAt;
     if (fresh || meta.stale) return { ym, groups: saved.value, from: fresh ? "cache" : "old_cache", fetched_at: iso(saved.fetched_at_ms) };
   }
+  if (saved && give.up) return { ym, groups: saved.value, from: "old_cache", fetched_at: iso(saved.fetched_at_ms) };
   if (meta.stale || give.up) {
     return meta.stale
       ? { ym, missing: "NYC Open Data could not be reached and no saved copy exists", trouble: "down" }
@@ -730,17 +734,22 @@ export async function directoryAssistanceReport(
   }
   const meta = mr.meta;
   const months = monthsBetween(periods.fiscal_year.start, periods.fiscal_year.end);
-  // The asked-for month first, so a short budget still answers it; then the rest, oldest first.
+  // The asked-for month first; then the rest, oldest first.
   const order = periods.month ? [periods.month.month, ...months.filter((m) => m !== periods.month!.month)] : months;
   const give: { up: boolean; why?: string; trouble?: Trouble } = { up: false };
   const results = new Map<string, MonthResult>();
   for (const ym of order) {
     const r = await monthCalls(soda, mr, ym, today, deadline, give, request);
     results.set(ym, r);
-    // The asked-for month failed: stop, rather than spend the rest of the budget on the
-    // fiscal-year months against a portal that is failing (beta test 2026-11-08: 45 s of 503s).
-    if (periods.month && ym === periods.month.month && "missing" in r) {
-      throw new Error(r.trouble ? plain(r.trouble, ym) : `No answer for ${ym}: ${r.missing}. Try again later.`);
+    if (periods.month && ym === periods.month.month) {
+      // The asked-for month failed: stop, rather than spend the rest of the budget on the
+      // fiscal-year months against a portal that is failing (beta test 2026-11-08: 45 s of 503s).
+      if ("missing" in r) throw new Error(r.trouble ? plain(r.trouble, ym) : `No answer for ${ym}: ${r.missing}. Try again later.`);
+      // A one-month call fetches only its month; the year to date uses saved months only
+      // (beta retest 3, 2026-11-09: October, saved, still waited 55 s on the other months).
+      give.up = true;
+      give.why = ONE_MONTH_ONLY;
+      give.trouble = null;
     }
   }
   const missing = [...results.values()].filter((r): r is Extract<MonthResult, { missing: string }> => "missing" in r);
@@ -752,7 +761,9 @@ export async function directoryAssistanceReport(
         ...periodOut(p),
         complete: false,
         months_missing: gone.map((x) => ({ month: x.ym, why: x.missing })),
-        note: "Not every month of this period could be fetched in this call, so no total is given. The months fetched are saved; ask again to finish.",
+        note: gone.every((x) => x.missing === ONE_MONTH_ONLY)
+          ? "A one-month call fetches only its own month, so no total is given for the year to date. Ask with fiscal_year (and no month) to fetch the other months; they are saved for later calls."
+          : "Not every month of this period could be fetched in this call, so no total is given. The months fetched are saved; ask again to finish.",
       };
     }
     const groups = ms.flatMap((ym) => (results.get(ym) as { groups: CallGroup[] }).groups);
@@ -1007,7 +1018,7 @@ export const LL47_TOOLS = [
   {
     name: "ll47_directory_assistance_report",
     description:
-      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A cold fiscal-year-to-date answer usually comes back complete:false first (each call has a 58 s budget); asking again completes it from the saved months. " +
+      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A month call fetches only that month; its fiscal year to date uses saved months. A fiscal_year call fetches the rest, often complete:false at first (58 s budget per call); asking again finishes it. " +
       REBUILD,
     inputSchema: obj({ month: MONTH_JSON, fiscal_year: FY_JSON, limit: limitJson(50, 2000, "topics") }),
   },

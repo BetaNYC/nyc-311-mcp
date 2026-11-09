@@ -5,7 +5,7 @@
 // Every route is the City's own article and report option; none is invented here.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { howToReport } from "../dist/how-to-report.js";
+import { howToReport, AGENCY_DEPENDS } from "../dist/how-to-report.js";
 import { SAFETY_LINE } from "../dist/emergency.js";
 import { fixtureContent } from "./content-fixture.mjs";
 
@@ -18,9 +18,9 @@ const HPD = "Department of Housing Preservation and Development";
 const ROWS = [
   // Grills: Barbecuing is the closest City article; its only report option is for a park or
   // beach, so for a neighbor's grill no option is picked and the answer says it is not exact.
-  ["not an emergency, just some smoke from a neighbor's grill", "KA-02228", { agency: null, closest: true }],
-  ["smoke from a neighbor's barbecue grill coming in my window", "KA-02228", { agency: null, closest: true }],
-  ["someone is grilling on the sidewalk", "KA-02228", { agency: null, closest: true }],
+  ["not an emergency, just some smoke from a neighbor's grill", "KA-02228", { agency: AGENCY_DEPENDS, closest: true }],
+  ["smoke from a neighbor's barbecue grill coming in my window", "KA-02228", { agency: AGENCY_DEPENDS, closest: true }],
+  ["someone is grilling on the sidewalk", "KA-02228", { agency: AGENCY_DEPENDS, closest: true }],
   ["someone is barbecuing in the park", "KA-02228", { agency: DPR, problem: "Violation of Park Rules" }],
   // Graffiti: the Graffiti article, never an apartment repair.
   ["graffiti on a mailbox", "KA-02070", { section: "USPS Mailbox" }],
