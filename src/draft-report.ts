@@ -270,9 +270,15 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
   // says "Call 911"). The answer is how_to_report's own 911 answer.
   const dangerWhole = assessDanger(args.description);
   const flaggedPart = each.find((x) => assessDanger(x.said).kinds.length || x.match.emergency);
+  // `details` and `when` go into the paste text too, so they are read for danger as well,
+  // each on its own: "not urgent" in one field does not cancel danger named in another.
+  const dangerOther = [args.details, args.when].map((t) => (t ? assessDanger(t) : null)).find((x) => x?.kinds.length) ?? null;
   const cityCall911 = Boolean(whole.best_match && /^call 911\b/i.test(whole.best_match.summary) && whole.first_line === whole.best_match.summary);
-  if (dangerWhole.kinds.length || whole.emergency || flaggedPart || cityCall911) {
-    const emergency = whole.emergency ?? flaggedPart?.match.emergency ?? emergencyLead(dangerWhole.kinds.length ? dangerWhole : assessDanger(flaggedPart?.said ?? args.description), []);
+  if (dangerWhole.kinds.length || whole.emergency || flaggedPart || cityCall911 || dangerOther) {
+    const emergency =
+      whole.emergency ??
+      flaggedPart?.match.emergency ??
+      emergencyLead(dangerWhole.kinds.length ? dangerWhole : flaggedPart ? assessDanger(flaggedPart.said) : dangerOther ?? assessDanger(args.description), []);
     return finish({
       ...SAFETY,
       first_line: whole.emergency || cityCall911 ? whole.first_line : (flaggedPart?.match.emergency ? flaggedPart.match.first_line : (emergency?.call_911 ?? GENERIC_911)),
