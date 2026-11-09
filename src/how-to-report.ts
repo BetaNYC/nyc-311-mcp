@@ -117,6 +117,14 @@ type Concept = {
   spanish?: boolean;
 };
 
+// A pickup that did not happen: the City's Missed Trash, Recycling, or Compost Collection
+// article (KA-01788), not a litter basket. Beta retest 2026-11-08: "sanitation skipped our
+// garbage pickup" got Litter Basket Complaint.
+const MISSED_COLLECTION = /\b(skipped|missed|didn'?t (come|pick)|never (came|picked)|forgot)\b[^.]{0,40}\b(pick ?-?ups?|collections?|garbage|trash|recycling|compost)\b|\b(not|never|wasn'?t|weren'?t) (been )?(picked up|collected)\b|\bno recogieron\b/;
+// Water standing in the street: the City's Street Flooding article (KA-02198), not a leak in
+// a building. Beta retest 2026-11-08.
+const STREET_FLOOD = /\b(street|road|roadway|intersection|corner|crosswalk|block)\b[^.]{0,30}\b(flood\w*|ponding|puddl\w*|under water)\b|\b(flood\w*|ponding)\b[^.]{0,30}\b(street|road|roadway|intersection|corner|crosswalk)\b/;
+
 // Written against 311's category tree and article titles of 2026-11-07. Each line's
 // words are taken from the titles and summaries of the article it should find.
 // Spanish words cover the top problems only; matching is by keyword, not translation.
@@ -140,7 +148,9 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(dog|dogs|barking|barks|animal|perro)\b/, terms: ["dog", "animal"], weight: 2 },
   { when: /\bfireworks?\b|\bfuegos artificiales\b/, terms: ["fireworks"], weight: 3, categories: ["Noise", "Safety & Crime"], family: "fireworks" },
   // Parking and vehicles
-  { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally|mal estacionad\w*|estacionad\w*)\b/, terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"], family: "parking" },
+  { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally|mal estacionad\w*|estacionad\w*)\b/, unless: /\b(parking )?meters?\b|\bmuni-?meters?\b/, terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"], family: "parking" },
+  // A parking meter: the City's Parking Meter Complaint or Request (KA-01240), not Illegal Parking.
+  { when: /\b(parking )?meters?\b|\bmuni-?meters?\b/, unless: /\bwater meters?\b/, terms: ["parking", "meter", "complaint"], weight: 3, against: ["illegal"], categories: ["Parking"], family: "meter" },
   { when: /\bhydrant/, terms: ["hydrant"], weight: 2, categories: ["Water", "Sidewalks"] },
   { when: /\bdriveway/, terms: ["driveway", "blocked"], weight: 3, against: ["commercial"], categories: ["Parking"], family: "parking" },
   { when: /\b(abandoned|derelict|junk car|no (license )?plates?|hasn'?t moved|not moved|been (sitting|there) for)/, terms: ["abandoned", "vehicle"], weight: 3, categories: ["Tickets & Tows", "Parking"], family: "parking" },
@@ -152,13 +162,15 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(hot water|agua caliente)\b/, terms: ["hot", "water", "heat"], weight: 2, categories: ["Tenants"], family: "heat" },
   { when: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building|rent|apartamento|casero|due[ñn]o|edificio)\b/, terms: ["apartment", "residential", "building"], weight: 1, against: ["commercial", "nycha", "loft"], categories: ["Tenants"] },
   { when: /\b(harass\w*|forcing (me|us) out|trying to (evict|force)|acoso|acosando)\b/, terms: ["harass", "tenant"], weight: 3, categories: ["Tenants"], family: "harassment" },
-  { when: /\b(mice|mouse|rats?|roach(es)?|cockroach(es)?|bed ?bugs?|pests?|vermin|fleas|flies|ratas?|ratones|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
+  // Bed bugs: the City's Bed Bug Complaint (KA-01236), its own article. Beta retest 2026-11-08.
+  { when: /\bbed ?bugs?\b|\bchinches\b/, terms: ["bed", "bug", "complaint"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
+  { when: /\b(mice|mouse|rats?|roach(es)?|cockroach(es)?|pests?|vermin|fleas|flies|ratas?|ratones|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
   { when: /\b(mold|mould|mildew|moho|hongos)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"], family: "mold" },
   { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle|graffiti)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b|\b(coming|blowing|getting|comes|blows) (in|into|through) (my |the |our )?(windows?|doors?)\b|\bgraffiti\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
   { when: /\b(smoke|carbon monoxide|co) (detector|alarm)s?\b[^.]{0,30}\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\w*|needs? (a )?batter\w*)|\b(no|missing|broken) (smoke|carbon monoxide|co) (detector|alarm)/, terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
-  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
+  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, unless: STREET_FLOOD, terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
   { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, terms: ["elevator", "escalator"], weight: 3, categories: ["Buildings & Property"], family: "elevator" },
   { when: /\bfire escapes?\b|\b(blocked|locked) (building )?exits?\b/, terms: ["fire", "escape", "exit", "blocked"], weight: 3, categories: ["Buildings & Property"], family: "exit" },
   // Streets and sidewalks
@@ -167,14 +179,24 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(traffic (light|signal)|stop ?light|signal|walk sign|red light|sem[aá]foro)\b/, terms: ["traffic", "signal"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "signal" },
   { when: /\b(street ?lights?|lamp ?posts?|light poles?|poste de luz)\b/, terms: ["street", "light"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "street_light" },
   { when: /\b(trees?|branch|branches|[aá]rbol)\b/, terms: ["tree", "branch"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "tree" },
+  // A standing dead or dying tree: the City's Dead Tree article (KA-02006), not Fallen Tree
+  // or Branch, unless the person says it fell. Beta retest 2026-11-08.
+  { when: /\b(dead|dying)\b[^.]{0,20}\b(trees?|[aá]rbol)\b|\btrees?\b[^.]{0,40}\b(dead|dying)\b/, unless: /\b(fell|fallen|falling|came down|knocked down|blew down|toppled)\b/, terms: ["dead"], weight: 3, against: ["fallen"], family: "tree" },
+  // A sidewalk shed or scaffold left up: the City's Scaffold or Sidewalk Shed Complaint (KA-02291).
+  { when: /\b(sidewalk|construction) sheds?\b|\bscaffold\w*/, terms: ["scaffold", "sidewalk", "shed", "complaint"], weight: 3, against: ["permit"], categories: ["Sidewalks", "Buildings & Property"], family: "scaffold" },
   { when: /\b(snow|ice|icy|unshoveled|shovel|slush|plow|nieve|hielo)/, terms: ["snow", "ice"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "snow" },
   // Water
+  { when: STREET_FLOOD, terms: ["street", "flooding", "ponding"], weight: 3, categories: ["Streets & Highways"], family: "street_flooding" },
   { when: /\b(water main|gushing|water (all )?over the street|water in the street)/, terms: ["water", "main", "break"], weight: 2, categories: ["Water", "Sidewalks"], family: "water" },
   { when: /\bhydrant\b.*\b(open|running|leak|spraying|gushing)|\b(open|running|leaking) (fire )?hydrant/, terms: ["hydrant", "leak", "running"], weight: 3, categories: ["Water", "Sidewalks"], family: "water" },
   // Trash
-  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: /\b(not picked up|wasn'?t (picked up|collected)|missed (pickup|collection))/, terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
+  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: MISSED_COLLECTION, terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
+  // Trash inside a building is not a public litter basket ("trash in the lobby" got Litter
+  // Basket once that article was recorded, 2026-11-08); a can, basket or bin said wins.
+  { when: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\b(litter )?baskets?\b/, terms: ["basket"], weight: 3 },
+  { when: /\b(lobby|hallways?|stairwells?|stairs|basement|laundry room|elevator|inside (my|the|our) building|in (my|the|our) building)\b/, unless: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\bbaskets?\b/, terms: [], against: ["basket"] },
   { when: /\b(dump|dumped|dumping|mattress|couch|sofa)\b/, terms: ["dump", "illegal"], weight: 3, categories: ["Cleaning"], family: "dumping" },
-  { when: /\b(missed (pickup|collection)|not picked up|wasn'?t (picked up|collected)|not collected|no recogieron)/, terms: ["collection", "missed"], weight: 3, categories: ["Collection & Disposal"], family: "collection" },
+  { when: MISSED_COLLECTION, terms: ["collection", "missed"], weight: 3, categories: ["Collection & Disposal"], family: "collection" },
   // Homelessness
   { when: /\b(homeless|encampments?|tents?|unhoused|sleeping (on|in) the|living on the street|person sleeping|sin hogar|campamento)/, terms: ["homeless", "encampment", "outreach"], weight: 3, categories: ["Safety & Crime", "Homelessness"], family: "homeless" },
   // Graffiti: the City's Graffiti article (KA-02070), not a building repair. Beta test 2026-11-08.
@@ -186,6 +208,8 @@ export const CONCEPTS: Concept[] = [
   // go to Parks, not to HPD's at-home form). "Park" alone, never "parking" or "parked".
   { when: /\b(parks?|playgrounds?|greenway|ball ?fields?)\b/, terms: ["park"], weight: 2, categories: ["Parks & Recreation"] },
   { when: /\b(bench|benches|swings?|slides?|see-?saws?|jungle gym|monkey bars|water fountains?|drinking fountains?|(basketball|handball|tennis) (court|hoop)s?)\b/, terms: ["park", "maintenance"], weight: 3, categories: ["Parks & Recreation"], family: "park_maintenance" },
+  // Illness from food: the City's Food Poisoning article (KA-02051). Beta retest 2026-11-08.
+  { when: /\bfood poisoning\b|\bintoxicaci[oó]n alimentaria\b|\b(sick|ill|vomit\w*|threw up|throwing up)\b[^.]{0,40}\b(ate|eating|food|meal|restaurant|takeout)\b|\b(ate|eating)\b[^.]{0,40}\b(sick|ill|vomit\w*|threw up|throwing up)\b/, terms: ["food", "poisoning", "illness"], weight: 3, against: ["noise"], categories: ["Public Health"], family: "food_illness" },
   // Records
   { when: /\bbirth certificate|acta de nacimiento/, terms: ["birth", "certificate", "order"], weight: 3, categories: ["Public Health", "Birth & Adoption"], family: "records" },
   // Crime that is not happening now (danger is handled in emergency.ts)
