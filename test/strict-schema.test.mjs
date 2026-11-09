@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { TOOLS, callTool } from "../dist/tools.js";
+import { setBoardStatData } from "../dist/district-tools.js";
+import { fixtureData } from "./district-fixture.mjs";
 
 // These tests never touch the live 311 API. A key is set so getApiKey() does not
 // short-circuit, and fetch is stubbed so anything that escapes argument
@@ -51,7 +53,20 @@ test("get_status still rejects a missing required type", async () => {
 // #7, for every tool rather than one: a valid call plus one invented parameter
 // must be refused. VALID_ARGS must name every tool, so a tool added later
 // without an entry fails here instead of going untested.
+// The district tools read the BoardStat fixtures instead of beta.nyc.
+setBoardStatData((await fixtureData()).data);
+
 const VALID_ARGS = {
+  find_district: { address: "350 5th Ave" },
+  district_summary: { community_district: 484 },
+  top_problems: { council_district: 1, last_days: 30 },
+  problem_trend: { community_district: 484, problem: "Street Light Condition" },
+  agency_response: { community_district: 484, fiscal_year: 2026 },
+  still_open: { community_district: 484 },
+  top_addresses: { community_district: 484, problems: ["Illegal Parking"] },
+  address_history: { address: "JACOB RIIS PARK", borough: "Queens" },
+  boardstat_link: { community_district: 101 },
+  boardstat_status: {},
   get_calendar: { date: "2026-07-04" },
   get_status: { type: "CodeBlue" },
   get_service_request: { sr_number: "311-17323508" },
@@ -66,8 +81,12 @@ for (const [name, args] of Object.entries(VALID_ARGS)) {
   test(`${name} answers its valid call and rejects the same call plus an unknown parameter`, async () => {
     const ok = await callTool(name, args);
     assert.notEqual(ok.isError, true, ok.content[0].text);
-    const bad = await callTool(name, { ...args, council_district: "10" });
-    assert.equal(bad.isError, true, `${name} silently dropped council_district: ${bad.content[0].text}`);
-    assert.match(bad.content[0].text, /council_district/);
+    // council_district is a real parameter of the district tools, so they get a
+    // different invented one; either way the error must name the rejected key.
+    const props = TOOLS.find((t) => t.name === name).inputSchema.properties;
+    const invented = "council_district" in props ? "neighborhood_name" : "council_district";
+    const bad = await callTool(name, { ...args, [invented]: "10" });
+    assert.equal(bad.isError, true, `${name} silently dropped ${invented}: ${bad.content[0].text}`);
+    assert.match(bad.content[0].text, new RegExp(`${invented}.*not accept|does not accept '${invented}'`));
   });
 }

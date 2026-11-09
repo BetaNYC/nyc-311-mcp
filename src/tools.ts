@@ -5,6 +5,7 @@ import {
   getServiceRequest,
   getServiceRequestList,
 } from "./nyc-311.js";
+import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -79,6 +80,8 @@ export const TOOLS = [
       required: ["sr_numbers"],
     },
   },
+  // The ten district tools, from BoardStat's published files (#14).
+  ...DISTRICT_TOOLS,
 ];
 
 const ARG_SHAPES = {
@@ -90,6 +93,7 @@ const ARG_SHAPES = {
   get_status: { type: z.enum(STATUS_TYPES) },
   get_service_request: { sr_number: z.string() },
   get_service_request_list: { sr_numbers: z.array(z.string()) },
+  ...DISTRICT_ARG_SHAPES,
 };
 
 /**
@@ -120,6 +124,11 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
 }
 
 export async function callTool(name: string, args: unknown) {
+  // Own keys only: `name in shapes` is also true for "constructor", "toString" and the
+  // rest of Object's properties, which would run a tool body for a name that is no tool.
+  if (!Object.hasOwn(ARG_SHAPES, name)) {
+    return { content: [{ type: "text", text: `Unknown tool: ${name}` }], isError: true };
+  }
   try {
     switch (name) {
       case "get_calendar": {
@@ -147,6 +156,11 @@ export async function callTool(name: string, args: unknown) {
       }
 
       default:
+        if (name in DISTRICT_ARG_SHAPES) {
+          const parsed = parseToolArgs(name as DistrictToolName, args) as Record<string, unknown>;
+          const result = await runDistrictTool(name as DistrictToolName, parsed);
+          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+        }
         return { content: [{ type: "text", text: `Unknown tool: ${name}` }], isError: true };
     }
   } catch (err) {
