@@ -303,7 +303,7 @@ test("429: one retry after Retry-After; a second 429 is an error; 404 article is
   assert.equal(calls, 2);
   assert.deepEqual(sleeps.filter((s) => s > 0), [2000]);
   const always = new ContentClient({ apiKey: () => "k", cacheDir: await tmp(), minIntervalMs: 0, logger: () => {}, sleep: async () => {}, fetch: async () => new Response("no", { status: 429 }) });
-  await assert.rejects(always.categories(), /NYC 311 API error 429/);
+  await assert.rejects(always.categories(), /limiting requests from this API key right now \(HTTP 429/);
   const { client } = await fixtureContent();
   await assert.rejects(client.article("KA-99999"), /has no article KA-99999/);
 });
