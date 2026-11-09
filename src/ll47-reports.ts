@@ -367,7 +367,13 @@ export async function serviceRequestReport(src: Source, args: z.infer<z.ZodObjec
           top_problem: top ? { problem: top[0], requests: top[1] } : null,
         };
       });
-    const out = capped(table, Math.min(limit, 100));
+    const shown = Math.min(limit, 100);
+    const out = capped(table, shown);
+    // Said in words, not only as truncated: true (beta test 2026-11-08: limit 5 showed 5 of
+    // 18 Brooklyn districts with no clear signal, and limit read as a category count).
+    const cut = out.truncated
+      ? `Showing ${out.items.length} of ${out.total_items} districts, because limit is ${shown}: with by_district, limit counts districts. Give limit ${out.total_items} to see every one.`
+      : null;
     const env = districtEnvelope({
       manifest: mr,
       siteUrl: data.siteUrl,
@@ -378,8 +384,10 @@ export async function serviceRequestReport(src: Source, args: z.infer<z.ZodObjec
         districts: out.items,
         truncated: out.truncated,
         district_count: out.total_items,
+        ...(cut ? { truncation_note: cut } : {}),
       },
       extraCaveats: [
+        ...(cut ? [cut] : []),
         ...caveats,
         "This table comes from BoardStat's month file: whole months, and BoardStat's grouped problem names (top_problem), which have not yet been reviewed. Ask for one district to get agencies, statuses and days to close.",
         ...(kind === "cc" ? ["Council districts are placed by BoardStat, by where each request happened and today's Council lines."] : []),
@@ -889,7 +897,7 @@ export const LL47_TOOLS = [
         type: "boolean",
         description: "Citywide or borough only: read every community district file to add agencies, statuses and days to close. A large download (about 860 MB citywide in November 2026), cached until the next build.",
       },
-      limit: limitJson(50, 1000, "categories and category-agency rows"),
+      limit: limitJson(50, 1000, "categories and category-agency rows (with by_district: districts)"),
     }),
   },
   {

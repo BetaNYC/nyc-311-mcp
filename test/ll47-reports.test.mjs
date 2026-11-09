@@ -104,9 +104,13 @@ test("by_district lists every district from the month file, honors borough and l
   const cds = await run("ll47_service_request_report", { by_district: "community_district", borough: "Queens", month: "2026-10", limit: 3 });
   assert.equal(cds.data.districts.length, 3);
   assert.equal(cds.data.truncated, true);
+  // Said in words too, and in the caveats (beta test 2026-11-08).
+  assert.match(cds.data.truncation_note, /^Showing 3 of \d+ districts, because limit is 3: with by_district, limit counts districts/);
+  assert.ok(cds.env.caveats.includes(cds.data.truncation_note));
   assert.ok(cds.data.districts.every((r) => r.borough === "Queens"));
   const all = await run("ll47_service_request_report", { by_district: "community_district", month: "2026-10", limit: 100 });
   assert.equal(all.data.district_count, MANIFEST.districts.cd.length);
+  assert.equal(all.data.truncation_note, undefined);
   const r484 = all.data.districts.find((r) => r.id === 484);
   assert.equal(r484.requests_month, EXPECTED.sr_two_files_2026_10.month.requests, "cd 484 is the only fixture district with October rows");
 });
