@@ -23,11 +23,11 @@
 //     present: "still inside", "still here", "right now", or a named weapon keeps it.
 
 /**
- * On every how_to_report and draft_311_report answer, first in the text and in the structured
- * output, whatever was or was not detected: the danger words will always miss some wording
- * (beta retest 11, 2026-11-09: eight emergencies happening now got no emergency block).
+ * On every response from every tool (callTool), first in the text and as the first field of the
+ * structured output, whatever was or was not detected: the danger words will always miss some
+ * wording (beta retest 11, 2026-11-09). Noel's exact sentence (beta round 13).
  */
-export const SAFETY_LINE = "If someone is hurt or in danger right now, call 911. This tool can miss an emergency.";
+export const SAFETY_LINE = "If this is an emergency, please call 911.";
 export const SAFETY_LINE_SOURCE = "BetaNYC wording, on every answer.";
 export const GENERIC_911 = "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.";
 
@@ -54,12 +54,19 @@ export const PAST = /\b(yesterday|last (night|week|month|year|weekend)|days? ago
 /** A vehicle, and a person, for "a bus hit a cyclist" and "a pedestrian was struck by a car". */
 const VEHICLE = "(cars?|trucks?|bus(es)?|vans?|vehicles?|taxis?|cabs?|ubers?|drivers?|motorcycles?|scooters?|e-?bikes?|mopeds?|suvs?|garbage trucks?|ambulances?|police cars?)";
 const PERSON = "(an? |the |my |his |her |our |some )?(cyclists?|bikers?|bicyclists?|pedestrians?|person|people|man|woman|men|women|kids?|child(ren)?|boy|girl|guy|lady|someone|somebody|delivery (worker|guy|man)|old (man|woman|lady)|students?|workers?|neighbor|son|daughter|mother|father|mom|dad|grandm\\w*|grandf\\w*)";
+/** An animal hit or run over by a vehicle. */
+const ANIMAL_HIT = /\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|deer|geese|goose|ducks?|possums?|opossums?|coyotes?|fox(es)?)\b[^.]{0,20}\b(got |was |been |just )?(hit|struck|run over|ran over)\b/;
+/** A person as the object of violence: "a woman", "his girlfriend", "the old man", "someone". */
+const PERSON_OBJ = "(an? |the |my |his |her |their |our |some )?(woman|man|women|men|girl|boy|kid|child|children|person|people|someone|somebody|guy|lady|wife|husband|girlfriend|boyfriend|partner|mother|father|mom|dad|son|daughter|brother|sister|grandm\\w*|grandf\\w*|neighbor|teenager|teen|student|baby|elderly (man|woman)|old (man|woman|lady)|homeless (man|woman|person)|delivery (worker|guy)|driver|passenger)\\b(?! (dolls?|toys?))";
 /** Someone forcing their way in, an intruder inside, someone following the person. */
 const FORCED_ENTRY = [
   "(break|breaking|broke|kick|kicking|kicked|bust|busting|force|forcing|pry|prying|smash|smashing)\\w* (down|in|open|into|through) (my|the|our|her|his|their|a) (front |back |apartment |building |bedroom )?(doors?|windows?|apartment|house|home|place)",
   "(trying|tried|tries) to (break|kick|force|bust|pry) (in|into|down|open|through)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|he|she|they|strangers?|people) (is |are |'s |keeps? )?(trying|tries|tried|jiggling|rattling|turning) (my|the|our) (front |back |apartment )?(doors?|doorknobs?|locks?|windows?)",
   "(trying|jiggling|rattling) (it|the (door|knob|handle|lock)) right now",
+  // One person attacking another, now (beta retest 12: "a man is beating a woman in the stairwell
+  // of my building" got Heat or Hot Water and no 911).
+  "(is |are |'s |'re )?(beating|hitting|punching|kicking|choking|strangling|stabbing|slashing|attacking|assaulting|slapping|stomping|dragging|shoving|pushing|throwing) (up )?" + PERSON_OBJ,
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|intruders?|people) (is |are |was |were |keeps? )?(trying|tried) to (get|climb|come) (in|into)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|an? intruders?|intruders?) (is |are |was |'s )?(in|inside|hiding in) (my|our|the) (apartment|house|home|room|bedroom|bathroom|closet|basement)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|he|she|they) (is |are |'s |keeps? )?(following|stalking|chasing) (me|us|my (kid|son|daughter|child))",
@@ -170,7 +177,10 @@ export const DANGERS: DangerKind[] = [
     id: "hurt",
     label: "someone hurt or in medical danger",
     when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|od'?ing|odeing|choking|fainted|not moving|isn'?t moving|won'?t move|turning blue|(isn'?t|not) responding|swallowed (a |an |some )?(battery|batteries|bleach|poison|magnets?|pills)|poisoned|fell (out of|off|from) (a |the |his |her |my )?(window|roof|fire escape|scaffold\w*|balcony|ledge|building|stairs)|se cay[oó]|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
-    unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b/,
+    // Not denied ("nobody was hurt"), not a figure of speech ("yowls like it's being hurt"), and
+    // not an animal (beta retest 12: a stray cat's yowling got the medical 911 line). The whole
+    // excused phrase is removed before the danger words are read again (otherMatch).
+    unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b|\b(like|as if|as though|sounds? like|looks? like)\b[^.]{0,30}\b(hurt|injured|dying|bleeding|in pain|being (hurt|killed|murdered|attacked))\b|\b(my )?(back|feet|head|knees?|ears?) (is |are )?(hurt|hurting|killing me)\b|\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|horses?|deer|geese|goose|ducks?|rats?|possums?|opossums?)\b(?:(?!\b(driver|man|woman|person|kid|child|someone|somebody|he|she|they|people|owner|boy|girl|guy|lady|i|we)\b)[^.]){0,40}\b(hurt|injured|bleeding|limping|sick|dying|hit by a (car|truck|bus))\b|\b(hurt|injured|bleeding|limping|sick|dying)\b[^.]{0,15}\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|horses?|deer|geese|ducks?)\b/,
     city: /^(Medical Emergency|Overdose)$/,
     terms: ["medical", "emergency"],
   },
@@ -206,6 +216,33 @@ export const DANGERS: DangerKind[] = [
     id: "trapped",
     label: "someone trapped",
     when: /\b(trapped|stuck in (an |the |a )?elevator|(stuck|caught|pinned) in (the |a )?(train|subway|bus|elevator) doors?|(someone|somebody|people|person|kids?|children|child|man|woman|driver|passengers?) (is |are )?stuck|stuck[^.]{0,40}\b(with )?(kids|people|children|someone|a person|passengers?) inside|atrapad[oa]s?)\b/,
+    terms: ["dangerous", "situation", "location"],
+  },
+  {
+    // Water rising where people are (beta retest 12: "a water main burst and water is rushing into
+    // basements with people inside" got Water Main Break and no 911).
+    id: "flood_people",
+    label: "flooding with people inside",
+    when: /\b(water|flood\w*|sewage)\b[^.]{0,60}\b(people|someone|somebody|kids|children|residents|tenants|families|neighbors|(my|our|his|her|their) (family|kids|mom|dad|parents|grandparents|grandm\w*|grandf\w*|husband|wife|son|daughter|baby|neighbor|roommate)|a (man|woman|person|child)) (are |is )?(still )?(inside|trapped|stuck|in there|down there|in the basement|can'?t get out)\b|\b(people|someone|kids|residents|a (man|woman|person|child)) (are |is )?(trapped|stuck) (in|by) (the )?(water|flood\w*)\b|\bwater (is )?(up to|over) (my |our |their |his |her )?(\w+'s )?(chest|neck|waist|head|shoulders)\b|\b(car|cars|bus) (is |are )?(stuck|stranded|floating|sinking) in (the )?(water|flood\w*)\b/,
+    terms: ["dangerous", "situation", "location"],
+  },
+  {
+    // A vehicle out of control now (beta retest 12: "cars are spinning out right now" on black ice).
+    id: "vehicle_out_of_control",
+    label: "a vehicle out of control",
+    when: new RegExp(`\\b${VEHICLE}\\b[^.]{0,30}\\b(spinning out|spun out|skidding|sliding (all over|off|into|across|down|toward|towards)|losing control|lost control|out of control|swerving (into|onto|at)|careening|fishtailing|rolling (down|toward|backward)|going the wrong way|driving (the wrong way|on the sidewalk|into))\\b|\\b(no one|nobody) (is )?(driving|in) (the|a) (car|truck|bus|van)\\b[^.]{0,20}\\b(rolling|moving)\\b`),
+    terms: ["dangerous", "situation", "location"],
+  },
+  {
+    // Someone at a height who may jump or fall: a bridge, a roof's edge, a ledge, a railing, a
+    // window (beta retest 12: "a person is standing on the outside of the bridge railing" found
+    // nothing). The general danger article; the suicide kind, and its 988 line from the City's own
+    // Suicide article, only when the person's words say so.
+    id: "height",
+    label: "someone at risk of falling or jumping",
+    when: /\b(standing|sitting|hanging|climbing|leaning|stuck|dangling|perched|walking) (on|over|off|out of|outside( of)?|along|on top of|on the outside of|from) (the |a |an |his |her )?(outside of the )?(\w+ (floor|story) )?(bridge|roof|rooftop|ledge|railing|rail|edge|window ?sill|window|balcony|fire escape|parapet|overpass|scaffold\w*|crane|building)\b|\b(on|over) the (edge|ledge|railing) of (the |a )?(bridge|roof|building|overpass|platform|balcony)\b|\b(threatening|about|going|trying|wants?) to (jump|fall) (off|from|out)\b|\b(climbed|climbing) (over|onto|up) the (railing|fence|ledge) (of|on) (the |a )?(bridge|roof|overpass)\b|\b(child|kid|toddler|baby|boy|girl) (is )?(hanging|climbing|leaning|sitting) (out|on|over) (of )?(the |a |an |her |his )?([\w-]+ ){0,2}(window|balcony|ledge|fire escape|railing)\b/,
+    // Workers at height doing their job are not a danger; the whole sentence is excused.
+    unless: /[^.]*\b(window washers?|window cleaners?|construction workers? (with|in) (a )?harness|wearing a harness|painters?|in a harness)\b[^.]*/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -255,7 +292,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "domestic_violence",
     label: "domestic violence",
-    when: /\b(domestic violence|(husband|wife|boyfriend|girlfriend|partner|ex) (is |keeps )?(beating|hitting|hurting|choking) (me|her|him)|hitting (his|her) (wife|husband|girlfriend|boyfriend|partner)|violencia dom[eé]stica)\b/,
+    when: /\b(domestic violence|(husband|wife|boyfriend|girlfriend|partner|ex) (is |keeps |'s )?(beating|hitting|hurting|choking|strangling|punching|kicking|attacking|threatening) (me|her|him|them)|(beating|hitting|punching|choking|strangling|kicking|attacking) (his|her|their) (wife|husband|girlfriend|boyfriend|partner|kids?|children)|hitting (his|her) (wife|husband|girlfriend|boyfriend|partner)|violencia dom[eé]stica)\b/,
     terms: ["domestic", "violence"],
   },
 ];
@@ -326,6 +363,11 @@ export function assessDanger(description: string): DangerAssessment {
   if (kinds.some((k) => k.id === "crash") && !kinds.some((k) => k.id === "hurt") && !/\b(hit by a|run over|flipped( over)?|overturned|rolled over|people (are )?(still )?inside|someone (is )?(still )?inside|trapped|pinned)\b/.test(text)) {
     kinds = kinds.filter((k) => k.id !== "crash");
   }
+  // An animal hit by a car is the animal path (Injured or Sick Animal), not a crash with someone
+  // hurt, unless a person is hurt too.
+  if (kinds.some((k) => k.id === "crash") && ANIMAL_HIT.test(text) && !kinds.some((k) => k.id === "hurt" || k.id === "person_hit")) {
+    kinds = kinds.filter((k) => k.id !== "crash");
+  }
   // A crime word with a past-time word is a past crime: a pointer, not a 911 lead.
   // It is not past when the words say the danger is present ("still inside", a weapon).
   const crime = DANGERS.find((k) => k.id === "crime")!;
@@ -342,7 +384,7 @@ export function assessDanger(description: string): DangerAssessment {
   if (recurring) {
     kinds = kinds.filter((k) => {
       if (k.id === "smoke") return ELECTRICAL_SMOKE.test(text);
-      if (k.id === "crash") return false;
+      if (k.id === "crash" || k.id === "vehicle_out_of_control") return false;
       // People walking on the tracks as a habit is quieted; someone pushed, fallen or lying there is not.
       if (k.id === "tracks") return /\b(pushed|shoved|fell|fallen|thrown|jumped|knocked|slipped|lying|train is coming)\b/.test(text);
       if (k.id === "hurt") return !(SOFT_HURT.test(by[found.indexOf(k)]) && !HARD_HURT.test(text));

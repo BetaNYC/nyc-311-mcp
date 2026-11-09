@@ -7,6 +7,50 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.13] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: one sentence on every response (Noel, beta round 13)
+
+- Every response from all 21 tools, success or error, now carries the exact sentence "If this
+  is an emergency, please call 911.": first in the text, and as the first field
+  (`safety_line`) of the structured answer. It replaces beta.12's longer line, which was only on
+  the three reporting-help tools. A detected danger still leads `how_to_report`'s and
+  `draft_311_report`'s `first_line` with its own, stronger 911 line. A test calls every tool.
+
+### Fixed (beta retest 12, 2026-11-09)
+
+- **Missed emergencies, by class:**
+  - violence between people in the present tense: any of beating, hitting, punching, choking,
+    stabbing, attacking, dragging or shoving a person ("a man is beating a woman in the
+    stairwell"); domestic violence with any relationship word. Violence never gets a building
+    repair article (it had got Heat or Hot Water);
+  - someone at a height who may fall or jump (a bridge railing, a roof's edge, a ledge, a
+    window, scaffolding), with the general danger article. The 988 line still comes only from
+    the City's Suicide article, when the person's words are about suicide. Window washers and
+    harnessed workers are not a danger;
+  - water rising where people are (a flooded basement or underpass with people inside);
+  - a vehicle out of control now (spinning out, sliding, driving on the sidewalk). A habit
+    ("cars always skid on this hill") is not.
+- **Medical danger words are for people.** An animal hurt or hit by a car goes to Injured or
+  Sick Animal; a figure of speech ("yowls like it's being hurt", "killing me", "like a bomb
+  went off") is not a danger. A person hurt in the same sentence still is.
+- **Wrong strong:** a broken TV on the sidewalk → Illegal Dumping. A TV, stereo or speakers
+  count as noise only with a sound word.
+- **Regression: Parkway.** The round-12 highway rule matched every parkway, so a pothole on
+  Eastern or Ocean Parkway got no draft. "Parkway" alone is now a city street; only named
+  expressway-type parkways (Belt, Cross Island, Grand Central, Jackie Robinson, Hutchinson
+  River, Henry Hudson, Bronx River, Korean War Veterans, Shore, ...) and expressways,
+  interstates and ramps are highways (`HIGHWAY`).
+- Also: a street never plowed → Snow or Ice on Street or Highway; a rusted fire escape →
+  Apartment Maintenance; leaf blowers → Noise from Lawn Equipment; a business next door is not
+  a neighbor; hot weather is not a heating complaint.
+- **Measured** on 687 phrasings (rounds 6 to 13, with the report's 35 and 60 new ones on
+  violence, heights, floods, vehicles out of control, injured animals, figures of speech and
+  Parkway/Expressway/Boulevard/Bridge street names): on beta.12, 16 missed emergencies, 3
+  ordinary complaints leading with 911 and 6 wrong answers rated strong; now none.
+
 ## [1.2.0-beta.12] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

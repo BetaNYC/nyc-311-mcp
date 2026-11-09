@@ -180,6 +180,14 @@ const DEAD_ANIMAL = /\bdead (rats?|mice|mouse|birds?|pigeons?|cats?|dogs?|raccoo
 
 // Tree roots lifting a sidewalk, or bees in a tree: not a fallen tree.
 const ROOTS_OR_BEES = /\b(tree )?roots?\b[^.]{0,40}\b(push\w*|lift\w*|rais\w*|crack\w*|break\w*|buckl\w*|heav\w*)\b|\b(bees?|wasps?|hornets?|yellow ?jackets?|beehives?|hives?)\b/;
+/**
+ * A highway: an expressway, an interstate, a ramp, or a parkway the City runs as one (Belt, Cross
+ * Island, Grand Central, Jackie Robinson, Hutchinson River, Henry Hudson, Bronx River, Shore,
+ * Korean War Veterans, ...). Eastern, Ocean, Pelham, Mosholu and other parkways are city streets
+ * (beta retest 12: a pothole on Eastern Parkway was sent to the highway article and the draft
+ * refused). "Parkway" alone is a street.
+ */
+export const HIGHWAY = /\b(highways?|expressways?|expwy|interstates?|i-\d+|exit ramps?|on-?ramps?|off-?ramps?|fdr( drive)?|bqe|lie|turnpike|thruway|(belt|cross island|grand central|jackie robinson|interborough|hutchinson river|hutch|henry hudson|bronx river|korean war veterans|shore|laurelton|southern state|northern state|taconic|sprain brook|saw mill( river)?|clearview|van wyck|whitestone|major deegan|sheridan|bruckner|cross bronx|gowanus|prospect|staten island|west shore|nassau) (parkway|pkwy|expressway|expwy|highway))\b/;
 // A vehicle left for a long time, with no plates or flat tires: Abandoned Vehicle, not Illegal Parking.
 const ABANDONED_VEHICLE = /\b(abandoned(?! (a |the )?(shopping )?carts?| (building|house|home|apartment|store|property|lot|church|school|factory)s?\b)|derelict(?! (building|house|property)s?\b)|junk car|no (license )?plates?|hasn'?t moved|not moved|been (sitting|there) for|been (sitting|parked|left|there)\b[^.]{0,30}\bfor (a |over a |more than a |two |three |several |many )?(weeks?|months?|years?)\b|flat tires?|missing (wheels?|tires?))/;
 // A car's window smashed, a car broken into: damage to property, a crime that is usually over.
@@ -214,12 +222,18 @@ export const DIRTY_AT_HOME = new RegExp(`\\b${HOME_ROOM}\\b[^.]{0,30}\\b${DIRTY}
 // Spanish words cover the top problems only; matching is by keyword, not translation.
 export const CONCEPTS: Concept[] = [
   // Noise (category "Noise")
-  { when: /\b(noise|noisy|loud|music|blasting|bass|yell(?!ow)|shout|scream|bang|pound|stomp|stereo|speakers?|tv\b|television|racket|barks?\b|barking|honk\w*|horns? (blar|honk)\w*|blaring|jingl\w*|howl\w*|yap\w*|whin(e|es|ing)\b|revv\w*|rev(s)? (their |the |its )?engines?|mufflers?|drum(s|ming)?\b|wakes? (me|us) up|keeps? (me|us) (up|awake)|can'?t sleep|hums? loud\w*)/, terms: ["noise"], categories: ["Noise"], family: "noise" },
+  { when: /\b(noise|noisy|loud|music|blasting|bass|yell(?!ow)|shout|scream|bang|pound|stomp|stereo|speakers?|tv\b|television|racket|barks?\b|barking|honk\w*|horns? (blar|honk)\w*|blaring|jingl\w*|howl\w*|yap\w*|whin(e|es|ing)\b|revv\w*|rev(s)? (their |the |its )?engines?|mufflers?|drum(s|ming)?\b|wakes? (me|us) up|keeps? (me|us) (up|awake)|can'?t sleep|hums? loud\w*)/, // A TV, a stereo or speakers left on the sidewalk is not noise (beta retest 12: "someone left a
+    // broken TV on the sidewalk" got Noise from Street or Sidewalk, rated strong): those object
+    // words count as noise only with a sound word.
+    onlyIf: (t) => !/^[^.]*\b(tv|television|stereo|speakers?)\b/.test(t) || /\b(noise|noisy|loud|blast\w*|blaring|volume|hear|music|bass|all night|late|turned up|playing|plays|yell\w*|scream\w*|bang\w*|stomp\w*|bark\w*|shout\w*|racket|honk\w*|alarm|party|parties|drum\w*|jingl\w*|howl\w*|revv\w*|hum\w*|wakes?|can'?t sleep|keeps? (me|us) (up|awake))\b/.test(t),
+    terms: ["noise"], categories: ["Noise"], family: "noise" },
   { when: /\bice cream (trucks?|vans?)\b/, terms: ["ice", "cream", "truck"], weight: 3, categories: ["Noise"] },
   { when: /\b(ruido|música alta|musica alta|fiesta|gritos)/, terms: ["noise"], categories: ["Noise"], family: "noise", spanish: true },
-  { when: /\b(neighbou?rs?|next ?do?or|upstairs|downstairs|apartment (above|below)|across the hall|my building|the building|vecin[oa]s?)\b/, terms: ["neighbor"], weight: 2 },
+  // "Next door" is a neighbor unless what is next door is a business (beta.13 stress set: "the
+  // boxing gym next door is loud" got Noise from Neighbor).
+  { when: /\b(neighbou?rs?|next ?do?or|upstairs|downstairs|apartment (above|below)|across the hall|my building|the building|vecin[oa]s?)\b/, onlyIf: (t) => /\b(neighbou?rs?|upstairs|downstairs|apartment|across the hall|vecin[oa]s?)\b/.test(t) || !/\b(store|shop|bodega|deli|business|gym|studio|warehouse|factory|garage|auto shop|body shop|laundromat|car wash|salon|church|mosque|synagogue|temple|bar|club|restaurant|school|construction|site)\b/.test(t), terms: ["neighbor"], weight: 2 },
   { when: /\b(bar|bars|club|nightclub|lounge|restaurant)\b/, terms: ["bar", "club", "restaurant"], weight: 2, against: ["neighbor"] },
-  { when: /\b(store|shop|bodega|deli|business)\b/, terms: ["store", "business"], weight: 1 },
+  { when: /\b(store|shop|bodega|deli|business|gym|studio|warehouse|factory|garage|auto shop|body shop|laundromat|car wash|salon|church|mosque|synagogue|temple)\b/, terms: ["store", "business"], weight: 1 },
   { when: /\b(sidewalk|on the street|in the street|outside|on my block|corner|acera|calle)\b/, terms: ["street", "sidewalk"], weight: 1 },
   // Whole words only: "carbon monoxide" is not a car (beta retest 6, 2026-11-09: "landlord didn't
   // install a carbon monoxide detector" got Vehicle Stored on Residential Property, rated strong).
@@ -269,7 +283,9 @@ export const CONCEPTS: Concept[] = [
   { when: /\bbike lane\b/, unless: BIKE_LANE_BLOCKED, terms: ["bike", "lane"], weight: 3, categories: ["Bikes", "Parking"], family: "bike_lane" },
   { when: BIKE_LANE_BLOCKED, terms: ["illegal", "parking", "parked", "vehicle"], weight: 3, against: ["bike", "lane", "meter"], categories: ["Parking"], family: "parking" },
   // Housing (category "Tenants")
-  { when: /\b(heat|heating|radiators?|boiler|freezing|cold apartment|no heat|calefacci[oó]n|no hay calor)\b/, onlyIf: (t) => !/\bboilers?\b/.test(t) || /\b(heat|heating|hot water|cold|freezing|radiators?)\b/.test(t), terms: ["heat"], weight: 3, categories: ["Tenants"], family: "heat" },
+  { when: /\b(heat|heating|radiators?|boiler|freezing|cold apartment|no heat|calefacci[oó]n|no hay calor)\b/, onlyIf: (t) => !/\bboilers?\b/.test(t) || /\b(heat|heating|hot water|cold|freezing|radiators?)\b/.test(t), // Hot weather is not a heating complaint ("this heat is unbearable", "no AC").
+    unless: /\b(heat ?waves?|heat (is|was) (unbearable|terrible|awful|crazy)|too hot|so hot|no (ac|a\/c|air ?condition\w*)|sweltering|heat advisory|heat index)\b/,
+    terms: ["heat"], weight: 3, categories: ["Tenants"], family: "heat" },
   { when: /\b(hot water|agua caliente)\b/, terms: ["hot", "water", "heat"], weight: 2, categories: ["Tenants"], family: "heat" },
   { when: NO_WATER, unless: /\bhot water\b/, terms: ["water", "pressure", "temperature"], weight: 3, against: ["heat", "leak", "main"], categories: ["Tenants", "Water"], family: "no_water" },
   { when: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building|rent|apartamento|casero|due[ñn]o|edificio)\b/, terms: ["apartment", "residential", "building"], weight: 1, against: ["commercial", "nycha", "loft"], categories: ["Tenants"] },
@@ -311,7 +327,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\bfire escapes?\b[^.]{0,40}\b(block\w*|obstruct\w*|bars?|gates?|locked|cluttered|full of|covered)\b|\b(block\w*|obstruct\w*|bars?|gates?|locked|cluttered) [^.]{0,40}\bfire escapes?\b|\b(blocked|locked) (building )?exits?\b/, terms: ["fire", "escape", "exit", "blocked"], weight: 3, categories: ["Buildings & Property"], family: "exit" },
   // Streets and sidewalks
   // On a highway, an exit ramp or a parkway: Pothole or Cave-In on Highway (KA-01106).
-  { when: /\b(potholes?|cave[- ]?in|sinkholes?)\b[^.]{0,40}\b(highways?|expressways?|parkways?|exit ramps?|on-?ramps?|off-?ramps?|interstates?|fdr|bqe|turnpike)\b|\b(highways?|expressways?|parkways?|exit ramps?)\b[^.]{0,30}\b(potholes?|cave[- ]?in|sinkholes?)\b/, terms: ["pothole", "highway"], weight: 3, against: ["street"], categories: ["Streets & Highways"], family: "pothole" },
+  { when: new RegExp(`\\b(potholes?|cave[- ]?in|sinkholes?)\\b[^.]{0,40}${HIGHWAY.source}|${HIGHWAY.source}[^.]{0,30}\\b(potholes?|cave[- ]?in|sinkholes?)\\b`), terms: ["pothole", "highway"], weight: 3, against: ["street"], categories: ["Streets & Highways"], family: "pothole" },
   { when: /\b(pothole|potholes|hole in the (road|street)|cave[- ]?in|sinkhole|crater|bache|baches|hoyo en la calle)/, terms: ["pothole", "cave", "street"], weight: 3, categories: ["Streets & Highways"], family: "pothole" },
   { when: /\b(tree )?roots?\b[^.]{0,40}\b(push\w*|lift\w*|rais\w*|crack\w*|break\w*|buckl\w*|uproot\w*|heav\w*)\b|\b(sidewalk|acera)\b[^.]{0,50}\b(crack\w*|crumbl\w*|broken|uneven|raised|trip\w*|damaged|hole|lifted|buckl\w*)\b|\bcrumbling (sidewalk|acera)\b|\b(crack\w*|broken|uneven|damaged) (sidewalk|acera)\b/, terms: ["broken", "sidewalk"], weight: 3, categories: ["Sidewalks"], family: "sidewalk" },
   // A walk signal is Pedestrian Signal Complaint or Request (KA-01047, "Walk/Don't Walk"), not
@@ -355,7 +371,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\b(litter )?baskets?\b/, terms: ["basket"], weight: 3 },
   { when: /\b(lobby|hallways?|stairwells?|stairs|basement|laundry room|elevator|inside (my|the|our) building|in (my|the|our) building)\b/, unless: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\bbaskets?\b/, terms: [], against: ["basket"] },
   // Furniture alone is not dumping ("passes out on the couch"); dumped, left out, or on the street is.
-  { when: /\b(dump|dumped|dumping)\b|\b(mattress(es)?|couch(es)?|sofas?|furniture|tires|appliances?)\b[^.]{0,40}\b(left|dumped|abandoned|thrown|on the (curb|sidewalk|street|corner)|in the (street|lot|alley)|outside)\b/, terms: ["dump", "illegal"], weight: 3, categories: ["Cleaning"], family: "dumping" },
+  { when: /\b(dump|dumped|dumping)\b|\b(mattress(es)?|couch(es)?|sofas?|furniture|tires|appliances?|tvs?|televisions?|computers?|monitors?|microwaves?|fridges?|refrigerators?|air conditioners?|electronics)\b[^.]{0,40}\b(left|dumped|abandoned|thrown|on the (curb|sidewalk|street|corner)|in the (street|lot|alley)|outside)\b|\b(left|dumped|abandoned|threw|thrown) (out )?(a |an |the |some |old |broken )*(tvs?|televisions?|computers?|monitors?|microwaves?|fridges?|refrigerators?|air conditioners?|electronics|mattress(es)?|couch(es)?|sofas?)\b/, terms: ["dump", "illegal"], weight: 3, categories: ["Cleaning"], family: "dumping" },
   { when: MISSED_COLLECTION, terms: ["collection", "missed"], weight: 3, categories: ["Collection & Disposal"], family: "collection" },
   // Homelessness
   { when: /\b(sleep(s|ing)?|passed out|lying|lays?|lies) (out )?(on|in) (a |the |my )?(park )?(bench(es)?|doorways?|stoops?|sidewalks?|streets?|subway|vestibule|lobby|stairwell|steps|elevator|hallway|laundry room)\b|\b(homeless|encampments?|tents?\b|unhoused|sleeping (on|in) the|living on the street|person sleeping|sin hogar|campamento)/, terms: ["homeless", "encampment", "outreach"], weight: 3, categories: ["Safety & Crime", "Homelessness"], family: "homeless" },
@@ -410,7 +426,7 @@ export const CONCEPTS: Concept[] = [
   // the crime pointer (precinct, Crime Stoppers) instead of a 911 first line (articleSays911).
   { when: /\b(stole|stolen|steal\w*|theft|swiped|took my|taken|grabbed my)\b/, unless: /\b(stole|stolen|steal\w*|took) (my |the |a |his |her |our )?(cars?|vehicles?|trucks?|motorcycles?|scooters?)\b|\b(cars?|vehicles?|trucks?|motorcycles?) (was |got |were )?stolen\b|\b(identity|benefits?|ebt|snap|money|deposit|immigra\w*|notario|scam\w*|fraud\w*)\b/, terms: ["stolen", "property"], weight: 3, categories: ["Safety & Crime"], family: "theft" },
   // Pigeons (Pigeon Droppings or Odor, KA-02280).
-  { when: /\bpigeons?\b/, unless: DEAD_ANIMAL, terms: ["pigeon", "droppings", "odor"], weight: 3, against: ["exhibition", "trapping", "netting"], categories: ["Pests & Wildlife", "Pets", "Air"], family: "pigeons" },
+  { when: /\bpigeons?\b/, unless: new RegExp(`${DEAD_ANIMAL.source}|\\b(injured|hurt|broken (wing|leg)|bleeding|limping|sick|can'?t fly)\\b`), terms: ["pigeon", "droppings", "odor"], weight: 3, against: ["exhibition", "trapping", "netting"], categories: ["Pests & Wildlife", "Pets", "Air"], family: "pigeons" },
   // Stage 9 stress set (2026-11-09): City articles that a near miss pulled away from.
   // Food Safety Complaint (KA-01111).
   { when: FOOD_PLACE_PESTS, unless: /\b(food poisoning|sick|vomit\w*|threw up)\b/, terms: ["food", "safety", "complaint", "unsanitary"], weight: 3, against: ["rat", "mouse", "residential", "poison", "sign"], categories: ["Public Health"], family: "food_safety" },
@@ -495,6 +511,15 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(gyms?|health (club|spa)|fitness (center|club))\b[^.]{0,40}\b(membership|cancel\w*|charg\w*|contract|refund)\b|\bcancel (my )?(gym )?membership\b/, terms: ["gym", "membership", "complaint"], weight: 3, categories: ["Consumers"], family: "gym" },
   { when: /\bdry cleaners?\b/, unless: /\b(smell\w*|odor|fumes|chemical)\b/, terms: ["dry", "cleaner", "complaint"], weight: 3, against: ["odor"], categories: ["Consumers"], family: "dry_cleaner" },
   { when: /\bdog runs?\b/, onlyIf: (t) => /\b(gate|fence|broken|doesn'?t close|won'?t close|dirty|lights?|water|surface)\b/.test(t), terms: ["park", "maintenance"], weight: 3, against: ["unleashed", "license"], categories: ["Parks & Recreation"], family: "park_maintenance" },
+  // A street that was never plowed: Snow or Ice on Street or Highway (KA-02296).
+  { when: /\b(never|wasn'?t|hasn'?t been|not|haven'?t) (been )?plow\w*|\bunplowed\b|\bplow(s|ed)? (never|didn'?t|skipped)\b/, unless: /\bsidewalks?\b/, terms: ["street", "highway", "snow"], weight: 3, against: ["sidewalk", "building"], categories: ["Streets & Highways"], family: "snow" },
+  // A fire escape that is rusted, loose or broken: Apartment Maintenance Complaint (KA-01074, "Safety issues, such as fire escape ...").
+  { when: /\bfire escapes?\b[^.]{0,30}\b(rust\w*|wobbl\w*|loose|broken|crack\w*|collaps\w*|falling apart|damaged|unsafe|shaky)\b/, terms: ["apartment", "maintenance"], weight: 3, against: ["heat", "blocked", "exit"], categories: ["Tenants"], family: "repair" },
+  // Noise from Lawn Equipment (KA-01101).
+  { when: /\b(leaf ?blowers?|lawn ?mowers?|weed ?whackers?|landscap\w* (equipment|crew)|hedge trimmers?)\b/, terms: ["noise", "lawn", "equipment"], weight: 3, against: ["park", "rules"], categories: ["Noise"], family: "noise" },
+  // Injured or Sick Animal (KA-01789): an animal hurt, hit by a car, or sick (emergency.ts sends
+  // these to the animal path, not the medical 911 line).
+  { when: /\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|deer|geese|goose|ducks?|possums?|opossums?)\b[^.]{0,40}\b(hurt|injured|bleeding|limping|sick|dying|hit by a (car|truck|bus)|got hit|run over|broken (leg|wing))\b|\b(hurt|injured|bleeding|limping|sick|dying) (cat|kitten|dog|puppy|bird|pigeon|squirrel|raccoon|animal|pet|deer|goose|duck)s?\b/, unless: /\b(dead|like|as if|sounds like)\b/, terms: ["injured", "sick", "animal"], weight: 3, against: ["dead", "abuse", "bite", "waste"], categories: ["Pests & Wildlife", "Pets"], family: "injured_animal" },
   // Burning Garbage (KA-01518): "Call 911 to report burning garbage ...".
   { when: /\bburn(s|ed|ing)? (the |their |some )?(garbage|trash|tires|rubbish|leaves|wood|furniture)\b|\b(garbage|trash) (is |was )?(burning|on fire)\b/, terms: ["burning", "garbage"], weight: 3, categories: ["Safety & Crime", "Air"], family: "burning" },
   // Drag Racing (KA-02046).
@@ -588,7 +613,7 @@ export const PLACES: { id: string; said: RegExp; option: RegExp; isPublic: boole
   { id: "park", said: /\b(parks?|playgrounds?|greenway|ball ?fields?|beach(es)?)\b/, option: /\b(parks?|beach)\b/i, isPublic: true, venue: true },
   { id: "street", said: /\b(sidewalk|curb|tree bed|on the street|in the street|acera)\b/, option: /\bsidewalk\b|\bstreet\b(?! food)/i, isPublic: true },
   { id: "school", said: /\bschool\b/, option: /\bschool\b/i, isPublic: true, venue: true },
-  { id: "highway", said: /\b(highway|expressway)\b/, option: /\bhighway\b/i, isPublic: true, venue: true },
+  { id: "highway", said: HIGHWAY, option: /\bhighway\b/i, isPublic: true, venue: true },
   { id: "food", said: /\b(restaurant|deli|bodega|cafe|bakery|food (cart|truck|vendor)|street vendor)\b/, option: /\b(food|restaurant|vendor)\b/i, isPublic: true },
   { id: "vacant", said: /\bvacant (lot|building)\b|\bempty lot\b/, option: /\bvacant\b/i, isPublic: true },
   { id: "home", said: /\b(apartment|my (home|house|unit|room|kitchen|bathroom|bedroom|basement|yard)|in my building|apartamento)\b/, option: /\b(apartment|residential)\b/i, isPublic: false },
@@ -1058,8 +1083,14 @@ export function sensitiveAllowed(title: string, q: Pick<Query, "text"> & Partial
   // retest 11: "a bus hit a cyclist and he's lying in the street" got Homeless Outreach Assistance).
   const hurtDanger = (q.danger?.kinds ?? []).some((k) => ["hurt", "person_hit", "crash", "water_rescue", "tracks", "collapse", "trapped"].includes(k.id));
   if (SOCIAL_SERVICE.test(title) && (MEDICAL.test(q.text) || hurtDanger)) return false;
+  // Violence between people is never a building repair (beta retest 12: a man beating a woman in
+  // a stairwell got Heat or Hot Water).
+  const violence = (q.danger?.kinds ?? []).some((k) => ["crime", "domestic_violence"].includes(k.id));
+  if (violence && HOUSING_REPAIR.test(title)) return false;
   return true;
 }
+/** Building repair articles, never an answer to violence. */
+const HOUSING_REPAIR = /heat|hot water|maintenance|pest|mold|elevator|water leak|plumbing|boiler|window guard|lead paint|bed bug/i;
 /** Social-service articles an injured person must not be sent to. */
 const SOCIAL_SERVICE = /homeless|outreach|shelter|encampment|drop-in|wellness check/i;
 /** Words that say someone is hurt or medically at risk. */
