@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.2] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 1, 2026-11-08)
+
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles: a standing dead or dying tree goes to Dead Tree (KA-02006), not Fallen Tree or
+  Branch; a skipped or missed garbage or recycling pickup goes to Missed Trash, Recycling,
+  or Compost Collection (KA-01788), not Litter Basket. New words for parking meters
+  (KA-01240), street flooding (KA-02198), sidewalk sheds and scaffolds (KA-02291), bed bugs
+  (KA-01236) and food poisoning (KA-02051). Trash inside a building is no longer a litter
+  basket. 20 everyday phrasings are regression tests. The 911 rules are unchanged.
+- **Danger in `details` or `when`, offline** (`draft_311_report`). With no key or 311
+  down, danger written only there gets the City's built-in line for that danger (the gas
+  line, say), the same as danger in the description, instead of the generic line and a
+  missing-key error.
+- **`list_311_categories` past the end.** An offset past the last article says so: "Offset
+  500 is past the end: there are 42 articles, 20 per page, so pages 1 to 3 (offsets 0, 20,
+  40)."
+- **`get_service_request` not found.** One plain sentence and the hint; the City's raw
+  error body is no longer shown. A request id the API sends is kept.
+- **`get_status`** adds a `plain_language` block to the API's answer: yes or no in words,
+  what the status checks (the City's description from the 311 API portal), when it was
+  asked, and a pointer to `get_calendar` for alternate side parking.
+- **`ll47_service_request_report` cut list.** "Showing 5 of 20 areas (18 community
+  districts and 2 Joint Interest Areas)", not "20 districts".
+- **`ll47_directory_assistance_report` outage.** Two tries at most per request, and no
+  retry after a slow failure, so an NYC Open Data outage is reported in seconds rather than
+  after 45. The message says NYC Open Data is not responding and suggests trying later or
+  asking for the fiscal year.
+- **Version.** The server reports `1.2.0-beta.2`.
+
 ## [1.2.0-beta.1] - 2026-11-08
 
 A beta, installed from the `beta` branch (`npx -y github:BetaNYC/nyc-311-mcp#beta`). Not
