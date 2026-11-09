@@ -78,7 +78,11 @@ test("review: the 10 harder cases", async () => {
   const odor = by.T7.out.reports[0];
   assert.equal(odor.status, "not_a_311_report");
   assert.equal(odor.paste_text, null);
-  assert.deepEqual(odor.where_to_go.the_city_says, ["The City does not accept complaints about body or cooking odor from a residence."]);
+  // KA-01332 itself was recorded on 2026-11-08, so its body adds the City's second sentence.
+  assert.deepEqual(odor.where_to_go.the_city_says, [
+    "The City does not accept complaints about body or cooking odor from a residence.",
+    "The City does not accept complaints about poor air quality in a residence caused by a neighbor's body odor or cooking.",
+  ]);
   // T8, T9: one draft per problem, each with the shared place.
   for (const r of by.T8.out.reports) assert.match(r.paste_text, /Where: 200 Bedford Ave, Brooklyn/);
   assert.match(by.T8.out.first_line, /^This sounds like 2 problems/);

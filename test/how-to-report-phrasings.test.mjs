@@ -43,13 +43,13 @@ export const PHRASINGS = [
   ["a tree branch fell and is blocking the sidewalk", null, "KA-02138", []],
   ["a car alarm going off for hours", null, "KA-01089", []],
   ["fire escape is blocked by the landlord", null, "KA-02233", []],
-  ["the burning smell from the restaurant exhaust", null, null, []],
+  ["the burning smell from the restaurant exhaust", null, "KA-01930", []], // Air (311-48) recorded 2026-11-08: Restaurant Odor
   ["a bike lane is blocked by a delivery truck", null, "KA-01260", []],
   ["sidewalk is cracked and someone could trip", null, "KA-02235", []],
   ["a person sleeping on the subway", null, "KA-01037", []],
   ["I need a copy of my birth certificate", null, "KA-01012", []],
   ["the noise hurts my sleep", null, "*", []],
-  ["not an emergency but there is smoke coming from a vent", null, null, []],
+  ["not an emergency but there is smoke coming from a vent", null, "KA-02219", []], // Chimney or Ventilation Smoke, Air recorded 2026-11-08
   ["I need help right now", "generic", null, []],
   ["my friend says he wants to kill himself", "KA-01635", "KA-01635", []],
   ["I was robbed last week", null, null, []],

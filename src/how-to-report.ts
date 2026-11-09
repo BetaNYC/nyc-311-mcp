@@ -133,7 +133,10 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(alarm)/, unless: /\b(smoke|carbon monoxide|co) (alarm|detector)/, terms: ["alarm", "noise"], weight: 2, categories: ["Noise"], family: "noise" },
   { when: /\b(car (was |got )?hit|hit my car|accident|crash(ed)?|collision|fender[- ]bender)\b/, terms: ["accident", "vehicle"], weight: 3, categories: ["Safety & Crime"], family: "crash" },
   { when: /\bsmok(e|es|ing)\b[^.]{0,25}\b(cigarettes?|cigars?|weed|marijuana|hallway|stairwell|lobby|building)\b|\b(cigarette|secondhand|second-hand) smoke\b/, terms: ["smoke", "free", "air", "act", "complaint"], weight: 3, categories: ["Tenants", "Public Health"], family: "smoking" },
-  { when: /\b(smell|smells|odor|odour|stink\w*|fumes|exhaust)\b/, unless: /\bgas\b/, terms: ["odor", "smell", "ventilation", "chimney"], weight: 2, categories: ["Air"], family: "odor" },
+  { when: /\b(smell|smells|odor|odour|stink\w*|fumes|exhaust)\b/, unless: /\bgas\b/, terms: ["odor", "smell"], weight: 2, categories: ["Air"], family: "odor" },
+  // Chimney and vent words only when said: an odor alone is not chimney smoke (with the Air
+  // category recorded, "cooking odor" tied with Chimney or Ventilation Smoke; 2026-11-08).
+  { when: /\b(chimney|chimneys|vents?|ventilation|exhaust)\b/, terms: ["ventilation", "chimney"], weight: 2, categories: ["Air"] },
   { when: /\b(dog|dogs|barking|barks|animal|perro)\b/, terms: ["dog", "animal"], weight: 2 },
   { when: /\bfireworks?\b|\bfuegos artificiales\b/, terms: ["fireworks"], weight: 3, categories: ["Noise", "Safety & Crime"], family: "fireworks" },
   // Parking and vehicles
@@ -152,8 +155,8 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(mice|mouse|rats?|roach(es)?|cockroach(es)?|bed ?bugs?|pests?|vermin|fleas|flies|ratas?|ratones|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
   { when: /\b(mold|mould|mildew|moho|hongos)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"], family: "mold" },
   { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
-  { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
-  { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
+  { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle|graffiti)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
+  { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b|\b(coming|blowing|getting|comes|blows) (in|into|through) (my |the |our )?(windows?|doors?)\b|\bgraffiti\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
   { when: /\b(smoke|carbon monoxide|co) (detector|alarm)s?\b[^.]{0,30}\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\w*|needs? (a )?batter\w*)|\b(no|missing|broken) (smoke|carbon monoxide|co) (detector|alarm)/, terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
   { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
   { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, terms: ["elevator", "escalator"], weight: 3, categories: ["Buildings & Property"], family: "elevator" },
@@ -174,6 +177,15 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(missed (pickup|collection)|not picked up|wasn'?t (picked up|collected)|not collected|no recogieron)/, terms: ["collection", "missed"], weight: 3, categories: ["Collection & Disposal"], family: "collection" },
   // Homelessness
   { when: /\b(homeless|encampments?|tents?|unhoused|sleeping (on|in) the|living on the street|person sleeping|sin hogar|campamento)/, terms: ["homeless", "encampment", "outreach"], weight: 3, categories: ["Safety & Crime", "Homelessness"], family: "homeless" },
+  // Graffiti: the City's Graffiti article (KA-02070), not a building repair. Beta test 2026-11-08.
+  { when: /\b(graffiti|grafitti|graffitti|grafiti)\b/, terms: ["graffiti"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "graffiti" },
+  // Grills: the City's Barbecuing article (KA-02228), the closest the City has to grill smoke;
+  // its non-emergency smoke route is for chimneys and vents only. Beta test 2026-11-08.
+  { when: /\b(grill|grills|grilling|bbq|barbe?cu\w*|barbequ\w*|hibachi)\b/, terms: ["barbecuing"], weight: 3, categories: ["Parks & Recreation", "Air"], family: "barbecue" },
+  // Parks: a park is a place, not a home, so a park's own report option wins (rats in a park
+  // go to Parks, not to HPD's at-home form). "Park" alone, never "parking" or "parked".
+  { when: /\b(parks?|playgrounds?|greenway|ball ?fields?)\b/, terms: ["park"], weight: 2, categories: ["Parks & Recreation"] },
+  { when: /\b(bench|benches|swings?|slides?|see-?saws?|jungle gym|monkey bars|water fountains?|drinking fountains?|(basketball|handball|tennis) (court|hoop)s?)\b/, terms: ["park", "maintenance"], weight: 3, categories: ["Parks & Recreation"], family: "park_maintenance" },
   // Records
   { when: /\bbirth certificate|acta de nacimiento/, terms: ["birth", "certificate", "order"], weight: 3, categories: ["Public Health", "Birth & Adoption"], family: "records" },
   // Crime that is not happening now (danger is handled in emergency.ts)
@@ -182,6 +194,10 @@ export const CONCEPTS: Concept[] = [
 
 type Query = {
   terms: Map<string, number>;
+  /** Kinds of place the description names (PLACES), to pick an article's report option for that place. */
+  places: string[];
+  /** The normalized description, for place checks only; never returned. */
+  text: string;
   against: Set<string>;
   categories: string[];
   matched: string[];
@@ -226,8 +242,25 @@ export function parseQuery(description: string): Query {
   for (const w of words(text)) if (!STOP.has(w) && w.length > 2) add(w, 1);
   for (const t of terms.keys()) if (against.has(t)) against.delete(t);
   spanish = spanish || SPANISH.test(text);
-  return { terms, against, categories, matched: [...new Set(matched)], families, spanish, danger, corrected: fixed.corrected };
+  const places = PLACES.filter((x) => x.said.test(text)).map((x) => x.id);
+  return { terms, against, categories, matched: [...new Set(matched)], families, spanish, danger, corrected: fixed.corrected, places, text };
 }
+
+/**
+ * Places an article's report options are split by (KA-01107 Rat or Mouse Complaint has
+ * Residential Property, Sidewalk or Street, Parks, School, ...; KA-02070 Graffiti has
+ * Park, Highway). When the person names one, the option for that place wins; a public
+ * place never gets the at-home option. Beta test 2026-11-08: "rats in the park" got HPD.
+ */
+export const PLACES: { id: string; said: RegExp; option: RegExp; isPublic: boolean; venue?: true }[] = [
+  { id: "park", said: /\b(parks?|playgrounds?|greenway|ball ?fields?|beach(es)?)\b/, option: /\b(parks?|beach)\b/i, isPublic: true, venue: true },
+  { id: "street", said: /\b(sidewalk|curb|tree bed|on the street|in the street|acera)\b/, option: /\bsidewalk\b|\bstreet\b(?! food)/i, isPublic: true },
+  { id: "school", said: /\bschool\b/, option: /\bschool\b/i, isPublic: true, venue: true },
+  { id: "highway", said: /\b(highway|expressway)\b/, option: /\bhighway\b/i, isPublic: true, venue: true },
+  { id: "food", said: /\b(restaurant|deli|bodega|cafe|bakery|food (cart|truck|vendor)|street vendor)\b/, option: /\b(food|restaurant|vendor)\b/i, isPublic: true },
+  { id: "vacant", said: /\bvacant (lot|building)\b|\bempty lot\b/, option: /\bvacant\b/i, isPublic: true },
+  { id: "home", said: /\b(apartment|my (home|house|unit|room|kitchen|bathroom|bedroom|basement|yard)|in my building|apartamento)\b/, option: /\b(apartment|residential)\b/i, isPublic: false },
+];
 
 const SPANISH = /[áéíóúñ¿¡]|\b(ruido|vecin[oa]s?|calefaccion|basura|baches?|cucarachas|apartamento|edificio|hay|muy|los|del|tengo|necesito)\b/;
 
@@ -343,6 +376,14 @@ function scoreAction(q: Query, x: ContentAction, section: string, ignore: Set<st
   const s = stems(`${x.name ?? ""} ${x.problem_detail ?? ""} ${section}`);
   let n = 0;
   for (const [t, w] of q.terms) if (s.has(t) && !ignore.has(t)) n += w;
+  // The place the person named decides between options split by place (PLACES).
+  const where = `${x.name ?? ""} ${section}`;
+  const said = PLACES.filter((p) => q.places.includes(p.id));
+  const commonArea = /\bpublic area\b/i.test(where) && !/\b(hallway|lobby|stairs?|stairwell|public area|common area|basement|laundry)\b/.test(q.text);
+  // "Street" is weaker: it is in many option names ("City Vehicle Parked on the Sidewalk").
+  const hit = said.filter((p) => p.option.test(where));
+  if (hit.length) n += commonArea || hit.every((p) => p.id === "street") ? 3 : 6;
+  else if (said.length && said.every((p) => p.isPublic) && PLACES.find((p) => p.id === "home")!.option.test(where)) n -= 3;
   // An action for a narrower case ("City Vehicle Parked in front of a Fire Hydrant")
   // must not win on shared words when the question never said so.
   for (const t of QUALIFIERS) if (s.has(t) && !q.terms.has(t)) n -= 3;
@@ -378,8 +419,36 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
       bestScore = sc;
     }
   }
+  // A report option for a venue the person did not name (Barbecuing's only option is for a
+  // park or beach; a neighbor's grill is not in one) is never picked, and the answer says
+  // so (beta test 2026-11-08). Venues only: a park, school or highway, not "street".
+  const elsewhere = (x: (typeof actions)[number]) => {
+    const where = `${x.name ?? ""} ${x.section}`;
+    return PLACES.some((p) => p.venue && p.option.test(where) && !q.places.includes(p.id));
+  };
+  let otherPlace: string | null = null;
   if (!best && distinct === 1) best = actions[0];
+  if (best && elsewhere(best)) {
+    if (distinct === 1) otherPlace = best.name ?? best.section;
+    best = null;
+  }
   const bestSection = best ? a.sections.find((s) => s.name === best!.section) : null;
+  // No report option picked: the section whose name shares the person's words, if any
+  // (Graffiti's "USPS Mailbox" section has no report option, only what to do).
+  let matchedSection: { name: string; says: string } | null = null;
+  if (!best) {
+    let top = 0;
+    for (const sec of a.sections) {
+      if (/^911\b/.test(sec.name)) continue;
+      const sw = stems(sec.name);
+      let n = 0;
+      for (const [t, w] of q.terms) if (sw.has(t) && !titleWords.has(t)) n += w;
+      if (n > top) {
+        top = n;
+        matchedSection = { name: sec.name, says: sentences(sec.text).slice(0, 3).join(" ") };
+      }
+    }
+  }
   const all = a.sections.map((s) => s.text).join("\n");
   const problems = [...new Set(actions.map((x) => x.problem).filter((p): p is string => Boolean(p)))];
   const agencies = [...new Set(actions.map((x) => x.agency).filter((p): p is string => Boolean(p)))];
@@ -409,14 +478,22 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
     matched_words: hits,
     found_in_categories: categories,
     call_911: call911Text(a),
-    agency: best?.agency ?? (agencies.length === 1 ? agencies[0] : null),
+    agency: best?.agency ?? (agencies.length === 1 && !otherPlace ? agencies[0] : null),
     problem_type: best?.problem ?? null,
     problem_detail: best?.problem_detail ?? null,
     best_action: best ? { section: best.section, name: best.name } : null,
     problem_types: problems,
     agencies,
     ...(actions.length ? {} : { agencies_named_in_text: named, no_reportable_action: "The article lists no report option with an agency and problem type. Follow what its text says." }),
-    ...(actions.length && !best ? { no_best_action: "The article's report options go to different agencies or problem types, and your words did not pick one. They are all in report_actions." } : {}),
+    ...(actions.length && !best
+      ? {
+          no_best_action: otherPlace
+            ? `This is the closest 311 article, but not an exact match: its only report option is "${otherPlace}", for a place your words did not name. Read the article to see whether the City takes this report.`
+            : "The article's report options go to different agencies or problem types, and your words did not pick one. They are all in report_actions.",
+        }
+      : {}),
+    ...(otherPlace ? { exact_match: false as const } : {}),
+    ...(matchedSection ? { matched_section: matchedSection } : {}),
     report_actions: actions.slice(0, 15),
     report_actions_truncated: actions.length > 15,
     what_happens_next: (bestSection && whatHappensNext(bestSection.text)) ?? whatHappensNext(all),

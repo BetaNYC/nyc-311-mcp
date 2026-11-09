@@ -315,7 +315,7 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
         reports.push(await oneReport(x.said, x.match, args, client, sla, true));
       }
     }
-    if (!reports.some((r) => r.status === "drafted" || r.status === "not_a_311_report")) return noMatchAnswer(whole);
+    if (!reports.some((r) => r.status === "drafted" || r.status === "not_a_311_report" || r.status === "no_exact_match")) return noMatchAnswer(whole);
   } else {
     reports.push(await oneReport(args.description, whole, args, client, sla, false));
   }
@@ -328,6 +328,8 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
       ? `${unmatched ? `${SAFETY_LINE} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
       : one.status === "not_a_311_report"
         ? `The City's own article says it does not take this (${one.report_at?.ka_number}); its words are in where_to_go. No draft is made.`
+        : one.status === "no_exact_match"
+          ? "No exact match: no 311 report option fits this. The closest City articles are in closest_options; no draft is made, because it would go to the wrong place."
         : `Draft ready for "${one.report_at!.title}" (${one.report_at!.ka_number}). ${one.placeholders!.length ? `Fill in the ${one.placeholders!.length} [add: …] place${one.placeholders!.length > 1 ? "s" : ""} first. ` : ""}${FIELDS_NOTE}`;
 
   return finish({
@@ -422,6 +424,24 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
       paste_text: null,
       placeholders,
       questions_to_ask: ["Read the article with the person: it says where this goes instead of 311."],
+    };
+  }
+
+  // No exact match: the closest article's only report option is for a place the person did
+  // not name (a neighbor's grill and Barbecuing's park-only option). No draft: a draft would
+  // send the report to the wrong place. The closest City articles are listed instead.
+  if (best && (best as { exact_match?: false }).exact_match === false) {
+    return {
+      status: "no_exact_match" as const,
+      you_said: what.text,
+      closest_options: [
+        { title: best.title, ka_number: best.ka_number, portal_url: best.portal_url, summary: best.summary, why_not_exact: best.no_best_action },
+        ...match.alternatives.slice(0, 3).map((a) => ({ title: a.title, ka_number: a.ka_number, portal_url: a.portal_url, summary: a.summary })),
+      ],
+      ...(best.call_911 ? { the_city_says_call_911_when: best.call_911 } : {}),
+      paste_text: null,
+      placeholders,
+      questions_to_ask: ["No 311 report option fits exactly. Read the closest articles with the person; they say what the City takes and where."],
     };
   }
 
@@ -556,6 +576,7 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
       from_the_article: best?.what_happens_next ?? null,
       after_you_report: `Keep the service request number 311 gives you. With it, get_service_request (or 311 Online's "Look Up Service Requests" page, ${CHECK_STATUS_URL}) shows its status.`,
     },
+    ...(best?.matched_section ? { article_section: { ...best.matched_section, note: "The part of the City's article that fits the person's words, quoted. Read it first: it may say another office takes this report." } } : {}),
     ...(best?.the_city_says_it_does_not.length ? { the_city_says_it_does_not: best.the_city_says_it_does_not } : {}),
     ...(best?.file_a_complaint && NOT_NOW.test(best.file_a_complaint) ? { the_city_says_right_now: best.file_a_complaint } : {}),
   };
