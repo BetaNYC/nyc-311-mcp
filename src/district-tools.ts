@@ -505,6 +505,33 @@ function countBy<T extends string>(rows: Row[], key: (r: Row) => T): Map<T, Row[
   return m;
 }
 
+/**
+ * Below this many requests in the year-earlier count, a percent change is not shown: a
+ * small base makes a big percent that means little (21 to 2,712 is "+12,814%", often a
+ * City category that is new or renamed). The two counts are still shown. 30 is the usual
+ * rule of thumb for "enough to compare"; it is a BetaNYC choice, not a City rule.
+ */
+export const SMALL_BASE = 30;
+export const SMALL_BASE_NOTE = "small numbers; percent change not shown";
+const SMALL_BASE_CAVEAT = `Percent change is not shown when the year-earlier count is under ${SMALL_BASE}: a small number makes a big percent that means little (often a City category that is new or renamed). Both counts are still shown.`;
+
+/** Change against a year earlier: always the counts, the percent only on a base of SMALL_BASE or more. */
+export function yearChange(now: number, before: number | null) {
+  if (before === null) return { change: null, change_pct: null };
+  const change = now - before;
+  if (before < SMALL_BASE) return { change, change_pct: null, change_note: SMALL_BASE_NOTE };
+  return { change, change_pct: Number(((change / before) * 100).toFixed(1)) };
+}
+
+/**
+ * Why a status filter turns the year-earlier comparison off. The data has each request's
+ * current status and close date, not its status history, so "open a year ago" cannot be
+ * rebuilt exactly; comparing open-now with year-old requests that are open now is not like
+ * for like, because most of those closed in the year since.
+ */
+export const STATUS_NO_COMPARISON =
+  "With a status filter there is no year-earlier comparison. The data has each request's status today, not what it was a year ago, and year-old requests have had a year to close, so open-now (or closed-now) against a year earlier is not like for like. Leave out status to compare all requests.";
+
 /** List cap: `limit`, and whether more rows were left out. */
 export function capped<T>(items: T[], limit: number) {
   return { items: items.slice(0, limit), truncated: items.length > limit, total_items: items.length };
@@ -797,7 +824,7 @@ export async function topProblems(src: Source, args: z.infer<z.ZodObject<typeof 
   const d = resolveDistrict(m, args);
   const p = toolPeriod(args, m, "view");
   const limit = args.limit ?? 10;
-  const prior = priorWindow(p, m);
+  const prior: ReturnType<typeof priorWindow> = args.status ? { none: STATUS_NO_COMPARISON } : priorWindow(p, m);
   const from = "none" in prior ? localAsDate(p.start) : prior.from;
   const { rows, manifest } = await readDetail(data, d, ["complaint_type", "status", "days_to_close", "agency"], {
     from,
@@ -816,14 +843,14 @@ export async function topProblems(src: Source, args: z.infer<z.ZodObject<typeof 
         requests: rs.length,
         median_days_to_close: days1(median(rs.map(closedDays).filter((v): v is number => v !== null))),
         same_days_a_year_earlier: before,
-        change: before === null ? null : rs.length - before,
-        change_pct: before ? Number((((rs.length - before) / before) * 100).toFixed(1)) : null,
+        ...yearChange(rs.length, before),
       };
     })
     .sort((a, b) => b.requests - a.requests || byText(a.problem, b.problem));
   const top = capped(list, limit);
   const extra = [...p.notes, ...districtCaveats(d, m)];
   if ("none" in prior) extra.push(prior.none);
+  if (top.items.some((x) => "change_note" in x)) extra.push(SMALL_BASE_CAVEAT);
   return districtEnvelope({
     manifest,
     siteUrl: data.siteUrl,
@@ -909,14 +936,15 @@ export async function problemTrend(src: Source, args: z.infer<z.ZodObject<typeof
       month: ym,
       requests: cur.get(ym)?.length ?? 0,
       partial_month: partial,
-      same_days_a_year_earlier: priorStart >= m.window.start ? prev.get(ym)?.length ?? 0 : null,
+      same_days_a_year_earlier: !args.status && priorStart >= m.window.start ? prev.get(ym)?.length ?? 0 : null,
     });
   }
   const extra = [...p.notes, ...districtCaveats(d, m)];
   if (months.some((x) => x.partial_month)) {
     extra.push("A month marked partial_month covers only some days, so it is lower than a full month would be. Year-earlier values cover the same days, up to the same time.");
   }
-  if ("none" in prior) extra.push("Months whose same days a year earlier fall before 2020-01-01 have no comparison (null).");
+  if (args.status) extra.push(STATUS_NO_COMPARISON);
+  else if ("none" in prior) extra.push("Months whose same days a year earlier fall before 2020-01-01 have no comparison (null).");
   return districtEnvelope({
     manifest,
     siteUrl: data.siteUrl,

@@ -41,7 +41,8 @@ the BoardStat page each answer links to. Details: [docs/district-tools.md](docs/
 | `boardstat_status` | How fresh BoardStat's data is, and whether its nightly run is late |
 
 Every district tool takes a community district (BoardStat's ids: `101` is Manhattan
-Community District 1, `306` Brooklyn 6) or a Council district (`1` to `51`), and dates as
+Community District 1, `306` Brooklyn 6; board codes and names such as `BK06`, `MN01` or
+`"Brooklyn 6"` work too) or a Council district (`1` to `51`), and dates as
 `from_date`/`to_date`, a City `fiscal_year` (July 1 to June 30; `2027` or `"FY27"`), or
 `last_days`. Every answer carries `data_as_of`, a `boardstat_url`, plain-language `caveats`
 and its `source`. They are built by BetaNYC from NYC Open Data and are **not an official City report**.
