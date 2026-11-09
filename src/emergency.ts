@@ -14,6 +14,13 @@
 //     will be connected to trained counselors".
 //   - Where it is truly ambiguous (a crash with no word about injury), the answer
 //     carries the standing line but does not lead with 911.
+//
+// Disclaimers (Noel's decision, 2026-11-08, on #23):
+//   - "Not an emergency" or "not urgent" quiets only ambiguous signals (smoke, a crash,
+//     water near electricity, a shaking structure). It never quiets HIGH_SEVERITY: someone
+//     hurt or not breathing, gas, carbon monoxide, fire, suicide or self-harm.
+//   - A past-time word ("last night") quiets a crime only when nothing says the danger is
+//     present: "still inside", "still here", "right now", or a named weapon keeps it.
 
 export const SAFETY_LINE = "If anyone is in danger right now, call 911.";
 export const SAFETY_LINE_SOURCE = "BetaNYC wording, on every answer.";
@@ -30,6 +37,12 @@ export type DangerKind = {
   /** Search words for 311 articles. */
   terms: string[];
 };
+
+/** Kinds a "not an emergency" disclaimer never quiets. */
+export const HIGH_SEVERITY = new Set(["hurt", "gas", "carbon_monoxide", "fire", "suicide"]);
+
+/** Words that say a crime is not over, whatever past-time word is near: "still inside", a weapon. */
+const PRESENT_DANGER = /\b(right now|happening|still (here|inside|there|in (there|here)|in (the|my|our|his|her|their) \w+)|(is|are|'s|'re) (inside|in (the|my|our) (house|apartment|home|building|room))|guns?|knife|knives|weapons?|pistola)\b/;
 
 const PAST = /\b(yesterday|last (night|week|month|year|weekend)|days? ago|weeks? ago|months? ago|earlier (today|this week)|the other day)\b/;
 
@@ -86,8 +99,8 @@ export const DANGERS: DangerKind[] = [
   {
     id: "crime",
     label: "a crime in progress",
-    when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
-    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
+    when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|(someone|somebody|he|she|they|a (man|guy|woman|person)|people|burglars?|thie(f|ves)) broke in\b|^broke in\b|broke in (last|yesterday|while|and|through|at)\b|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
+    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun hill|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
     city: /^(Assault|Gunshot)$/,
     terms: ["dangerous", "situation", "location"],
   },
@@ -175,7 +188,7 @@ const NOT_EMERGENCY = /\b(not an emergency|non[- ]?emergency|no emergency|isn'?t
 const URGENT = /\b(urgent|emergency|emergencia|right now|immediately|asap|help me|please help|dangerous|danger|peligro\w*)\b/;
 
 export type DangerAssessment = {
-  /** Danger kinds found, in DANGERS order. Empty when none, or when the person said it is not an emergency. */
+  /** Danger kinds found, in DANGERS order. A "not an emergency" disclaimer leaves only HIGH_SEVERITY kinds. */
   kinds: DangerKind[];
   /** Words in the description that suggested each kind. */
   suggested_by: string[];
@@ -211,12 +224,16 @@ export function assessDanger(description: string): DangerAssessment {
     kinds = kinds.filter((k) => k.id !== "crash");
   }
   // A crime word with a past-time word is a past crime: a pointer, not a 911 lead.
-  const pastCrime = kinds.some((k) => k.id === "crime") && PAST.test(text) && !/\bright now\b|\bhappening\b/.test(text);
+  // It is not past when the words say the danger is present ("still inside", a weapon).
+  const crime = DANGERS.find((k) => k.id === "crime")!;
+  const present = PRESENT_DANGER.test(text.replace(new RegExp(crime.unless!.source, "g"), " "));
+  const pastCrime = kinds.some((k) => k.id === "crime") && PAST.test(text) && !present;
   if (pastCrime) kinds = kinds.filter((k) => k.id !== "crime");
-  if (notEmergency) kinds = [];
+  // "Not an emergency" quiets ambiguous signals only, never HIGH_SEVERITY.
+  if (notEmergency) kinds = kinds.filter((k) => HIGH_SEVERITY.has(k.id));
   return {
     kinds,
-    suggested_by: notEmergency ? [] : by.filter((_, i) => kinds.includes(found[i])),
+    suggested_by: by.filter((_, i) => kinds.includes(found[i])),
     past_crime: pastCrime,
     not_emergency: notEmergency,
     urgent: !notEmergency && URGENT.test(text),

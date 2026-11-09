@@ -47,6 +47,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - QA round 3 on #23: falls from a window or roof, calls for help, swallowed objects, "ODing",
   "reeks of gas", "came crashing down", jumping in front of a train lead with 911; "gun store",
   "shot glass", "flu shot" and "sparks shooting out" are not gunfire. 34 more cases in the tests.
+- Decision of 2026-11-08 on #23: "not an emergency" and "not urgent" quiet only ambiguous
+  signals (smoke, a crash, water near electricity, a shaking structure), never someone hurt or
+  not breathing, gas, carbon monoxide, fire, or suicide and self-harm (`HIGH_SEVERITY`). A
+  past-time word no longer quiets a crime when the words say it is still going on ("still
+  inside", "right now") or name a weapon. "Broke in" is a crime word; "Gun Hill Road" is not
+  a gun. Cases in `test/emergency-disclaimer.test.mjs`.
 
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 
