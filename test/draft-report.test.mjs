@@ -370,5 +370,5 @@ test(`review ${MISSED.id}: danger assessDanger misses gets no draft, 911 first, 
   assert.deepEqual(out.reports, []);
   assert.equal(out.safety_line, SAFETY_LINE);
   assert.equal(out.assistant_instruction, ASSISTANT_INSTRUCTION);
-  assert.ok(out.first_line.startsWith("If anyone is in danger right now, call 911."), out.first_line);
+  assert.ok(out.first_line.startsWith(SAFETY_LINE), out.first_line);
 });

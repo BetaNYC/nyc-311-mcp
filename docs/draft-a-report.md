@@ -33,13 +33,13 @@ up: the draft holds only the person's words and the names the City's article use
 
 ### Safety first, on every answer and error
 
-Every answer starts with `safety_line` ("If anyone is in danger right now, call 911."), its
+Every answer starts with `safety_line` ("If someone is hurt or in danger right now, call 911. This tool can miss an emergency."), its
 source, and `assistant_instruction`, the same as `how_to_report` (#23): "Danger detection here
 is keyword-based and will miss some emergencies. If anything the person says suggests someone
 may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did
 not flag it." The tool description carries both. Every error starts with the safety line: direct
 calls, and through the tool handler (`src/tools.ts`), where argument errors for the
-reporting-help tools read `If anyone is in danger right now, call 911. Error: …`. A no-match
+reporting-help tools read `If someone is hurt or in danger right now, call 911. This tool can miss an emergency. Error: …`. A no-match
 draft's first line leads with 911.
 
 ### When there is no draft

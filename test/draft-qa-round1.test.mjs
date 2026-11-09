@@ -29,7 +29,7 @@ test("no article matched: no draft, how_to_report's no-match answer with 911 fir
     const o = await draft({ description });
     assert.equal(o.drafted, false, description);
     assert.deepEqual(o.reports, []);
-    assert.match(o.first_line, /^(If anyone is in danger right now, call 911|Call 911)/, description);
+    assert.ok(o.first_line.startsWith(SAFETY_LINE) || /^(If anyone is in danger right now, call 911|Call 911)/.test(o.first_line), `${description}: ${o.first_line}`);
     assert.ok(o.assistant_instruction);
   }
 });

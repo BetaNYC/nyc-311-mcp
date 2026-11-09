@@ -11,6 +11,7 @@ import { ContentClient, htmlToText, parseCategories } from "../dist/content-311.
 import { problemTrend } from "../dist/district-tools.js";
 import { fixtureContent, recorded, API } from "./content-fixture.mjs";
 import { fixtureData } from "./district-fixture.mjs";
+import { SAFETY_LINE } from "../dist/emergency.js";
 import { REVIEW } from "./review-set.mjs";
 
 const tmp = () => mkdtemp(path.join(tmpdir(), "nyc-311-mcp-content-test-"));
@@ -371,7 +372,7 @@ test("negation, smoking and odors do not lead with 911; 'not an emergency' is ho
   for (const d of ["my car was hit but no one was hurt", "nobody got hurt in the crash", "my neighbors smoke cigarettes in the hallway", "the burning smell from the restaurant exhaust", "the noise hurts my sleep", "not an emergency but there is smoke coming from a vent"]) {
     const out = await howToReport({ description: d }, client);
     assert.equal(out.emergency, null, `${d}: ${out.first_line}`);
-    assert.equal(out.safety_line, "If anyone is in danger right now, call 911.");
+    assert.equal(out.safety_line, SAFETY_LINE);
   }
 });
 

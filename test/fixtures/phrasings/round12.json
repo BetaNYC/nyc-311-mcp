@@ -1,0 +1,978 @@
+[
+{
+"src": "r12 report",
+"d": "my neighbor keeps falling and now he isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "every night someone tries my door and he's trying it right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "smoke keeps coming out of the outlet in my bedroom",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "the man who always sleeps on the bench isn't breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "kids always play on the ice at the pond and one just fell through",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "the gas smell in my building comes back every morning",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "my carbon monoxide detector keeps going off every night",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "my roommate always cuts himself and he's bleeding a lot right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "the guy on the corner always carries a knife and he's waving it at people now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "sparks keep shooting out of the electrical box on the street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "the old lady upstairs always forgets the stove and now flames are coming out her window",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "cars always crash at this intersection and one just flipped over with people inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "my dad keeps having chest pains every day and now he collapsed",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "a man keeps showing up at the bodega every night with a gun",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "the boiler room in my building keeps filling with smoke every morning",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "a woman is screaming for help from the apartment above mine",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "my baby swallowed a battery",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "there's a car on fire on the highway shoulder",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "a construction worker fell off the scaffolding and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "someone just got shot on my block",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "water is pouring onto the electrical panel in my basement and it's sparking",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "a man pushed someone onto the subway tracks",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "my neighbor is threatening to kill his wife, I can hear it through the wall",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "the gas smell in the laundromat is so strong people are getting dizzy",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "a bus hit a cyclist and he's lying in the street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 report",
+"d": "dead pigeons keep piling up on the roof next door",
+"ok": [
+"KA-03451"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the sidewalk has a giant crater where a pipe burst last week",
+"ok": [
+"KA-02235",
+"KA-01093",
+"KA-01955"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "an abandoned building on my block has its doors wide open",
+"ok": [
+"KA-01901"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "someone dumped a mattress crawling with bed bugs on the curb",
+"ok": [
+"KA-02097"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "loud bangs from the construction site make my walls shake",
+"ok": [
+"KA-01091"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "used syringes are littered all over the vacant lot",
+"ok": [
+"KA-02475"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the dead tree in front of my house is leaning toward the house",
+"ok": [
+"KA-02006"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the front door lock of my building has been broken for a month and strangers wander in",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the auto shop down the block smells like burning rubber every afternoon",
+"ok": [
+"KA-01928",
+"KA-01408",
+"KA-01548"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "a car alarm blared all night and nobody turned it off",
+"ok": [
+"KA-01089"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the girls' bathroom at the rec center has no soap",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "a woman double parks to drop her kids at school every morning",
+"ok": [
+"KA-01986"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "teens skateboard on the steps of the library",
+"ok": [],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "my daughter's school lunch was moldy",
+"ok": [],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the crossing guard never shows up at the school corner in the morning",
+"ok": [],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "there are mice in my apartment kitchen",
+"ok": [
+"KA-02278"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "my landlord hasn't fixed the broken window for weeks",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the streetlight in front of my house is out",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the pothole on my street keeps getting bigger",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the bus driver skipped my stop",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the subway announcements are impossible to understand",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the basketball hoop at the park has no net",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the gate at the dog run doesn't close",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "bulk trash pickup never came for my couch",
+"ok": [
+"KA-01788"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "there's a dead bird on my fire escape",
+"ok": [
+"KA-03451"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "my neighbor never picks up after their dog on the sidewalk",
+"ok": [
+"KA-02247"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the dry cleaner lost my coat and won't pay for it",
+"ok": [
+"KA-02186"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "my gym won't let me cancel my membership",
+"ok": [
+"KA-01558",
+"KA-03737"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "my son's after-school program has way too many kids for one teacher",
+"ok": [
+"KA-02240",
+"KA-02550"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the rooftop bar next door is so loud I can't sleep",
+"ok": [
+"KA-01085"
+],
+"danger": false
+},
+{
+"src": "r12 report",
+"d": "the paint in my apartment is peeling and I'm worried about lead",
+"ok": [
+"KA-02134"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "someone fell onto the tracks at the 14th street station",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a man is lying on the subway tracks and a train is coming",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a woman got her arm stuck in the train doors and it's moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a guy is punching people on the subway car right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a man is having a heart attack on the bus",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "the subway tracks at my station are full of garbage",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "people keep walking on the subway tracks to get their phones",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the train doors closed on my bag yesterday",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "a car just hit a pedestrian at the corner of my block",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a delivery guy on an e-bike was struck by a truck and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "two cars collided and one driver is bleeding",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "an suv flipped over on the highway and people are trapped",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a taxi ran over a woman's foot and she can't walk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a kid on a scooter got doored and is lying in the bike lane",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "a car nearly hit me in the crosswalk this morning",
+"ok": [
+"KA-02305",
+"KA-03063",
+"KA-01047"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "someone dinged my parked car and drove away",
+"ok": [
+"KA-01537",
+"KA-03073",
+"KA-01220"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "there's always a crash at this intersection because the light is too short",
+"ok": [
+"KA-02305",
+"KA-03063",
+"KA-01404"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "a dog went through the ice on the lake and a man went in after it",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "someone is drowning off the pier",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a kid fell into the pool at the rec center and isn't coming up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "my basement is flooding and water is up to the outlets",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "the pond in the park freezes every winter and kids skate on it",
+"ok": [],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the pool at the rec center is closed every monday",
+"ok": [
+"KA-01060",
+"KA-02282"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the fountain in the park is full of trash",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "someone is trying to climb into my window right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "there's a man inside my apartment and I don't know him",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "two guys are mugging a woman across the street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "my ex is banging on my door and threatening to kill me",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a man is stabbing someone outside the bodega",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "someone is shooting in the courtyard",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a stranger is following my daughter home from school right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "someone broke into my storage unit last month",
+"ok": [
+"KA-01537",
+"KA-02668",
+"KA-03746"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "my packages keep getting stolen from the lobby",
+"ok": [
+"KA-01219",
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "there was a shooting on my block last year and the street light is still broken",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "my grandmother fell and can't get up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "my friend took too many pills and won't wake up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a man is having a seizure in the laundromat",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "my coworker's face is drooping and he can't talk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a baby isn't breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "my neighbor fell on the icy sidewalk last week because it wasn't shoveled",
+"ok": [
+"KA-01397"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the hospital lost my medical records",
+"ok": [
+"KA-01503"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "I can hear someone yelling help help in the alley",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "a kid is crying for help in the building next door",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "someone keeps screaming for help from the apartment downstairs and it's getting worse",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "my neighbors scream at each other every night",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the guy upstairs yells at the TV during games",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "my neighbor always drinks a lot and now he's passed out and not breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "smoke keeps coming out of my e-bike battery",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "sparks keep coming from the outlet in my kitchen and now it smells like burning",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "my dad has seizures often and he's having one right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "people always fight outside the bar and tonight someone has a knife",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "the space heater in my room keeps smoking",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "my landlord's boiler smokes every morning",
+"ok": [
+"KA-02219",
+"KA-02047"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the guy downstairs passes out on the couch every night watching tv",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "there's a fender bender at this corner every week",
+"ok": [
+"KA-02305",
+"KA-03063"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "smoke from the restaurant exhaust fills my apartment every night",
+"ok": [
+"KA-01930",
+"KA-02219"
+],
+"danger": false
+},
+{
+"src": "r12 emergency",
+"d": "my building's hallway is filling with smoke and the alarm is going off",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 emergency",
+"d": "someone set the dumpster on fire and it's spreading to the building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r12 near miss",
+"d": "the fire alarm in my building goes off every time someone cooks",
+"ok": [
+"KA-01089",
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r12 near miss",
+"d": "the gas stove takes a few tries to light every morning",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "my neighbor's dog poops on the sidewalk and they never pick it up",
+"ok": [
+"KA-02247"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "there's a pothole on the highway exit ramp",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the garbage cans on my corner are always overflowing",
+"ok": [
+"KA-02143"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "water is leaking from the ceiling in my bathroom",
+"ok": [
+"KA-01509"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "my landlord won't fix the broken intercom",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "there are roaches in my kitchen",
+"ok": [
+"KA-02278"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the street sign on my corner is bent",
+"ok": [
+"KA-01063"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "a car has been parked in the same spot for two weeks with flat tires",
+"ok": [
+"KA-02130"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the traffic light at my corner is stuck on red",
+"ok": [
+"KA-01404"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "my upstairs neighbor runs the washing machine at 2am",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "someone dumped a couch on my sidewalk",
+"ok": [
+"KA-02097"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the bus stop shelter has no roof",
+"ok": [
+"KA-01071"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "there's graffiti on the mailbox",
+"ok": [
+"KA-02070"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the tree in front of my building is dead",
+"ok": [
+"KA-02006"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "there's mold in my kid's bedroom",
+"ok": [
+"KA-02262"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "my building has no hot water",
+"ok": [
+"KA-01036"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "a restaurant puts its trash out at noon",
+"ok": [
+"KA-01803",
+"KA-02356",
+"KA-01787"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the swings at the playground are broken",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "my neighbor's car alarm goes off every night",
+"ok": [
+"KA-01089"
+],
+"danger": false
+},
+{
+"src": "r12 ordinary",
+"d": "the sidewalk in front of the school is cracked",
+"ok": [
+"KA-02235"
+],
+"danger": false
+}
+]

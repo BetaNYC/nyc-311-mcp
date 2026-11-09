@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.12] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: the safety design (beta retest 11, 2026-11-09: eight missed emergencies)
+
+- **Defense in depth.** Every `how_to_report`, `list_311_categories` and `draft_311_report`
+  answer now starts its text with one fixed line, before the JSON, and carries it as
+  `safety_line`: "If someone is hurt or in danger right now, call 911. This tool can miss an
+  emergency." Detected dangers still lead `first_line` with their own 911 line.
+- **Asymmetric danger rule.** The recurring rule (beta.11) never switches a danger off when
+  anything in the description says it is happening now ("now", "just", "isn't moving", "won't
+  wake", "filling with", "people inside", "trapped", "help", or a danger verb in "is ...ing").
+  Smoke from an outlet, wiring, an appliance, a battery, an e-bike, a space heater or a boiler
+  room is never switched off.
+- **New danger classes, said in general ways:** a person hit by a vehicle, either way round
+  ("a bus hit a cyclist", "a pedestrian was struck by a car", "got doored"); someone calling
+  for help; someone on or pushed onto the subway tracks; someone through the ice; someone
+  trying a door or punching people right now; a car flipped with people inside; an arm stuck in
+  train doors. Near misses ("almost hit") and habits (people walking on the tracks, a fire alarm
+  that goes off when someone cooks) are not.
+- **Someone hurt never goes to a social-service article** (homeless outreach, shelters,
+  encampments). Beta retest 11: an injured cyclist got Homeless Outreach Assistance.
+
+### Fixed
+
+- Wrong answers rated strong: screaming for help → the danger article, not Noise from Neighbor;
+  pushed onto the tracks → 911; an abandoned building → Vacant Building Complaint, not
+  Abandoned Vehicle; a dumped mattress with bed bugs → Illegal Dumping; a dead bird on a fire
+  escape or a roof → Dead Animal on Private Property (an information page, so not strong); lead
+  paint → Lead Paint. Also: potholes on a highway ramp, double parking, dog waste, a gym
+  membership, a dry cleaner, a dog run's gate.
+- **Measured** on 593 phrasings (rounds 6 to 12, with 80 new: emergencies and near misses in
+  transit, traffic crashes, water and ice, crimes in progress, medical, calls for help and
+  recurring-but-now, plus 20 ordinary complaints): on beta.11, 19 missed emergencies, 2
+  ordinary complaints leading with 911 and 7 wrong answers rated strong; now none.
+
 ## [1.2.0-beta.11] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

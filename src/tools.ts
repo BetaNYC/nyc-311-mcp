@@ -193,12 +193,13 @@ export async function callTool(name: string, args: unknown) {
         if (name in DRAFT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as DraftToolName, args) as Record<string, unknown>;
           const result = await runDraftTool(name as DraftToolName, parsed);
-          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+          // The safety line comes first in the text, before the answer (defense in depth).
+          return { content: [{ type: "text", text: `${SAFETY_LINE}\n\n${JSON.stringify(result, null, 2)}` }] };
         }
         if (name in REPORT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as ReportToolName, args) as Record<string, unknown>;
           const result = await runReportTool(name as ReportToolName, parsed);
-          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+          return { content: [{ type: "text", text: `${SAFETY_LINE}\n\n${JSON.stringify(result, null, 2)}` }] };
         }
         if (name in LL47_ARG_SHAPES) {
           const parsed = parseToolArgs(name as Ll47ToolName, args) as Record<string, unknown>;

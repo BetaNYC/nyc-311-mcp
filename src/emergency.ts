@@ -22,7 +22,12 @@
 //   - A past-time word ("last night") quiets a crime only when nothing says the danger is
 //     present: "still inside", "still here", "right now", or a named weapon keeps it.
 
-export const SAFETY_LINE = "If anyone is in danger right now, call 911.";
+/**
+ * On every how_to_report and draft_311_report answer, first in the text and in the structured
+ * output, whatever was or was not detected: the danger words will always miss some wording
+ * (beta retest 11, 2026-11-09: eight emergencies happening now got no emergency block).
+ */
+export const SAFETY_LINE = "If someone is hurt or in danger right now, call 911. This tool can miss an emergency.";
 export const SAFETY_LINE_SOURCE = "BetaNYC wording, on every answer.";
 export const GENERIC_911 = "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.";
 
@@ -46,10 +51,15 @@ const PRESENT_DANGER = /\b(right now|happening|still (here|inside|there|in (ther
 
 export const PAST = /\b(yesterday|last (night|week|month|year|weekend)|days? ago|weeks? ago|months? ago|earlier (today|this week)|the other day)\b/;
 
+/** A vehicle, and a person, for "a bus hit a cyclist" and "a pedestrian was struck by a car". */
+const VEHICLE = "(cars?|trucks?|bus(es)?|vans?|vehicles?|taxis?|cabs?|ubers?|drivers?|motorcycles?|scooters?|e-?bikes?|mopeds?|suvs?|garbage trucks?|ambulances?|police cars?)";
+const PERSON = "(an? |the |my |his |her |our |some )?(cyclists?|bikers?|bicyclists?|pedestrians?|person|people|man|woman|men|women|kids?|child(ren)?|boy|girl|guy|lady|someone|somebody|delivery (worker|guy|man)|old (man|woman|lady)|students?|workers?|neighbor|son|daughter|mother|father|mom|dad|grandm\\w*|grandf\\w*)";
 /** Someone forcing their way in, an intruder inside, someone following the person. */
 const FORCED_ENTRY = [
   "(break|breaking|broke|kick|kicking|kicked|bust|busting|force|forcing|pry|prying|smash|smashing)\\w* (down|in|open|into|through) (my|the|our|her|his|their|a) (front |back |apartment |building |bedroom )?(doors?|windows?|apartment|house|home|place)",
   "(trying|tried|tries) to (break|kick|force|bust|pry) (in|into|down|open|through)",
+  "(someone|somebody|a (man|guy|woman|stranger|person)|he|she|they|strangers?|people) (is |are |'s |keeps? )?(trying|tries|tried|jiggling|rattling|turning) (my|the|our) (front |back |apartment )?(doors?|doorknobs?|locks?|windows?)",
+  "(trying|jiggling|rattling) (it|the (door|knob|handle|lock)) right now",
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|intruders?|people) (is |are |was |were |keeps? )?(trying|tried) to (get|climb|come) (in|into)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|strangers?|an? intruders?|intruders?) (is |are |was |'s )?(in|inside|hiding in) (my|our|the) (apartment|house|home|room|bedroom|bathroom|closet|basement)",
   "(someone|somebody|a (man|guy|woman|stranger|person)|he|she|they) (is |are |'s |keeps? )?(following|stalking|chasing) (me|us|my (kid|son|daughter|child))",
@@ -57,12 +67,24 @@ const FORCED_ENTRY = [
   // A theft or break-in under way (stage 11 stress set).
   "(is |are |'s |keeps? )?(stealing|robbing|breaking into|breaking (car |the )?windows|smashing (car |the )?windows|trying to (open|steal|break into|get into) (car |the )?(doors?|cars?|windows?))",
 ].join("|");
-const CRIME_WORDS_IN_PROGRESS = /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|(someone|somebody|he|she|they|a (man|guy|woman|person)|people|burglars?|thie(f|ves)) broke in\b|^broke in\b|broke in (last|yesterday|while|and|through|at)\b|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/;
+const CRIME_WORDS_IN_PROGRESS = /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|(someone|somebody|he|she|they|a (man|guy|woman|person)|people|burglars?|thie(f|ves)) broke in\b|^broke in\b|broke in (last|yesterday|while|and|through|at)\b|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(punching|kicking|slapping|choking|strangling|beating up|hitting|attacking) (people|someone|somebody|everyone|passengers|riders|(a|the|an|my|his|her) (man|woman|guy|kid|child|boy|girl|person|old (man|woman|lady)|driver|passenger))|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/;
 
 /** A condition that recurs: a habit or a pattern, not one event in progress. */
 export const RECURRING = /\b(every (single )?(morning|night|day|evening|afternoon|week|weekend|time|hour|weekday|sunday|saturday|friday)|every few (days|hours|minutes|nights|weeks)|each (morning|night|day|evening)|always|all the time|most (nights|days|mornings|evenings)|on weekends|daily|nightly|regularly|for (days|weeks|months|years)|constantly|usually|often|whenever|keeps? (on )?\w+ing|again and again|day after day|night after night)\b/;
 /** Words that say a danger is happening now, which a recurrence word does not quiet. */
-const HAPPENING_NOW = /\b(right now|happening now|now|at the moment|currently|this minute|as we speak|just (started|happened|collapsed|fell|passed out)|can'?t (breathe|get out|wake (him|her|them) up)|isn'?t breathing|not breathing|stopped breathing|won'?t wake( up)?|turning blue|bleeding|trapped|spreading|getting worse|is on fire|flames|can'?t see)\b/;
+// Beta retest 11, 2026-11-09: the recurring rule switched off six emergencies said to be happening
+// now ("…and now he isn't moving", "…and one just fell through"). Any of these, anywhere in the
+// description, keeps every danger on: a missed emergency is far worse than an extra 911 line.
+const HAPPENING_NOW = new RegExp(
+  [
+    "\\b(right now|happening now|now|at the moment|currently|this minute|as we speak|today|tonight|just|suddenly)\\b",
+    "\\b(can'?t (breathe|get out|wake (him|her|them) up|move|swim)|isn'?t (breathing|moving|responding|waking)|not (breathing|moving|responding)|stopped breathing|won'?t (wake|move|respond)( up)?)\\b",
+    "\\b(turning blue|bleeding|trapped|stuck inside|pinned|spreading|getting worse|on fire|flames|can'?t see|filling (up )?with|full of smoke|people (are )?(still )?inside|someone (is )?(still )?inside|help|screaming|yelling for|crying for)\\b",
+    "\\b(is|are|'s|'re)\\s+(\\w+\\s+)?(filling|pouring|burning|smoking|bleeding|choking|drowning|falling|collapsing|sparking|attacking|fighting|shooting|stabbing|breaking|trying|spreading|sinking|lying|waving|threatening|chasing|following|hitting|beating|seizing|shaking|convulsing)\\b",
+  ].join("|")
+);
+/** Smoke from wiring, an outlet, an appliance or a battery is a fire starting: never quieted. */
+const ELECTRICAL_SMOKE = /\b(outlets?|sockets?|electrical|wiring|wires?|panel|breaker|fuse ?box|appliances?|chargers?|batter(y|ies)|e-?bikes?|scooters?|space heaters?|extension cords?|power strips?|boiler rooms?|meter rooms?|basement)\b/;
 /** Hurt signals that may be sleep or a habit; the hard ones are never quieted. */
 const SOFT_HURT = /\b(passed out|collapsed|fainted|not moving|unconscious|unresponsive)\b/;
 const HARD_HURT = /\b(bleeding|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|seizures?|heart attack|chest pains?|stroke|overdos\w*|choking|turning blue|injured|hurt)\b/;
@@ -74,14 +96,14 @@ export const DANGERS: DangerKind[] = [
     when: /\b(on fire|fire\b(?!\s*(hydrant|escape|alarm box|extinguisher|department|code|safety|truck|house|station|inspection|exit|drill|pit|place|lane|zone|works?))|flames?|blaze|incendio|fuego|something('s| is) burning|(house|building|car|apartment|kitchen) is burning)/,
     // A building fire alarm that keeps going off for no reason is a noise complaint (stage 9 stress
     // set); any smoke or flame said with it is still a danger (the smoke kind, or "fire" again).
-    unless: /\b(fireplace|fireworks?|fired (me|him|her|them)|ceasefire|campfire)\b|\bfire alarms?\b[^.]{0,40}\b(for no reason|false alarms?|keeps? going off|goes off all the time|always going off|every (day|night|morning|week)|constantly|randomly|chirp\w*|beep\w*)\b/,
+    unless: /\bfire alarms?\b[^.]{0,60}\b(every|whenever|each time|all the time|always|constantly|cook\w*|burnt|toast|shower\w*|steam)\b|\b(fireplace|fireworks?|fired (me|him|her|them)|ceasefire|campfire)\b|\bfire alarms?\b[^.]{0,40}\b(for no reason|false alarms?|keeps? going off|goes off all the time|always going off|every (day|night|morning|week)|constantly|randomly|chirp\w*|beep\w*)\b/,
     city: /^Fire Emergency$/,
     terms: ["fire", "emergency"],
   },
   {
     id: "smoke",
     label: "smoke",
-    when: /\b(smoke (is )?(coming|pouring|billowing|filling|everywhere)|(full of|filled with|filling with|filling up with|lots of|thick|black|heavy) smoke|smoke (coming )?(out of|from) (the|a|my|our|their) (electrical )?(building|apartment|window|vent|roof|basement|hallway|outlet|socket|wall|panel|stove|oven)|(outlets?|sockets?|panel|wires?|wiring|stove|oven|microwave) (is |are )?(smoking|smoldering)|smell(s)? (of|like) (smoke|something burning) (from|in) (the )?(outlet|wall|panel|walls)|humo)\b/,
+    when: /\b(smoke (is |keeps |kept |has been |started )?(coming|pouring|billowing|filling|everywhere|rising)|(keeps |kept )?fill(s|ing|ed) (up )?with smoke|(full of|filled with|filling with|filling up with|lots of|thick|black|heavy) smoke|smoke (coming )?(out of|from) (the|a|my|our|their) (electrical )?(building|apartment|window|vent|roof|basement|hallway|outlet|socket|wall|panel|stove|oven)|(outlets?|sockets?|panel|wires?|wiring|stove|oven|microwave|space heaters?|heaters?|batter(y|ies)|chargers?|e-?bikes?|scooters?|toasters?|dryers?|appliances?|extension cords?|power strips?|laptops?|phones?)\b[^.]{0,25}\b(is |are |keeps |kept |started )?(smoking|smoldering)|smell(s)? (of|like) (smoke|something burning) (from|in) (the )?(outlet|wall|panel|walls)|humo)\b/,
     unless: /\b(smok(e|es|ing) (a |the )?(cigarettes?|cigars?|weed|marijuana|pot|vapes?|hookah|joints?|blunts?)|cigarette smoke|smoke[- ]free|second[- ]?hand smoke)\b/,
     city: /^Smoke or Fumes$/,
     terms: ["smoke", "fumes"],
@@ -147,7 +169,7 @@ export const DANGERS: DangerKind[] = [
   {
     id: "hurt",
     label: "someone hurt or in medical danger",
-    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|od'?ing|odeing|choking|fainted|not moving|turning blue|(isn'?t|not) responding|swallowed (a |an |some )?(battery|batteries|bleach|poison|magnets?|pills)|poisoned|fell (out of|off|from) (a |the |his |her |my )?(window|roof|fire escape|scaffold\w*|balcony|ledge|building|stairs)|se cay[oó]|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
+    when: /\b(hurt|injured|injury|injuries|bleeding|unconscious|unresponsive|not breathing|isn'?t breathing|stopped breathing|can'?t breathe|trouble breathing|passed out|collapsed|seizures?|heart attack|chest pains?|stroke|face (is )?drooping|allergic reaction|anaphyla\w*|throat (is )?(swelling|closing)|too many pills|took (a bunch of|all) (the |his |her |my )?pills|won'?t wake up|wont wake up|can'?t wake (him|her|them) up|overdos\w*|od'?ing|odeing|choking|fainted|not moving|isn'?t moving|won'?t move|turning blue|(isn'?t|not) responding|swallowed (a |an |some )?(battery|batteries|bleach|poison|magnets?|pills)|poisoned|fell (out of|off|from) (a |the |his |her |my )?(window|roof|fire escape|scaffold\w*|balcony|ledge|building|stairs)|se cay[oó]|fell and (can'?t|cannot|can not) get up|(he|she|they|i|someone|mom|dad) can'?t (talk|speak|breathe)|herid[oa]s?|sangrando|inconsciente|no respira)\b/,
     unless: /\b(no ?one|nobody|no body|none of us|not|wasn'?t|weren'?t|isn'?t|aren'?t|without|didn'?t)\s+(\w+\s+){0,2}(hurt|injur\w*)\b/,
     city: /^(Medical Emergency|Overdose)$/,
     terms: ["medical", "emergency"],
@@ -156,7 +178,7 @@ export const DANGERS: DangerKind[] = [
     id: "crash",
     label: "a crash with someone hurt",
     // A crash alone is ambiguous ("my car was hit"): it leads with 911 only with "hurt" (below).
-    when: /\b(hit by a (car|truck|bus|vehicle|bike|cyclist|scooter)|run over|crash(ed)?|collision|accident)\b/,
+    when: /\b(hit by a (car|truck|bus|vehicle|bike|cyclist|scooter)|run over|crash(ed)?|collision|accident|flipped (over)?|overturned|rolled over)\b/,
     city: /^Accident with Injury$/,
     terms: ["accident", "injury"],
   },
@@ -183,7 +205,34 @@ export const DANGERS: DangerKind[] = [
   {
     id: "trapped",
     label: "someone trapped",
-    when: /\b(trapped|stuck in (an |the |a )?elevator|(someone|somebody|people|person|kids?|children|child|man|woman|driver|passengers?) (is |are )?stuck|stuck[^.]{0,40}\b(with )?(kids|people|children|someone|a person|passengers?) inside|atrapad[oa]s?)\b/,
+    when: /\b(trapped|stuck in (an |the |a )?elevator|(stuck|caught|pinned) in (the |a )?(train|subway|bus|elevator) doors?|(someone|somebody|people|person|kids?|children|child|man|woman|driver|passengers?) (is |are )?stuck|stuck[^.]{0,40}\b(with )?(kids|people|children|someone|a person|passengers?) inside|atrapad[oa]s?)\b/,
+    terms: ["dangerous", "situation", "location"],
+  },
+  {
+    // A person hit by a vehicle, said either way round (beta retest 11: "a bus hit a cyclist and
+    // he's lying in the street" got Homeless Outreach Assistance and no 911).
+    id: "person_hit",
+    label: "a person hit by a vehicle",
+    when: new RegExp(`\\b${VEHICLE}\\b[^.]{0,20}\\b(hit|hits|struck|strikes|ran over|runs over|run over|knocked (down|over)|mowed down|plowed into|slammed into|crashed into|rammed)\\b[^.]{0,15}\\b${PERSON}\\b|\\b${PERSON}\\b[^.]{0,20}\\b(was |got |has been |just (got |been )?|is )?(hit|struck|run over|knocked (down|over)|mowed down|doored)\\b[^.]{0,10}\\bby\\b|\\b${PERSON}\\b[^.]{0,30}\\b(got|was|been|just) doored\\b`),
+    // A near miss or a worry is not a person hit; the whole sentence is excused.
+    unless: /[^.]*\b(almost|nearly|could have|might|will|going to|afraid|worried|scared)\b[^.]*/,
+    city: /^Accident with Injury$/,
+    terms: ["accident", "injury"],
+  },
+  {
+    // Someone calling for help: the general danger article, never a noise complaint (beta retest
+    // 11: "a woman is screaming for help from the apartment above mine" got Noise from Neighbor).
+    id: "calling_for_help",
+    label: "someone calling for help",
+    when: /\b(yelling|screaming|calling|crying|shouting|begging|pleading|banging) (out )?for help\b|\bscreams? for help\b|\bhelp me\b|\bpidiendo ayuda\b|\bsomeone (is )?(screaming|yelling) (help|for help)\b/,
+    terms: ["dangerous", "situation", "location"],
+  },
+  {
+    // Someone on or pushed onto the tracks (beta retest 11: "a man pushed someone onto the subway
+    // tracks" got Buses and Subways and no 911).
+    id: "tracks",
+    label: "someone on the tracks",
+    when: /\b(pushed|shoved|fell|fallen|thrown|jumped|knocked|slipped) (him|her|them|someone|somebody|a (man|woman|person|kid|child))? ?(onto|on|into|down (onto|on)) (the )?(subway |train )?tracks\b|\bon the (subway |train )?tracks\b|\bjump(ed|ing)? in front of (a |the )?(train|subway|bus)\b|\bhit by (a |the )?(train|subway)\b/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -192,14 +241,14 @@ export const DANGERS: DangerKind[] = [
     // fell into the river and is struggling" best-matched the City's Child Pornography article).
     id: "water_rescue",
     label: "someone in the water",
-    when: /\b(fell|fallen|jumped|slipped|went|is|are|was|were) (into|in|off) (the |a )?(river|water|harbor|harbour|ocean|lake|pool|bay|creek|canal|east river|hudson|pier|dock)\b|\bdrown\w*|\b(struggling|thrashing|can'?t swim|went under|going under|being swept|swept away) (in the water|in the river|in the pool|in the ocean)?|\b(in the (water|river|pool|ocean|lake))\b[^.]{0,30}\b(struggling|can'?t (swim|get out)|went under|going under|not moving|face ?down)\b|\bse est[aá] ahogando\b/,
+    when: /\b(fell|fallen|falls?|went|broke|crashed) (through|thru) (the )?ice\b|\b(ice|frozen (pond|lake|river))\b[^.]{0,60}\b(fell|fallen|went|broke|crashed) (through|thru|in)\b|\bthrough the ice\b|\b(fell|fallen|jumped|slipped|went|is|are|was|were) (into|in|off) (the |a )?(river|pond|water|harbor|harbour|ocean|lake|pool|bay|creek|canal|east river|hudson|pier|dock)\b|\bdrown\w*|\b(struggling|thrashing|can'?t swim|went under|going under|being swept|swept away) (in the water|in the river|in the pool|in the ocean)?|\b(in the (water|river|pool|ocean|lake))\b[^.]{0,30}\b(struggling|can'?t (swim|get out)|went under|going under|not moving|face ?down)\b|\bse est[aá] ahogando\b/,
     unless: /\b(phone|keys?|wallet|bag|toy|ball|leaves|trash|garbage|car keys)\b[^.]{0,15}\b(fell|went) (into|in)\b/,
     terms: ["dangerous", "situation", "location"],
   },
   {
     id: "at_risk",
     label: "a person at risk",
-    when: /\b(on the (subway |train )?tracks|jump(ed|ing)? in front of (a |the )?(train|subway|bus|car)|(yelling|screaming|calling|crying|shouting|begging) for help|help me\b|pidiendo ayuda|(basement|cellar|apartment) is flood\w*[^.]{0,40}\b(is|are) (down there|inside|in there)|(baby|infant|toddler|newborn|elderly|grandm\w*|grandf\w*|grandparent)[^.]{0,30}\b(freezing|too cold|hypotherm\w*|turning blue)|(freezing|too cold)[^.]{0,30}\b(baby|infant|toddler|newborn))\b/,
+    when: /\b(jump(ed|ing)? in front of (a |the )?car|(basement|cellar|apartment) is flood\w*[^.]{0,40}\b(is|are) (down there|inside|in there)|(baby|infant|toddler|newborn|elderly|grandm\w*|grandf\w*|grandparent)[^.]{0,30}\b(freezing|too cold|hypotherm\w*|turning blue)|(freezing|too cold)[^.]{0,30}\b(baby|infant|toddler|newborn))\b/,
     // No search words of its own: a baby freezing with no heat still gets the 311 heat article.
     terms: [],
   },
@@ -274,7 +323,7 @@ export function assessDanger(description: string): DangerAssessment {
   let kinds = found;
   // A crash alone is ambiguous ("my car was hit"): it counts only with someone hurt,
   // or a person hit ("hit by a car", "run over").
-  if (kinds.some((k) => k.id === "crash") && !kinds.some((k) => k.id === "hurt") && !/\b(hit by a|run over)\b/.test(text)) {
+  if (kinds.some((k) => k.id === "crash") && !kinds.some((k) => k.id === "hurt") && !/\b(hit by a|run over|flipped( over)?|overturned|rolled over|people (are )?(still )?inside|someone (is )?(still )?inside|trapped|pinned)\b/.test(text)) {
     kinds = kinds.filter((k) => k.id !== "crash");
   }
   // A crime word with a past-time word is a past crime: a pointer, not a 911 lead.
@@ -292,7 +341,10 @@ export function assessDanger(description: string): DangerAssessment {
   const recurring = RECURRING.test(text) && !HAPPENING_NOW.test(text);
   if (recurring) {
     kinds = kinds.filter((k) => {
-      if (k.id === "smoke" || k.id === "crash") return false;
+      if (k.id === "smoke") return ELECTRICAL_SMOKE.test(text);
+      if (k.id === "crash") return false;
+      // People walking on the tracks as a habit is quieted; someone pushed, fallen or lying there is not.
+      if (k.id === "tracks") return /\b(pushed|shoved|fell|fallen|thrown|jumped|knocked|slipped|lying|train is coming)\b/.test(text);
       if (k.id === "hurt") return !(SOFT_HURT.test(by[found.indexOf(k)]) && !HARD_HURT.test(text));
       // A theft or break-in that keeps happening ("someone keeps stealing packages") is a pattern
       // to report, not one in progress; never with a weapon.

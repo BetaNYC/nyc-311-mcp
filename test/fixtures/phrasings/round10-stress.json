@@ -344,7 +344,10 @@
 {
 "src": "n60",
 "d": "a gym won't let me cancel my membership",
-"ok": [],
+"ok": [
+"KA-01558",
+"KA-03737"
+],
 "danger": false
 },
 {
