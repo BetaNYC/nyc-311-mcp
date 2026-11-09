@@ -90,24 +90,32 @@ law wrote it:
 3. The dataset's own description: since March 2020 it "does not fully represent the agent-handled
    calls to 311. The actual calls handled are higher."
 
-Queries, built from Socrata's SoQL documentation: one per month,
-`$select=inquiry_name, agency, agency_name, call_resolution, count(*) AS n`, `$where` on `date`
-for the month, `$group` and `$order` on the four columns, paged with `$limit=50000`/`$offset`
-(October 2026: 1,732 rows, about 13 s). Socrata leaves null values out of each row, so a missing
+Queries, built from Socrata's SoQL documentation, two shapes. First, one light query per month:
+`$select=inquiry_name, count(*) AS n, count(agency) AS with_agency, count(call_resolution) AS
+with_resolution`, `$where` on `date` for the month, `$group` and `$order` on `inquiry_name`, paged
+with `$limit=50000`/`$offset` (`count(column)` counts non-null values). Only when a month's calls
+do carry an agency or a call_resolution is it asked again with the full breakdown, `$group` and
+`$order` on `inquiry_name, agency, agency_name, call_resolution`. October 2026 is 1,732 topics. It
+took about 13 s on 2026-11-07. On 2026-11-09 the portal was slow: the light query took 40 and 58 s,
+the four-column one 74 s, and a bare `count(*)` for the month 18 s. Socrata leaves null values out of each row, so a missing
 key is a blank. A fiscal year to date is the sum of its months. Each month's answer is saved on
 disk. A month that ended more than 7 days ago is answered from the saved copy for 30 days, whatever
 the dataset version (its `rowsUpdatedAt` moves every night, so keying on it alone re-asked every
 month daily). A recent month is asked again when the dataset changes. The metadata is re-read at
 most hourly and saved too.
 
-**When the portal is slow or down.** One call has a 45 s budget, waits and retries included. The
-asked-for month is fetched first, then the rest of the fiscal year. Months not reached are listed in
-`months_missing`, the fiscal-year section says `complete: false` and gives no partial total, and
-asking again finishes from the saved months. With 2 s pacing and about 10 to 13 s per
-month, a cold fiscal-year-to-date call **usually comes back `complete: false` the first time**; a
-second call completes it from the saved months. Requests are never sent in parallel (engineering
-standards §6 forbids it for one portal), so this is how a cold fiscal year stays inside client
-timeouts. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
+**When the portal is slow or down.** One call has a 58 s budget, waits and retries included, kept
+under a minute because many MCP clients stop waiting for a tool then. Each request may take up to
+55 s. A request that gets no answer in that time is not tried again, and neither is a failure that
+took 5 s or more. The asked-for month is fetched first, then the rest of the fiscal year. If the
+asked-for month gets no answer, the tool stops and says which: **"NYC Open Data is slow right
+now"** when the portal was asked and did not answer in time, **"NYC Open Data is not responding
+right now"** when it returned an HTTP 5xx or could not be reached. Months not reached are listed in
+`months_missing`, each with a plain reason, the fiscal-year section says `complete: false` and
+gives no partial total, and asking again finishes from the saved months. A cold fiscal-year-to-date
+call **usually comes back `complete: false` the first time**; later calls complete it from the
+saved months. Requests are never sent in parallel (engineering standards §6 forbids it for one
+portal), so this is how a cold fiscal year stays inside client timeouts. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
 and a caveat; with no saved copy for the asked-for month, the tool says so and does not answer.
 Politeness (engineering standards §6): one request at a time, at least 2 s between request
 starts, the gap doubled after a 429 (to 60 s) and halved after a success, `Retry-After` honored

@@ -142,6 +142,7 @@ export class SodaClient {
     if (this.token) headers["X-App-Token"] = this.token;
     return this.serial(async () => {
       let lastErr: unknown;
+      let tried = 0;
       const left = () => (opts.deadline === undefined ? Infinity : opts.deadline - this.now());
       const tries = opts.maxTries ?? this.maxTries;
       for (let attempt = 1; attempt <= tries; attempt++) {
@@ -150,10 +151,11 @@ export class SodaClient {
         const limit = Math.min(opts.timeoutMs ?? this.timeout, left());
         if (limit <= 0) throw new DeadlineError(url.pathname, lastErr);
         const ac = new AbortController();
-        const timer = setTimeout(() => ac.abort(new Error(`NYC Open Data sent no answer within ${Math.round(limit)} ms (${url.pathname}).`)), limit);
+        const timer = setTimeout(() => ac.abort(new SodaTimeoutError(limit, url.pathname)), limit);
         let status: number | null = null;
         let retryAfter: string | null = null;
         const started = this.now();
+        tried = attempt;
         try {
           const res = await this.fetchImpl(url.toString(), { headers, signal: ac.signal });
           status = res.status;
@@ -177,6 +179,9 @@ export class SodaClient {
           this.log("soda_slow_down", { gap_ms: this.gap });
         }
         if (attempt === tries) break;
+        // A request that got no answer in time is not tried again: the portal is overloaded,
+        // and a second wait would only double the time before the person hears so.
+        if (lastErr instanceof SodaTimeoutError) break;
         if (opts.noRetryAfterMs !== undefined && this.now() - started >= opts.noRetryAfterMs) break;
         const wait =
           (status === 429 || status === 503) && retryAfter
@@ -186,7 +191,7 @@ export class SodaClient {
         this.log("soda_retry", { path: url.pathname, attempt, status, wait_ms: wait });
         await this.sleep(wait);
       }
-      throw new Error(`Gave up on NYC Open Data after ${tries} tries: ${lastErr instanceof Error ? lastErr.message : String(lastErr)}`);
+      throw new Error(`Gave up on NYC Open Data after ${tried === 1 ? "1 try" : `${tried} tries`}: ${lastErr instanceof Error ? lastErr.message : String(lastErr)}`, { cause: lastErr });
     });
   }
 
@@ -276,6 +281,53 @@ export type RequestOpts = {
   /** A failed try that took at least this long is not retried: a slow failure is an overloaded portal. */
   noRetryAfterMs?: number;
 };
+
+/** How long a wait was, in words: "55 seconds", never a bare five-digit millisecond count. */
+export function waitInWords(ms: number): string {
+  if (ms < 1000) return `${Math.round(ms)} ms`;
+  const s = Math.round(ms / 1000);
+  return s === 1 ? "1 second" : `${s} seconds`;
+}
+
+/** NYC Open Data sent no answer within the time one request is allowed. Slow, not down. */
+export class SodaTimeoutError extends Error {
+  constructor(
+    readonly waitedMs: number,
+    readonly where: string
+  ) {
+    super(`NYC Open Data sent no answer within ${waitInWords(waitedMs)} (${where}).`);
+    this.name = "SodaTimeoutError";
+  }
+}
+
+/**
+ * What went wrong with NYC Open Data, in two kinds the person can act on: "slow" (it was
+ * asked and did not answer in time) or "down" (an HTTP 5xx or no connection). Null for
+ * anything else, such as a 400, which is our mistake rather than the City's.
+ */
+export function sodaTrouble(err: unknown): "slow" | "down" | null {
+  for (let e: unknown = err, i = 0; e && i < 5; i++) {
+    if (e instanceof SodaTimeoutError) return "slow";
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/HTTP 5\d\d|fetch failed|ECONNRESET|ENOTFOUND|ETIMEDOUT|socket hang up/i.test(msg) && !(e instanceof DeadlineError)) return "down";
+    if (e instanceof DeadlineError) {
+      if (!e.last) return "slow";
+      e = e.last;
+      continue;
+    }
+    e = e instanceof Error ? (e as Error & { cause?: unknown }).cause : undefined;
+  }
+  return err instanceof DeadlineError ? "slow" : null;
+}
+
+/** How long the request that timed out was allowed, if `err` is (or wraps) a SodaTimeoutError. */
+export function timedOutAfter(err: unknown): number | null {
+  for (let e: unknown = err, i = 0; e && i < 5; i++) {
+    if (e instanceof SodaTimeoutError) return e.waitedMs;
+    e = e instanceof DeadlineError ? e.last : e instanceof Error ? (e as Error & { cause?: unknown }).cause : undefined;
+  }
+  return null;
+}
 
 export class DeadlineError extends Error {
   constructor(

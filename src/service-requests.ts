@@ -26,7 +26,7 @@
 // and we found no published source linking the two (checked: the erm2-nwe9 data dictionary and
 // the API portal's operation docs).
 
-import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
+import { assertNoZip, redactZip, scrubZipValues } from "./envelope.js";
 
 /** The 311 Public API's status codes, as documented on api-portal.nyc.gov (GetServiceRequestList). */
 export const API_STATUS_CODES: Readonly<Record<string, string>> = {
@@ -128,6 +128,13 @@ export const NOT_FOUND_HINT =
  * City's raw error body (beta retest 1, 2026-11-08). A request or trace id the API sent
  * is kept, for anyone asking the City about the error.
  */
+/** The same plain sentence for a list lookup in which the City found none of the numbers. */
+export function listNotFoundMessage(srNumbers: string[], apiMessage: string): string {
+  if (srNumbers.length === 1) return notFoundMessage(srNumbers[0], apiMessage);
+  const id = apiMessage.match(/\b(?:request|activity|trace|correlation)[ _-]?id\b["']?\s*[:=]\s*["']?([A-Za-z0-9-]{6,})/i)?.[1];
+  return `311 has none of these service requests: ${srNumbers.join(", ")}. ${NOT_FOUND_HINT}${id ? ` (311 API request id ${id}.)` : ""}`;
+}
+
 export function notFoundMessage(srNumber: string, apiMessage: string): string {
   const id = apiMessage.match(/\b(?:request|activity|trace|correlation)[ _-]?id\b["']?\s*[:=]\s*["']?([A-Za-z0-9-]{6,})/i)?.[1];
   return `311 has no service request ${srNumber}. ${NOT_FOUND_HINT}${id ? ` (311 API request id ${id}.)` : ""}`;
@@ -208,8 +215,7 @@ function isRequest(v: unknown): v is Record<string, unknown> {
 
 function finish<T>(out: T): T {
   assertNoZip(out);
-  assertNoZipValues(out);
-  return out;
+  return scrubZipValues(out);
 }
 
 /**

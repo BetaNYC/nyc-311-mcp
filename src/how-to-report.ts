@@ -15,7 +15,7 @@
 // to reach 311, portal.311.nyc.gov/about-nyc-311/ (read 2026-11-07, REACH_311).
 
 import { z } from "zod";
-import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
+import { assertNoZip, redactZip, scrubZipValues } from "./envelope.js";
 import { articleUrl, contentClient, NotFoundError, CATEGORY_ID, PORTAL, type Article, type ArticleSummary, type Category, type ContentAction, type ContentClient, type Fetched } from "./content-311.js";
 import { BOROUGHS, boardstatData, DISTRICT_JSON, DISTRICT_SHAPE, problemTrend } from "./district-tools.js";
 import type { BoardStatData } from "./boardstat-data.js";
@@ -125,6 +125,21 @@ const MISSED_COLLECTION = /\b(skipped|missed|didn'?t (come|pick)|never (came|pic
 // a building. Beta retest 2026-11-08.
 const STREET_FLOOD = /\b(street|road|roadway|intersection|corner|crosswalk|block)\b[^.]{0,30}\b(flood\w*|ponding|puddl\w*|under water)\b|\b(flood\w*|ponding)\b[^.]{0,30}\b(street|road|roadway|intersection|corner|crosswalk)\b/;
 
+// No water (not no hot water): the City's No Water, Low Water Pressure, or Water Temperature
+// Complaint (KA-01405), not Heat or Hot Water. Beta retest 2, 2026-11-09.
+const NO_WATER = /\b(no|without|lost|losing) (running )?water\b|\bwater (is |was |has been |got )?(off|out|shut off|turned off)\b|\b(low|weak|no) water pressure\b|\bno hay agua\b/;
+// An engine left running: the City's Idling Vehicle article (KA-02222). Beta retest 2, 2026-11-09.
+const IDLING = /\bidl(e|es|ed|ing)\b|\b(engine|motor) (is |was |has been |kept |left )?(running|on)\b(?! fire)|\b(left|kept|keeps) (the |its |their |his |her )?(engine|motor) (running|on)\b(?! fire)/;
+// Trash inside a building (a lobby, hallway or basement): the City's Apartment Maintenance
+// Complaint (KA-01074), whose public-area and building-wide sections cover unsanitary
+// conditions and garbage storage; not Dirty Gutter or a litter basket. Beta retest 2, 2026-11-09.
+const INDOORS = "(lobby|hallways?|stairwells?|stairs|staircase|basement|laundry room|mailroom|compactor room|inside (my|the|our) building|in (my|the|our) building)";
+const TRASH_WORDS = "(trash|garbage|litter|rubbish|debris|filth\\w*|dirty|unsanitary|basura)";
+const TRASH_INDOORS = new RegExp(`\\b${TRASH_WORDS}\\b[^.]{0,60}\\b${INDOORS}\\b|\\b${INDOORS}\\b[^.]{0,40}\\b${TRASH_WORDS}\\b`);
+// A street, traffic or parking sign: the City's Street Sign Complaint (KA-01063). Beta
+// retest 2, 2026-11-09: "the stop sign at the corner was knocked down" found nothing.
+const STREET_SIGN = /\b(stop|street|traffic|parking|yield|one[- ]way|no parking|no standing|street name|bus stop|speed limit|school zone|do not enter) signs?\b/;
+
 // Written against 311's category tree and article titles of 2026-11-07. Each line's
 // words are taken from the titles and summaries of the article it should find.
 // Spanish words cover the top problems only; matching is by keyword, not translation.
@@ -137,6 +152,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(store|shop|bodega|deli|business)\b/, terms: ["store", "business"], weight: 1 },
   { when: /\b(sidewalk|on the street|in the street|outside|on my block|corner|acera|calle)\b/, terms: ["street", "sidewalk"], weight: 1 },
   { when: /\b(car|cars|truck|vehicle|motorcycle|moped|horn|honk|engine|idling|carro|coche)/, terms: ["vehicle"], weight: 2 },
+  { when: IDLING, unless: /\b(noise|noisy|loud|music|blasting|honk\w*|horn)\b/, terms: ["idling", "vehicle"], weight: 3, against: ["noise", "illegal", "parking"], categories: ["Air"], family: "idling" },
   { when: /\b(construction|jackhammer|drilling|demolition|crane|scaffold)/, terms: ["construction"], weight: 3, categories: ["Noise", "Buildings & Property"], family: "noise" },
   { when: /\b(alarm)/, unless: /\b(smoke|carbon monoxide|co) (alarm|detector)/, terms: ["alarm", "noise"], weight: 2, categories: ["Noise"], family: "noise" },
   { when: /\b(car (was |got )?hit|hit my car|accident|crash(ed)?|collision|fender[- ]bender)\b/, terms: ["accident", "vehicle"], weight: 3, categories: ["Safety & Crime"], family: "crash" },
@@ -148,7 +164,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(dog|dogs|barking|barks|animal|perro)\b/, terms: ["dog", "animal"], weight: 2 },
   { when: /\bfireworks?\b|\bfuegos artificiales\b/, terms: ["fireworks"], weight: 3, categories: ["Noise", "Safety & Crime"], family: "fireworks" },
   // Parking and vehicles
-  { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally|mal estacionad\w*|estacionad\w*)\b/, unless: /\b(parking )?meters?\b|\bmuni-?meters?\b/, terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"], family: "parking" },
+  { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally|mal estacionad\w*|estacionad\w*)\b/, unless: new RegExp(`\\b(parking )?meters?\\b|\\bmuni-?meters?\\b|${STREET_SIGN.source}|${IDLING.source}`), terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"], family: "parking" },
   // A parking meter: the City's Parking Meter Complaint or Request (KA-01240), not Illegal Parking.
   { when: /\b(parking )?meters?\b|\bmuni-?meters?\b/, unless: /\bwater meters?\b/, terms: ["parking", "meter", "complaint"], weight: 3, against: ["illegal"], categories: ["Parking"], family: "meter" },
   { when: /\bhydrant/, terms: ["hydrant"], weight: 2, categories: ["Water", "Sidewalks"] },
@@ -160,11 +176,12 @@ export const CONCEPTS: Concept[] = [
   // Housing (category "Tenants")
   { when: /\b(heat|heating|radiators?|boiler|freezing|cold apartment|no heat|calefacci[oó]n|no hay calor)\b/, terms: ["heat"], weight: 3, categories: ["Tenants"], family: "heat" },
   { when: /\b(hot water|agua caliente)\b/, terms: ["hot", "water", "heat"], weight: 2, categories: ["Tenants"], family: "heat" },
+  { when: NO_WATER, unless: /\bhot water\b/, terms: ["water", "pressure", "temperature"], weight: 3, against: ["heat", "leak", "main"], categories: ["Tenants", "Water"], family: "no_water" },
   { when: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building|rent|apartamento|casero|due[ñn]o|edificio)\b/, terms: ["apartment", "residential", "building"], weight: 1, against: ["commercial", "nycha", "loft"], categories: ["Tenants"] },
   { when: /\b(harass\w*|forcing (me|us) out|trying to (evict|force)|acoso|acosando)\b/, terms: ["harass", "tenant"], weight: 3, categories: ["Tenants"], family: "harassment" },
   // Bed bugs: the City's Bed Bug Complaint (KA-01236), its own article. Beta retest 2026-11-08.
   { when: /\bbed ?bugs?\b|\bchinches\b/, terms: ["bed", "bug", "complaint"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
-  { when: /\b(mice|mouse|rats?|roach(es)?|cockroach(es)?|pests?|vermin|fleas|flies|ratas?|ratones|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
+  { when: /\b(mice|mouse|rats?|rodents?|roach(es)?|cockroach(es)?|pests?|vermin|fleas|flies|ratas?|ratones|roedores|cucarachas|chinches)\b/, terms: ["pest", "mouse", "roach", "rat"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
   { when: /\b(mold|mould|mildew|moho|hongos)\b/, terms: ["mold"], weight: 3, categories: ["Tenants"], family: "mold" },
   { when: /\b(toilet|sink|plumbing|pipes?|shower|bathtub|tub|clogged|faucet|inodoro|lavamanos)\b/, terms: ["maintenance", "plumbing"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle|graffiti)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
@@ -177,6 +194,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(pothole|potholes|hole in the (road|street)|cave[- ]?in|sinkhole|crater|bache|baches|hoyo en la calle)/, terms: ["pothole", "cave", "street"], weight: 3, categories: ["Streets & Highways"], family: "pothole" },
   { when: /\b(sidewalk|acera)\b[^.]{0,30}\b(crack\w*|broken|uneven|raised|trip\w*|damaged|hole)\b|\b(crack\w*|broken|uneven|damaged) (sidewalk|acera)\b/, terms: ["broken", "sidewalk"], weight: 3, categories: ["Sidewalks"], family: "sidewalk" },
   { when: /\b(traffic (light|signal)|stop ?light|signal|walk sign|red light|sem[aá]foro)\b/, terms: ["traffic", "signal"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "signal" },
+  { when: STREET_SIGN, terms: ["street", "sign", "complaint"], weight: 3, against: ["request", "purchase", "highway", "advertising", "building"], categories: ["Streets & Highways"], family: "street_sign" },
   { when: /\b(street ?lights?|lamp ?posts?|light poles?|poste de luz)\b/, terms: ["street", "light"], weight: 3, categories: ["Streets & Highways", "Sidewalks"], family: "street_light" },
   { when: /\b(trees?|branch|branches|[aá]rbol)\b/, terms: ["tree", "branch"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "tree" },
   // A standing dead or dying tree: the City's Dead Tree article (KA-02006), not Fallen Tree
@@ -190,7 +208,8 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(water main|gushing|water (all )?over the street|water in the street)/, terms: ["water", "main", "break"], weight: 2, categories: ["Water", "Sidewalks"], family: "water" },
   { when: /\bhydrant\b.*\b(open|running|leak|spraying|gushing)|\b(open|running|leaking) (fire )?hydrant/, terms: ["hydrant", "leak", "running"], weight: 3, categories: ["Water", "Sidewalks"], family: "water" },
   // Trash
-  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: MISSED_COLLECTION, terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
+  { when: TRASH_INDOORS, unless: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\bbaskets?\b/, terms: ["apartment", "maintenance", "complaint"], weight: 3, against: ["gutter", "sidewalk", "street", "basket", "lot"], categories: ["Tenants"], family: "building_trash" },
+  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: new RegExp(`${MISSED_COLLECTION.source}|${TRASH_INDOORS.source}`), terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
   // Trash inside a building is not a public litter basket ("trash in the lobby" got Litter
   // Basket once that article was recorded, 2026-11-08); a can, basket or bin said wins.
   { when: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\b(litter )?baskets?\b/, terms: ["basket"], weight: 3 },
@@ -907,11 +926,8 @@ export function pastTheEnd(offset: number, count: number): string {
 
 /** Every string redacted of ZIP codes (City article text carries mailing addresses), then checked. */
 function redactAll<T>(value: T): T {
-  const walk = (v: unknown): unknown =>
-    typeof v === "string" ? redactZip(v) : Array.isArray(v) ? v.map(walk) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : v;
-  const out = walk(value) as T;
+  const out = scrubZipValues(value);
   assertNoZip(out);
-  assertNoZipValues(out);
   return out;
 }
 

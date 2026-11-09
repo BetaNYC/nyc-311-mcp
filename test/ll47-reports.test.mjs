@@ -19,6 +19,8 @@ import {
   callSection,
   cbMonthlyList,
   directoryAssistanceReport,
+  DA_REQUEST,
+  DA_BUDGET_MS,
   MANDATES,
   LL47_TOOLS,
 } from "../dist/ll47-reports.js";
@@ -338,7 +340,7 @@ async function fixtureSoda({ token, respond, cost = 0, cacheDir, rowsUpdatedAt }
       return Response.json({ ...v, rowsUpdatedAt });
     }
     if (respond) {
-      const r = await respond(u, requests.length);
+      const r = await respond(u, requests.length, init);
       if (r) return r;
     }
     if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
@@ -590,4 +592,84 @@ test("a fast 503 is retried once, then the plain outage message", async () => {
 test("NYC Open Data down before the metadata answers, nothing saved: the same plain outage message", async () => {
   const { soda } = await fixtureSoda({ respond: async () => new Response("Service Unavailable", { status: 503 }), cost: 1_000 });
   await assert.rejects(directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW), OUTAGE);
+});
+
+// ── Beta retest 2 (2026-11-09): the City's dataset was slow, not down ──────────
+// A direct October query took 74 s; the report gave up at 30 s and said "not responding".
+// Now: a lighter query (one $group by topic, plus counts of filled agency and
+// call_resolution), a longer wait per request, and "slow" vs "not responding" said apart.
+
+/** A fetch that never answers until the client gives up on it. */
+const hang = (init) =>
+  new Promise((_, reject) => init.signal.addEventListener("abort", () => reject(init.signal.reason ?? new Error("aborted")), { once: true }));
+
+test("each month is one light query: grouped by topic only, with counts of filled agency and call_resolution", async () => {
+  const { soda, requests } = await fixtureSoda();
+  await directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW);
+  const data = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json");
+  assert.equal(data.length, 4, "one query per month, no second query when agency and call_resolution are blank");
+  for (const r of data) {
+    assert.equal(r.url.searchParams.get("$group"), "inquiry_name");
+    assert.match(r.url.searchParams.get("$select"), /count\(agency\)/);
+    assert.match(r.url.searchParams.get("$select"), /count\(call_resolution\)/);
+  }
+});
+
+test("a month whose calls do carry an agency is asked again with the full breakdown", async () => {
+  const { soda, requests } = await fixtureSoda({
+    respond: async (u) => {
+      if (u.pathname !== "/resource/wewp-mm3p.json" || !/2026-07-01/.test(u.searchParams.get("$where"))) return null;
+      if (u.searchParams.get("$offset") !== "0") return Response.json([]);
+      return u.searchParams.get("$group") === "inquiry_name"
+        ? Response.json([{ inquiry_name: "A", n: "5", with_agency: "3", with_resolution: "0" }])
+        : Response.json([
+            { inquiry_name: "A", agency: "DOF", agency_name: "Department of Finance", n: "3" },
+            { inquiry_name: "A", n: "2" },
+          ]);
+    },
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  const july = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json" && /2026-07-01/.test(r.url.searchParams.get("$where")));
+  assert.deepEqual(july.map((r) => r.url.searchParams.get("$group")), ["inquiry_name", "inquiry_name, agency, agency_name, call_resolution"]);
+  assert.ok(env.data.fiscal_year.by_agency.some((a) => a.agency === "DOF" && a.calls === 3));
+});
+
+test("NYC Open Data too slow on the asked month: says it is slow, not down, with no five-digit number", async () => {
+  const { soda, requests } = await fixtureSoda({
+    respond: async (u, _n, init) => (u.pathname === "/resource/wewp-mm3p.json" ? hang(init) : null),
+  });
+  await assert.rejects(directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW, { requestTimeoutMs: 20 }), (e) => {
+    assert.match(e.message, /NYC Open Data is slow right now/);
+    assert.doesNotMatch(e.message, /not responding|Gave up on|\d{5}/);
+    return true;
+  });
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 1, "a timeout is not retried");
+});
+
+test("the FY2027 report answers when one month times out: that month is listed as missing, slow, with no ZIP-guard error", async () => {
+  const { soda } = await fixtureSoda({
+    respond: async (u, _n, init) =>
+      u.pathname === "/resource/wewp-mm3p.json" && /2026-10-01/.test(u.searchParams.get("$where")) ? hang(init) : null,
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW, { requestTimeoutMs: 20 });
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  const oct = fy.months_missing.find((m) => m.month === "2026-10");
+  assert.ok(oct, JSON.stringify(fy.months_missing));
+  assert.match(oct.why, /slow/);
+  assert.doesNotMatch(JSON.stringify(env), /ZIP code removed|\d{5} ms/);
+});
+
+test("timeout text says seconds, never a bare five-digit millisecond count", async () => {
+  const { soda } = await fixtureSoda({ respond: async (_u, _n, init) => hang(init) });
+  await assert.rejects(soda.getJson("/resource/wewp-mm3p.json", { $limit: "1" }, { timeoutMs: 1500, maxTries: 1 }), (e) => {
+    assert.match(e.message, /no answer within 2 seconds/);
+    assert.doesNotMatch(e.message, /\d{5}|after 1 tries/);
+    return true;
+  });
+});
+
+test("the report waits long enough for a slow month, and stays under a minute in all", () => {
+  assert.ok(DA_REQUEST.timeoutMs >= 50_000 && DA_REQUEST.timeoutMs < 60_000, String(DA_REQUEST.timeoutMs));
+  assert.ok(DA_BUDGET_MS >= DA_REQUEST.timeoutMs && DA_BUDGET_MS < 60_000, String(DA_BUDGET_MS));
 });

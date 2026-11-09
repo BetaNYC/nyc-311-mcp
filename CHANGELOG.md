@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.3] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 2, 2026-11-09)
+
+- **ZIP guard false positive** (blocking). `ll47_directory_assistance_report` for FY2027
+  failed with "A ZIP code was about to be returned": a timeout reason said "within 30000
+  ms", and the guard read the number as a ZIP code. Now a five-digit number with a unit
+  after it (ms, seconds, requests, calls, rows…), a dollar sign before it, or a decimal
+  point is a quantity, unless a state, borough or "ZIP" comes first. Timeouts are said in
+  seconds. And the last check on every answer now removes a ZIP-looking number and goes
+  on, instead of throwing the whole answer away; ZIP codes in City text are still removed,
+  and a key that names a ZIP code is still refused.
+- **`ll47_directory_assistance_report` when NYC Open Data is slow.** The City's dataset was
+  slow, not down (a month took 40 to 74 s). Each month is now one lighter query (grouped by
+  topic only, with counts of filled agency and call_resolution); the full breakdown is
+  asked only for a month that has them. A request may take up to 55 s, inside a 58 s
+  budget, and a timeout is not retried. The message says "NYC Open Data is slow right now"
+  after a timeout and "not responding" only after an HTTP 5xx or no connection.
+- **Reporting matches** (`how_to_report`, `draft_311_report`), all on the City's own
+  articles, recorded as test fixtures: rodents in a building go to Residential Pest
+  Complaint (KA-02278); trash in a lobby, hallway or basement to Apartment Maintenance
+  Complaint (KA-01074); no water to No Water, Low Water Pressure, or Water Temperature
+  Complaint (KA-01405), not Heat or Hot Water; a stop, street, traffic or parking sign to
+  Street Sign Complaint (KA-01063); an idling vehicle or an engine left running to Idling
+  Vehicle (KA-02222). A car alarm stays Noise from Alarm (KA-01089), with Noise from Vehicle
+  offered as an alternative. All 23 phrasings of the retest table are a regression test.
+- **`get_service_request_list` not found.** When the City finds none of the numbers, one
+  plain sentence and the same hint as `get_service_request`, not the City's raw 404 text.
+- **Version.** The server reports `1.2.0-beta.3`.
+
 ## [1.2.0-beta.2] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

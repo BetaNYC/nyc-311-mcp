@@ -18,7 +18,7 @@
 // ZIP codes: none in any answer. A ZIP the person typed is left out of the draft.
 
 import { z } from "zod";
-import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
+import { assertNoZip, redactZip, scrubZipValues } from "./envelope.js";
 import { contentClient, PORTAL, type Article, type ContentClient } from "./content-311.js";
 import { BOROUGHS, boardstatData } from "./district-tools.js";
 import { howToReport, REACH_311, splitProblems, stem, words } from "./how-to-report.js";
@@ -613,11 +613,8 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
 }
 
 function finish<T>(value: T): T {
-  const walk = (v: unknown): unknown =>
-    typeof v === "string" ? redactZip(v) : Array.isArray(v) ? v.map(walk) : v && typeof v === "object" ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x)])) : v;
-  const out = walk(value) as T;
+  const out = scrubZipValues(value);
   assertNoZip(out);
-  assertNoZipValues(out);
   return out;
 }
 

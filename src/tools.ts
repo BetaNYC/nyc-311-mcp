@@ -7,7 +7,7 @@ import {
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
 import { describeStatus } from "./status.js";
-import { describeServiceRequest, describeServiceRequestList, notFoundMessage } from "./service-requests.js";
+import { describeServiceRequest, describeServiceRequestList, listNotFoundMessage, notFoundMessage } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
@@ -178,7 +178,14 @@ export async function callTool(name: string, args: unknown) {
 
       case "get_service_request_list": {
         const { sr_numbers } = parseToolArgs("get_service_request_list", args);
-        const results = describeServiceRequestList(await getServiceRequestList(sr_numbers), sr_numbers);
+        let raw: unknown;
+        try {
+          raw = await getServiceRequestList(sr_numbers);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          throw new Error(/ error 404/.test(message) ? listNotFoundMessage(sr_numbers, message) : message);
+        }
+        const results = describeServiceRequestList(raw, sr_numbers);
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
       }
 

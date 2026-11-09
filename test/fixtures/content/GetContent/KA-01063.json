@@ -1,0 +1,113 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01063",
+   "Title": "Street Sign Complaint",
+   "Description": "Report a problem with a street sign.",
+   "Section": [
+    {
+     "Name": "Street Sign Complaint Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01064\">Street Sign Request</a>&nbsp;to request a <strong>new </strong>parking or traffic sign or change to an existing one</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02145\">Highway Sign Complaint</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01953\">Neighborhood Area Maps</a>&nbsp;to report a problem with a local neighborhood area map (WalkNYC sign)</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03486\">Bus Arrival Sign</a>&nbsp;to report a problem with bus countdown timers</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02140\">Poster or Sticker Complaint</a></li></ul></div><p>You can report a problem with a street sign, including parking, traffic, street name, bus stop, and construction signs.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Blocked",
+     "Content": "<p><strong>Blocked by Tree</strong></p><p>You can request pruning for overgrown branches or&nbsp;leaning City trees that are blocking street signs or line of sight for drivers or pedestrians.</p>",
+     "ContentAction": [
+      {
+       "Name": "Street Sign Blocked",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Damaged"
+      },
+      {
+       "Name": "Traffic Sign or Signal Blocked by Tree",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Overgrown Tree/Branches",
+       "ProblemDetail": "Traffic Sign or Signal Blocked"
+      }
+     ]
+    },
+    {
+     "Name": "Damaged or Defaced",
+     "Content": "<p>You can make a complaint about a metal City street sign that is:</p><ul><li>Damaged</li><li>Twisted</li><li>Faded</li><li>Defaced</li></ul>",
+     "ContentAction": [
+      {
+       "Name": "Street Sign Damaged",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Damaged"
+      }
+     ]
+    },
+    {
+     "Name": "Fallen, Dangling, or Leaning",
+     "Content": "<p>You can report a metal City street sign that fell down, is dangling, or is leaning more than 30 degrees.</p><p><strong>Signs Over Intersection</strong></p><p>Street signs over intersections are green, rectangular, and placed under the traffic signal arm. You can report a sign&nbsp;over an intersection&nbsp;that isn&#39;t securely attached or is leaning more than 30 degrees.</p>",
+     "ContentAction": [
+      {
+       "Name": "Street Sign Fallen, Dangling, or Leaning",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Dangling"
+      },
+      {
+       "Name": "Street Sign Over Intersection Dangling or Leaning",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Dangling",
+       "ProblemDetail": "St Name - Over Intersection"
+      }
+     ]
+    },
+    {
+     "Name": "Incorrect Information",
+     "Content": "<p>You can report a sign with wrong information.</p>",
+     "ContentAction": [
+      {
+       "Name": "Street Sign Incorrect",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Damaged"
+      }
+     ]
+    },
+    {
+     "Name": "Missing",
+     "Content": "<p>You can report a street sign that&#39;s completely missing and needs to be replaced.</p><p>To request the installation of&nbsp;street sign&nbsp;at a new location, visit the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01064\">Street Sign Request</a>&nbsp;page.</p><p><strong>Street Construction Signs</strong></p><p>Street construction projects lasting longer than 3 months must post signs at the site so the public can learn about the ongoing construction.</p><p>You can make a complaint about a missing construction information sign if the construction has been taking place for at least 3 months.</p>",
+     "ContentAction": [
+      {
+       "Name": "Missing Street Sign",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Missing"
+      },
+      {
+       "Name": "Missing Street Construction Sign",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Missing",
+       "ProblemDetail": "Construction"
+      }
+     ]
+    },
+    {
+     "Name": "Private Parking Signs on Public Property",
+     "Content": "<p>You can post a sign in any location on your private property, such as a garage door, as long as it is behind the property line and the sign wasn&rsquo;t issued by the Department of Transportation.</p><p>You can&rsquo;t post &quot;No Parking&quot; or any other parking regulation signs at the curb, on the sidewalk, or on public property.</p>",
+     "ContentAction": [
+      {
+       "Name": "Private Parking Sign on Public Property",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Sign - Damaged",
+       "ProblemDetail": "Other/Unknown"
+      }
+     ]
+    },
+    {
+     "Name": "Stump",
+     "Content": "<p>You can report a metal sign stump, post, or metal bar that is sticking out of the sidewalk.</p>",
+     "ContentAction": [
+      {
+       "Name": "Street Sign Stump",
+       "Agency": "Department of Transportation",
+       "Problem": "Sidewalk Condition",
+       "ProblemDetail": "Metal Protruding - Sign Stump"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -313,11 +313,9 @@ test("redactZip: ZIP codes in free text are removed; house numbers and other num
   assert.equal(redactZip(null), null);
 });
 
-test("no answer can carry a ZIP code in a value either: the envelope refuses it", () => {
-  assert.throws(
-    () => districtEnvelope({ manifest: MANIFEST, siteUrl: "https://www.beta.nyc/boardstat/", data: { rows: [{ resolution: "visit 33 Beaver St, New York, NY 10010." }] } }),
-    /ZIP code was about to be returned/
-  );
+test("no answer can carry a ZIP code in a value either: the envelope removes it and still answers (beta retest 2)", () => {
+  const env = districtEnvelope({ manifest: MANIFEST, siteUrl: "https://www.beta.nyc/boardstat/", data: { rows: [{ resolution: "visit 33 Beaver St, New York, NY 99999." }] } });
+  assert.equal(env.data.rows[0].resolution, "visit 33 Beaver St, New York, NY [ZIP code removed].");
   assert.throws(() => assertNoZipValues({ a: ["NY 11222"] }), /a\[0\]/);
   assert.doesNotThrow(() => assertNoZipValues({ address: "10001 4 AVENUE", when: "2026-11-04 02:05:23", n: 10001 }));
 });
