@@ -55,7 +55,7 @@ export const TOOLS = [
   {
     name: "get_service_request",
     description:
-      "Look up one 311 service request by its 311 number (format 311-XXXXXXXX), from the City's 311 Public API. Returns agency, problem, status, submitted time, address (ZIP code removed) and the agency's resolution text, plus a plain_language block: the status in words, what it means, and the address to pass to address_history for other requests there. The 311 number is not NYC Open Data's unique_key, so it is not matched to BoardStat's rows by number; for other requests at the same address, use address_history with plain_language.address_lookup.",
+      "Look up one 311 service request by its 311 number (format 311-XXXXXXXX), from the City's 311 Public API. Returns agency, problem, status, submitted time, address (ZIP code removed) and the agency's resolution text, plus a plain_language block: the status in words and what it means. The 311 number is not NYC Open Data's unique_key, so it is not matched to BoardStat's rows by number; for other requests at the same address, pass plain_language.address_lookup to address_history.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
