@@ -201,15 +201,15 @@ export const PERIOD_ARG_SHAPE = {
 export const PERIOD_JSON_PROPERTIES = {
   from_date: {
     type: "string",
-    description: "Start, YYYY-MM-DD, inclusive (data begins 2020-01-01). Not with fiscal_year.",
+    description: "Start, YYYY-MM-DD, inclusive.",
   },
   to_date: {
     type: "string",
-    description: "End, YYYY-MM-DD, inclusive. Not with fiscal_year.",
+    description: "End, YYYY-MM-DD, inclusive.",
   },
   fiscal_year: {
     type: ["integer", "string"],
     description:
-      "NYC fiscal year, July to June, named for the year it ends: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30. Not with from_date/to_date.",
+      "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30.",
   },
 } as const;

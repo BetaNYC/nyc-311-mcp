@@ -853,17 +853,17 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
 
 const MONTH_JSON = {
   type: "string",
-  description: "Calendar month, YYYY-MM (e.g. 2026-10); the answer also covers the fiscal year to date through it. Default: the newest complete month in the data. Not with fiscal_year.",
+  description: "Month, YYYY-MM; the answer also covers the fiscal year to date through it. Default: the newest complete month. Not with fiscal_year.",
 };
 const FY_JSON = {
   type: ["integer", "string"],
-  description: "NYC fiscal year, July to June, named for the year it ends: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30 (cut to the data if not over). Not with month.",
+  description: "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30, cut to the data if not over. Not with month.",
 };
 const limitJson = (def: number, max: number, what: string) => ({
   type: "integer",
   minimum: 1,
   maximum: max,
-  description: `How many ${what} to list (default ${def}); the answer says when more were left out.`,
+  description: `How many ${what} to list (default ${def}).`,
 });
 
 // Short sentence on every LL47 tool; the full text is LL47_REBUILD in the server instructions.
@@ -879,15 +879,15 @@ export const LL47_TOOLS = [
       month: MONTH_JSON,
       fiscal_year: FY_JSON,
       ...DISTRICT_JSON,
-      borough: { type: "string", enum: BOROUGHS, description: "One borough. At most one of borough, community_district, council_district; none means citywide. With by_district, narrows the table to this borough." },
+      borough: { type: "string", enum: BOROUGHS, description: "One borough. Give at most one of borough, community_district, council_district; none = citywide. With by_district, narrows the table." },
       by_district: {
         type: "string",
         enum: GEO_KINDS,
-        description: "A table with one row per community district, council district or borough: requests in the month and fiscal year, and the top problem. From BoardStat's small month file.",
+        description: "A table with one row per district or borough of this kind: requests in the month and fiscal year, and the top problem.",
       },
       read_every_district: {
         type: "boolean",
-        description: "Citywide or borough only: read every community district file to add agencies, statuses and days to close. A large download (about 860 MB citywide in November 2026), cached until the next nightly build.",
+        description: "Citywide or borough only: read every community district file to add agencies, statuses and days to close. A large download (about 860 MB citywide in November 2026), cached until the next build.",
       },
       limit: limitJson(50, 1000, "categories and category-agency rows"),
     }),
@@ -906,17 +906,17 @@ export const LL47_TOOLS = [
       REBUILD,
     inputSchema: obj(
       {
-        community_district: { type: ["integer", "string"], description: "BoardStat community district id, e.g. 306 = Brooklyn CD 6 (list in the server instructions)." },
-        month: { type: "string", description: "Calendar month, YYYY-MM. Default: the newest complete month in the data (the 'immediately preceding month' of the law)." },
+        community_district: { type: ["integer", "string"], description: "BoardStat id: 306 = Brooklyn CD 6 (all ids: server instructions)." },
+        month: { type: "string", description: "Month, YYYY-MM. Default: the newest complete month (the law's 'immediately preceding month')." },
         part: {
           type: "string",
           enum: CB_PARTS,
-          description: "Which part of the list: all (default); only the month's new requests; only earlier requests still not closed; or only earlier requests that were unresolved at the month's end and have closed since.",
+          description: "all (default); the month's new requests; earlier requests still not closed; or earlier requests unresolved at the month's end and closed since.",
         },
         data_as_of: DATA_AS_OF_JSON,
         limit: limitJson(100, 1000, "rows"),
-        offset: { type: "integer", minimum: 0, description: "Rows to skip, for the next page (the answer gives next_offset)." },
-        format: { type: "string", enum: ["rows", "csv"], description: "'rows' (default): a list of objects. 'csv': the same page as CSV text, columns in the order of 'columns'." },
+        offset: { type: "integer", minimum: 0, description: "Rows to skip, for the next page (next_offset)." },
+        format: { type: "string", enum: ["rows", "csv"], description: "'rows' (default) or 'csv': the page as CSV text, columns as in 'columns'." },
       },
       ["community_district"]
     ),

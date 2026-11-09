@@ -190,7 +190,7 @@ const DISTRICT_PERIOD_JSON = {
     minimum: 1,
     maximum: 3660,
     description:
-      "The last N days of data, ending on the newest request's day, not today. On its own.",
+      "The last N days of data, ending on the newest request's day (not today).",
   },
 } as const;
 
@@ -479,11 +479,11 @@ export const DISTRICT_JSON = {
   community_district: {
     type: ["integer", "string"],
     description:
-      "BoardStat id: borough digit + district number, e.g. 306 = Brooklyn CD 6 (list in the server instructions). This or council_district, not both.",
+      "BoardStat id, borough digit + district: 306 = Brooklyn CD 6 (all ids: server instructions). Not with council_district.",
   },
   council_district: {
     type: ["integer", "string"],
-    description: "City Council district, 1 to 51. This or community_district, not both.",
+    description: "Council district, 1 to 51. Not with community_district.",
   },
 } as const;
 
@@ -498,19 +498,19 @@ const FILTER_JSON = {
   problems: {
     type: "array",
     items: { type: "string" },
-    description: "BoardStat problem names (grouped 311 complaint types), e.g. ['HEAT/HOT WATER']. Any case.",
+    description: "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case.",
   },
   descriptions: {
     type: "array",
     items: { type: "string" },
-    description: "311 descriptors, e.g. ['Blocked Bike Lane'] (under Illegal Parking). A missing one is '(none)'.",
+    description: "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'.",
   },
-  exclude_descriptions: { type: "boolean", description: "If true, leave out these descriptions instead of keeping only them." },
-  agency: { type: "string", description: "Agency code as 311 writes it, e.g. 'NYPD', 'HPD'." },
+  exclude_descriptions: { type: "boolean", description: "Leave out these descriptions instead of keeping only them." },
+  agency: { type: "string", description: "Agency code as 311 writes it, e.g. 'NYPD'." },
   status: {
     type: "string",
     enum: ["closed", "not_closed"],
-    description: "'closed' = marked Closed; 'not_closed' = any other status (BoardStat's 'Not yet closed').",
+    description: "'not_closed' = any status but Closed.",
   },
 } as const;
 
@@ -519,11 +519,11 @@ export const LIMIT_JSON = (def: number, max: number) => ({
   type: "integer",
   minimum: 1,
   maximum: max,
-  description: `Rows to list (default ${def}); the answer says when more were left out.`,
+  description: `Rows to list (default ${def}).`,
 });
 
-const OFFSET_JSON = { type: "integer", minimum: 0, description: "Rows to skip, for the next page (default 0): next_page.offset, with next_page.data_as_of." } as const;
-export const DATA_AS_OF_JSON = { type: "string", description: "For the next page: next_page.data_as_of. A page from a newer build is refused, so pages line up." } as const;
+const OFFSET_JSON = { type: "integer", minimum: 0, description: "Rows to skip (default 0); for the next page, next_page.offset." } as const;
+export const DATA_AS_OF_JSON = { type: "string", description: "For the next page, next_page.data_as_of; a page from a newer build is refused." } as const;
 
 // Short sentence on every district tool; the full text is ABOUT_BOARDSTAT in the server instructions.
 const ABOUT = "From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.";
@@ -1637,7 +1637,7 @@ export const DISTRICT_TOOLS = [
         borough: { type: "string", enum: BOROUGHS, description: "Needed when the same address exists in several boroughs." },
         community_district: {
           type: ["integer", "string"],
-          description: "Optional: the district to use when the address straddles a district line (BoardStat id, e.g. 205). Default: the one with the most requests there; the answer names the other.",
+          description: "Optional: the district (BoardStat id) to use when the address straddles a line. Default: the one with the most requests there.",
         },
         ...DISTRICT_PERIOD_JSON,
         problems: FILTER_JSON.problems,
@@ -1660,7 +1660,7 @@ export const DISTRICT_TOOLS = [
       statuses: {
         type: "array",
         items: { type: "string" },
-        description: "The City's status values to keep (seen: Closed, Open, In Progress, Pending, Assigned, Started, Unspecified). Any case; a value no request has is refused with the values present.",
+        description: "The City's status values to keep (seen: Closed, Open, In Progress, Pending, Assigned, Started, Unspecified); any case.",
       },
       limit: LIMIT_JSON(25, 200),
       offset: OFFSET_JSON,
