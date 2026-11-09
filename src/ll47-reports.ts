@@ -348,10 +348,10 @@ export async function serviceRequestReport(src: Source, args: z.infer<z.ZodObjec
     const rows = await aggByGeo(data, kind, ymOf(fy));
     const entries =
       kind === "borough"
-        ? BOROUGHS.map((b) => ({ id: b as string | number, label: b as string, borough: b as string | null }))
-        : manifestDistricts(m)[kind as "cd" | "cc"].map((e) => ({ id: e.id as string | number, label: e.label, borough: e.borough }));
-    const table = entries
-      .filter((e) => !args.borough || e.borough === args.borough)
+        ? BOROUGHS.map((b) => ({ id: b as string | number, label: b as string, borough: b as string | null, jia: false }))
+        : manifestDistricts(m)[kind as "cd" | "cc"].map((e) => ({ id: e.id as string | number, label: e.label, borough: e.borough, jia: Boolean(e.jia) }));
+    const kept = entries.filter((e) => !args.borough || e.borough === args.borough);
+    const table = kept
       .map((e) => {
         const mine = rows.filter((r) => String(r.geo_id) === String(e.id));
         const monthTypes = periods.month ? sumTypes(mine, periods.month.month) : null;
@@ -371,8 +371,20 @@ export async function serviceRequestReport(src: Source, args: z.infer<z.ZodObjec
     const out = capped(table, shown);
     // Said in words, not only as truncated: true (beta test 2026-11-08: limit 5 showed 5 of
     // 18 Brooklyn districts with no clear signal, and limit read as a category count).
+    // Brooklyn's 20 rows are 18 community districts and 2 Joint Interest Areas (parks and
+    // other areas outside every community district); the count says so (beta retest 1).
+    const jias = kept.filter((e) => e.jia).length;
+    const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+    const what =
+      kind === "borough"
+        ? "boroughs"
+        : kind === "cc"
+          ? "Council districts"
+          : jias
+            ? `areas (${plural(out.total_items - jias, "community district", "community districts")} and ${plural(jias, "Joint Interest Area", "Joint Interest Areas")})`
+            : "community districts";
     const cut = out.truncated
-      ? `Showing ${out.items.length} of ${out.total_items} districts, because limit is ${shown}: with by_district, limit counts districts. Give limit ${out.total_items} to see every one.`
+      ? `Showing ${out.items.length} of ${out.total_items} ${what}, because limit is ${shown}: with by_district, limit counts rows of this table. Give limit ${out.total_items} to see every one.`
       : null;
     const env = districtEnvelope({
       manifest: mr,

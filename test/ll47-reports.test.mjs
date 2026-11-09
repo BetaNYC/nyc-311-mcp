@@ -105,7 +105,12 @@ test("by_district lists every district from the month file, honors borough and l
   assert.equal(cds.data.districts.length, 3);
   assert.equal(cds.data.truncated, true);
   // Said in words too, and in the caveats (beta test 2026-11-08).
-  assert.match(cds.data.truncation_note, /^Showing 3 of \d+ districts, because limit is 3: with by_district, limit counts districts/);
+  assert.match(cds.data.truncation_note, /^Showing 3 of \d+ (community districts|areas \(\d+ community districts and \d+ Joint Interest Areas?\)), because limit is 3: with by_district, limit counts rows/);
+  // Brooklyn: 18 community districts and 2 Joint Interest Areas, said so (beta retest 1).
+  const bk = await run("ll47_service_request_report", { by_district: "community_district", borough: "Brooklyn", month: "2026-10", limit: 5 });
+  assert.equal(bk.data.truncation_note, "Showing 5 of 20 areas (18 community districts and 2 Joint Interest Areas), because limit is 5: with by_district, limit counts rows of this table. Give limit 20 to see every one.");
+  const cc = await run("ll47_service_request_report", { by_district: "council_district", month: "2026-10", limit: 2 });
+  assert.match(cc.data.truncation_note, /^Showing 2 of 51 Council districts, because limit is 2/);
   assert.ok(cds.env.caveats.includes(cds.data.truncation_note));
   assert.ok(cds.data.districts.every((r) => r.borough === "Queens"));
   const all = await run("ll47_service_request_report", { by_district: "community_district", month: "2026-10", limit: 100 });
