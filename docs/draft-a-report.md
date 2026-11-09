@@ -50,6 +50,11 @@ draft's first line leads with 911.
   text (KA-01635) or domestic violence text (KA-01217) when it gives them. A description that
   also names a 311 problem ("someone got hurt in a car crash and there is a pothole") is not
   drafted either.
+  `details` and `when` are read for danger too. "Not an emergency" or "not urgent" does not
+  bring the draft back for someone hurt or not breathing, gas, carbon monoxide, fire, or
+  suicide and self-harm ("not urgent, but I smell gas" gets no draft); it quiets only ambiguous
+  signals such as smoke or a crash. "Last night" does not make a crime past when it is still
+  going on ("broke in last night and he is still inside with a knife" gets no draft).
 - **No article matched**: no draft. The answer is `how_to_report`'s no-match answer, which leads
   with 911, plus its search link. A report needs the right article, and a description that
   matches nothing may be an emergency the keywords missed.
