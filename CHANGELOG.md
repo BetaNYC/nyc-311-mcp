@@ -7,6 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.7] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 6, 2026-11-09)
+
+- **`ll47_directory_assistance_report`, fiscal year: a failed month no longer stops the load.**
+  On the home Mac a month got a 503, its one quick retry failed too, and the call reported
+  the error, marked the later months "not tried", and the load only restarted on the next
+  call (5 of 16 calls). Now the load goes on to the next month and asks the failed one again
+  later, at most 4 times, pausing before each request after a failure (3 s, doubling with each
+  failure in a row, up to 30 s; a success resets it). Still one request at a time
+  (engineering standards §6), the 12 s answer wait, and the 4-minute background limit. A
+  month waiting for its next try says "retrying: … (try n of 4)". The pause timer never keeps
+  the process alive, so the server still exits when its stdin closes.
+- **The month in progress is no longer cached forever.** November grew by 4,861 calls while
+  the dataset's `rowsUpdatedAt` stayed the same, so an older saved copy answered FY2027 as
+  1,264,433 and a fresh one 1,269,294. A month not yet settled (the month in progress, and
+  the month before it for 7 days after it ends) is now asked again when its saved copy is
+  more than an hour old (`OPEN_MONTH_TTL_MS`), whatever the dataset's timestamp. Settled
+  months keep the 30-day rule. If the new copy is not in by the answer, the older one
+  answers, labeled. A new `recent_months` field says when each recent month was fetched.
+- **`how_to_report` / `draft_311_report`: wrong routes rated "strong".** "bathroom in my house
+  is dirty" got Litter Basket Complaint; "landlord didn't install a carbon monoxide detector"
+  got Vehicle Stored on Residential Property. Cause: confidence counted the person's problem
+  words one by one, and one word-list entry adds several ("dirty" adds litter and trash), so
+  one word read as two pieces of evidence; and a match resting only on context words ("car"
+  inside "carbon", "residential" from "landlord") could be strong. Now evidence counts once
+  per entry and must include the problem itself. A detector the landlord did not install,
+  never installed or won't replace goes to Apartment Maintenance Complaint (KA-01074, HPD),
+  whose City text says owners must install smoke and carbon monoxide detectors. Dirt in a
+  room at home is offered there as a possible match only. Word fixes: "carbon" is not a car,
+  "tenant" is not a tent, "yellow" is not yelling, "ice cream" is not ice, roaches are not
+  rats, water gushing from a hydrant is a hydrant (not a water main), and "smoke detectors in
+  the building" is not a Smoke Free Air Act complaint.
+- **Stress set.** 68 realistic phrasings across housing, noise, street, parks, sanitation,
+  vehicles and safety, with near misses, run offline in the tests. Before this round 7 of
+  them were wrong, 6 rated strong; now none. Every danger case still leads with 911.
+
 ## [1.2.0-beta.6] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.
