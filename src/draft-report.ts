@@ -182,11 +182,25 @@ export function cleanText(s: string): { text: string; contact_removed: boolean; 
 const PLACE_NAME = /^(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Pl|Place|Park|Pkwy|Parkway|Sq|Square|Ln|Lane|Dr|Drive|Ct|Court|Broadway|Concourse|Bridge|Island|Staten|New|York|NY|NYC|Brooklyn|Queens|Manhattan|Bronx|Harlem|East|West|North|South|Upper|Lower|City|Hall|Station|Center|Centre|Building|Houses|Apt|Apartment|Unit|Floor|I|I'm|DOT|DSNY|NYPD|HPD|DEP|DOB|MTA|NYCHA|ConEd|Con|Edison|The|My)$/;
 const ROLE_THEN_NAME = /\b(?:neighbou?r|landlord|super|superintendent|roommate|tenant|owner|manager|husband|wife|boyfriend|girlfriend|partner|ex|son|daughter|brother|sister|mother|father|mom|dad|named|called|name is)\s+(?:is\s+)?[A-Z][a-z]+/;
 
-/** Whether the person's words seem to name someone (a role then a name, or two capitalized words not a place). */
+// Words that end a place name: streets, neighborhoods, parks and buildings ("Gun Hill Road",
+// "Crown Heights", "Bay Ridge", "Morris Park"). Beta test 2026-11-08: "Gun Hill" was read
+// as a person's name. Matched on any word of a capitalized pair, or on the word after it.
+const PLACE_END = /^(Hill|Hills|Heights|Ridge|Village|Point|Beach|Bay|Harbor|Harbour|Gardens?|Slope|Hook|Neck|Terrace|Junction|Woods?|Meadows?|Flats?|Falls|Creek|Valley|Kills?|Rockaways?|Side|Town|Yards?|Plaza|Mall|Oval|Circle|Way|Row|Walk|Expressway|Expy|Tpke|Turnpike|Highway|Hwy|Pier|Ferry|Market|Library|School|Church|Hospital|Tower|Towers|Field|Fields|Playground|Greenway|Island|Heights|Estates|Manor|Commons|Green|Lake|River|Bridge|Tunnel|Terminal)$/;
+const PLACE_BEFORE = /\b(on|at|near|along|off|across|outside|in|around|by)\s*$/i;
+const STREET_AFTER = /^\s+(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Pl|Place|Park|Pkwy|Parkway|Sq|Square|Ln|Lane|Dr|Drive|Ct|Court|Hill|Heights|Ridge|Expressway|Expy|Houses)\b/i;
+
+/** Whether the person's words seem to name someone (a role then a name, or two capitalized words that are not a place). */
 export function namesSomeone(text: string): boolean {
   if (ROLE_THEN_NAME.test(text)) return true;
-  const pairs = text.match(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g) ?? [];
-  return pairs.some((p) => p.split(/\s+/).every((w) => !PLACE_NAME.test(w)));
+  for (const m of text.matchAll(/\b[A-Z][a-z]+\s+[A-Z][a-z]+\b/g)) {
+    const ws = m[0].split(/\s+/);
+    if (ws.some((w) => PLACE_NAME.test(w) || PLACE_END.test(w))) continue;
+    const at = m.index as number;
+    if (STREET_AFTER.test(text.slice(at + m[0].length))) continue;
+    if (PLACE_BEFORE.test(text.slice(Math.max(0, at - 12), at))) continue;
+    return true;
+  }
+  return false;
 }
 export const NAMES_SOMEONE = "This draft names someone; 311 may not need their name.";
 
