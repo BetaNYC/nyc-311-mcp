@@ -31,7 +31,7 @@ test("initialize sends the server instructions", async () => {
 });
 
 test("the instructions keep the shared explanations the tool schemas point to", () => {
-  for (const re of [/Manhattan 101-112/, /Staten Island 501-503/, /Joint Interest Areas/, /council_district is 1 to 51/, /fiscal year runs July 1 to June 30/, /last_days ends on the day of the newest request/, /not an official City report/, /reports, not problems/]) {
+  for (const re of [/Manhattan 101-112/, /Staten Island 501-503/, /Joint Interest Areas/, /council_district is 1 to 51/, /fiscal year runs July 1 to June 30/, /last_days ends on the day of the newest request/, /not an official City report/, /reports, not problems/, /only the City can meet Charter § 1075/, /ZIP codes are left out by decision/]) {
     assert.match(SERVER_INSTRUCTIONS, re);
   }
 });

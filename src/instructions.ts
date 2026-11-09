@@ -13,9 +13,13 @@ export const DISTRICT_IDS =
 export const DATE_OPTIONS =
   "Dates: give from_date/to_date (YYYY-MM-DD, inclusive; data begins 2020-01-01), or a fiscal_year, or last_days, not a mix. The NYC fiscal year runs July 1 to June 30 and is named for the year it ends: 2027 or 'FY2027' is 2026-07-01 to 2027-06-30. last_days ends on the day of the newest request, not today, because the City publishes 311 data a few days late. With no dates, a tool uses the dates BoardStat's page opens with (about the last year), unless its description says otherwise.";
 
+export const LL47_REBUILD =
+  "Local Law 47 reports (ll47_service_request_report, ll47_directory_assistance_report, cb_monthly_list): a BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075. ZIP codes are left out by decision, and nothing before 2020-01-01 is included. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
+
 export const SERVER_INSTRUCTIONS = [
   "NYC 311 tools: the 311 calendar and status alerts, 311 request lookup, and district tools built on BoardStat.",
   ABOUT_BOARDSTAT,
   DISTRICT_IDS,
   DATE_OPTIONS,
+  LL47_REBUILD,
 ].join("\n\n");

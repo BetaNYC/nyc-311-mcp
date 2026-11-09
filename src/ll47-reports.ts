@@ -852,33 +852,33 @@ export async function cbMonthlyList(src: Source, args: z.infer<z.ZodObject<typeo
 
 const MONTH_JSON = {
   type: "string",
-  description: "Calendar month, YYYY-MM (e.g. 2026-10). The answer also covers the City fiscal year to date through that month. Default: the newest complete month in the data. Do not combine with fiscal_year.",
+  description: "Calendar month, YYYY-MM (e.g. 2026-10); the answer also covers the fiscal year to date through it. Default: the newest complete month in the data. Not with fiscal_year.",
 };
 const FY_JSON = {
   type: ["integer", "string"],
-  description: "NYC fiscal year, July 1 to June 30, named for the year it ends: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30 (cut to the data if not over). Do not combine with month.",
+  description: "NYC fiscal year, July to June, named for the year it ends: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30 (cut to the data if not over). Not with month.",
 };
 const limitJson = (def: number, max: number, what: string) => ({
   type: "integer",
   minimum: 1,
   maximum: max,
-  description: `How many ${what} to list (default ${def}, at most ${max}). The answer says when more were left out.`,
+  description: `How many ${what} to list (default ${def}); the answer says when more were left out.`,
 });
 
-const REBUILD =
-  "A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet § 1075. Leaves out ZIP codes (by decision) and anything before 2020-01-01. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
+// Short sentence on every LL47 tool; the full text is LL47_REBUILD in the server instructions.
+const REBUILD = "A BetaNYC rebuild from NYC Open Data, not the City's official report. No ZIP codes, nothing before 2020.";
 
 export const LL47_TOOLS = [
   {
     name: "ll47_service_request_report",
     description:
-      "Rebuilds the monthly 311 service request report of former Charter § 1075(b) (Local Law 47 of 2005; repealed by Local Law 69 of 2023): for a month and the fiscal year to date, totals by category (the City's complaint type) and by agency, totals by status, and the average (and median) days to close for each category and agency. Citywide, one borough, one community district or one council district; or by_district for a table of every district. From BoardStat's nightly files. Citywide and borough answers give totals by problem only, unless read_every_district is true (downloads every community district file, about 860 MB citywide in November 2026, once per nightly build). " +
+      "Rebuilds the monthly 311 service request report of former Charter § 1075(b) (Local Law 47 of 2005; repealed by Local Law 69 of 2023): for a month and the fiscal year to date, totals by category (the City's complaint type) and by agency, totals by status, and the average (and median) days to close for each category and agency. Citywide, one borough, one community district or one council district; or by_district for a table of every district. From BoardStat's nightly files. Citywide and borough answers give totals by problem only, unless read_every_district is true. " +
       REBUILD,
     inputSchema: obj({
       month: MONTH_JSON,
       fiscal_year: FY_JSON,
       ...DISTRICT_JSON,
-      borough: { type: "string", enum: BOROUGHS, description: "One borough. Give at most one of borough, community_district, council_district; with none, citywide. With by_district, narrows the table to this borough." },
+      borough: { type: "string", enum: BOROUGHS, description: "One borough. At most one of borough, community_district, council_district; none means citywide. With by_district, narrows the table to this borough." },
       by_district: {
         type: "string",
         enum: GEO_KINDS,
@@ -886,7 +886,7 @@ export const LL47_TOOLS = [
       },
       read_every_district: {
         type: "boolean",
-        description: "Citywide or borough only: read every community district file to add agencies, statuses and days to close. Large download (about 860 MB citywide in November 2026), kept in the cache until the next nightly build.",
+        description: "Citywide or borough only: read every community district file to add agencies, statuses and days to close. A large download (about 860 MB citywide in November 2026), cached until the next nightly build.",
       },
       limit: limitJson(50, 1000, "categories and category-agency rows"),
     }),
@@ -901,11 +901,11 @@ export const LL47_TOOLS = [
   {
     name: "cb_monthly_list",
     description:
-      "The monthly list of Charter § 1075(d), current law: for one community district, every 311 request created in a month (default: the newest complete month) plus every request from earlier months that is still not closed, and those that were unresolved at the month's end but have closed since, each with its number, date, category, description, agency, current status and address. Pages with limit and offset; format 'csv' returns the page as CSV text. From BoardStat's nightly files. " +
+      "The monthly list of Charter § 1075(d), current law, for one community district: every 311 request created in a month (default: the newest complete month), plus earlier requests still not closed and those unresolved at the month's end that have closed since; each with its number, date, category, description, agency, current status and address. Pages with limit and offset; format 'csv' returns the page as CSV text. From BoardStat's nightly files. " +
       REBUILD,
     inputSchema: obj(
       {
-        community_district: DISTRICT_JSON.community_district,
+        community_district: { type: ["integer", "string"], description: "BoardStat community district id, e.g. 306 = Brooklyn CD 6 (list in the server instructions)." },
         month: { type: "string", description: "Calendar month, YYYY-MM. Default: the newest complete month in the data (the 'immediately preceding month' of the law)." },
         part: {
           type: "string",
