@@ -71,7 +71,7 @@ test("hot water still goes to Heat or Hot Water, and engine noise still to Noise
 const RETEST_2_TABLE = [
   ["no heat or hot water in my apartment", "KA-01036"],
   ["noise from a bar down the street every night", "KA-01085"],
-  ["a delivery truck is blocking the bike lane", "KA-01260"],
+  ["a delivery truck is blocking the bike lane", "KA-01986"], // Since beta.9 a vehicle in a bike lane is Illegal Parking (KA-01986 lists "Blocking a: ... Bike lane"; KA-01260 says "Illegal Parking to report a vehicle blocking a bike lane").
   ["broken parking meter", "KA-01240"],
   ["broken traffic light at the intersection", "KA-01404"],
   ["street flooding after the rain", "KA-02198"],

@@ -1,0 +1,527 @@
+[
+{
+"src": "r11 report",
+"d": "black smoke pours out of the chimney of the building next door every morning",
+"ok": [
+"KA-02219"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "a man sleeps passed out on a bench in the park every night",
+"ok": [
+"KA-01190",
+"KA-01037",
+"KA-02253"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "someone smashed the window of my parked car overnight and took my bag",
+"ok": [
+"KA-01537",
+"KA-01219"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "someone spray painted threats on the wall of my building",
+"ok": [
+"KA-02070"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "the daycare my son goes to has no heat",
+"ok": [
+"KA-02240"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "the paint is peeling and I think it has lead in it",
+"ok": [
+"KA-02134"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "my landlord won't give back my security deposit",
+"ok": [
+"KA-01616"
+],
+"danger": false
+},
+{
+"src": "r11 report",
+"d": "the store charged me more than the price on the shelf",
+"ok": [
+"KA-02136",
+"KA-02209"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "thick smoke is coming out of my neighbor's window right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "smoke comes out of my neighbor's kitchen vent every evening when they cook",
+"ok": [
+"KA-02219",
+"KA-01332",
+"KA-01930"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "black smoke is pouring out of the basement of my building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "the boiler chimney on my block puffs black smoke every morning",
+"ok": [
+"KA-02219"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "a man collapsed on the sidewalk outside my building and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "a man passes out drunk on the stoop of my building every weekend",
+"ok": [
+"KA-01190",
+"KA-01037",
+"KA-02253"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "a woman is unconscious on the subway platform",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "a homeless man always sleeps on the subway platform bench",
+"ok": [
+"KA-01014",
+"KA-01190",
+"KA-01037",
+"KA-02253"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "my neighbor fainted in the hallway and won't wake up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "the old man next door keeps falling asleep in the hallway",
+"ok": [],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "a car just crashed into a pole and the driver is hurt",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "cars crash into the pole at this corner every few weeks",
+"ok": [
+"KA-02305",
+"KA-03063"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "someone was hit by a car right now at the crosswalk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "cars almost hit people at this crosswalk every day",
+"ok": [
+"KA-02305",
+"KA-03063",
+"KA-01047"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "my carbon monoxide alarm is going off right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "my carbon monoxide alarm chirps every night because the battery is low",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "I smell gas in my building hallway",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "the hallway smells like weed smoke every night",
+"ok": [
+"KA-03662",
+"KA-02295",
+"KA-01332",
+"KA-01886"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "there's a fire in the trash can on the corner",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "people burn garbage in the empty lot every weekend",
+"ok": [
+"KA-01518"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "smoke is filling the hallway and I can't see",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "my neighbor smokes cigarettes in the hallway every night",
+"ok": [
+"KA-03662",
+"KA-02295"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "someone is breaking into my neighbor's car right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "someone breaks into cars on my block every few weeks",
+"ok": [
+"KA-01537",
+"KA-02668"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "a man is passed out in the elevator and not breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "a man sleeps in the elevator of my building every night",
+"ok": [
+"KA-01190",
+"KA-01037",
+"KA-02253",
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "a kid fell off the swings and is bleeding",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "kids keep climbing on the broken swings at the playground",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "the power line outside is sparking right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "the street light on my corner flickers every night",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "my neighbor's dog is attacking a kid on the sidewalk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "my neighbor's dog barks at kids on the sidewalk every day",
+"ok": [
+"KA-01087"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "someone is following me home right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "a man hangs around outside my building every night",
+"ok": [],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "water is flooding my basement and the outlets are wet",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "my basement floods every time it rains",
+"ok": [
+"KA-01509",
+"KA-01510",
+"KA-01992",
+"KA-02198"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "a person is lying in the street and not moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "a man lies on the sidewalk outside the deli every afternoon",
+"ok": [
+"KA-01190",
+"KA-01037",
+"KA-02253"
+],
+"danger": false
+},
+{
+"src": "r11 now",
+"d": "someone is threatening my neighbor with a knife",
+"ok": null,
+"danger": true
+},
+{
+"src": "r11 recurring",
+"d": "my neighbors argue loudly every night",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"d": "my car was broken into last night and my laptop was taken",
+"ok": [
+"KA-01537",
+"KA-01219"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone slashed all four of my tires overnight",
+"ok": [
+"KA-01537"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone keyed my car while it was parked on the street",
+"ok": [
+"KA-01537"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "kids broke the windows of the vacant building next door",
+"ok": [
+"KA-01537",
+"KA-01210",
+"KA-01901"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone kicked over all the planters on my block last week",
+"ok": [
+"KA-01537"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "my bike was stolen from outside my building yesterday",
+"ok": [
+"KA-01219"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "my car was stolen from in front of my house this morning",
+"ok": [
+"KA-01632"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone stole the catalytic converter from my car",
+"ok": [
+"KA-01219",
+"KA-01537"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "a man is breaking car windows on my block right now",
+"ok": null,
+"danger": true,
+"src": "r11"
+},
+{
+"d": "someone is stealing packages from my lobby right now",
+"ok": null,
+"danger": true,
+"src": "r11"
+},
+{
+"d": "there's a guy trying to open car doors on my street right now",
+"ok": null,
+"danger": true,
+"src": "r11"
+},
+{
+"d": "people are shooting at each other in the park",
+"ok": null,
+"danger": true,
+"src": "r11"
+},
+{
+"d": "a truck hit my parked car and drove off",
+"ok": [
+"KA-03073",
+"KA-01220"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "a tree branch fell and dented my car",
+"ok": [
+"KA-02138"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "a city bus scraped my parked car",
+"ok": [
+"KA-01014",
+"KA-01158"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone spray painted a swastika on the synagogue",
+"ok": [
+"KA-01561"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "kids tagged the whole side of my store with graffiti",
+"ok": [
+"KA-02070"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone set my car on fire",
+"ok": null,
+"danger": true,
+"src": "r11"
+},
+{
+"d": "the window of my apartment was smashed by a rock",
+"ok": [
+"KA-01537",
+"KA-01074"
+],
+"danger": false,
+"src": "r11"
+},
+{
+"d": "someone broke the lock on my building's front door",
+"ok": [
+"KA-01074",
+"KA-01537"
+],
+"danger": false,
+"src": "r11"
+}
+]

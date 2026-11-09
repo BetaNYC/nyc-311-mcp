@@ -107,9 +107,15 @@ keyword-based and will miss some emergencies. If anything the person says sugges
 in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag
 it."
 
-**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer starts with
-`safety_line`: "If anyone is in danger right now, call 911." (BetaNYC wording), and every error
-message starts with the same sentence. Every no-match answer leads with the BetaNYC 911 line. A description that
+**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer carries
+`safety_line`: "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911." (Noel's words, beta round 18). It is
+the last line of the text of every response from every one of the server's 21 tools, success or
+error, and the first field (`safety_line`) of every structured answer, whatever was or was not
+detected. That sentence is what the server relies on; danger spotting is a best effort and will
+miss some wording. A description that suggests danger
+still leads `first_line` with its own 911 line. A recurring condition ("every morning") quiets
+only the ambiguous signals, and never when anything says it is happening now. Every no-match
+answer leads with the BetaNYC 911 line. A description that
 suggests danger leads with a 911 line: fire, smoke pouring out, gas, carbon monoxide going off,
 downed or sparking wires, an explosion, water near electricity, a crime in progress (robbery,
 break-in, assault, a gun or knife, shots), someone hurt, unconscious, not breathing or

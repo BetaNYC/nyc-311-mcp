@@ -1,0 +1,32 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01790",
+      "Title": "Wild Animal",
+      "Description": "Get information about wildlife, including how to report wild animals or the removal of wildlife from a park.",
+      "Section": [
+        {
+          "Name": "911 Wild Animal",
+          "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>if the wild animal is currently creating an immediate threat to public safety.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02349\">Rabid Animal</a>&nbsp;to report rabid wildlife</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02350\">Raccoon Control</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02852\">Lost or Found&nbsp;Pet</a>&nbsp;to learn about feral cats</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01789\">Injured or Sick Animal</a></li></ul></div><p>You can learn more about wildlife in NYC or report wildlife being removed from a park.</p><p>Animal Care Centers of NYC (ACC) does not capture or trap healthy wild animals unless the animal appears to be rabid or has bitten a person or pet.</p><p>You should always use caution around any wildlife and not approach, feed, or touch them.</p><p>If healthy wildlife is a nuisance, you can search the internet or the Department of Environmental Conservation&#39;s website for wildlife removal services.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://dec.ny.gov/nature/animals-fish-plants/nuisance-wildlife-species\">Find a licensed nuisance wildlife control operator.</a></p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Animal in a Park",
+          "Content": "<p>You can report an animal in a park to NYC Parks, including:</p><ul><li>Stray dogs and cats</li><li>Injured wildlife</li><li>Wildlife sighting</li><li>The removal of wildlife from a park</li></ul><p>The City responds only to sick or injured wildlife or stray or injured animals in parks.</p><p>NYC Parks does not handle reports about healthy pigeons&nbsp;and squirrels.</p>",
+          "ContentAction": [
+            {
+              "Name": "Wild, Stray, or Injured Animal in Park",
+              "Agency": "Department of Parks and Recreation",
+              "Problem": "Animal in a Park"
+            }
+          ]
+        },
+        {
+          "Name": "Deer",
+          "Content": "<p>In New York City, white-tailed deer have established populations in Pelham Bay and Van Cortlandt Parks in the Bronx and throughout Staten Island green spaces, and there are occasional sightings of deer in other boroughs. The Department of Parks and Recreation hosts monthly programs on Staten Island that focus on deer and living safely with them in New York City.</p><p>Information includes:&nbsp;</p><ul><li>What the City is doing about the deer population</li><li>Tips for what to do when you see white-tailed deer</li></ul><p>It is illegal to hunt anywhere in New York City.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/wildlifenyc/index.page\">Learn more&nbsp;about deer in New York City.</a></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/wildlifenyc/things-to-do/report-a-sighting.page\">Report a sighting of a healthy deer.</a></p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

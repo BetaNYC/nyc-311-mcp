@@ -1,0 +1,63 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01241",
+      "Title": "Taxi Complaint",
+      "Description": "Report a problem with a taxi driver or vehicle, including rudeness, unsafe driving, refusing a request, maintenance issues, or route complaints.",
+      "Section": [
+        {
+          "Name": "Taxi Complaint Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01244\">Car Service Complaint</a>&nbsp;for complaints about app-based transportation, car service companies,&nbsp;and taxis that aren&#39;t yellow or green</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01245\">Taxis</a> for information about fares and rules</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01056\">Taxi or Car Service Insurance Information</a></li></ul></div><p>You can report a problem with a yellow or green taxi driver or vehicle, including:</p><ul><li>Using a cell phone while driving, even if it&rsquo;s a hands-free headset</li><li>Overcharging or demanding tips</li><li>Refusing to accept a credit card, demanding an extra fee to use a card, or requesting that a card be swiped again after payment was confirmed</li><li>Not using E-Z Pass for tolls</li><li>Refusing to pick you up</li><li>Refusing your request to change how the radio, air conditioner, or heater is set</li><li>Unsafe driving</li><li>Route complaints</li><li>Being discourteous or rude</li><li>Not displaying a license, or displaying someone else&#39;s license</li><li>A dirty condition or bad odor in the vehicle, including cigarette smoke and body odor</li><li>Broken or missing air conditioner, heater, credit card machine, information screen, lights, windows, or seatbelts</li></ul><p><strong>What Happens Next</strong></p><p>For the Taxi and Limousine Commission (TLC) to take action against a driver, you must participate in a hearing. If you decline a hearing, your complaint will be sent to the TLC, but no action will be taken against the driver.</p><p>If you choose to participate in a hearing, you must provide your name and either a phone number or email address. You can participate in person at 31-00 47th Avenue in Queens or by phone.</p><p>Passenger information is not provided to a driver unless there are legal proceedings after a TLC hearing.</p><style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911&nbsp;</strong></span><span style=\"color:#000000;\">to report any of the following in progress:</span><ul><li><span style=\"color:#000000;\">Reckless or dangerous driving</span></li><li><span style=\"color:#000000;\">Harassment, including sexual harassment, stalking, voyeurism and cat calling (which includes whistling, shouting, or making comments of a sexual nature to an individual passing by)</span></li></ul><strong><span style=\"color:#000000;\"> </span></strong></div></div></div></div>",
+          "ContentAction": [
+            {
+              "Name": "Taxi Driver Complaint from Passenger",
+              "Agency": "Taxi and Limousine Commission",
+              "Problem": "Taxi Complaint",
+              "ProblemDetail": "Driver Complaint - Passenger"
+            },
+            {
+              "Name": "Taxi Driver Complaint from Non-Passenger",
+              "Agency": "Taxi and Limousine Commission",
+              "Problem": "Taxi Complaint",
+              "ProblemDetail": "Driver Complaint - Non Passenger"
+            },
+            {
+              "Name": "Taxi Vehicle Complaint",
+              "Agency": "Taxi and Limousine Commission",
+              "Problem": "Taxi Complaint",
+              "ProblemDetail": "Vehicle Complaint"
+            }
+          ]
+        },
+        {
+          "Name": "Report Safety Issues for People with Disabilities",
+          "Content": "<p>You can make a complaint that a taxi driver or taxi was not safe for a person with a disability.</p><p>Taxi drivers are trained to safely load, secure, and unload passengers who have disabilities. A Wheelchair Accessible Vehicle&#39;s equipment must be in working order.</p><p>You can make a complaint about:</p><ul><li>Untrained drivers, including:<ul><li>Inability, failure, or refusal to load, unload, or secure passengers, or doing so improperly</li><li>Not providing space or proximity to the curb or sidewalk for safe entry and exit of passengers</li><li>Improper or lack of use of ramp, securing, and any wheelchair accessible vehicle equipment</li><li>Failure to comply with reasonable passenger requests or provide curb-to-curb service</li></ul></li><li>Broken or faulty Wheelchair Accessible Vehicle equipment</li><li>Injuries sustained by passengers with disabilities</li><li>Abandoning passengers with disabilities</li><li>Dropping passengers at incorrect location</li><li>Failure to comply with any reasonable passenger request including but not limited to, unloading personal belongings or mobility aids from the vehicle, retrieving a dropped item inside or directly outside the vehicle, assisting passenger to the sidewalk</li><li>Failure to provide curb-to-curb service</li><li>Other accessibility or safety related complaints about the vehicle or driver</li></ul>",
+          "ContentAction": [
+            {
+              "Name": "Taxi Unsafe for Person with Disability Complaint from Passenger",
+              "Agency": "Taxi and Limousine Commission",
+              "Problem": "Taxi Complaint",
+              "ProblemDetail": "Driver Complaint - Passenger"
+            },
+            {
+              "Name": "Taxi Unsafe for Person with Disability Complaint from Non-Passenger",
+              "Agency": "Taxi and Limousine Commission",
+              "Problem": "Taxi Complaint",
+              "ProblemDetail": "Driver Complaint - Non Passenger"
+            }
+          ]
+        },
+        {
+          "Name": "Report Taxi Issues with Access-A-Ride",
+          "Content": "<p>To make&nbsp;a safety or equipment complaint about a TLC taxi arranged by Access-A-Ride,&nbsp;visit the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01244\">Car Service Complaint</a>&nbsp;page.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Car Seats and Seat Belts",
+          "Content": "<p>On November 1, 2020, a new seat belt law went into effect in New York State. All drivers and passengers must buckle up regardless of age or where they sit in the vehicle.</p><p>Wearing a seatbelt is required in personal cars and when riding in a taxi or for-hire vehicle (FHV), including on app-based trips.</p><p>The penalty for a seat belt violation is a fine of up to $50 for the passenger and up to $100 and 3 points for the driver if a child under 16 is not properly buckled.</p><p>If you are riding with a child in a taxi or for-hire vehicle, a car restraint isn&#39;t required but you are encouraged to bring your own car seat. The driver must allow you to install your car seat.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://dmv.ny.gov/more-info/safety-restraints\">Learn more about car seat and seat belt policies.</a></p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

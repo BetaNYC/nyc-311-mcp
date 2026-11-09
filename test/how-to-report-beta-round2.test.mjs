@@ -24,7 +24,7 @@ const ROWS = [
   // Fifteen everyday phrasings.
   ["my landlord hasn't turned on the heat and there's no hot water", "KA-01036", { agency: HPD }],
   ["the bar downstairs blasts music until 4am", "KA-01085", {}],
-  ["a delivery truck is parked in the bike lane", "KA-01260", {}],
+  ["a delivery truck is parked in the bike lane", "KA-01986", {}], // Since beta.9 a vehicle in a bike lane is Illegal Parking (KA-01986 lists "Blocking a: ... Bike lane"; KA-01260 says "Illegal Parking to report a vehicle blocking a bike lane").
   ["the parking meter on my block is broken", "KA-01240", { agency: "Department of Transportation" }],
   ["the traffic light at the corner is broken", "KA-01404", {}],
   ["the street is flooded after the rain", "KA-02198", { agency: "Department of Environmental Protection" }],

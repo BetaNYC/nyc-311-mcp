@@ -1,0 +1,841 @@
+[
+{
+"src": "r14 report",
+"d": "my uncle is clutching his chest and sweating and can't talk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "a man just jumped from the roof of my building and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "a kid is hanging from the window ledge on the fourth floor",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "my car is sinking in the flooded underpass and I can't open the door",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "two people are stabbing each other in front of the bodega",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "someone is punching an old lady on the train right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "the apartment upstairs is on fire and my hallway is full of smoke",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "the whole block smells like gas and there's a hissing sound from the meter",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "a toddler wandered into the street and cars are swerving around him",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "a man has a gun to someone's head in the parking lot",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "my roommate took a whole bottle of pills and won't wake up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "a bus is on fire at the bus stop",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "my building's ceiling caves in every winter and today it fell on my neighbor and she's trapped",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "my wife fainted and hit her head and she's bleeding a lot",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "a man is holding a woman under the water at the public pool",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 report",
+"d": "this noise is killing me, the jackhammer starts at 6am",
+"ok": [
+"KA-01091"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "I'm dying to know why the street light on my corner is still broken",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the smell from the garbage room is murder",
+"ok": [
+"KA-01074",
+"KA-01332",
+"KA-01548"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the traffic on my street is a nightmare and drivers are crazy",
+"ok": [
+"KA-02305",
+"KA-03063"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "a pigeon with a broken wing is hopping around my stoop",
+"ok": [
+"KA-01789"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "a dog was hit by a car and is lying injured on the curb",
+"ok": [
+"KA-01789"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the heat in my building is so bad I'm going to explode",
+"ok": [
+"KA-01036"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "my landlord is killing me with these broken windows",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "a squirrel is stuck in my chimney and screaming",
+"ok": [
+"KA-01790"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "this pothole is a death trap",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "my daughter's school has no crossing guard at the corner",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the women's restroom in the park is always locked",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "teens leave beer cans in the playground every weekend",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the kids' sprinkler in the park is broken",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "my mom gets no heat in her apartment",
+"ok": [
+"KA-01036"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the street sign at my corner is missing",
+"ok": [
+"KA-01063"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "there's graffiti all over the mailbox on my block",
+"ok": [
+"KA-02070"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the sewer grate on my street is clogged with leaves",
+"ok": [
+"KA-01084"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "nobody collected the recycling bins on my street on Tuesday",
+"ok": [
+"KA-01788"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the public water fountain in the park doesn't work",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "there's a dead tree in front of my building",
+"ok": [
+"KA-02006"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the bus stop sign was knocked over",
+"ok": [
+"KA-01063",
+"KA-01265"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "my neighbor's air conditioner drips on my window",
+"ok": [
+"KA-01509",
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "a car with no plates has been parked on my block for a month",
+"ok": [
+"KA-02130"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the bodega sells expired milk",
+"ok": [
+"KA-01111"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the subway elevator at my station is out of service",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the crosswalk paint has faded away",
+"ok": [
+"KA-01100"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "my landlord won't fix the mold in my bathroom",
+"ok": [
+"KA-02262"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the speed bump on my block is falling apart",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "someone's sofa has been on the curb for two weeks",
+"ok": [
+"KA-02097"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "there's a huge pothole on Ocean Parkway near Avenue J",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the Brooklyn-Queens Expressway is full of potholes near my exit",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the median on Queens Boulevard has garbage everywhere",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the street light on the Brooklyn Bridge walkway is out",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r14 report",
+"d": "the Henry Hudson Parkway has a big pothole in the left lane",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r14",
+"d": "my dad says his chest feels like an elephant is sitting on it",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my mom suddenly can't lift her left arm and her words are coming out wrong",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my husband is sweating and says the pain is going down his arm",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my friend ate shrimp and now her face is swelling and she can't breathe",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my son is wheezing and his inhaler isn't working",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man on the bus is shaking all over and foaming at the mouth",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my grandmother is confused and can't stand up and her speech is slurred",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my roommate drank a whole bottle of vodka and won't wake up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my coworker cut his hand on a saw and it won't stop bleeding",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my baby has a high fever and is having a seizure",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a woman on the street is gasping for air",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my dad is choking on a piece of steak",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my sister is pregnant and bleeding heavily",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my neighbor's lips are blue and he's barely breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "he took some pills and now he's not making sense and his breathing is slow",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a little boy is running between the cars on the highway",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a toddler climbed onto the windowsill of an open window on the 6th floor",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "someone left a baby in a parked car with the windows up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a kid is stuck on the roof of the building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a little girl is alone at the edge of the subway platform",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my 2 year old swallowed a bunch of pills",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a child is trapped in the elevator and screaming",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a kid is playing near the fire in the vacant lot alone",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my toddler is face down in the kiddie pool",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a baby is alone in a stroller rolling into the street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man fell off the ferry into the water",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a swimmer is waving for help far out at the beach",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "someone is face down in the pond in the park",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a woman slipped into the canal and can't get out",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my elderly father fell in the bathtub and his head is under the water",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "water is pouring into the subway car and people are stuck",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "the flood water is up to the windows of the car and the driver is inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a kid fell through the ice on the lake in the park",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man jumped off the pier and isn't coming up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "two teenagers are being pulled out by the current at rockaway",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my neighbor is on the floor and can't move or talk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man fell down the subway stairs and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my mom fell and can't get up and she's not responding",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a homeless man on the sidewalk isn't breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "someone collapsed in the laundromat and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my grandfather is awake but can't speak and can't move his right side",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a delivery worker fell off his bike and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my wife won't wake up and her breathing sounds strange",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man is lying in the street after a car hit him",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my friend hit his head and now he can't remember anything and keeps throwing up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man is holding a girl's head under water in the bathtub",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "someone is pushing a man's head under the water at the beach",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a woman is being dragged down the stairs by her hair",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a guy is strangling another guy in the subway station",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my neighbor is beating his dog and threatening his wife with a knife",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man with a knife is chasing people in the park",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a car is driving into the crowd at the street fair",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "there's a fire in the kitchen and my kids are inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a man is on fire in the street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "smoke is pouring out of the subway tunnel and people are coughing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a gas explosion just happened on my block",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "my carbon monoxide alarm is going off and my family has headaches",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a power line fell on a car and people are inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "someone is trapped under a fallen tree",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14",
+"d": "a scaffold collapsed on people walking by",
+"ok": null,
+"danger": true
+},
+{
+"src": "r14 near miss",
+"d": "my chest is tight from stress about rent",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the baby is crying at the street fair",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the pool at the rec center is too cold",
+"ok": [
+"KA-01060",
+"KA-02282"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "my back is killing me from carrying groceries up five flights because the elevator is broken",
+"ok": [
+"KA-02015"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "I can't breathe with all the dust from the construction next door",
+"ok": [
+"KA-02248"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the kids' pool in the park is dirty",
+"ok": [
+"KA-01060",
+"KA-02282"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "my neighbor's kid plays in the street every day",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the beach is full of trash",
+"ok": [
+"KA-01060",
+"KA-02229"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "my toddler loves to look out the window at the trucks",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "my dog is choking on a bone",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the noise makes me feel like I'm having a heart attack",
+"ok": [
+"KA-01017",
+"KA-01092"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the hydrant is open and kids are playing in the water",
+"ok": [
+"KA-01034"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "my bathtub won't drain",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "the river smells terrible today",
+"ok": [],
+"danger": false
+},
+{
+"src": "r14 near miss",
+"d": "I nearly choked laughing at the city council meeting",
+"ok": [],
+"danger": false
+}
+]

@@ -143,7 +143,36 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
   );
 }
 
+/**
+ * Every response from every tool, success or error, ends with SAFETY_LINE as its last line (Noel,
+ * beta round 17), and every structured answer carries it as its first field (safety_line). A tool
+ * that detects danger (how_to_report, draft_311_report) still leads first_line with a stronger 911
+ * line at the top. An error message carries it once, at the end.
+ */
 export async function callTool(name: string, args: unknown) {
+  const out = await runToolRaw(name, args);
+  const text = out.content[0].text;
+  if (out.isError) return { content: [{ type: "text", text: `${withoutSafetyLine(text)}\n\n${SAFETY_LINE}` }], isError: true };
+  // The JSON keeps its safety_line field; the sentence is the text's last line once more, as Noel asked.
+  return { content: [{ type: "text", text: `${text}\n\n${SAFETY_LINE}` }] };
+}
+
+/** An error message without the sentence, which the response adds once at the end. */
+function withoutSafetyLine(message: string): string {
+  return message.split(`${SAFETY_LINE} `).join("").split(SAFETY_LINE).join("").trim();
+}
+
+/** The structured answer with the safety line as its first field. */
+function withSafety(result: unknown): unknown {
+  if (result && typeof result === "object" && !Array.isArray(result)) {
+    const { safety_line: _s, ...rest } = result as Record<string, unknown>;
+    return { safety_line: SAFETY_LINE, ...rest };
+  }
+  return { safety_line: SAFETY_LINE, results: result };
+}
+const json = (result: unknown) => JSON.stringify(withSafety(result), null, 2);
+
+async function runToolRaw(name: string, args: unknown): Promise<{ content: { type: "text"; text: string }[]; isError?: true }> {
   // Own keys only: `name in shapes` is also true for "constructor", "toString" and the
   // rest of Object's properties, which would run a tool body for a name that is no tool.
   if (!Object.hasOwn(ARG_SHAPES, name)) {
@@ -154,13 +183,13 @@ export async function callTool(name: string, args: unknown) {
       case "get_calendar": {
         const { date, from_date, to_date } = parseToolArgs("get_calendar", args);
         const results = await getCalendar({ date, fromDate: from_date, toDate: to_date });
-        return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
+        return { content: [{ type: "text", text: json(results) }] };
       }
 
       case "get_status": {
         const { type } = parseToolArgs("get_status", args);
         const results = describeStatus(type, await getStatus(type));
-        return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
+        return { content: [{ type: "text", text: json(results) }] };
       }
 
       case "get_service_request": {
@@ -173,7 +202,7 @@ export async function callTool(name: string, args: unknown) {
           throw new Error(/ error 404/.test(message) ? notFoundMessage(sr_number, message) : message);
         }
         results = describeServiceRequest(results);
-        return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
+        return { content: [{ type: "text", text: json(results) }] };
       }
 
       case "get_service_request_list": {
@@ -186,29 +215,29 @@ export async function callTool(name: string, args: unknown) {
           throw new Error(/ error 404/.test(message) ? listNotFoundMessage(sr_numbers, message) : message);
         }
         const results = describeServiceRequestList(raw, sr_numbers);
-        return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
+        return { content: [{ type: "text", text: json(results) }] };
       }
 
       default:
         if (name in DRAFT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as DraftToolName, args) as Record<string, unknown>;
           const result = await runDraftTool(name as DraftToolName, parsed);
-          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+          return { content: [{ type: "text", text: json(result) }] };
         }
         if (name in REPORT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as ReportToolName, args) as Record<string, unknown>;
           const result = await runReportTool(name as ReportToolName, parsed);
-          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+          return { content: [{ type: "text", text: json(result) }] };
         }
         if (name in LL47_ARG_SHAPES) {
           const parsed = parseToolArgs(name as Ll47ToolName, args) as Record<string, unknown>;
           const result = await runLl47Tool(name as Ll47ToolName, parsed);
-          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+          return { content: [{ type: "text", text: json(result) }] };
         }
         if (name in DISTRICT_ARG_SHAPES) {
           const parsed = parseToolArgs(name as DistrictToolName, args) as Record<string, unknown>;
           const result = await runDistrictTool(name as DistrictToolName, parsed);
-          return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+          return { content: [{ type: "text", text: json(result) }] };
         }
         return { content: [{ type: "text", text: `Unknown tool: ${name}` }], isError: true };
     }
@@ -216,10 +245,6 @@ export async function callTool(name: string, args: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     // The reporting-help tools put the safety line first on every error too, argument
     // errors included: a person describing a problem may be in danger (QA on #23, #24).
-    if (name in DRAFT_ARG_SHAPES || name in REPORT_ARG_SHAPES) {
-      const rest = message.startsWith(SAFETY_LINE) ? message.slice(SAFETY_LINE.length).trim() : message;
-      return { content: [{ type: "text", text: `${SAFETY_LINE} Error: ${rest}` }], isError: true };
-    }
-    return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
+    return { content: [{ type: "text", text: `Error: ${withoutSafetyLine(message)}` }], isError: true };
   }
 }

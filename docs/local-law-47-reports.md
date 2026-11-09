@@ -101,8 +101,14 @@ the four-column one 74 s, and a bare `count(*)` for the month 18 s. Socrata leav
 key is a blank. A fiscal year to date is the sum of its months. Each month's answer is saved on
 disk. A month that ended more than 7 days ago is answered from the saved copy for 30 days, whatever
 the dataset version (its `rowsUpdatedAt` moves every night, so keying on it alone re-asked every
-month daily). A recent month is asked again when the dataset changes. The metadata is re-read at
-most hourly and saved too.
+month daily). A recent month (the month in progress, and the month before it until it is 7 days
+over) is asked again when the dataset changes **or when its saved copy is more than an hour old**
+(`OPEN_MONTH_TTL_MS`): calls keep being added to the month in progress without `rowsUpdatedAt`
+moving. Beta retest 6 (2026-11-09): November grew by 4,861 calls under the same `rowsUpdatedAt`, so
+an older saved copy answered FY2027 as 1,264,433 and a fresh one 1,269,294. `recent_months` in the
+answer says when each recent month was fetched, and whether by this call, from a saved copy, or
+from an older saved copy because a newer one could not be fetched in time. The metadata is re-read
+at most hourly and saved too.
 
 **When the portal is slow or down.** One call has a 58 s budget, waits and retries included, kept
 under a minute because many MCP clients stop waiting for a tool then. Each request may take up to
@@ -111,15 +117,31 @@ took 5 s or more. A one-month call fetches only its month. If the asked-for mont
 now"** when the portal was asked and did not answer in time, **"NYC Open Data is not responding
 right now"** when it returned an HTTP 5xx or could not be reached.
 
-**A fiscal-year call answers within about 12 s** (`DA_ANSWER_WAIT_MS`). Saved months answer at
+**A fiscal-year call answers within about 12 s** (`DA_ANSWER_WAIT_MS`). The wait counts from the start of the call, so the dataset metadata lookup is inside it (beta retest 8: the first call on an empty cache took 16.0 s). If the metadata is not in by then, a saved copy of it is used; with none saved, the answer says the months are loading, and the load starts in the background once the metadata arrives. Saved months answer at
 once. The months not saved are fetched one at a time, never in parallel (engineering standards §6
 forbids it for one portal), and the answer waits for them 12 s at most. A month still loading then
 is listed in `months_missing` as "still loading … ask again in a minute"; it keeps loading after the
 answer and is saved when it lands, for up to 4 minutes in all (`DA_BACKGROUND_MS`), each request
 still limited to 55 s. A second call while a month loads waits on the same request rather than
-sending another. After a month is too slow or fails, the months not yet started are listed as "not
-tried" and left for the next call. Every month missing has a plain reason; the section says
-`complete: false` and gives no partial total. Beta retest 4 (2026-11-09): the first FY2027 call
+sending another. **A month that is too slow or fails does not stop the others** (beta retest 6,
+2026-11-09: one 503 on October, then its one quick retry, left November "not tried" and the load
+dead until the next call; 5 of 16 calls were spent that way). The load goes on to the next month,
+and the failed one goes to the back of the line and is asked again, at most 4 times in all
+(`DA_MONTH_TRIES`). Before each request after a failure it pauses: 3 s, doubling with each failure
+in a row, up to 30 s (`DA_RETRY_PAUSE_MS`, `DA_RETRY_PAUSE_MAX_MS`); a success resets it. A failure
+that is not the portal's (a 400) is not asked again. A month waiting for its next try is listed as
+"retrying: … (try n of 4 failed) … ask again in a minute". The count is kept per month for the
+life of the server, across calls and background loads, and a try cut short by a load's time
+limit counts; it is cleared when the month answers. After 4 failures in a row the month rests 10
+minutes (`DA_REST_MS`), asking nothing, and says until when; then a new round starts. (Beta retest
+7, 2026-11-09: the count lived in each load and restarted at 1 with every new one, so July failed
+six times, every answer said "try 1 of 4", and the limit never applied.) So a 503 early in a call is usually asked again
+within that call's 12 s, and a portal that stays down sees at most one request per pause. When a
+load an earlier call started has ended without the month, the next call starts it again. Every month
+missing has a plain reason; the section says `complete: false` and gives no `calls` total. It does
+show what it has: `saved_months` (each saved month's calls and Directory Assistance topic calls)
+and `saved_months_so_far`, their sum, labeled "Saved months so far (n of m): a partial sum, not the
+total for the period" (beta retest 5, 2026-11-09). Beta retest 4 (2026-11-09): the first FY2027 call
 used to wait about 55 s on one slow month; on a cold cache that night it answered in 12 s. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
 and a caveat; with no saved copy for the asked-for month, the tool says so and does not answer.
 Politeness (engineering standards §6): one request at a time, at least 2 s between request

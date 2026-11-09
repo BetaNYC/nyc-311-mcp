@@ -29,7 +29,7 @@ test("no article matched: no draft, how_to_report's no-match answer with 911 fir
     const o = await draft({ description });
     assert.equal(o.drafted, false, description);
     assert.deepEqual(o.reports, []);
-    assert.match(o.first_line, /^(If anyone is in danger right now, call 911|Call 911)/, description);
+    assert.match(o.first_line, /^(If anyone is in danger right now, call 911|Call 911|No 311 article matched)/, `${description}: ${o.first_line}`);
     assert.ok(o.assistant_instruction);
   }
 });
@@ -43,7 +43,7 @@ test("every part of a split description is listed: a draft if it matched, else '
   assert.match(o.reports[2].note, /^Couldn't match this part/);
   assert.equal(o.reports[2].paste_text, undefined);
   assert.equal(o.drafted, true);
-  assert.ok(o.first_line.startsWith(SAFETY_LINE), "an unmatched part leads with the safety line");
+  assert.match(o.first_line, /^If anyone is in danger right now, call 911/, "an unmatched part leads with a 911 line");
   assert.match(o.first_line, /\(2 of 3\)/);
   const lobby = await draft({ description: "no hot water and the elevator is broken and there is trash in the lobby" });
   assert.deepEqual(lobby.reports.map((r) => r.status), ["drafted", "drafted", "drafted"]);

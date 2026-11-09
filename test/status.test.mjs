@@ -1,5 +1,6 @@
 // get_status in plain words (beta test, 2026-11-08: the answer was only {"inEffect":false}).
 // The stubbed bodies are the shapes the live API returned on 2026-11-08. No network.
+import { SAFETY_LINE } from "../dist/emergency.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { callTool } from "../dist/tools.js";
@@ -47,7 +48,7 @@ test("get_status through callTool returns plain_language", async () => {
   try {
     const r = await callTool("get_status", { type: "SnowOnStreet" });
     assert.notEqual(r.isError, true, r.content[0].text);
-    const out = JSON.parse(r.content[0].text);
+    const out = JSON.parse(r.content[0].text.slice(0, -SAFETY_LINE.length));
     assert.equal(out.inEffect, false);
     assert.match(out.plain_language.answer, /^No: .*Snow or Ice on Street emergency is not in effect/);
   } finally {

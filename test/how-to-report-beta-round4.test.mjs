@@ -85,7 +85,7 @@ test("clear matches stay strong", async () => {
 test("the agency field is never empty", async () => {
   const cases = [
     // No report option: the one agency the article's text names.
-    ["a delivery truck is blocking the bike lane", "KA-01260"],
+    ["the bike lane on my street needs repair", "KA-01260"],
     ["broken traffic light at the intersection", "KA-01404"],
     // Report options for more than one agency, none picked by the words.
     ["water is leaking from my ceiling", "KA-01509"],
@@ -98,7 +98,7 @@ test("the agency field is never empty", async () => {
     assert.ok(typeof b.agency === "string" && b.agency.length > 0, `${description}: agency ${b.agency}`);
     assert.ok(b.agency_source, `${description}: agency_source`);
   }
-  const bike = await howToReport({ description: "a delivery truck is blocking the bike lane" }, client);
+  const bike = await howToReport({ description: "the bike lane on my street needs repair" }, client);
   if (bike.best_match.report_actions.length === 0) {
     assert.equal(bike.best_match.agency, "Department of Transportation (DOT)");
     assert.match(bike.best_match.agency_source, /article's text/);

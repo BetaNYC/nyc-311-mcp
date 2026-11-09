@@ -1,0 +1,55 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02134",
+      "Title": "Lead Paint",
+      "Description": "Report lead paint, peeling paint, or lead dust due to construction. The City will send an inspector where applicable.",
+      "Section": [
+        {
+          "Name": "Lead Paint Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02842\">Lead Safety</a>&nbsp;to learn about lead poisoning prevention</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02840\">Lead Law</a>&nbsp;to get a copy of the Childhood Lead Prevention Act</li></ul></div><p>You can make a complaint about lead paint. A City inspector will visit your home, and if peeling lead-based paint is found, the City can order the owner to fix it, issue violations subject to fines, or fix the problem and bill the owner.</p><p>Reports are accepted for:</p><ul><li>Peeling or chipped paint in a residential building where a child younger than 6 lives or regularly visits for more than 10 hours a week</li><li>Lead dust hazards from renovation or repair work</li><li>Possible lead paint dangers in a New York City Housing Authority (NYCHA) apartment</li></ul><p>New York City law requires that the repair of lead paint hazards be done by trained workers using safe work practices. Dry sanding and dry scraping of lead paint is not allowed.</p><p>Find resources, services, and information from LeadFreeNYC, the city-wide effort to eradicate lead exposure in New York City.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/content/leadfree/pages/\">Learn more about LeadFreeNYC.</a></p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Peeling Paint in a Residential Building",
+          "Content": "<p>You can report peeling or chipped paint in a residential building, if a child under the age of six lives there. The Department of Housing Preservation and Development (HPD) will inspect paint for lead hazards and issue violations to owners who break the law.</p><p><strong>What You Need</strong></p><p>You must provide your contact information when making a complaint about lead paint in a residential building.</p><p><strong>Tenant Notification</strong></p><p>If a building was built before 1960, the landlord must send a lead notice to all tenants each year. The notice must be sent between January 1st and January 15th. If the landlord issues the January rent bill before January 1st, the notice must be included with this bill.</p><p>Owners must also send a notice to tenants in buildings built between 1960 and 1978 if they know there is lead paint in the building.</p>",
+          "ContentAction": [
+            {
+              "Name": "Lead Paint Complaint in Residential Building",
+              "Agency": "Department of Housing Preservation and Development",
+              "Problem": "Paint/Plaster"
+            }
+          ]
+        },
+        {
+          "Name": "Dust from Construction, Renovation, or Repair",
+          "Content": "<p>The NYC Health Department accepts reports from tenants about dust from construction or renovation work being performed in residential buildings as well in commercial and other non-residential buildings. You can report construction dust anywhere inside the building, including inside an apartment, the lobby, and other common areas. The City will review your report and may inspect the property.</p><p>The dust must be from new or ongoing construction or renovation which is taking place inside the building.</p><p>Your report should provide the following:</p><ul><li>Your complete address, including apartment number, and a contact phone number or e-mail address.</li><li>Your landlord or management company&#39;s name and address.&nbsp;</li></ul><p>Anonymous complaints are accepted unless you are reporting construction dust inside of your apartment. The NYC Health Department needs your contact information to inspect your apartment. If you provide your name and contact information, it will not be shared with your landlord or management company.</p><p>You can report construction dust in a:</p>",
+          "ContentAction": [
+            {
+              "Name": "Construction Lead Dust",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Construction Lead Dust"
+            },
+            {
+              "Name": "Dust in Residential Building Where Children Do Not Live",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Indoor Air Quality",
+              "ProblemDetail": "Dust from Construction"
+            },
+            {
+              "Name": "Dust in Commercial or Non-Residential Building",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Indoor Air Quality",
+              "ProblemDetail": "Dust from Construction"
+            }
+          ]
+        },
+        {
+          "Name": "NYCHA Public Housing",
+          "Content": "<p>You can report possible lead paint dangers in a New York City Housing Authority (NYCHA) public housing apartment to the <a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/nycha/residents/customer-contact-center.page\">NYCHA Customer Contact Center</a>. You can also get help completing a lead-based paint disclosure package.</p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

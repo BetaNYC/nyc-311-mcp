@@ -1,0 +1,57 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01051",
+      "Title": "Unleashed Dog",
+      "Description": "Report a dog that is not leashed in a park or other public place.",
+      "Section": [
+        {
+          "Name": "911 Unleashed Dog",
+          "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report a dog that is currently threatening or injuring someone.</div></div></div></div><p>All dogs in public places in New York City must be leashed. The leash can&rsquo;t be longer than 6 feet.</p><p>You can report an unleashed dog in a park, an apartment building, and other public places.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Parks",
+          "Content": "<p>Dogs must be leashed in public parks unless they are in a dog run or a designated off-leash area.</p><p>You can report an unleashed dog in a City park or report a park where dogs are often unleashed.</p><p><strong>Areas for Dogs in Parks</strong></p><p>Some areas in City parks allow dogs to be off-leash. Dogs in off-leash areas must have dog licenses and their owners must carry proof of the dog&#39;s rabies vaccination.</p><p>Dog runs are large, fenced-in areas where dogs can exercise unleashed. You can bring up to three dogs at a time to a dog run.</p><p>In addition to dog runs, certain unfenced park areas allow dogs to be off-leash from the time the park opens until 9 AM and from 9 PM until the park closes.</p><p>During beach season, only service dogs are allowed on the sand at City public beaches, but leashed dogs are allowed on the boardwalks or promenades at Orchard, Coney Island, Brighton, Midland, South, and Manhattan beaches. From May 1st to October 1st, dogs are not allowed to enter any bathing facility, including City beaches.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nycgovparks.org/facilities/dogareas\">Learn about rules, regulations, and safety tips for dogs in City parks.</a></p>",
+          "ContentAction": [
+            {
+              "Name": "Unleashed Dog in Park",
+              "Agency": "Department of Parks and Recreation",
+              "Problem": "Animal in a Park",
+              "ProblemDetail": "Dog Off Leash"
+            }
+          ]
+        },
+        {
+          "Name": "Sidewalks and Other Public Places",
+          "Content": "<p><strong>What You Need</strong></p><ul><li>The dog owner&rsquo;s name, address, and apartment number</li><li>The days and times when the dog is usually unleashed</li></ul>",
+          "ContentAction": [
+            {
+              "Name": "Unleashed Dog in Public",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Unleashed Dog",
+              "ProblemDetail": "Unleashed Dog in Public"
+            }
+          ]
+        },
+        {
+          "Name": "Apartment Building Common Areas",
+          "Content": "<p>You can report an unleashed dog in a common area of an apartment building.</p><p><strong>What You Need</strong></p><ul><li>The dog owner&rsquo;s name, address, and apartment number</li><li>The days and times when the dog is usually unleashed</li></ul>",
+          "ContentAction": [
+            {
+              "Name": "Unleashed Dog in Apartment Building",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Unleashed Dog",
+              "ProblemDetail": "Unleashed Dog in Public"
+            }
+          ]
+        },
+        {
+          "Name": "NYCHA Public Housing",
+          "Content": "<p>You can report an unleashed dog on a New York City Housing Authority (NYCHA) public housing property to the <a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/nycha/residents/customer-contact-center.page\">NYCHA Customer Contact Center</a>.</p><p>To learn more about the rules for owning a pet in a NYCHA building, go to the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01052\">NYCHA Pet Policy</a>&nbsp;page.</p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

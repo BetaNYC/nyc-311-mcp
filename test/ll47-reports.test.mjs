@@ -24,6 +24,11 @@ import {
   DA_ANSWER_WAIT_MS,
   DA_CONCURRENT_MONTHS,
   STILL_LOADING,
+  DA_MONTH_TRIES,
+  DA_RETRY_PAUSE_MS,
+  DA_RETRY_PAUSE_MAX_MS,
+  DA_BACKGROUND_MS,
+  OPEN_MONTH_TTL_MS,
   MANDATES,
   LL47_TOOLS,
 } from "../dist/ll47-reports.js";
@@ -719,7 +724,7 @@ test("a one-month call uses every saved month for its fiscal year to date, askin
   assert.equal(env.data.fiscal_year.calls, fy);
 });
 
-test("the fiscal-year call answers saved months at once and lists the slow ones as missing", async () => {
+test("the fiscal-year call answers saved months at once, loads the rest past a slow one, and lists the slow one as missing", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-mixed-"));
   await warmMonths(dir, ["2026-07", "2026-10"]);
   const { soda, requests } = await fixtureSoda({
@@ -732,15 +737,14 @@ test("the fiscal-year call answers saved months at once and lists the slow ones 
   assert.equal(fy.calls, undefined, "no partial total");
   const why = Object.fromEntries(fy.months_missing.map((m) => [m.month, m.why]));
   assert.match(why["2026-08"], /too slow/);
-  // One request at a time (standards §6): after a slow month, the rest wait for the next call.
-  assert.match(why["2026-09"], /not tried: NYC Open Data was too slow/);
-  assert.match(why["2026-11"], /not tried/);
-  assert.equal(why["2026-07"], undefined);
-  assert.equal(why["2026-10"], undefined);
+  // A slow month no longer stops the others (beta retest 6): September and November load,
+  // still one request at a time (standards §6), and August is asked again after a pause.
+  assert.deepEqual(fy.months_missing.map((m) => m.month), ["2026-08"]);
   assert.equal(env.data.months_from_cache, 2);
   const asked = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
   assert.ok(!asked.includes("2026-07") && !asked.includes("2026-10"), "saved months are not asked");
-  assert.equal(asked.filter((m) => m === "2026-08").length, 1, "a timeout is not retried");
+  assert.deepEqual(asked.slice(0, 3), ["2026-08", "2026-09", "2026-11"]);
+  assert.equal(asked.filter((m) => m === "2026-08").length, DA_MONTH_TRIES, "a timeout is not retried inside one try; the month is tried again later, a bounded number of times");
 });
 
 // ── Beta retest 4 (2026-11-09): the first FY2027 call waited ~55 s on one slow month ──
@@ -892,7 +896,7 @@ test("fiscal-year call with every month saved answers without waiting or asking"
   assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 0);
 });
 
-test("fiscal-year call, portal failing: the months tried say not responding, the rest are not tried, and it answers fast", async () => {
+test("fiscal-year call, portal failing: every month says not responding (none 'not tried'), and it answers fast", async () => {
   const { soda, requests } = await fixtureSoda({
     respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
     cost: 6_000,
@@ -904,8 +908,338 @@ test("fiscal-year call, portal failing: the months tried say not responding, the
   assert.equal(fy.complete, false);
   assert.equal(fy.calls, undefined);
   const whys = fy.months_missing.map((m) => m.why);
-  assert.ok(whys.some((w) => /not responding/.test(w)), JSON.stringify(whys));
-  assert.ok(whys.some((w) => /not tried: NYC Open Data was failing/.test(w)), JSON.stringify(whys));
-  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 1, "a slow 503 is not retried, and no other month is tried");
+  // Each month says the portal returned an error, and how many of its 4 tries failed so far
+  // (the count is kept across calls since beta retest 7).
+  assert.ok(whys.every((w) => /returned an error or could not be reached .*\(try [1-4] of 4 failed\)|not responding/.test(w)), JSON.stringify(whys));
+  assert.ok(!whys.some((w) => /not tried/.test(w)), JSON.stringify(whys));
+  // A slow 503 (6 s) is not retried inside one try; each month is tried again after a pause,
+  // until the background time runs out (beta retest 6).
+  const starts = {};
+  for (const r of requests.filter((x) => x.url.pathname === "/resource/wewp-mm3p.json")) (starts[monthOf(r)] ??= []).push(r.at);
+  assert.equal(Object.keys(starts).length, 5, "every month tried");
+  for (const at of Object.values(starts)) for (let i = 1; i < at.length; i++) assert.ok(at[i] - at[i - 1] >= DA_RETRY_PAUSE_MS, "a month is asked again only after a pause");
 });
 
+
+// ── Beta retest 5 (2026-11-09): a failed background month cost a whole extra call, and a
+// partial fiscal-year answer showed no numbers for the months it had saved. ──
+
+test("a background month load that fails during the next call is retried in that call, one request at a time", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-retry-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  let active = 0;
+  let most = 0;
+  const asked = [];
+  let firstAug = true;
+  const offset = Date.now() - NOW;
+  const real = new SodaClient({
+    logger: () => {},
+    cacheDir: dir,
+    minIntervalMs: 5,
+    now: () => Date.now() - offset,
+    fetch: async (url, init) => {
+      const u = new URL(url);
+      if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
+      const m = /date >= '(\d{4}-\d{2})-01/.exec(u.searchParams.get("$where"));
+      asked.push(m[1]);
+      most = Math.max(most, ++active);
+      try {
+        if (m[1] === "2026-08" && firstAug) {
+          firstAug = false;
+          await hang(init); // the first August request times out (requestTimeoutMs below)
+        }
+        await pause(20);
+      } finally {
+        active--;
+      }
+      if (u.searchParams.get("$offset") !== "0") return Response.json([]);
+      const body = await readFile(path.join(SODA_FIX, `${m[1]}.json`)).catch(() => null);
+      return body ? new Response(body) : Response.json([]);
+    },
+  });
+  // Call 1 answers at once and leaves August loading in the background.
+  const first = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 10, requestTimeoutMs: 250, retryPauseMs: 20 });
+  assert.equal(first.data.fiscal_year.complete, false);
+  // Call 2 starts while August is still loading; it fails during call 2's wait, and the
+  // months it held up are retried in the same call rather than left for a third.
+  const t0 = Date.now();
+  const second = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 3_000, requestTimeoutMs: 250, retryPauseMs: 20 });
+  const took = Date.now() - t0;
+  assert.equal(second.data.fiscal_year.complete, true, JSON.stringify(second.data.fiscal_year.months_missing));
+  assert.ok(took < 3_000, `answered after ${took} ms`);
+  assert.equal(most, 1, "one request at a time (standards §6)");
+  // Since beta retest 6 a failed month no longer holds the others up: September and November
+  // load next, and August is asked again after a pause.
+  assert.deepEqual(asked, ["2026-08", "2026-09", "2026-11", "2026-08"]);
+  let total = 0;
+  for (const ym of FY27_TO_OCT) total += await monthSum(ym);
+  assert.equal(second.data.fiscal_year.calls, total);
+});
+
+test("an incomplete fiscal year shows each saved month's count and a labeled partial sum, never a total", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-partial-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  // Every month not saved times out (a slow month no longer stops the others: beta retest 6).
+  const { soda } = await fixtureSoda({
+    cacheDir: dir,
+    respond: async (u, _n, init) => (u.pathname === "/resource/wewp-mm3p.json" ? hang(init) : null),
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW, { requestTimeoutMs: 20 });
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.equal(fy.calls, undefined, "no fiscal-year total");
+  const jul = await monthSum("2026-07");
+  const oct = await monthSum("2026-10");
+  const julDa = await monthSum("2026-07", (r) => r.inquiry_name === "Directory Assistance");
+  assert.deepEqual(fy.saved_months.map((m) => [m.month, m.calls]), [["2026-07", jul], ["2026-10", oct]]);
+  assert.equal(fy.saved_months[0].directory_assistance_topic_calls, julDa);
+  assert.equal(fy.saved_months_so_far.calls, jul + oct);
+  assert.equal(fy.saved_months_so_far.months, 2);
+  assert.equal(fy.saved_months_so_far.of_months, 5);
+  assert.match(fy.saved_months_so_far.label, /^Saved months so far \(2 of 5\): a partial sum, not the total/);
+  assert.match(fy.note, /full total is not ready yet/);
+  assert.match(fy.note, /partial sum of the saved months so far, not the total/);
+});
+
+test("an incomplete fiscal year with nothing saved has an empty saved_months and no partial sum", async () => {
+  const { soda } = await fixtureSoda({
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+    cost: 6_000,
+  });
+  const fy = (await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW)).data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.deepEqual(fy.saved_months, []);
+  assert.equal(fy.saved_months_so_far, null);
+  assert.doesNotMatch(fy.note, /saved_months/);
+});
+
+// ── Beta retest 6 (2026-11-09, home machine) ──────────────────────────────────
+// 1. Inside a fiscal-year call a month got a 503, its one quick retry (2 s later) failed too,
+//    and the call reported the error, marked the later months "not tried", and left the load
+//    dead until the next call: 5 of 16 calls were spent that way. A failed month must not stop
+//    the later ones, and is asked again, after a polite pause, within the same answer.
+// 2. November grew by 4,861 calls while the dataset's rowsUpdatedAt stayed the same, so a saved
+//    copy of the month in progress answered forever. It is now asked again after an hour.
+
+const monthOf = (r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))?.[1];
+const rowRequests = (requests) => requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json");
+
+test("retest 6: a month whose 503 and quick retry both fail does not stop the later months, and is asked again in the same answer", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-503-"));
+  await warmMonths(dir, ["2026-07", "2026-08", "2026-09"]);
+  let octTries = 0;
+  const { soda, requests, sleeps } = await fixtureSoda({
+    cacheDir: dir,
+    cost: 400,
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" && /2026-10-01/.test(u.searchParams.get("$where")) && ++octTries <= 2 ? new Response("Service Unavailable", { status: 503 }) : null),
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, true, JSON.stringify(fy.months_missing));
+  let total = 0;
+  for (const ym of FY27_TO_OCT) total += await monthSum(ym);
+  assert.equal(fy.calls, total);
+  // October twice (the 503 and the client's one quick retry), then November, then October again.
+  assert.deepEqual(rowRequests(requests).map(monthOf), ["2026-10", "2026-10", "2026-11", "2026-10"]);
+  assert.ok(sleeps.includes(DA_RETRY_PAUSE_MS), `a pause of ${DA_RETRY_PAUSE_MS} ms before the next request after the failure: ${sleeps}`);
+  for (let i = 1; i < requests.length; i++) assert.ok(requests[i].at - requests[i - 1].at >= 2000, "one request at a time, 2 s apart at least");
+});
+
+test("retest 6, real clock: the same 503 sequence finishes inside one answer's wait", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-real-"));
+  await warmMonths(dir, ["2026-07", "2026-08", "2026-09"]);
+  const offset = Date.now() - NOW;
+  let octTries = 0;
+  let active = 0;
+  let most = 0;
+  const asked = [];
+  const real = new SodaClient({
+    logger: () => {},
+    cacheDir: dir,
+    minIntervalMs: 50,
+    now: () => Date.now() - offset,
+    fetch: async (url) => {
+      const u = new URL(url);
+      if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
+      const m = /date >= '(\d{4}-\d{2})-01/.exec(u.searchParams.get("$where"))[1];
+      asked.push(m);
+      most = Math.max(most, ++active);
+      try {
+        await pause(30);
+        if (m === "2026-10" && ++octTries <= 2) return new Response("Service Unavailable", { status: 503 });
+      } finally {
+        active--;
+      }
+      if (u.searchParams.get("$offset") !== "0") return Response.json([]);
+      const body = await readFile(path.join(SODA_FIX, `${m}.json`)).catch(() => null);
+      return body ? new Response(body) : Response.json([]);
+    },
+  });
+  const t0 = Date.now();
+  // Default answer wait (12 s) and default pause (3 s), as on the home Mac.
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW);
+  const took = Date.now() - t0;
+  assert.equal(env.data.fiscal_year.complete, true, JSON.stringify(env.data.fiscal_year.months_missing));
+  assert.ok(took < DA_ANSWER_WAIT_MS, `answered after ${took} ms`);
+  assert.deepEqual(asked, ["2026-10", "2026-10", "2026-11", "2026-10"]);
+  assert.equal(most, 1, "one request at a time (standards §6)");
+});
+
+test("retest 6: a portal that keeps failing gets every month tried, with growing pauses, a bounded number of times, never two at once", async () => {
+  let active = 0;
+  let most = 0;
+  const { soda, requests, sleeps } = await fixtureSoda({
+    cost: 300,
+    respond: async (u) => {
+      if (u.pathname !== "/resource/wewp-mm3p.json") return null;
+      most = Math.max(most, ++active);
+      await Promise.resolve();
+      active--;
+      return new Response("Service Unavailable", { status: 503 });
+    },
+  });
+  const t0 = Date.now();
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.ok(Date.now() - t0 < DA_ANSWER_WAIT_MS);
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.equal(fy.calls, undefined);
+  const asked = rowRequests(requests).map(monthOf);
+  assert.deepEqual([...new Set(asked)].sort(), ["2026-07", "2026-08", "2026-09", "2026-10", "2026-11"], "no month is left untried");
+  for (const m of fy.months_missing) assert.doesNotMatch(m.why, /not tried/);
+  for (const ym of new Set(asked)) assert.ok(asked.filter((x) => x === ym).length <= DA_MONTH_TRIES * DA_REQUEST.maxTries, `${ym} asked too often`);
+  const pauses = sleeps.filter((ms) => ms >= DA_RETRY_PAUSE_MS);
+  assert.deepEqual(pauses.slice(0, 5), [DA_RETRY_PAUSE_MS, 2 * DA_RETRY_PAUSE_MS, 4 * DA_RETRY_PAUSE_MS, 8 * DA_RETRY_PAUSE_MS, DA_RETRY_PAUSE_MAX_MS]);
+  assert.ok(Math.max(...sleeps) <= DA_RETRY_PAUSE_MAX_MS);
+  assert.equal(most, 1);
+  // Everything stays inside the background time limit.
+  assert.ok(requests.at(-1).at - requests[0].at <= DA_BACKGROUND_MS, `${requests.at(-1).at - requests[0].at} ms`);
+});
+
+test("retest 6: a month waiting to be asked again says so, and the load keeps going after the answer", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-wait-"));
+  await warmMonths(dir, ["2026-07", "2026-08", "2026-09", "2026-10"]);
+  const offset = Date.now() - NOW;
+  let novTries = 0;
+  const asked = [];
+  const real = new SodaClient({
+    logger: () => {},
+    cacheDir: dir,
+    minIntervalMs: 5,
+    now: () => Date.now() - offset,
+    fetch: async (url) => {
+      const u = new URL(url);
+      if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
+      asked.push(/date >= '(\d{4}-\d{2})-01/.exec(u.searchParams.get("$where"))[1]);
+      if (++novTries <= 2) return new Response("Service Unavailable", { status: 503 });
+      return Response.json([]);
+    },
+  });
+  // The client's own quick retry waits 2 s; the answer waits 2.5 s; the pause is 1 s.
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 2_500, retryPauseMs: 1_000 });
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.match(fy.months_missing[0].why, /^retrying: NYC Open Data returned an error .*\(try 1 of 4 failed\).*ask again in a minute/);
+  assert.match(fy.note, /still loading/);
+  for (let i = 0; i < 100 && asked.length < 3; i++) await pause(50);
+  await pause(100);
+  assert.deepEqual(asked, ["2026-11", "2026-11", "2026-11"], "asked again after the answer, without another call");
+  const done = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 100 });
+  assert.equal(done.data.fiscal_year.complete, true);
+  assert.equal(asked.length, 3);
+});
+
+test("the pause between background retries never keeps the process alive", async () => {
+  const { spawn } = await import("node:child_process");
+  const src = `import { SodaClient } from ${JSON.stringify(path.resolve("dist/soda.js"))}; new SodaClient({ cacheDir: ${JSON.stringify(tmpdir())} }).pause(60_000).then(() => process.exit(3));`;
+  const t0 = Date.now();
+  const code = await new Promise((resolve) => spawn(process.execPath, ["--input-type=module", "-e", src], { stdio: "ignore" }).on("exit", resolve));
+  assert.equal(code, 0, "exited on its own, without waiting out the pause");
+  assert.ok(Date.now() - t0 < 5_000);
+});
+
+// ── 2. The month in progress ──
+
+/** Saves `groups` as `ym`'s answer, as if fetched `agoMs` before NOW, under the fixture's dataset version. */
+async function saveMonthAt(dir, ym, groups, agoMs) {
+  const view = JSON.parse(await readFile(path.join(SODA_FIX, "view.json"), "utf8"));
+  const c = new SodaClient({ logger: () => {}, cacheDir: dir, now: () => NOW - agoMs });
+  await c.writeCache(`wewp-mm3p/${ym}`, view.rowsUpdatedAt, groups);
+}
+const OLD_NOV = [{ inquiry_name: "Directory Assistance", agency: null, agency_name: null, call_resolution: null, n: 4861 }];
+
+test("retest 6: the month in progress is asked again once its saved copy is over an hour old, though the dataset version did not move", async () => {
+  assert.equal(OPEN_MONTH_TTL_MS, 60 * 60_000);
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-open-"));
+  await warmMonths(dir, FY27_TO_OCT);
+  await saveMonthAt(dir, "2026-11", OLD_NOV, 2 * 60 * 60_000);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.deepEqual(rowRequests(requests).map(monthOf), ["2026-11"], "only November: the settled months keep their copies");
+  let total = 0;
+  for (const ym of FY27_TO_OCT) total += await monthSum(ym);
+  assert.equal(env.data.fiscal_year.calls, total, "the fresh November (no calls in the fixture), not the old 4,861");
+  const nov = env.data.recent_months.find((m) => m.month === "2026-11");
+  assert.equal(nov.from, "fetched by this call");
+  assert.ok(Date.parse(nov.fetched_at) >= NOW, nov.fetched_at);
+  assert.equal(nov.asked_again_after_minutes, 60);
+  assert.ok(env.caveats.some((c) => /more than 60 minutes old/.test(c) && /recent_months/.test(c)));
+});
+
+test("retest 6: the month in progress saved under an hour ago is used as is, and says when it was fetched", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-young-"));
+  await warmMonths(dir, FY27_TO_OCT);
+  await saveMonthAt(dir, "2026-11", OLD_NOV, 30 * 60_000);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.equal(rowRequests(requests).length, 0);
+  assert.deepEqual(env.data.recent_months.find((m) => m.month === "2026-11"), {
+    month: "2026-11",
+    fetched_at: new Date(NOW - 30 * 60_000).toISOString(),
+    from: "saved copy",
+    asked_again_after_minutes: 60,
+  });
+});
+
+test("retest 6: the month before is also asked again for its first days after ending; a settled month is not", async () => {
+  // On 2026-11-07 October ended 7 days ago, not more: it is not settled yet. September is.
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-prev-"));
+  await warmMonths(dir, ["2026-07", "2026-08", "2026-11"]);
+  const sep = JSON.parse(await readFile(path.join(SODA_FIX, "2026-09.json"), "utf8")).map((r) => ({ inquiry_name: r.inquiry_name, agency: null, agency_name: null, call_resolution: null, n: Number(r.n) }));
+  await saveMonthAt(dir, "2026-09", sep, 2 * 60 * 60_000);
+  await saveMonthAt(dir, "2026-10", OLD_NOV, 2 * 60 * 60_000);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.deepEqual(rowRequests(requests).map(monthOf), ["2026-10"]);
+  assert.deepEqual(env.data.recent_months.map((m) => m.month).sort(), ["2026-10", "2026-11"]);
+});
+
+test("retest 6: a one-month call for the month in progress asks again once its copy is over an hour old", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-month-"));
+  await warmMonths(dir, FY27_TO_OCT);
+  await saveMonthAt(dir, "2026-11", OLD_NOV, 2 * 60 * 60_000);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir });
+  const env = await directoryAssistanceReport(daArgs({ month: "2026-11" }), soda, NOW);
+  assert.deepEqual(rowRequests(requests).map(monthOf), ["2026-11"]);
+  assert.equal(env.data.month.calls, 0);
+});
+
+test("retest 6: when the month in progress cannot be fetched in time, the older copy answers, labeled with when it was fetched", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-r6-older-"));
+  await warmMonths(dir, FY27_TO_OCT);
+  await saveMonthAt(dir, "2026-11", OLD_NOV, 2 * 60 * 60_000);
+  const { soda } = await fixtureSoda({
+    cacheDir: dir,
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+  });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, true);
+  let total = 0;
+  for (const ym of FY27_TO_OCT) total += await monthSum(ym);
+  assert.equal(fy.calls, total + 4861);
+  const nov = env.data.recent_months.find((m) => m.month === "2026-11");
+  assert.match(nov.from, /^older saved copy/);
+  assert.equal(nov.fetched_at, new Date(NOW - 2 * 60 * 60_000).toISOString());
+  assert.ok(env.caveats.some((c) => /could not be refreshed and come from an older saved copy/.test(c)));
+});

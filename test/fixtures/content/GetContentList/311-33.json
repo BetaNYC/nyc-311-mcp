@@ -1,0 +1,1224 @@
+{
+  "ContentArticleList": [
+    {
+      "description": "Learn about 911 surcharges for wireless, landline, and Voice Over Internet Protocol (VoIP) telecommunications services.",
+      "id": "KA-02536",
+      "title": "911 Surcharge"
+    },
+    {
+      "description": "Report an airline safety or scale problem.",
+      "id": "KA-01114",
+      "title": "Airline Complaint"
+    },
+    {
+      "description": "Find out if a business is licensed to sell alcohol.",
+      "id": "KA-02556",
+      "title": "Alcohol License Check"
+    },
+    {
+      "description": "Report the sale of alcohol to minors/intoxicated people, at more than half-off, to-go without food, outside of approved hours, or in unlicensed businesses.",
+      "id": "KA-02223",
+      "title": "Alcohol Sale Complaint"
+    },
+    {
+      "description": "Report an unsanitary or unpermitted animal shelter, kennel, groomer, horse stable, boarding facility, petting zoo, or other animal facility.",
+      "id": "KA-02225",
+      "title": "Animal Facility Complaint"
+    },
+    {
+      "description": "Report a problem with an amusement arcade.",
+      "id": "KA-01994",
+      "title": "Arcade Complaint"
+    },
+    {
+      "description": "Report a problem with a registered architect or a professional engineer.",
+      "id": "KA-01119",
+      "title": "Architect or Engineer Complaint"
+    },
+    {
+      "description": "Report a problem with an automated teller machine (ATM).",
+      "id": "KA-01126",
+      "title": "ATM Complaint"
+    },
+    {
+      "description": "Report a problem with a car repair or inspection.",
+      "id": "KA-01128",
+      "title": "Auto Repair Complaint"
+    },
+    {
+      "description": "Report spray paint odor or fumes from an automobile business or repair shop.",
+      "id": "KA-01928",
+      "title": "Automobile Spray Paint Odor"
+    },
+    {
+      "description": "Report illegal business practices by a bail bond agent.",
+      "id": "KA-01130",
+      "title": "Bail Bond Agent Complaint"
+    },
+    {
+      "description": "Report a problem with a bank, credit union, lending institution, or safe deposit company.",
+      "id": "KA-01131",
+      "title": "Bank Complaint"
+    },
+    {
+      "description": "Report a bar or club that's selling alcohol to minors, overcrowded, or open after hours.",
+      "id": "KA-01993",
+      "title": "Bar or Club Complaint"
+    },
+    {
+      "description": "Report a problem with a barber shop, beauty salon, or nail salon.",
+      "id": "KA-03535",
+      "title": "Barber Shop or Salon Complaint"
+    },
+    {
+      "description": "Make a complaint about a licensed boiler operator engineer.",
+      "id": "KA-02585",
+      "title": "Boiler Operator Engineer Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that places wheel locks on illegally parked cars.",
+      "id": "KA-02194",
+      "title": "Booting Company Complaint"
+    },
+    {
+      "description": "Learn about the bottle and can refund law or report a store not accepting a container.",
+      "id": "KA-02477",
+      "title": "Bottle Refund"
+    },
+    {
+      "description": "Report a problem with plain bottled water.",
+      "id": "KA-01941",
+      "title": "Bottled Water Complaint"
+    },
+    {
+      "description": "Learn about broadcast television channel rescan.",
+      "id": "KA-03227",
+      "title": "Broadcast Television Rescan"
+    },
+    {
+      "description": "Learn more about broker fees.",
+      "id": "KA-03665",
+      "title": "Broker Fees"
+    },
+    {
+      "description": "Report past changes without DOB approval, including to a basement, room, space, apartment, or building. Report building use against occupancy or zoning.",
+      "id": "KA-02025",
+      "title": "Building Conversion or Occupancy Complaint"
+    },
+    {
+      "description": "Learn about building information, past or current construction jobs, and skilled trade license and general contractor status from DOB's BIS.",
+      "id": "KA-01264",
+      "title": "Buildings Information System (BIS)"
+    },
+    {
+      "description": "Find out about a business and if it has a history of complaints.",
+      "id": "KA-02042",
+      "title": "Business Background Check"
+    },
+    {
+      "description": "Report a problem with a business only if you're a business.",
+      "id": "KA-01688",
+      "title": "Business Complaint Against Another Business"
+    },
+    {
+      "description": "Report a problem with a cable TV, phone, or internet provider.",
+      "id": "KA-01058",
+      "title": "Cable Complaint"
+    },
+    {
+      "description": "Learn about calorie posting requirements information for restaurants and mobile vendors. Report failed to display calorie information.",
+      "id": "KA-02237",
+      "title": "Calorie Posting"
+    },
+    {
+      "description": "Learn about summer camps, day camps, and overnight camps. Report a problem with a camp.",
+      "id": "KA-02337",
+      "title": "Camp"
+    },
+    {
+      "description": "Report a problem with a store that sells cannabis, including unlicensed businesses.",
+      "id": "KA-03536",
+      "title": "Cannabis Retail Sale Complaint"
+    },
+    {
+      "description": "Make a complaint about a business selling new or used cars.",
+      "id": "KA-02131",
+      "title": "Car Dealer Complaint"
+    },
+    {
+      "description": "Make a complaint about a car rental agency.",
+      "id": "KA-02193",
+      "title": "Car Rental Complaint"
+    },
+    {
+      "description": "Report a problem with a limousine, ambulette, Access-A-Ride taxi, black cab, or car service company.",
+      "id": "KA-01244",
+      "title": "Car Service Complaint"
+    },
+    {
+      "description": "Report a problem with a commercial car wash.",
+      "id": "KA-01921",
+      "title": "Car Wash Complaint"
+    },
+    {
+      "description": "Report a problem with a carpet or flooring business.",
+      "id": "KA-02192",
+      "title": "Carpet and Flooring Business Complaint"
+    },
+    {
+      "description": "Learn about a program that gives members access to cars for short-term use.",
+      "id": "KA-02610",
+      "title": "Carshare"
+    },
+    {
+      "description": "Report a store that doesn't accept cash as a form of payment.",
+      "id": "KA-03302",
+      "title": "Cash Payment Refusal"
+    },
+    {
+      "description": "Make a complaint about a rented space used to serve food or drinks for events.",
+      "id": "KA-02191",
+      "title": "Catering Establishment Complaint"
+    },
+    {
+      "description": "Learn how to keep your cell phone number when you change phone carriers.",
+      "id": "KA-01268",
+      "title": "Cell Phone Number Portability"
+    },
+    {
+      "description": "Make a complaint about the purchase of a cell phone.",
+      "id": "KA-02163",
+      "title": "Cell Phone Purchase Complaint"
+    },
+    {
+      "description": "Report a problem with a cemetery, monument, or headstone.",
+      "id": "KA-01690",
+      "title": "Cemetery Complaint"
+    },
+    {
+      "description": "Find a certified asbestos investigator.",
+      "id": "KA-02448",
+      "title": "Certified Asbestos Investigator"
+    },
+    {
+      "description": "Request a review of a charity organization or report a problem with one.",
+      "id": "KA-01143",
+      "title": "Charity Background Check or Complaint"
+    },
+    {
+      "description": "Report a problem with a charity committing fraud.",
+      "id": "KA-01524",
+      "title": "Charity Fraud"
+    },
+    {
+      "description": "Report a check cashing business.",
+      "id": "KA-01526",
+      "title": "Check Cashing Business Complaint"
+    },
+    {
+      "description": "Make a complaint about a day care facility, child care provider, or after school program.",
+      "id": "KA-02240",
+      "title": "Child Care Complaint"
+    },
+    {
+      "description": "Report illegal cigarette sales, cigarette tax evasion, or a problem with a cigarette vending machine.",
+      "id": "KA-02627",
+      "title": "Cigarette Sale Complaint"
+    },
+    {
+      "description": "Learn about the tax on cigarettes for businesses and consumers.",
+      "id": "KA-02628",
+      "title": "Cigarette Tax"
+    },
+    {
+      "description": "Report a business that makes it difficult to cancel subscriptions.",
+      "id": "KA-03737",
+      "title": "Click to Cancel Complaint"
+    },
+    {
+      "description": "Learn how to donate and recycle clothing, shoes, linens and accessories.",
+      "id": "KA-03510",
+      "title": "Clothing Disposal"
+    },
+    {
+      "description": "Learn about the rules for businesses that employ delivery workers who use bikes, e-bikes, or cargo bikes. Report a business not following the laws.",
+      "id": "KA-02651",
+      "title": "Commercial Bicycling Laws"
+    },
+    {
+      "description": "Report a commercial vehicle parked in a residential driveway or lot.",
+      "id": "KA-01920",
+      "title": "Commercial Vehicle Parked in Residential Driveway"
+    },
+    {
+      "description": "Learn how older adults can protect themselves from financial fraud and scams.",
+      "id": "KA-02660",
+      "title": "Consumer Tips for Seniors"
+    },
+    {
+      "description": "Report a problem with cosmetics or makeup.",
+      "id": "KA-01413",
+      "title": "Cosmetics Complaint"
+    },
+    {
+      "description": "Call 911 to report stores or vendors that are selling counterfeit items.",
+      "id": "KA-01414",
+      "title": "Counterfeit Item Sale"
+    },
+    {
+      "description": "Report a problem with a credit card company.",
+      "id": "KA-01415",
+      "title": "Credit Card Complaint"
+    },
+    {
+      "description": "Learn about the credit card surcharge law.",
+      "id": "KA-03682",
+      "title": "Credit Card Surcharge"
+    },
+    {
+      "description": "Get a free credit report from each of the three credit bureaus.",
+      "id": "KA-02667",
+      "title": "Credit Report"
+    },
+    {
+      "description": "Report the purchase or delivery of damaged or defective goods.",
+      "id": "KA-02142",
+      "title": "Damaged or Defective Goods"
+    },
+    {
+      "description": "Report a problem with a dating service.",
+      "id": "KA-01700",
+      "title": "Dating Service Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that sells, rents, or repairs any product used to correct a disability.",
+      "id": "KA-02190",
+      "title": "Dealer in Products for Disabilities Complaint"
+    },
+    {
+      "description": "Make a complaint about a debt collection business.",
+      "id": "KA-02189",
+      "title": "Debt Collection Agency Complaint"
+    },
+    {
+      "description": "Get help managing debt and dealing with debt collection agencies.",
+      "id": "KA-02675",
+      "title": "Debt Management"
+    },
+    {
+      "description": "Make a complaint about a food delivery app.",
+      "id": "KA-03470",
+      "title": "Delivery App Complaint"
+    },
+    {
+      "description": "Report professional misconduct by a dentist.",
+      "id": "KA-03292",
+      "title": "Dentist Complaint"
+    },
+    {
+      "description": "Request a Consumer and Worker Protection speaker or participation in an event.",
+      "id": "KA-01179",
+      "title": "Department of Consumer and Worker Protection Public Outreach"
+    },
+    {
+      "description": "Report a problem with a New York State Department of State licensed professional or firm.",
+      "id": "KA-01734",
+      "title": "Department of State (DOS) Licensed Professional or Business Complaint"
+    },
+    {
+      "description": "Make a complaint about a doctor.",
+      "id": "KA-01418",
+      "title": "Doctor Complaint"
+    },
+    {
+      "description": "Learn about the rules for bringing a non-service dog into a restaurant.",
+      "id": "KA-02689",
+      "title": "Dogs in Restaurants"
+    },
+    {
+      "description": "Make a complaint about an employment agency that places domestic workers.",
+      "id": "KA-02188",
+      "title": "Domestic Worker Employment Agency Complaint"
+    },
+    {
+      "description": "Learn how to donate goods.",
+      "id": "KA-02424",
+      "title": "Donate Goods"
+    },
+    {
+      "description": "Make a complaint about a door-to-door salesperson.",
+      "id": "KA-02187",
+      "title": "Door-to-Door Sales Complaint"
+    },
+    {
+      "description": "Get free, confidential help with drug or alcohol addiction, such as crisis services and treatment referrals. Make a drug/alcohol rehab facility complaint.",
+      "id": "KA-02698",
+      "title": "Drug and Alcohol Services"
+    },
+    {
+      "description": "Make a complaint about a dry cleaner.",
+      "id": "KA-02186",
+      "title": "Dry Cleaner Complaint"
+    },
+    {
+      "description": "Report a smell directly outside a dry cleaning business or coming into a nearby residential building or business.",
+      "id": "KA-02201",
+      "title": "Dry Cleaning Odor"
+    },
+    {
+      "description": "Learn how to claim the Earned Income Tax Credit.",
+      "id": "KA-03168",
+      "title": "Earned Income Tax Credit (EITC)"
+    },
+    {
+      "description": "Get bulletins, guides, and other information about healthy eating.",
+      "id": "KA-02734",
+      "title": "Eating Healthy"
+    },
+    {
+      "description": "Report a problem with a store that sells e-cigarettes.",
+      "id": "KA-03518",
+      "title": "E-Cigarette Sale Complaint"
+    },
+    {
+      "description": "Report the sale of uncertified e-bikes, scooters, and their storage batteries.",
+      "id": "KA-03599",
+      "title": "Electric Bike, Scooter, or Storage Battery Sale Complaint"
+    },
+    {
+      "description": "Report a problem with an electric company.",
+      "id": "KA-03615",
+      "title": "Electric Company Complaint"
+    },
+    {
+      "description": "Report electric space heaters sold without required safety features or disclosures.",
+      "id": "KA-03515",
+      "title": "Electric Space Heater Sale Complaint"
+    },
+    {
+      "description": "Make a complaint about a licensed plumber or electrician.",
+      "id": "KA-02328",
+      "title": "Electrician or Plumber Complaint"
+    },
+    {
+      "description": "Learn about the rules for businesses that sell electronics and get tips for consumers.",
+      "id": "KA-02708",
+      "title": "Electronics Buying and Selling Guide"
+    },
+    {
+      "description": "Make a complaint about a business that repairs electronic equipment or appliances.",
+      "id": "KA-02185",
+      "title": "Electronics or Appliance Repair Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that sells audio, video, photo, or computer equipment.",
+      "id": "KA-02184",
+      "title": "Electronics Store Complaint"
+    },
+    {
+      "description": "Make a complaint about an employment agency.",
+      "id": "KA-02183",
+      "title": "Employment Agency Complaint"
+    },
+    {
+      "description": "Report a business that refuses an exchange, refund, or return or does not post its policy.",
+      "id": "KA-02203",
+      "title": "Exchange, Refund, or Return Complaint"
+    },
+    {
+      "description": "Report misleading or deceptive advertising.",
+      "id": "KA-02204",
+      "title": "False Advertising"
+    },
+    {
+      "description": "Get a guide to recognizing misleading or deceptive advertising practices.",
+      "id": "KA-02720",
+      "title": "False Advertising Guide"
+    },
+    {
+      "description": "Learn about federal student loan forgiveness, including important deadlines.",
+      "id": "KA-03505",
+      "title": "Federal Student Loan Forgiveness"
+    },
+    {
+      "description": "Make a complaint about a licensed fire suppression contractor.",
+      "id": "KA-01472",
+      "title": "Fire Suppression Contractor Complaint"
+    },
+    {
+      "description": "Learn about the City's foam ban and report an establishment using or selling single-use foam products.",
+      "id": "KA-01373",
+      "title": "Foam Ban"
+    },
+    {
+      "description": "Get a health inspection report for a mobile food vendor.",
+      "id": "KA-01302",
+      "title": "Food Cart Inspection Report"
+    },
+    {
+      "description": "Learn about recalled food or medicine.",
+      "id": "KA-01544",
+      "title": "Food or Medicine Recall"
+    },
+    {
+      "description": "Report illness caused by food.",
+      "id": "KA-02051",
+      "title": "Food Poisoning"
+    },
+    {
+      "description": "Report an unsanitary restaurant, deli, grocery, market, cafeteria, bakery, or facility where food is made or stored.",
+      "id": "KA-01111",
+      "title": "Food Safety Complaint"
+    },
+    {
+      "description": "Report a problem with a foster care agency.",
+      "id": "KA-01545",
+      "title": "Foster Care Agency Complaint"
+    },
+    {
+      "description": "Make a complaint about a funeral director.",
+      "id": "KA-02746",
+      "title": "Funeral Director Complaint"
+    },
+    {
+      "description": "Report a problem with a funeral home.",
+      "id": "KA-02180",
+      "title": "Funeral Home Complaint"
+    },
+    {
+      "description": "Learn about how to plan a funeral.",
+      "id": "KA-02748",
+      "title": "Funeral Planning Guide"
+    },
+    {
+      "description": "Make a complaint about a furniture or mattress store.",
+      "id": "KA-02179",
+      "title": "Furniture Store Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that hosts bingo, raffles, and other games of chance.",
+      "id": "KA-02195",
+      "title": "Games of Chance Complaint"
+    },
+    {
+      "description": "Make a complaint about a business with three or more computers for playing games.",
+      "id": "KA-02178",
+      "title": "Gaming Cafe Complaint"
+    },
+    {
+      "description": "Report a problem with a gas company.",
+      "id": "KA-03614",
+      "title": "Gas Company Complaint"
+    },
+    {
+      "description": "Make a complaint about a gas station.",
+      "id": "KA-02176",
+      "title": "Gas Station Complaint"
+    },
+    {
+      "description": "Report a retail service establishment that charges men and women different prices for the same service.",
+      "id": "KA-02207",
+      "title": "Gender Pricing Complaint"
+    },
+    {
+      "description": "Report a business that fails to deliver goods or services.",
+      "id": "KA-02205",
+      "title": "Goods or Services Delivery Complaint"
+    },
+    {
+      "description": "Report a problem with a gym or health spa membership.",
+      "id": "KA-01558",
+      "title": "Gym or Health Spa Membership Complaint"
+    },
+    {
+      "description": "Report a problem with a heating company.",
+      "id": "KA-03616",
+      "title": "Heating Company Complaint"
+    },
+    {
+      "description": "Make a complaint about a school of higher education.",
+      "id": "KA-02175",
+      "title": "Higher Education Complaint"
+    },
+    {
+      "description": "Get consumer tips for smart holiday shopping.",
+      "id": "KA-02781",
+      "title": "Holiday Shopping Tips"
+    },
+    {
+      "description": "Report a problem with home care services.",
+      "id": "KA-02251",
+      "title": "Home Care Complaint"
+    },
+    {
+      "description": "Report a home heating oil business that imposes illegal credit terms, issues an improper contract or receipt, or shortchanges the amount of oil dispensed.",
+      "id": "KA-02174",
+      "title": "Home Heating Oil Company Complaint"
+    },
+    {
+      "description": "Make a complaint about a home improvement contractor working on residential property.",
+      "id": "KA-02173",
+      "title": "Home Improvement Contractor Complaint"
+    },
+    {
+      "description": "Find out if a contractor is licensed by the Department of Consumer Affairs.",
+      "id": "KA-02783",
+      "title": "Home Improvement Contractor License Check"
+    },
+    {
+      "description": "Get tips for working with home improvement contractors.",
+      "id": "KA-02784",
+      "title": "Home Improvement Tips"
+    },
+    {
+      "description": "Make a complaint about a horse drawn carriage driver or business.",
+      "id": "KA-02172",
+      "title": "Horse Drawn Cab Business Complaint"
+    },
+    {
+      "description": "Report a problem with a hospital or clinic in New York State.",
+      "id": "KA-01503",
+      "title": "Hospital or Clinic Complaint"
+    },
+    {
+      "description": "Report a contract or billing issue or undisclosed service disruption at a hotel.",
+      "id": "KA-02171",
+      "title": "Hotel Complaint"
+    },
+    {
+      "description": "Report a location that is being used as a hotel, for vacation rentals, or for rentals of fewer than 30 days.",
+      "id": "KA-02317",
+      "title": "Housing Used for Short-Term Rental (Vacation Rentals or Illegal Home-Sharing)"
+    },
+    {
+      "description": "Report identify theft or get tips for consumers and businesses about preventing it.",
+      "id": "KA-02533",
+      "title": "Identity Theft"
+    },
+    {
+      "description": "Report individuals or businesses that target and exploit immigrants through fraudulent schemes or scams.",
+      "id": "KA-01568",
+      "title": "Immigration Fraud"
+    },
+    {
+      "description": "Make a complaint about a business that provides immigration services.",
+      "id": "KA-01923",
+      "title": "Immigration Service Provider Complaint"
+    },
+    {
+      "description": "Get a consumer guide that describes what an immigration service business can and cannot do.",
+      "id": "KA-02814",
+      "title": "Immigration Service Provider Consumer Guide"
+    },
+    {
+      "description": "Make a complaint about a health, car, home, life, or property insurance company.",
+      "id": "KA-02821",
+      "title": "Insurance Complaint"
+    },
+    {
+      "description": "Get consumer information on how to avoid internet scams.",
+      "id": "KA-02825",
+      "title": "Internet Scam Guide"
+    },
+    {
+      "description": "Report a problem with an online business or online service that wasn't delivered.",
+      "id": "KA-01572",
+      "title": "Internet Service or Online Business Complaint"
+    },
+    {
+      "description": "Report a problem with a jeweler.",
+      "id": "KA-01719",
+      "title": "Jeweler Complaint"
+    },
+    {
+      "description": "Learn about consumer protection tips for adults considering a school or training program.",
+      "id": "KA-02835",
+      "title": "Know Before You Enroll Tips"
+    },
+    {
+      "description": "Make a complaint about a self-service laundromat or a business that washes clothes.",
+      "id": "KA-02169",
+      "title": "Laundromat Complaint"
+    },
+    {
+      "description": "Make a complaint about a lawyer, including an unlicensed lawyer.",
+      "id": "KA-01987",
+      "title": "Lawyer Complaint"
+    },
+    {
+      "description": "Report a business that does not provide the terms of a layaway plan.",
+      "id": "KA-02208",
+      "title": "Layaway Complaint"
+    },
+    {
+      "description": "Learn about legal service providers that provide free legal assistance specifically for seniors.",
+      "id": "KA-03171",
+      "title": "Legal Assistance and Inquiries for Older Adults"
+    },
+    {
+      "description": "Make a complaint about a person who repairs, installs, services, or inspects locks and similar devices.",
+      "id": "KA-02168",
+      "title": "Locksmith Complaint"
+    },
+    {
+      "description": "Learn about a program that helps small businesses.",
+      "id": "KA-01321",
+      "title": "Love Your Local Program"
+    },
+    {
+      "description": "Report a problem with medical treatment received from managed care plans.",
+      "id": "KA-01198",
+      "title": "Managed Care Complaint"
+    },
+    {
+      "description": "Report a problem with quality or danger of medical device or machine.",
+      "id": "KA-01580",
+      "title": "Medical Device Complaint"
+    },
+    {
+      "description": "Read about the risks of medical loans or credit cards.",
+      "id": "KA-03740",
+      "title": "Medical Payment Product Complaint"
+    },
+    {
+      "description": "Report a problem with a licensed money transmitter business.",
+      "id": "KA-01200",
+      "title": "Money Transmitter Complaint"
+    },
+    {
+      "description": "Report a problem with a mortgage or loan company.",
+      "id": "KA-01201",
+      "title": "Mortgage or Loan Company Complaint"
+    },
+    {
+      "description": "Report a movie theater not using open captions or other problems.",
+      "id": "KA-03478",
+      "title": "Movie Theater Complaint"
+    },
+    {
+      "description": "Report a problem with a moving company.",
+      "id": "KA-03517",
+      "title": "Moving Company Complaint"
+    },
+    {
+      "description": "Report a smell coming from a nail salon.",
+      "id": "KA-01929",
+      "title": "Nail Salon Odor"
+    },
+    {
+      "description": "Learn about national trends in gas prices.",
+      "id": "KA-01202",
+      "title": "National Gas Price Trends"
+    },
+    {
+      "description": "Make a complaint about a booth that sells newspapers and magazines.",
+      "id": "KA-02166",
+      "title": "Newsstand Complaint"
+    },
+    {
+      "description": "Report noise, including music, coming from a bar, club, or restaurant. Learn how mediation can help quality of life disputes between restaurants, bars,",
+      "id": "KA-01085",
+      "title": "Noise from Bar, Club, or Restaurant"
+    },
+    {
+      "description": "Learn about the difference between a Notary Public and a Notario Publico.",
+      "id": "KA-02887",
+      "title": "Notary Public Tips"
+    },
+    {
+      "description": "Get information about any professional or business license from the New York State Education Department.",
+      "id": "KA-03640",
+      "title": "NYSED Licensed Professional or Business"
+    },
+    {
+      "description": "Report a problem with a professional or business licensed by New York State Education Department (NYSED) Office of Professions.",
+      "id": "KA-03625",
+      "title": "NYSED Licensed Professional or Business Complaint"
+    },
+    {
+      "description": "Report a problem with a licensed oil burning equipment installer.",
+      "id": "KA-01737",
+      "title": "Oil Burning Equipment Installer Complaint"
+    },
+    {
+      "description": "Report a problem with an online or mail-order business.",
+      "id": "KA-02167",
+      "title": "Online or Mail Order Complaint"
+    },
+    {
+      "description": "Report a problem with an outdoor dining structure or a restaurant or bar offering outdoor dining without authorization.",
+      "id": "KA-03321",
+      "title": "Outdoor Dining Complaint"
+    },
+    {
+      "description": "Learn about the permanent outdoor dining program that allows restaurants to add outdoor seating to sidewalks and streets.",
+      "id": "KA-03604",
+      "title": "Outdoor Dining Information and Application"
+    },
+    {
+      "description": "Report a business charging more than the posted or advertised price.",
+      "id": "KA-02136",
+      "title": "Overcharge"
+    },
+    {
+      "description": "Make a complaint about a business that sells pawned goods.",
+      "id": "KA-02165",
+      "title": "Pawnbroker Complaint"
+    },
+    {
+      "description": "Make a complaint about a business or driver operating pedicabs.",
+      "id": "KA-02164",
+      "title": "Pedicab Business or Driver Complaint"
+    },
+    {
+      "description": "Report the sale of pets.",
+      "id": "KA-02279",
+      "title": "Pet Sale Complaint"
+    },
+    {
+      "description": "Give feedback about a pharmacy you visited to get naloxone or general comments about access to naloxone.",
+      "id": "KA-02922",
+      "title": "Pharmacy Without Naloxone"
+    },
+    {
+      "description": "Report a problem with a pre-paid phone card.",
+      "id": "KA-01738",
+      "title": "Phone Card Complaint"
+    },
+    {
+      "description": "Report a problem with phone service, billing, or provider.",
+      "id": "KA-02923",
+      "title": "Phone Complaint"
+    },
+    {
+      "description": "Learn about the ban on plastic carryout bags and fee for paper bags.",
+      "id": "KA-02484",
+      "title": "Plastic Bag Ban and Paper Bag Fee"
+    },
+    {
+      "description": "Learn about or report a violation of the Plastic Bag Recycling Law.",
+      "id": "KA-02080",
+      "title": "Plastic Bag Recycling"
+    },
+    {
+      "description": "Learn about rules for plastic straws, splash sticks, or stirrers at food establishments. Report a food establishment violating the rules.",
+      "id": "KA-03462",
+      "title": "Plastic Straw Rules"
+    },
+    {
+      "description": "Make a complaint about a business with pool, billiards, or pocket billiards.",
+      "id": "KA-02162",
+      "title": "Pool or Billiard Room Complaint"
+    },
+    {
+      "description": "Make a complaint about pool or sauna maintenance, water quality, safety equipment, or unpermitted pool use.",
+      "id": "KA-02282",
+      "title": "Pool or Sauna Complaint"
+    },
+    {
+      "description": "Get information or make a complaint about United States Postal Service (USPS) products and services.",
+      "id": "KA-01103",
+      "title": "Postal Service"
+    },
+    {
+      "description": "Report a power outage or blackout to a utility company. File a ConEd claim for food or medicine spoiled during a power outage.",
+      "id": "KA-02283",
+      "title": "Power Outage"
+    },
+    {
+      "description": "Report a pregnancy services center that does not disclose required information about the services it offers.",
+      "id": "KA-01924",
+      "title": "Pregnancy Services Center Complaint"
+    },
+    {
+      "description": "Make a complaint to recover money if you were not paid the correct wages.",
+      "id": "KA-01741",
+      "title": "Prevailing Wage Complaint"
+    },
+    {
+      "description": "Report a business that doesn't post prices or posts inaccurate prices.",
+      "id": "KA-02209",
+      "title": "Price Not Posted or Inaccurate"
+    },
+    {
+      "description": "Report a problem with a commercial waste disposal company.",
+      "id": "KA-02135",
+      "title": "Private Carter Complaint"
+    },
+    {
+      "description": "Make a complaint about a privately-owned parking facility.",
+      "id": "KA-02177",
+      "title": "Private Garage or Parking Lot Complaint"
+    },
+    {
+      "description": "Make a complaint about a person or business that issues summonses or other court papers.",
+      "id": "KA-02161",
+      "title": "Process Server Complaint"
+    },
+    {
+      "description": "Learn about public auctions from the City and Police Department.",
+      "id": "KA-02942",
+      "title": "Public Auction"
+    },
+    {
+      "description": "Make a complaint about a business or person selling merchandise by public auction.",
+      "id": "KA-02160",
+      "title": "Public Auction Complaint"
+    },
+    {
+      "description": "Report a ticket seller that does not provide seating information for an event.",
+      "id": "KA-02210",
+      "title": "Public Event Seating Complaint"
+    },
+    {
+      "description": "Report rats, mice, and conditions that might attract them.",
+      "id": "KA-01107",
+      "title": "Rat or Mouse Complaint"
+    },
+    {
+      "description": "Report a business that gives an incorrect or illegal receipt.",
+      "id": "KA-02211",
+      "title": "Receipt Complaint"
+    },
+    {
+      "description": "Learn the rules that businesses are required to follow for refunds, exchanges, and returns.",
+      "id": "KA-02953",
+      "title": "Refund Policy Rules"
+    },
+    {
+      "description": "Report a problem with a residential rental agency.",
+      "id": "KA-01926",
+      "title": "Residential Rental Agency Complaint"
+    },
+    {
+      "description": "Report a missing, incorrect, or improperly displayed food establishment allergy poster.",
+      "id": "KA-01942",
+      "title": "Restaurant Allergy Poster Complaint"
+    },
+    {
+      "description": "Learn about letter grading for restaurants, food trucks and food carts. Report a missing, fake, or incorrect letter grade.",
+      "id": "KA-01057",
+      "title": "Restaurant and Mobile Food Letter Grading"
+    },
+    {
+      "description": "Report a problem with a restaurant.",
+      "id": "KA-03516",
+      "title": "Restaurant Complaint"
+    },
+    {
+      "description": "Report a smell coming from a restaurant or street food vendor.",
+      "id": "KA-01930",
+      "title": "Restaurant Odor"
+    },
+    {
+      "description": "Make a complaint about a licensed rigger.",
+      "id": "KA-02958",
+      "title": "Rigger Complaint"
+    },
+    {
+      "description": "Report a store selling box cutters, etching acid, laser pointers, spray paint, tobacco products or electronic cigarettes to minors.",
+      "id": "KA-01989",
+      "title": "Sale to Minor Complaint"
+    },
+    {
+      "description": "Get information for consumers and businesses about sales tax.",
+      "id": "KA-01675",
+      "title": "Sales Tax"
+    },
+    {
+      "description": "Report a merchant charging the wrong amount of sales tax.",
+      "id": "KA-01478",
+      "title": "Sales Tax Complaint"
+    },
+    {
+      "description": "Make a complaint about a satellite television provider.",
+      "id": "KA-01479",
+      "title": "Satellite Provider Complaint"
+    },
+    {
+      "description": "Make a complaint about a scale used by a business.",
+      "id": "KA-01925",
+      "title": "Scale Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that trades, sells, or repairs weighing or measuring devices.",
+      "id": "KA-02158",
+      "title": "Scale Dealer or Repairer Complaint"
+    },
+    {
+      "description": "Get tips for smart back-to-school shopping.",
+      "id": "KA-02986",
+      "title": "School Shopping Tips"
+    },
+    {
+      "description": "Make a complaint about a business that processes, buys, or ships scrap metal.",
+      "id": "KA-02157",
+      "title": "Scrap Metal Processor Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that allows consumers to store goods.",
+      "id": "KA-03746",
+      "title": "Self-Storage Facility Complaint"
+    },
+    {
+      "description": "Learn about the campaign to support small businesses throughout New York City.",
+      "id": "KA-03391",
+      "title": "Shop Your City"
+    },
+    {
+      "description": "Local Law 18 requires Short-Term Rental hosts to register with the City and Airbnb, VRBO, and other booking services to verify valid registration.",
+      "id": "KA-03559",
+      "title": "Short-Term Rental Registration"
+    },
+    {
+      "description": "Learn about an education and outreach campaign for the law requiring certain businesses to close their doors when running air conditioning systems.",
+      "id": "KA-01362",
+      "title": "Shut the Front Door"
+    },
+    {
+      "description": "Make a complaint about a licensed sign hanger.",
+      "id": "KA-03005",
+      "title": "Sign Hanger Complaint"
+    },
+    {
+      "description": "Report a missing sign saying a single-occupancy bathroom is for people of any gender.",
+      "id": "KA-01891",
+      "title": "Single Occupancy Bathroom Complaint"
+    },
+    {
+      "description": "Report a problem with a licensed construction site safety manager.",
+      "id": "KA-01754",
+      "title": "Site Safety Manager Complaint"
+    },
+    {
+      "description": "Learn about the restrictions on providing utensils, condiments, napkins, and extra containers for take-out or delivery.",
+      "id": "KA-03588",
+      "title": "Skip the Stuff"
+    },
+    {
+      "description": "Learn about smoking rules in multiple dwellings. Request a waiver to the Smoke Free Air Act.",
+      "id": "KA-03007",
+      "title": "Smoke Free Air Act"
+    },
+    {
+      "description": "Report violations of the Smoke Free Air Act.",
+      "id": "KA-03662",
+      "title": "Smoke Free Air Act Complaint"
+    },
+    {
+      "description": "Report illegal tobacco or marijuana smoking or vaping.",
+      "id": "KA-02295",
+      "title": "Smoking or Vaping Complaint"
+    },
+    {
+      "description": "Report a chain restaurant that does not post warnings about sodium content.",
+      "id": "KA-02297",
+      "title": "Sodium Warning Complaint"
+    },
+    {
+      "description": "Learn about the rules for chain food service establishments posting warnings about sodium content.",
+      "id": "KA-03010",
+      "title": "Sodium Warning Rules"
+    },
+    {
+      "description": "Get help with reducing unwanted mail.",
+      "id": "KA-01369",
+      "title": "Stop Unwanted Mail"
+    },
+    {
+      "description": "Make a complaint about a business that stores goods on behalf of consumers for a fee.",
+      "id": "KA-02154",
+      "title": "Storage Warehouse Complaint"
+    },
+    {
+      "description": "Report a store that leaves its doors or windows open when cooling systems are on.",
+      "id": "KA-01893",
+      "title": "Store Air Conditioning Complaint"
+    },
+    {
+      "description": "Learn about the required sign for air conditioning complaints that chain stores must post.",
+      "id": "KA-03268",
+      "title": "Store Air Conditioning Law"
+    },
+    {
+      "description": "Report a store that uses deceptive practices or commits fraud or other consumer protection violations.",
+      "id": "KA-02153",
+      "title": "Store Complaint"
+    },
+    {
+      "description": "Make a complaint about a vendor operating on City streets, sidewalks, or bridges.",
+      "id": "KA-02152",
+      "title": "Street Vendor Complaint"
+    },
+    {
+      "description": "Report a student loan debt scam.",
+      "id": "KA-03624",
+      "title": "Student Loan Scams"
+    },
+    {
+      "description": "Learn about saving money at the supermarket.",
+      "id": "KA-03036",
+      "title": "Supermarket Savings Guide"
+    },
+    {
+      "description": "Report a problem with a sweepstakes.",
+      "id": "KA-01762",
+      "title": "Sweepstakes Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that provides tanning machines for use.",
+      "id": "KA-02302",
+      "title": "Tanning Establishment Complaint"
+    },
+    {
+      "description": "Report a tattoo parlor or artist is unsanitary or unlicensed.",
+      "id": "KA-01944",
+      "title": "Tattoo Parlor Complaint"
+    },
+    {
+      "description": "Learn about free tax filing options for eligible New Yorkers.",
+      "id": "KA-02303",
+      "title": "Tax Preparation"
+    },
+    {
+      "description": "Get consumer information and know your rights when hiring a tax preparer.",
+      "id": "KA-03280",
+      "title": "Tax Preparation Business Tips"
+    },
+    {
+      "description": "Make a complaint about someone offering tax preparation services.",
+      "id": "KA-02151",
+      "title": "Tax Preparation Services Complaint"
+    },
+    {
+      "description": "Report a problem with a taxi driver or vehicle, including rudeness, unsafe driving, refusing a request, maintenance issues, or route complaints.",
+      "id": "KA-01241",
+      "title": "Taxi Complaint"
+    },
+    {
+      "description": "Give positive feedback about a yellow or green taxi driver.",
+      "id": "KA-01055",
+      "title": "Taxi Driver Compliment"
+    },
+    {
+      "description": "Report an item lost or found in a yellow or green taxi.",
+      "id": "KA-01045",
+      "title": "Taxi Lost and Found"
+    },
+    {
+      "description": "Request insurance information if you had property damaged or were in an accident involving a taxi or for-hire vehicle.",
+      "id": "KA-01056",
+      "title": "Taxi or Car Service Insurance Information"
+    },
+    {
+      "description": "Register to stop getting calls from telemarketers.",
+      "id": "KA-03048",
+      "title": "Telemarketing Do Not Call Registration"
+    },
+    {
+      "description": "Report telemarketing fraud.",
+      "id": "KA-01641",
+      "title": "Telemarketing Fraud"
+    },
+    {
+      "description": "Report telemarketers soliciting through text messages.",
+      "id": "KA-01378",
+      "title": "Telemarketing Texting Complaint"
+    },
+    {
+      "description": "Learn about consumer rights.",
+      "id": "KA-03051",
+      "title": "Ten Things Every Consumer Should Know Pocket Guide"
+    },
+    {
+      "description": "Report a problem with a ticket price or seller.",
+      "id": "KA-01927",
+      "title": "Ticket Seller Complaint"
+    },
+    {
+      "description": "Report a problem with a store that sells tobacco products, including cigarettes.",
+      "id": "KA-01922",
+      "title": "Tobacco Product Sale Complaint"
+    },
+    {
+      "description": "Make a complaint about a tour bus.",
+      "id": "KA-02150",
+      "title": "Tour Bus Complaint"
+    },
+    {
+      "description": "Make a complaint about a tour guide.",
+      "id": "KA-03533",
+      "title": "Tour Guide Complaint"
+    },
+    {
+      "description": "Make a complaint about a tow truck driver or company.",
+      "id": "KA-02149",
+      "title": "Tow Truck Complaint"
+    },
+    {
+      "description": "Learn about private towing services.",
+      "id": "KA-03059",
+      "title": "Towing Guide"
+    },
+    {
+      "description": "Report a business that sells toy or fake guns that are not brightly colored.",
+      "id": "KA-02214",
+      "title": "Toy Gun Sale"
+    },
+    {
+      "description": "Make a complaint about a travel agency.",
+      "id": "KA-02148",
+      "title": "Travel Agency Complaint"
+    },
+    {
+      "description": "Report a business operating without a license.",
+      "id": "KA-02206",
+      "title": "Unlicensed Business"
+    },
+    {
+      "description": "Report work done by an unlicensed plumber, electrician, or contractor.",
+      "id": "KA-02309",
+      "title": "Unlicensed Contractor"
+    },
+    {
+      "description": "Learn about or report the sale of pesticides or other unsafe products.",
+      "id": "KA-03068",
+      "title": "Unsafe Product"
+    },
+    {
+      "description": "Get consumer information about shopping for secondhand vehicles.",
+      "id": "KA-03070",
+      "title": "Used Car Guide"
+    },
+    {
+      "description": "Make a complaint about a business that buys or sells used items, including catalytic converters.",
+      "id": "KA-02147",
+      "title": "Used Goods Dealer Complaint"
+    },
+    {
+      "description": "Make a complaint about a business that buys or sells secondhand firearms.",
+      "id": "KA-02146",
+      "title": "Used Gun Dealer Complaint"
+    },
+    {
+      "description": "Learn about surplus auto and seized vehicle auctions.",
+      "id": "KA-03074",
+      "title": "Vehicle Auction"
+    },
+    {
+      "description": "Check that someone claiming to be a water meter inspector works for the Department of Environmental Protection (DEP).",
+      "id": "KA-01774",
+      "title": "Water Meter Inspector Check"
+    },
+    {
+      "description": "Report a problem with a licensed welder.",
+      "id": "KA-01777",
+      "title": "Welder Complaint"
+    },
+    {
+      "description": "Report a problem with an X-ray machine.",
+      "id": "KA-01946",
+      "title": "X-Ray Machine Complaint"
+    }
+  ]
+}

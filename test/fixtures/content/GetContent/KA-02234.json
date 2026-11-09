@@ -1,0 +1,22 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02234",
+      "Title": "Breaking Park Rules",
+      "Description": "Report a person or group breaking park rules.",
+      "Section": [
+        {
+          "Name": "Breaking Park Rules",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01990\">Tree Destruction</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01051\">Unleashed Dog</a></li></ul></div><p>You can report someone breaking park or greenway rules, including:</p><ul><li>Barbecuing or grilling where it is not allowed</li><li>Biking or rollerblading off park paths or bikeways</li><li>Climbing fences, gates, or trees</li><li>Filming without a permit</li><li>Fishing where it is not allowed</li><li>Posting signs or ads</li><li>Preventing the use of a park facility</li><li>Selling items without a permit</li><li>Smoking in a public park, beach, or golf course</li><li>Unsafe behavior in a playground</li><li>Using a newly seeded lawn</li><li>Using a park or dog run when closed (including after hours noise from dogs in a dog run)</li></ul><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nycgovparks.org/rules\">Learn about park rules and regulations.</a></p><p><strong>After Hours in a City Park</strong></p><p>Park hours are from 6 AM to&nbsp;1&nbsp;AM&nbsp;unless other operating hours are posted outside of the park.</p><p>Parks Enforcement Patrol Officers, Urban Park Rangers, or the New York City Police Department can issue Civil Court fines or Environmental Control Board violations to anyone inside a park after hours.</p>",
+          "ContentAction": [
+            {
+              "Name": "Park Rules Violation",
+              "Agency": "Department of Parks and Recreation",
+              "Problem": "Violation of Park Rules"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

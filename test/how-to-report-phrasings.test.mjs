@@ -8,6 +8,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { howToReport } from "../dist/how-to-report.js";
 import { SAFETY_LINE, GENERIC_911 } from "../dist/emergency.js";
+import { NO_MATCH_LINE } from "../dist/how-to-report.js";
 import { fixtureContent } from "./content-fixture.mjs";
 
 // [description, 911 lead, top article ("*": any, the point of the row is the lead), other problems' articles]
@@ -44,7 +45,7 @@ export const PHRASINGS = [
   ["a car alarm going off for hours", null, "KA-01089", []],
   ["fire escape is blocked by the landlord", null, "KA-02233", []],
   ["the burning smell from the restaurant exhaust", null, "KA-01930", []], // Air (311-48) recorded 2026-11-08: Restaurant Odor
-  ["a bike lane is blocked by a delivery truck", null, "KA-01260", []],
+  ["a bike lane is blocked by a delivery truck", null, "KA-01986", []], // Since beta.9 a vehicle in a bike lane is Illegal Parking (KA-01986 lists "Blocking a: ... Bike lane"; KA-01260 says "Illegal Parking to report a vehicle blocking a bike lane").
   ["sidewalk is cracked and someone could trip", null, "KA-02235", []],
   ["a person sleeping on the subway", null, "KA-01037", []],
   ["I need a copy of my birth certificate", null, "KA-01012", []],
@@ -68,9 +69,9 @@ for (const [description, lead, top, others] of PHRASINGS) {
     assert.equal(out.safety_line, SAFETY_LINE, "every answer carries the standing safety line");
     if (lead === null) {
       assert.equal(out.emergency, null, `no 911 lead expected, got: ${out.first_line}`);
-      // A no-match answer still leads with the 911 line (round 2); a match does not.
+      // A no-match answer still names 911 (round 2), in its own words since beta.10; a match does not.
       if (out.best_match || out.alternatives.length) assert.doesNotMatch(out.first_line, /call 911/i);
-      else assert.equal(out.first_line, GENERIC_911);
+      else assert.equal(out.first_line, NO_MATCH_LINE);
     } else if (lead === "generic") {
       assert.equal(out.first_line, GENERIC_911);
       assert.equal(out.emergency.ka_number, null);

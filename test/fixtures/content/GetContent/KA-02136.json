@@ -1,0 +1,403 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02136",
+      "Title": "Overcharge",
+      "Description": "Report a business charging more than the posted or advertised price.",
+      "Section": [
+        {
+          "Name": "Overcharge Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01927\">Ticket Seller Complaint</a>&nbsp;to report a problem with an advertised ticket price</li></ul></div><p>You can file an overcharge complaint about a business&nbsp;in New York City.</p><p>An overcharge is when a business&nbsp;charges you more than the posted or advertised price.</p><p>The City does not set prices. You must beware and shop around for the best prices.</p><p><strong>What Happens Next</strong></p><p>If you don&#39;t include your address or email with your service request, you won&#39;t receive follow up. The Department of Consumer and Worker Protection (DCWP) will consider your complaint a tip.</p><p>If you include&nbsp;your address, DCWP will mail you a complaint form. You must complete and return it to DCWP. If you provide your email address, you&#39;ll&nbsp;get the form by email instead. Check your spam folder if you don&#39;t see it in your inbox.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Store Overcharges",
+          "Content": "<p>Report overcharges at a:</p>",
+          "ContentAction": [
+            {
+              "Name": "Art Supply Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Art Supply Store"
+            },
+            {
+              "Name": "Bodega, Deli, or Supermarket Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Bodega, Deli, or Convenience Store"
+            },
+            {
+              "Name": "Carpet and Flooring Business Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Carpet and Flooring Business"
+            },
+            {
+              "Name": "Apparel Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Clothing, Shoe, or Accessories Store"
+            },
+            {
+              "Name": "Department Store or Megastore Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Department Store or Megastore"
+            },
+            {
+              "Name": "Drug Store or Pharmacy Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Drug Store or Pharmacy"
+            },
+            {
+              "Name": "Electronics Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Electronics Store"
+            },
+            {
+              "Name": "Furniture Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Furniture Store"
+            },
+            {
+              "Name": "Gas Station Convenience Store Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Gas Station Convenience Store"
+            },
+            {
+              "Name": "Gift, Novelty, or Souvenir Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Gift, Novelty, or Souvenir Store"
+            },
+            {
+              "Name": "Hardware Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Hardware Store"
+            },
+            {
+              "Name": "Home Appliance Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Home Appliance Store"
+            },
+            {
+              "Name": "Jewelry Store Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Jewelry Store"
+            },
+            {
+              "Name": "Office Supply or Stationery Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Office Supply or Stationery Store"
+            },
+            {
+              "Name": "Pet Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Pet Store"
+            },
+            {
+              "Name": "Smoking, Cigar, or Vape Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Smoking, Cigar, or Vape Store"
+            },
+            {
+              "Name": "Supermarket or Grocery Store Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Supermarket or Grocery Store"
+            },
+            {
+              "Name": "Other Business Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Other Store (Non-Food)"
+            }
+          ]
+        },
+        {
+          "Name": "Cooling Tower Service Overcharges",
+          "Content": "<p>If you suspect fraud or deceptive practices by businesses who provide inspection, sampling, cleaning, or disinfection services for cooling towers, you may file a complaint with the New York State Office of the Attorney General.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://formsnym.ag.ny.gov/OAGOnlineSubmissionForm/faces/OAGCFCHome\">Use the Consumer Frauds Bureau Online Complaint Form.</a></p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Other Overcharges",
+          "Content": "<p>Report overcharges at a:</p><p>For complaints about businesses not listed here, visit the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01734\">Department of State (DOS) Licensed Professional or Business Complaint</a>&nbsp;page.</p>",
+          "ContentAction": [
+            {
+              "Name": "Auction House or Auctioneer Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Auction House or Auctioneer"
+            },
+            {
+              "Name": "Barber Shop or Salon Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Barber Shop, Beauty Salon, or Nail Salon"
+            },
+            {
+              "Name": "Booting Company Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Booting Company"
+            },
+            {
+              "Name": "Car Rental Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Car Rental"
+            },
+            {
+              "Name": "Car Wash Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Car Wash"
+            },
+            {
+              "Name": "Catering Establishment Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Catering Establishment"
+            },
+            {
+              "Name": "Disabled Device Dealer Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Dealer in Products for the Disabled"
+            },
+            {
+              "Name": "Door to Door Sales Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Door to Door Sales"
+            },
+            {
+              "Name": "Dry Cleaner Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Dry Cleaner"
+            },
+            {
+              "Name": "Electrician Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Home Improvement Contractor"
+            },
+            {
+              "Name": "Employment Agency Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Employment Agency"
+            },
+            {
+              "Name": "Funeral Home Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Funeral Home"
+            },
+            {
+              "Name": "Games of Chance Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Games of Chance"
+            },
+            {
+              "Name": "Garage or Parking Lot Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Garage or Parking Lot"
+            },
+            {
+              "Name": "General Vendor Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "General Vendor"
+            },
+            {
+              "Name": "Home Heating Oil Company Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Home Heating Oil Company"
+            },
+            {
+              "Name": "Home Improvement Contractor Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Home Improvement Contractor"
+            },
+            {
+              "Name": "Horse-Drawn Cab Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Horse-Drawn Cab"
+            },
+            {
+              "Name": "Laundromat Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Laundromat"
+            },
+            {
+              "Name": "Mobile Food Vendor Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Mobile Food Vendor"
+            },
+            {
+              "Name": "Movie Theater Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Movie Theater"
+            },
+            {
+              "Name": "Moving Company Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Moving Company"
+            },
+            {
+              "Name": "Newsstand Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Newsstand"
+            },
+            {
+              "Name": "Online or Mail Order Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Online or Mail Order"
+            },
+            {
+              "Name": "Pawnbroker Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Pawnbroker"
+            },
+            {
+              "Name": "Pedicab Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Pedicab"
+            },
+            {
+              "Name": "Pest Control Services Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Pest Control Services"
+            },
+            {
+              "Name": "Plumber Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Home Improvement Contractor"
+            },
+            {
+              "Name": "Pool or Billiard Room Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Pool or Billiard Room"
+            },
+            {
+              "Name": "Printing Services Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Printing Services"
+            },
+            {
+              "Name": "Publishing Company Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Publishing Company"
+            },
+            {
+              "Name": "Residential Rental Agency Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Residential Rental Agency"
+            },
+            {
+              "Name": "Scrap Metal Processor Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Scrap Metal Processor"
+            },
+            {
+              "Name": "Shipping Company Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Shipping Company"
+            },
+            {
+              "Name": "Tax Preparation Services Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Tax Preparation Services"
+            },
+            {
+              "Name": "Food Delivery App Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Third-Party Food Delivery Service"
+            },
+            {
+              "Name": "Ticket Seller Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Ticket Seller"
+            },
+            {
+              "Name": "Tow Truck Company Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Tow Truck Company"
+            },
+            {
+              "Name": "Travel Agency Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Travel Agency"
+            },
+            {
+              "Name": "Used Car Dealer Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Used Car Dealer"
+            },
+            {
+              "Name": "Used Goods Dealer Overcharge Complaint",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Used Goods Dealer"
+            },
+            {
+              "Name": "Used Gun Dealer Overcharge",
+              "Agency": "Department of Consumer and Worker Protection",
+              "Problem": "Consumer Complaint",
+              "ProblemDetail": "Used Gun Dealer"
+            }
+          ]
+        },
+        {
+          "Name": "Rude Employee",
+          "Content": "<p>The Department of Consumer and Worker Protection (DCWP)&nbsp;does not accept reports of rude employees. Report&nbsp;this type of complaint to the business.</p><p>For reports of discrimination, go to the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01783\">Discrimination</a> page.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Business Outside of NYC",
+          "Content": "<p>The New York City Department of Consumer and Worker Protection (DCWP)&nbsp;can help you with complaints about businesses in New York City. For complaints about businesses elsewhere, contact the local consumer affairs office or the State Attorney General.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.usa.gov/complaints\">Learn how to file a complaint about a business outside of NYC.</a></p><p><strong>By Phone</strong></p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

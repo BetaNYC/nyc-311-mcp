@@ -8,6 +8,13 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ---
 
+> **Every response from every tool ends with this text:** "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911." It is
+> the last line of the text, like the end of a doctor's office phone message, the first field
+> (`safety_line`) of the structured answer, on success and on error, and part of the server
+> instructions sent when an app connects. `how_to_report` and
+> `draft_311_report` also lead with a stronger 911 line at the top when a description suggests
+> danger. Danger spotting is a best effort; this server does not detect every emergency.
+
 ## What it does
 
 Exposes 21 tools over MCP. Seven use the NYC 311 Public API (they need an API key):
@@ -18,7 +25,7 @@ Exposes 21 tools over MCP. Seven use the NYC 311 Public API (they need an API ke
 | `get_status` | Current city status for an emergency or weather condition (Code Blue, fire hydrants, OEM alerts, snow) |
 | `get_service_request` | Look up one 311 service request by its 311 number, with BetaNYC's plain-language reading of its status (the City publishes no definitions) and the agency's resolution text; for other requests at its address, use `address_history` |
 | `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
-| `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer and every error starts with "If anyone is in danger right now, call 911."; a description that suggests danger, and every no-match answer, leads with 911, in the City's words only when the City article is that danger. **Danger detection is keyword-based; it will miss some emergencies**, so every answer also tells the calling assistant to send the person to 911 whenever anything suggests danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
+| `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer and every error starts with "If this is an emergency, or if you think this is an emergency, call 911."; a description that suggests danger, and every no-match answer, leads with 911, in the City's words only when the City article is that danger. **Danger detection is keyword-based; it will miss some emergencies**, so every answer also tells the calling assistant to send the person to 911 whenever anything suggests danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
 | `list_311_categories` | A summary of 311's own topic categories, or the articles in one (20 at a time), to browse when a match looks wrong |
 | `draft_311_report` | A short ready-to-paste 311 report for the person to submit themselves (problem, where, when, what they saw), the 311 Online article link to report it on, questions for anything missing (marked `[add: …]`, never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the article says about contact details and photos, and what happens next. Uses `how_to_report`'s matching and danger check; never drafts when danger is flagged (call 911); safety line first on every answer and error; one draft per problem. **Files nothing, sends nothing, fills no form.** The City does not publish each form's fields, so the form may ask for more. Details: [docs/draft-a-report.md](docs/draft-a-report.md) |
 
@@ -337,6 +344,8 @@ with real people on real problems. The server will not file requests on anyone's
 The four lookup tools and the three reporting-help tools (`how_to_report`, `list_311_categories`, `draft_311_report`, through the API's content operations GetCategory, GetContentList and GetContent) use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The eleven district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data. `draft_311_report` also reads NYC Open Data's [311 Service Level Agreements](https://data.cityofnewyork.us/d/cs9t-e3x8) (`cs9t-e3x8`, no key; last updated by the City 2024-03-05) for Problem Detail options, kept 30 days.
 
 This is an independent, community-built project from BetaNYC. It is not affiliated with, endorsed by, or an official product of the City of New York.
+
+Every answer ends with: "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911."
 
 ---
 

@@ -1,0 +1,697 @@
+[
+{
+"src": "r13 report",
+"d": "a taxi just ran over a woman in the crosswalk and she's not getting up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "the subway car I'm on is filling with smoke between stations",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a man collapsed on the train platform and isn't responding",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a water main burst and water is rushing into basements with people inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "my friend slipped on the ice, hit his head and he's unconscious",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "there's black ice on the bridge and cars are spinning out right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "flames are shooting out of the kitchen of the restaurant downstairs",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "I smell gas really strong on the street and someone is lighting a cigarette",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "my grandmother can't breathe and her lips are turning blue",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a guy is smashing car windows down my block as we speak",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a man is beating a woman in the stairwell of my building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "I hear a kid yelling help me from the basement next door",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "my neighbor always drinks too much but tonight he won't wake up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a person is standing on the outside of the bridge railing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "someone is drowning off the beach",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a delivery guy got hit by a truck and he's bleeding from his head",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "the couple next door fight every weekend but tonight he has a knife to her throat",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "our basement floods every storm and right now the water is up to the outlets and sparking",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "the grease fire on my stove is spreading to the cabinets",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a woman fell onto the subway tracks and a train is coming",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13 report",
+"d": "a car almost hit me in the crosswalk because the walk light is too short",
+"ok": [
+"KA-01047"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "people keep walking on the tracks at the end of the subway platform",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "the smoke from the restaurant exhaust fills my bedroom every evening",
+"ok": [
+"KA-02219",
+"KA-01930"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "someone keeps leaving dead rats on my stoop",
+"ok": [
+"KA-03451",
+"KA-02245"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "there's a big crack in the wall of my building that keeps getting wider",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "the fire escape on my building is rusted and wobbly",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "drivers almost hit pedestrians every day at this corner",
+"ok": [
+"KA-02305",
+"KA-03063"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "the manhole cover on my street clanks loudly every time a car drives over it",
+"ok": [
+"KA-01669"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "a stray cat yowls all night like it's being hurt",
+"ok": [
+"KA-02300",
+"KA-01087"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "a construction crane swings over the sidewalk all day and nobody blocks the path",
+"ok": [
+"KA-02053"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "the snow on my block was never plowed",
+"ok": [
+"KA-02296"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "leaf blowers in the park start at 7am",
+"ok": [
+"KA-01101"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "someone left a broken TV on the sidewalk",
+"ok": [
+"KA-02097",
+"KA-02385",
+"KA-01969"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "big pothole on Eastern Parkway in Crown Heights",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13 report",
+"d": "there's a pothole on Ocean Parkway near Avenue J",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "two men are fighting with knives outside my building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a guy is choking a woman in the parking lot",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "my neighbor is beating his kid in the hallway right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a group of teens is attacking a homeless man on the corner",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "someone is stabbing a man on the train",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a man is dragging a woman into a car",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "my neighbors argue every night but nobody gets hurt",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "kids play fight on my stoop every afternoon",
+"ok": [],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the boxing gym next door is loud all day",
+"ok": [
+"KA-01090",
+"KA-01935"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a man is sitting on the edge of the roof of my building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "someone is threatening to jump off the bridge",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a toddler is hanging out of a fourth floor window",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a worker is dangling from the scaffolding",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a teenager climbed over the railing of the overpass",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "window washers are hanging off the building next door all morning",
+"ok": [],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the railing on the bridge walkway is loose",
+"ok": [],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the fire escape ladder on my building is broken",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the flood water is rising and my parents are stuck in the basement",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a car is stuck in the flooded underpass and the driver is inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "water is up to my neighbor's chest in their basement apartment",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "my basement floods every time it rains",
+"ok": [
+"KA-01509",
+"KA-01510",
+"KA-01992",
+"KA-02198"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the street floods at the corner every storm",
+"ok": [
+"KA-02198"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "water from the street drains into my basement during storms",
+"ok": [
+"KA-01992",
+"KA-02198",
+"KA-01510"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a truck is sliding down the icy hill toward the playground",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a car is driving on the sidewalk and almost hitting people right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a bus lost control and crashed into a store",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "a car with no driver is rolling down the hill",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "cars always skid on this hill when it snows",
+"ok": [
+"KA-02296",
+"KA-02305"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "drivers speed down my block every night",
+"ok": [
+"KA-02305",
+"KA-03063",
+"KA-02514"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a pigeon with a broken wing is sitting on my stoop",
+"ok": [
+"KA-01789"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a dog got hit by a car and is limping",
+"ok": [
+"KA-01789"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "there's an injured raccoon in my backyard",
+"ok": [
+"KA-01789",
+"KA-01790"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "my neighbor's cat is sick and they won't take it to a vet",
+"ok": [
+"KA-02224",
+"KA-01789"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a deer was hit on the road and is still alive",
+"ok": [
+"KA-01789"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "this construction noise is killing me",
+"ok": [
+"KA-01091"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "I'm dying to know when my street will be repaved",
+"ok": [
+"KA-01099"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the music from the bar sounds like a bomb went off",
+"ok": [
+"KA-01085"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "my landlord's excuses make me want to scream",
+"ok": [],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the pothole on my block is a death trap",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "this heat is unbearable and I'm dying in my apartment with no AC",
+"ok": [],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the subway was so packed I thought I'd suffocate",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "my neighbor's dog barks like it's being murdered",
+"ok": [
+"KA-01087"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the smell from the garbage is killing us",
+"ok": [
+"KA-02133",
+"KA-01332",
+"KA-01548",
+"KA-02356",
+"KA-01803"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the stairwell lights are out and it's like a horror movie",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "there's a pothole on Pelham Parkway",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a big pothole on Mosholu Parkway by the park",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "pothole on the Belt Parkway near exit 9",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a pothole on the Grand Central Parkway westbound",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "there's a pothole on the Cross Bronx Expressway",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the streetlight is out on Queens Boulevard",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a pothole on Grand Concourse near 161st",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "there's a pothole on the Brooklyn Bridge roadway",
+"ok": [
+"KA-01106",
+"KA-01093",
+"KA-01079"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a sign is down on Atlantic Avenue",
+"ok": [
+"KA-01063"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "traffic light out at Linden Boulevard and Kings Highway",
+"ok": [
+"KA-01404"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "there's a pothole on Kings Highway",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a street light is out on Ocean Parkway",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "the Bronx River Parkway has a huge pothole",
+"ok": [
+"KA-01106"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "pothole on Eastern Parkway service road",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r13",
+"d": "a man is punching his girlfriend on the sidewalk",
+"ok": null,
+"danger": true
+},
+{
+"src": "r13",
+"d": "the Major Deegan Expressway has a pothole in the left lane",
+"ok": [
+"KA-01106"
+],
+"danger": false
+}
+]

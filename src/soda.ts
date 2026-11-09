@@ -88,6 +88,7 @@ export class SodaClient {
   private readonly metaTtl: number;
   private readonly now: () => number;
   private readonly sleep: (ms: number) => Promise<void>;
+  private readonly customSleep: boolean;
   private gap: number;
   private lastStart: number | null = null;
   private queue: Promise<unknown> = Promise.resolve();
@@ -106,6 +107,7 @@ export class SodaClient {
     this.metaTtl = opts.metadataTtlMs ?? 60 * 60 * 1000;
     this.now = opts.now ?? Date.now;
     this.sleep = opts.sleep ?? ((ms) => new Promise((r) => setTimeout(r, ms)));
+    this.customSleep = opts.sleep !== undefined;
     this.gap = this.minGap;
   }
 
@@ -122,6 +124,15 @@ export class SodaClient {
       if (wait > 0) await this.sleep(wait);
     }
     this.lastStart = this.now();
+  }
+
+  /**
+   * Wait between background retries. The real timer is unref'd, so a pause never keeps the
+   * process alive on its own (the server exits when its stdin closes). Tests inject `sleep`.
+   */
+  pause(ms: number): Promise<void> {
+    if (this.customSleep) return this.sleep(ms);
+    return new Promise((r) => setTimeout(r, ms).unref());
   }
 
   /** The client's clock (injectable for tests). */

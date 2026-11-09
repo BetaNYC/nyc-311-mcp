@@ -7,6 +7,438 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.19] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (before merge, 2026-11-09)
+
+- "a dog walker fell into a sinkhole" got a pothole answer and no 911 in `how_to_report` and
+  `draft_311_report`. The holes class required the person before the verb to be a known
+  person word ("walker" was not one); beta.17's test used only the hole-first wording ("a
+  sinkhole opened and a dog walker fell in") and only the danger detector. Now the verb and the
+  hole are enough (fell into, fell in, fell down, fallen into, slipped into, dropped into a
+  sinkhole, manhole, trench, hole or shaft), with objects, vehicles and animals excused. A new
+  test crosses those verbs and holes and calls both tools.
+
+## [1.2.0-beta.18] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: Noel's final closing text (beta round 18)
+
+- Every response from all 21 tools, success or error, now ends with exactly: "For
+  informational purposes only. BetaNYC builds these answers from City data; they may contain
+  errors. Check the City's 311 page before you report. If this is an emergency, or if you think
+  this is an emergency, call 911." It replaces beta.17's 911-only line, so the 911 sentence
+  appears once. The structured `safety_line` field carries the same text, and the server
+  instructions sent at connect include it once. Detected dangers still lead `how_to_report`'s
+  and `draft_311_report`'s `first_line` with their stronger 911 line at the top.
+
+## [1.2.0-beta.17] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: the closing safety sentence (Noel's decision, beta round 17)
+
+- Every response from all 21 tools, success or error, now ends with exactly "If this is an
+  emergency, or if you think this is an emergency, call 911." as its last line, like the end
+  of a doctor's office phone message; it is no longer the first line. The structured answer
+  keeps it as its first field (`safety_line`). An error message carries it once, at the end.
+  When a danger is detected, `how_to_report` and `draft_311_report` still lead `first_line`
+  with their stronger 911 line at the top. This sentence is what the server relies on; danger
+  spotting stays a best effort.
+
+### Fixed (beta retest 16, 2026-11-09)
+
+- The sensitive-article guard covers every article shown, best match, alternatives and other
+  problems alike, and now also family, protective and end-of-life articles (Foster Care
+  Agency, Adult Protective Services, Death Investigation, funeral and cemetery articles,
+  Missing Person, Runaway). "Foster Care Agency Complaint" is no longer offered for trash
+  outside a daycare. A test audits every recorded title and every answer in the measured set.
+- Five missed emergencies, as small additions to existing classes: "co alarm beepin",
+  "gas oder in bsmt" (more misspellings and shorthand), a dog walker who fell into a sinkhole,
+  a crane tipping over, train doors closed on a woman's arm and dragging her.
+
+## [1.2.0-beta.16] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 15, 2026-11-09: four missed emergencies in classes the server had)
+
+- **Danger words are read through typos** (`fuzzyDangerWords`): a word of 4 letters or more one
+  edit from a danger keyword (smell, smoke, fire, bleeding, breathing, unconscious, choking,
+  drowning, overdose, seizure, stabbing, shooting, overboard, ...) is read as it, unless it is a
+  real English word (a list generated from the system dictionary: "cooking" is not "choking",
+  "parking" is not "sparking"); plus common misspellings ("smel", "gass", "fyre", "bleding",
+  "siezure"). "smel gas in hallway real strong" now leads with the gas 911 line.
+- **Each danger class widened** to its nouns and verbs in every tense and voice: a vehicle that
+  hit, struck, ran over, plowed into, drove into or jumped the curb into people or a crowd;
+  someone over, outside or on the outside of a railing or ledge, or about to fall or jump;
+  anyone overboard; anything "is burning" (not a body part); smoke from a home, a hallway or a
+  grate, never quieted by a recurrence word; a carbon monoxide alarm "in the hallway" going
+  off, or carbon monoxide leaking (not a detector chirping for a battery).
+- **Ordinary complaint with a 911 lead:** "stomp like they're trying to break through the
+  ceiling" is noise, not a break-in. Slang ("this place is fire") is not a fire.
+- **Generator test** (`test/danger-generator.test.mjs`): 557 phrasings across 13 danger classes
+  (subjects x verbs x places x tense), each class at least 30, all must lead with 911; and 56
+  ordinary near misses, none may. On beta.15: 112 generated emergencies missed and 2 near
+  misses flagged; now 0 and 0.
+- **Measured** on 971 phrasings (rounds 6 to 16): on beta.15, 4 missed emergencies, 1 ordinary
+  complaint leading with 911 and 1 wrong answer rated strong; now none.
+
+## [1.2.0-beta.15] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 14, 2026-11-09: three missed emergencies, five small wrong answers)
+
+- **Weapons, any kind, anywhere:** a blade or a gun being swung, waved, pointed or shown, and a
+  blunt object (a bat, a pipe, a hammer, a bottle, a chain) swung at or used against people.
+  Selling or displaying weapons is not a danger.
+- **Heights:** a worker dangling, stuck or swinging off a building or scaffold after something
+  broke is a danger; a worker simply working is not. Someone hanging from a pipe, a beam, a
+  rope or a ledge is a danger.
+- **Someone in a hole or a collapse** (new class `fell_in`): fallen into a manhole, a trench, a
+  shaft, a sinkhole; trapped under rubble; crushed or pinned by something falling. A dropped
+  phone or keys is not. Under a danger the hazard's repair complaint is never the answer.
+- **Shorthand and typos** a worried person types are read for danger words ("kid in strt",
+  "baby not breathng", "guy w gun lobby", "cant get up").
+- **Figures of speech:** "drowning in" anything but water, "fire sale", "choking on the dust",
+  "the heat is killing us" are not emergencies.
+- **Small wrong answers:** an animal in the trash → Wild Animal; a kid's (yellow) bus → School
+  Bus Complaint, not the MTA; a place that is not a home (a rec center, a school, a library, a
+  hospital) never gets a residential housing article, and a rec center or public pool problem
+  is Park Maintenance; "a car parked outside" playing music is Noise from Vehicle, not Illegal
+  Parking; construction noise on a scaffold is noise, not a scaffold complaint.
+- **Measured** on 921 phrasings (rounds 6 to 15, with the report's 50 and 60 new: weapons, work
+  dangers, figures of speech, non-residential places and typo fragments): on beta.14, 20 missed
+  emergencies, 6 ordinary complaints leading with 911 and 14 wrong answers rated strong; now
+  none.
+
+## [1.2.0-beta.14] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 13, 2026-11-09: three missed emergencies)
+
+- **Medical symptoms in a person, in plain words** (new danger class `medical_symptoms`):
+  chest pain or pressure ("feels like an elephant is sitting on it", "clutching his chest"),
+  pain going down an arm, can't breathe, talk or lift an arm, slurred or garbled words, a
+  drooping face, a seizure or shaking all over, choking, severe bleeding, lips turning blue,
+  swelling after eating, wheezing with an inhaler that isn't working, overdose signs, a head
+  injury with vomiting or confusion. Never an animal ("my dog is choking"), a figure of speech
+  ("feel like I'm having a heart attack"), stress, or a complaint about dust or fumes.
+- **A child with a hazard, now** (`child_hazard`): a child, toddler, baby or kid in or between
+  traffic, left in a car, in distress in water, on a ledge or windowsill, alone at a platform's
+  edge or near a fire. A habit or a child playing safely is not.
+- **Water in every setting:** pools, bathtubs, beaches, ponds, a ferry or a pier, a current;
+  someone held under water is both a water danger and violence.
+- **Under a detected danger, a follow-up article must fit it** (share the danger's words or be
+  its City article) or is left out: a gas hiss "from the meter" no longer gets Parking Meter
+  Complaint. "A heart attack" is no longer read as an attack.
+- Also: a clogged sewer grate → Catch Basin Complaint; recycling nobody collected → Missed
+  Collection; a squirrel stuck in a chimney → Wild Animal; expired food at a store → Food
+  Safety; graffiti on a mailbox → Graffiti ("block" and "blocked" are different words now);
+  beer cans in a playground → Park Maintenance.
+- **Measured** on 811 phrasings (rounds 6 to 14, with the report's 50, 60 new emergencies and
+  15 near misses): on beta.13, 30 missed emergencies, 3 ordinary complaints leading with 911
+  and 3 wrong answers rated strong; now none.
+
+## [1.2.0-beta.13] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: one sentence on every response (Noel, beta round 13)
+
+- Every response from all 21 tools, success or error, now carries the exact sentence "If this
+  is an emergency, please call 911.": first in the text, and as the first field
+  (`safety_line`) of the structured answer. It replaces beta.12's longer line, which was only on
+  the three reporting-help tools. A detected danger still leads `how_to_report`'s and
+  `draft_311_report`'s `first_line` with its own, stronger 911 line. A test calls every tool.
+
+### Fixed (beta retest 12, 2026-11-09)
+
+- **Missed emergencies, by class:**
+  - violence between people in the present tense: any of beating, hitting, punching, choking,
+    stabbing, attacking, dragging or shoving a person ("a man is beating a woman in the
+    stairwell"); domestic violence with any relationship word. Violence never gets a building
+    repair article (it had got Heat or Hot Water);
+  - someone at a height who may fall or jump (a bridge railing, a roof's edge, a ledge, a
+    window, scaffolding), with the general danger article. The 988 line still comes only from
+    the City's Suicide article, when the person's words are about suicide. Window washers and
+    harnessed workers are not a danger;
+  - water rising where people are (a flooded basement or underpass with people inside);
+  - a vehicle out of control now (spinning out, sliding, driving on the sidewalk). A habit
+    ("cars always skid on this hill") is not.
+- **Medical danger words are for people.** An animal hurt or hit by a car goes to Injured or
+  Sick Animal; a figure of speech ("yowls like it's being hurt", "killing me", "like a bomb
+  went off") is not a danger. A person hurt in the same sentence still is.
+- **Wrong strong:** a broken TV on the sidewalk → Illegal Dumping. A TV, stereo or speakers
+  count as noise only with a sound word.
+- **Regression: Parkway.** The round-12 highway rule matched every parkway, so a pothole on
+  Eastern or Ocean Parkway got no draft. "Parkway" alone is now a city street; only named
+  expressway-type parkways (Belt, Cross Island, Grand Central, Jackie Robinson, Hutchinson
+  River, Henry Hudson, Bronx River, Korean War Veterans, Shore, ...) and expressways,
+  interstates and ramps are highways (`HIGHWAY`).
+- Also: a street never plowed → Snow or Ice on Street or Highway; a rusted fire escape →
+  Apartment Maintenance; leaf blowers → Noise from Lawn Equipment; a business next door is not
+  a neighbor; hot weather is not a heating complaint.
+- **Measured** on 687 phrasings (rounds 6 to 13, with the report's 35 and 60 new ones on
+  violence, heights, floods, vehicles out of control, injured animals, figures of speech and
+  Parkway/Expressway/Boulevard/Bridge street names): on beta.12, 16 missed emergencies, 3
+  ordinary complaints leading with 911 and 6 wrong answers rated strong; now none.
+
+## [1.2.0-beta.12] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: the safety design (beta retest 11, 2026-11-09: eight missed emergencies)
+
+- **Defense in depth.** Every `how_to_report`, `list_311_categories` and `draft_311_report`
+  answer now starts its text with one fixed line, before the JSON, and carries it as
+  `safety_line`: "If someone is hurt or in danger right now, call 911. This tool can miss an
+  emergency." Detected dangers still lead `first_line` with their own 911 line.
+- **Asymmetric danger rule.** The recurring rule (beta.11) never switches a danger off when
+  anything in the description says it is happening now ("now", "just", "isn't moving", "won't
+  wake", "filling with", "people inside", "trapped", "help", or a danger verb in "is ...ing").
+  Smoke from an outlet, wiring, an appliance, a battery, an e-bike, a space heater or a boiler
+  room is never switched off.
+- **New danger classes, said in general ways:** a person hit by a vehicle, either way round
+  ("a bus hit a cyclist", "a pedestrian was struck by a car", "got doored"); someone calling
+  for help; someone on or pushed onto the subway tracks; someone through the ice; someone
+  trying a door or punching people right now; a car flipped with people inside; an arm stuck in
+  train doors. Near misses ("almost hit") and habits (people walking on the tracks, a fire alarm
+  that goes off when someone cooks) are not.
+- **Someone hurt never goes to a social-service article** (homeless outreach, shelters,
+  encampments). Beta retest 11: an injured cyclist got Homeless Outreach Assistance.
+
+### Fixed
+
+- Wrong answers rated strong: screaming for help → the danger article, not Noise from Neighbor;
+  pushed onto the tracks → 911; an abandoned building → Vacant Building Complaint, not
+  Abandoned Vehicle; a dumped mattress with bed bugs → Illegal Dumping; a dead bird on a fire
+  escape or a roof → Dead Animal on Private Property (an information page, so not strong); lead
+  paint → Lead Paint. Also: potholes on a highway ramp, double parking, dog waste, a gym
+  membership, a dry cleaner, a dog run's gate.
+- **Measured** on 593 phrasings (rounds 6 to 12, with 80 new: emergencies and near misses in
+  transit, traffic crashes, water and ice, crimes in progress, medical, calls for help and
+  recurring-but-now, plus 20 ordinary complaints): on beta.11, 19 missed emergencies, 2
+  ordinary complaints leading with 911 and 7 wrong answers rated strong; now none.
+
+## [1.2.0-beta.11] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 10, 2026-11-09)
+
+- **A recurring condition is not an emergency in progress.** "black smoke pours out of the
+  chimney next door every morning" and "a man sleeps passed out on a bench in the park every
+  night" led with 911. Now a recurrence word ("every morning", "always", "keeps ...ing", "for
+  weeks") quiets the ambiguous dangers (smoke, a crash, someone passed out or not moving, a theft
+  or break-in that keeps happening) unless something says it is happening now ("right now",
+  "not breathing", "won't wake up"). Fire, gas, carbon monoxide, bleeding, not breathing and
+  weapons are never quieted. The assessment reports `recurring`. 20 now/recurring pairs are
+  tested.
+- **A crime that is over does not lead with "Call 911".** A matched City article whose summary
+  says "Call 911" (Criminal Mischief, Stolen Property, Burning Garbage, Hate Crime) no longer
+  leads for a pattern that recurs, or for a crime told as done ("someone keyed my car",
+  "smashed ... overnight"); the article and its 911 text stay in the answer, with the crime
+  pointer (precinct, Crime Stoppers). Thefts and break-ins in progress ("stealing packages
+  right now", "breaking car windows right now") now lead with 911.
+- **Wrong answers rated strong:** a smashed car window and a stolen bag → Criminal Mischief and
+  Stolen Property ("my parked car" names a car, not a parking problem; a car window is not an
+  apartment window); spray-painted threats → Graffiti (spray paint and tags are graffiti, not
+  paint repairs). Also: a boiler chimney's smoke is Chimney or Ventilation Smoke; crashes that
+  keep happening at a corner are a traffic condition; someone sleeping in an elevator or on a
+  bench is homeless outreach.
+- **Misses:** a daycare with no heat → Child Care Complaint (the Consumers and Early Childhood
+  lists are now recorded); peeling lead paint → Lead Paint; a security deposit → Rent Security
+  Deposits and Interest; a store overcharge → Overcharge; a tow company → Tow Truck Complaint;
+  burning garbage → Burning Garbage.
+- **Alternatives:** "park" no longer matches "parking" or "parked", and a "Call 911" article is
+  lifted under a danger only when it is the danger's own article (no Cannabis Sale Outside under
+  a gun threat).
+- **Measured** on 458 phrasings (rounds 6 to 11, with 60 new ones mixing recurring and
+  in-progress framing, past and in-progress crimes, and property damage): on beta.10, 9 wrong
+  answers rated strong, 3 missed emergencies and 4 ordinary complaints leading with "Call 911";
+  now none. Requiring the person's own words in the article was measured and not adopted: it
+  dropped 81 (one word) or 229 (two words) right answers from strong and caught nothing more.
+
+## [1.2.0-beta.10] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 9, 2026-11-09)
+
+- **Missed emergency: forced entry.** "someone is trying to break down my front door right now"
+  got Apartment Maintenance and no 911. The crime-in-progress danger now covers forced entry
+  (breaking, kicking or forcing a door or window), an intruder inside, someone trying to get in,
+  and being followed. A landlord trying to get in is not a danger.
+- **Someone in the water is its own danger** (fell, jumped or slipped into a river, the ocean,
+  a pool; drowning; struggling in the water), leading with 911; a dropped phone is not.
+- **Sensitive articles match only on their own words.** "a child fell into the river and is
+  struggling" best-matched the City's Child Pornography article on the word "child". Articles on
+  abuse, sexual crimes and harassment, exploitation, trafficking, suicide, hate crimes, overdose
+  and minors (`SENSITIVE_ARTICLES`) are now left out unless the description uses their own
+  words; a test fails if any recorded article of that kind has no guard.
+- **Wrong answers rated strong:** bees on a tree → Bees or Wasps Complaint (the tree entry no
+  longer adds "branch"); a rat in the subway → Buses and Subways (the MTA takes "rats and other
+  animals at MTA locations"); tree roots lifting a sidewalk → Broken Sidewalk; a walk signal →
+  Pedestrian Signal Complaint or Request; a neighbor feeding pigeons → Pigeon Droppings or Odor.
+  Also fixed: lockout by padlock, cutting off electricity to force a tenant out, or removing
+  belongings → Illegal Eviction or Lockout; drag racing and burnouts, sewer smell, brown tap water,
+  low water pressure, curb ramps, a crumbling sidewalk, building without a permit, a smoke alarm
+  with a low battery, a fallen tree on a parked car.
+- **Confidence: strong is rarer where it was being wrong.** An information page with nothing to
+  report (`isInfoOnly`) is never strong; neither is an article from another domain than the one
+  the person names (`domainMismatch`: a school, a ticket, immigration, a benefit, taxes, a
+  voucher, insurance, the ferry, an ambulance). "Emergency" in a program's name ("emergency
+  rental assistance") is no longer read as urgency.
+- **A no-match first line is its own sentence:** "No 311 article matched this description. If
+  anyone is in danger right now, call 911." The emergency line is unchanged.
+- **Measured** on every phrasing from rounds 6 to 10 plus 60 new ones across transit, schools,
+  tax and finance, pets, construction, health, consumer, immigration and benefits (390): on
+  beta.9, 11 wrong answers rated strong, 2 missed emergencies and 1 false 911; now none. The
+  measurement runs in the test suite (`test/phrasing-sets.mjs`).
+
+## [1.2.0-beta.9] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 8, 2026-11-09)
+
+- **A loud party no longer says "Call 911".** No danger was detected: round 8's party entry
+  searched for "party" and "crowd", which made Noise from Large Party or Crowd (KA-01591, whose
+  only text is "Call 911 to report a large, loud party that has potential for danger") the
+  strong best match, and a strong best match whose summary says "Call 911" led the answer. Now
+  a "Call 911" summary that is conditional ("potential for danger", "in progress", ...) leads
+  only when a danger was detected in the person's words, and such an article is never rated
+  strong without one; an unconditional one (Illegal Eviction or Lockout, Drug Sale) still
+  leads, except for a crime the person says is over. A party is searched as noise, so a
+  neighbor's party is Noise from Neighbor and a street party Noise from Street or Sidewalk.
+  Also: a building fire alarm that keeps going off for no reason, and a dog that attacked a
+  cat, are no longer 911 cases. 35 ordinary complaints that must never say "Call 911" and 12
+  emergencies that must are in the tests.
+- **Wrong answers rated strong:** a landlord lockout → Illegal Eviction or Lockout (KA-02518,
+  the City's own "Call 911" line); a car parked in a bike lane, crosswalk or bus stop → Illegal
+  Parking (KA-01986), not Bike Lane upkeep. The report's other misses now have their City
+  article: helicopter, manhole cover, faded crosswalk paint, snow on a sidewalk, a missed bulk
+  pickup, taxi, rooster, raccoons, a bus that never came, Citi Bike, a stolen package (no 911
+  line: it is over), internet provider. "flies" as a verb is no longer insects.
+- **Emergency answers' confidence.** When the best match is the City's article for the
+  danger detected, it reads "strong: the City's own article for the danger detected; call 911
+  first". Otherwise `confidence_note` says the rating is for the 311 article as a follow-up.
+  Danger words now count as separate evidence, as in round 8's facets.
+- **`ll47_directory_assistance_report`: the first fiscal-year call answers in time.** The
+  ~12 s answer wait started after the dataset metadata request (about 4 s that morning; the
+  call took 16.0 s). It now counts from the start of the call. If the metadata is not in by
+  then, a saved copy of it answers; with none saved, the answer says the months are loading,
+  and the load starts in the background when the metadata arrives.
+- **Stress set, round 9:** 40 new phrasings weighted to near misses. Before: 19 wrong (8 rated
+  strong or with a wrong 911 line), e.g. a restaurant with rats → Rat or Mouse, a tree that
+  needs pruning or a bike chained to a tree → Fallen Tree, food poisoning from a cart →
+  Street Vendor, a boiler banging → Heat. Now none.
+
+## [1.2.0-beta.8] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 7, 2026-11-09)
+
+- **`how_to_report`: right answers back to "strong".** Round 7 counted each word-list entry as
+  one piece of evidence, which also merged entries whose words are different facets of one
+  problem ("skipped our garbage pickup" adds missed + collection). Missed garbage pickup,
+  rodents in my building and a homeless person who needs help dropped to "close call". Now
+  only entries whose words are synonyms ("dirty" / litter / trash; odor / smell; elevator /
+  escalator; snow / ice) count once; a dirty bathroom at home and a carbon monoxide detector
+  stay as fixed in beta.7.
+- **`ll47_directory_assistance_report`: the try count climbs and the limit holds.** The count
+  lived in each background load and restarted at 1 with every new one, and a try cut short by
+  a load's time limit was not counted, so July failed six times and every answer said "try 1
+  of 4". Now it is kept per month for the life of the server and cleared on success; after 4
+  failures in a row the month rests 10 minutes (`DA_REST_MS`), asking nothing, and says until
+  when.
+- **Routes** (City text recorded 2026-11-09, read-only): smoke detectors "never installed" →
+  Apartment Maintenance Complaint; dogs off leash → Unleashed Dog (KA-01051, category Pets now
+  searched); a stray animal → Stray or Abandoned Animal; an aggressive animal or one attacking
+  people → 911 first with the City's Dangerous Animal line (KA-01538), not for an animal that
+  bit a pet; subway stations, cars and MTA buses → Buses and Subways (KA-01014), agency the
+  MTA (an "Authority" named in an article's text is now read as its agency); a car alarm stays
+  Noise from Alarm, now strong; a broken elevator → Elevator or Escalator Complaint, strong,
+  not the inspector or inspection articles; a streetlight out → Street Light Complaint, strong.
+- **Stress set, round 8:** 43 new phrasings. Before: 10 wrong best matches or none (2 rated
+  strong): mice in a kitchen → Rat or Mouse; eviction threats → Heat or Hot Water; a hydrant
+  spraying water → Water Leak on Street; a dirty subway car → Litter Basket; nothing for a
+  howling dog, a DJ party, revving motorcycles, a dead pigeon in front of a house, a car sitting
+  for a month, or a dog off its leash on the block. Now none. Every danger case leads with 911.
+
+## [1.2.0-beta.7] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 6, 2026-11-09)
+
+- **`ll47_directory_assistance_report`, fiscal year: a failed month no longer stops the load.**
+  On the home Mac a month got a 503, its one quick retry failed too, and the call reported
+  the error, marked the later months "not tried", and the load only restarted on the next
+  call (5 of 16 calls). Now the load goes on to the next month and asks the failed one again
+  later, at most 4 times, pausing before each request after a failure (3 s, doubling with each
+  failure in a row, up to 30 s; a success resets it). Still one request at a time
+  (engineering standards §6), the 12 s answer wait, and the 4-minute background limit. A
+  month waiting for its next try says "retrying: … (try n of 4)". The pause timer never keeps
+  the process alive, so the server still exits when its stdin closes.
+- **The month in progress is no longer cached forever.** November grew by 4,861 calls while
+  the dataset's `rowsUpdatedAt` stayed the same, so an older saved copy answered FY2027 as
+  1,264,433 and a fresh one 1,269,294. A month not yet settled (the month in progress, and
+  the month before it for 7 days after it ends) is now asked again when its saved copy is
+  more than an hour old (`OPEN_MONTH_TTL_MS`), whatever the dataset's timestamp. Settled
+  months keep the 30-day rule. If the new copy is not in by the answer, the older one
+  answers, labeled. A new `recent_months` field says when each recent month was fetched.
+- **`how_to_report` / `draft_311_report`: wrong routes rated "strong".** "bathroom in my house
+  is dirty" got Litter Basket Complaint; "landlord didn't install a carbon monoxide detector"
+  got Vehicle Stored on Residential Property. Cause: confidence counted the person's problem
+  words one by one, and one word-list entry adds several ("dirty" adds litter and trash), so
+  one word read as two pieces of evidence; and a match resting only on context words ("car"
+  inside "carbon", "residential" from "landlord") could be strong. Now evidence counts once
+  per entry and must include the problem itself. A detector the landlord did not install,
+  never installed or won't replace goes to Apartment Maintenance Complaint (KA-01074, HPD),
+  whose City text says owners must install smoke and carbon monoxide detectors. Dirt in a
+  room at home is offered there as a possible match only. Word fixes: "carbon" is not a car,
+  "tenant" is not a tent, "yellow" is not yelling, "ice cream" is not ice, roaches are not
+  rats, water gushing from a hydrant is a hydrant (not a water main), and "smoke detectors in
+  the building" is not a Smoke Free Air Act complaint.
+- **Stress set.** 68 realistic phrasings across housing, noise, street, parks, sanitation,
+  vehicles and safety, with near misses, run offline in the tests. Before this round 7 of
+  them were wrong, 6 rated strong; now none. Every danger case still leads with 911.
+
+## [1.2.0-beta.6] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 5, 2026-11-09)
+
+- **Park restrooms** (`how_to_report`, `draft_311_report`). A restroom, bathroom, toilet or
+  comfort station in a park, playground, beach, pool or recreation center that is locked,
+  closed, dirty or broken goes to Park Maintenance Complaint (KA-01060, Parks), whose City
+  text covers "unclean conditions" and a park facility "closed to the public during posted
+  hours". Before, "public bathroom in the park is locked" got Breaking Park Rules and "the
+  playground bathroom is dirty" got Unlocked Park or Playground. A bathroom at home is
+  unchanged.
+- **Agency named in an article's text.** A possessive is no longer part of the name:
+  "Department of Housing Preservation and Development's (HPD)" (the Carbon Monoxide
+  article) now reads "Department of Housing Preservation and Development (HPD)". Fixed for
+  every article, straight or curly apostrophe, singular or plural.
+- **`ll47_directory_assistance_report`, fiscal year: a failed month is retried at once.**
+  When a month an earlier call started loading fails (or was "not tried" after one did),
+  the next call retries those months within its own 12 s answer, still one request at a
+  time (engineering standards §6). Before, that call only reported the failure and the load
+  restarted on the call after. A month the call itself tried is still not asked twice.
+- **`ll47_directory_assistance_report`, partial answer.** An incomplete period still has no
+  `calls` total, and says the full total is not ready yet. It now shows `saved_months` (each
+  saved month's calls and Directory Assistance topic calls) and `saved_months_so_far`, their
+  sum, labeled "Saved months so far (n of m): a partial sum, not the total for the period".
+
 ## [1.2.0-beta.5] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

@@ -1,0 +1,776 @@
+[
+{
+"src": "r15 report",
+"d": "guy down not moving 3rd ave",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "my dad's face is drooping on one side and his words come out wrong",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "my grandma cant breathe her lips are turning blue",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "baby swallowed a button and is choking",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "a little boy fell through the ice on the pond in the park",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "kid went under at coney island and hasnt come up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "my neighbor is screaming that her boyfriend is choking her",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "theres a guy swinging a machete on the platform at 14th st",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "a window washer's rig snapped and he's dangling off the building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "a worker fell into a manhole and isn't answering",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "car flipped over on the FDR and someone is stuck inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "flames coming out of the laundromat dryer vent",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "the stove knob was left on and the whole apt smells like rotten eggs",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "someone got pushed onto the subway tracks",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "my son has a fever and hes shaking all over and wont respond",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "a delivery guy got hit by a truck and his leg is bent the wrong way",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "smoke pouring out of the subway grate and people are coughing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "every night my neighbor beats his kid and I can hear her crying right now",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "a toddler is alone on the fire escape 5 floors up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "old man collapsed in the heat at the bus stop and wont wake up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15 report",
+"d": "the bass from the club next door is murdering my sleep",
+"ok": [
+"KA-01085"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "I'm drowning in garbage bags on my block, nobody picks them up",
+"ok": [
+"KA-01788",
+"KA-02356",
+"KA-01803"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the fire hydrant is gushing and kids are playing in the spray",
+"ok": [
+"KA-01034"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "a raccoon is living in the trash cans behind my building",
+"ok": [
+"KA-01790"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "my heart sinks every time I see the broken bench in the park",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the fireworks next door every night are driving me insane",
+"ok": [
+"KA-02249"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "kids are having a water balloon fight on my stoop",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "a rat the size of a cat ran across my kitchen",
+"ok": [
+"KA-02278",
+"KA-01107"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "this intersection is gonna kill someone one day, it needs a stop sign",
+"ok": [
+"KA-01063",
+"KA-02305",
+"KA-03063"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "I almost slipped on the ice on the sidewalk in front of the deli",
+"ok": [
+"KA-01397"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "my kid's yellow bus never shows up on time",
+"ok": [
+"KA-01491"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "teenagers play basketball late at night in the park and it's loud",
+"ok": [
+"KA-01088"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the girls' locker room at the rec center has no hot water",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the baby changing table in the library bathroom is broken",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "a woman runs a daycare out of her apartment without a license",
+"ok": [
+"KA-02240"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "trash cans on the corner overflowing",
+"ok": [
+"KA-02143"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "traffic signal at the corner stuck on red all day",
+"ok": [
+"KA-01404"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "landlord no hot water 3 days",
+"ok": [
+"KA-01036"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "loud music from a car parked outside at 2am",
+"ok": [
+"KA-01102"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "a big tree branch is cracked and hanging over the sidewalk",
+"ok": [
+"KA-02138"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "dog poop all over the sidewalk on my street",
+"ok": [
+"KA-02247"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the bike lane is always blocked by delivery trucks",
+"ok": [
+"KA-01986"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "cracked sidewalk in front of my building",
+"ok": [
+"KA-02235"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "bedbugs everywhere in my unit, landlord ignores it",
+"ok": [
+"KA-01236"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "someone's car alarm has been going off for an hour",
+"ok": [
+"KA-01089"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the restaurant downstairs leaves greasy trash bags out all night",
+"ok": [
+"KA-01803",
+"KA-02356",
+"KA-01787",
+"KA-01111",
+"KA-02143"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "a truck idles outside my window every morning",
+"ok": [
+"KA-02222"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the citibike dock on my corner is broken",
+"ok": [
+"KA-02221"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "building elevator out since last monday, I live on the 6th fl",
+"ok": [
+"KA-02015"
+],
+"danger": false
+},
+{
+"src": "r15 report",
+"d": "the street hasnt been swept in weeks",
+"ok": [
+"KA-02332"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "a man is waving a knife at people in the bodega",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "some guy pulled a gun on the bus driver",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a woman is swinging a broken bottle at people outside the bar",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a teenager is chasing another kid with a bat in the schoolyard",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "someone is threatening the cashier with a box cutter at the pharmacy",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a man with an axe is walking around the playground",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "guy brandishing a hammer at the train station",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "there's a man with a rifle on the roof across the street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "two guys fighting with machetes in the park",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a construction worker fell off a ladder and isn't moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a worker is trapped in a collapsed trench on my street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a scaffold plank broke and a guy is hanging from the pipe",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a man fell into the elevator shaft at the construction site",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a worker got crushed by a falling beam",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "the crane dropped its load and someone is under it",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a guy fell from the roof he was fixing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a worker is stuck in the sewer and not answering",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a painter's rope snapped and he's swinging off the building",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "kid in strt",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "man bleeding bad corner of 5th",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "lady passd out on train not breathing",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "fire in bldg smoke everywhere",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "guy w gun lobby",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "baby not breathng",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "smell gas strong hallway",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "old man fell cant get up",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "car hit kid",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "woman drownin at beach",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "we are drowning in paperwork from the landlord",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the heat is killing us at the senior center",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the store is having a fire sale",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "I'm dying to get my street repaved",
+"ok": [
+"KA-01099"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the noise from the club is murder on my ears",
+"ok": [
+"KA-01085"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "this commute is killing me, the bus never comes",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the block is drowning in leaves nobody picks up",
+"ok": [
+"KA-02332",
+"KA-01788",
+"KA-02356",
+"KA-01803"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "my landlord is getting away with murder on the repairs",
+"ok": [
+"KA-01074"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the line at the DMV was a bloodbath",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the traffic light is so short it's a death trap for old people",
+"ok": [
+"KA-01047",
+"KA-01404"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "my neighbor's music is a bomb going off every night",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "I'm choking on the dust from the construction next door",
+"ok": [
+"KA-02248"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the school bathroom has no hot water",
+"ok": [
+"KA-01067"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the library has no heat",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the senior center's elevator has been broken for a month",
+"ok": [
+"KA-02015"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "there are mice in the community center kitchen",
+"ok": [
+"KA-01107",
+"KA-01111"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the hospital waiting room ceiling is leaking",
+"ok": [
+"KA-01503"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the courthouse bathroom is filthy",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the public pool locker room has mold",
+"ok": [
+"KA-01060",
+"KA-02282"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the rec center showers are cold",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "construction workers on the scaffold every morning are loud",
+"ok": [
+"KA-01091"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the manhole on my street has been open with cones around it for a week",
+"ok": [
+"KA-01669"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "a ladder has been left leaning against the building for days",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the trench on my block has no fence around it",
+"ok": [
+"KA-01797",
+"KA-01095",
+"KA-02050"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the hardware store sells machetes in the window",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "kids play baseball in the street with a bat",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "knife sharpening truck rings its bell all day",
+"ok": [
+"KA-01102",
+"KA-01092"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "a guy is selling knives on the sidewalk",
+"ok": [
+"KA-02152"
+],
+"danger": false
+},
+{
+"src": "r15",
+"d": "a man is pointing a gun at people in the laundromat",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "a guy is swinging a chain at people on the subway stairs",
+"ok": null,
+"danger": true
+},
+{
+"src": "r15",
+"d": "the public library bathroom ceiling is leaking",
+"ok": [],
+"danger": false
+},
+{
+"src": "r15",
+"d": "the office building next door has a broken boiler that bangs all night",
+"ok": [
+"KA-02047"
+],
+"danger": false
+}
+]

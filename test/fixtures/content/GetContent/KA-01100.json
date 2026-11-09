@@ -1,0 +1,40 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01100",
+      "Title": "Pavement Marking Complaint or Request",
+      "Description": "Report missing or faded pavement markings (also known as street line markings) on a street or highway. Request brand new pavement markings.",
+      "Section": [
+        {
+          "Name": "Pavement Marking Complaint or Request Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01083\">Curb or Driveway Complaint</a>&nbsp;to report a painted curb&nbsp;</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03026\">Street or Sidewalk Utility Markings</a>&nbsp;to learn about preconstruction markings on a street or sidewalk</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03063\">Traffic Safety</a>&nbsp;to learn about DOT&#39;s traffic safety education programs</li></ul></div><p>Pavement markings, also known as street line markings, are lines and other markings that define vehicle lanes.&nbsp;</p><p>They also define areas of a roadway used for:</p><ul><li>Buses</li><li>Bicycling</li><li>Walking</li><li>Street furniture, such as:<ul><li>Citibike stations</li><li>Bicycle racks</li><li>Benches</li><li>Blocks</li><li>Planters</li><li>Tables</li></ul></li></ul><p>Pavement markings include:</p><ul><li>Lines used in hatched areas of the roadway that identify where vehicle travel is not allowed<ul><li>Symbols or words used to define:</li><li>Bus lanes (e.g., BUS LANE)</li><li>Bicycling lanes (e.g., bicycle and V-shaped symbols)</li><li>Exclusive turn lanes (e.g., arrows with ONLY)</li><li>Warning messages (e.g., SLOW or BUMP)</li><li>Regulatory messages (e.g., STOP, YIELD, or 20 MPH)</li></ul></li><li>Colored treatments used for identifying:<ul><li>Bus lanes (red)</li><li>Bicycle lanes (green)</li><li>Walking areas (tri-color brown)</li><li>Shared streets that allow both pedestrian and vehicle traffic (tri-color pink)</li></ul></li></ul><p><strong>File a Complaint</strong></p><p>You can make a complaint to the Department of Transportation (DOT) about missing or faded pavement markings on a street or highway.</p><p>Report a pavement marking on a <strong>street </strong>that is:</p><p>Report a pavement marking on a <strong>highway </strong>that is:</p>",
+          "ContentAction": [
+            {
+              "Name": "Street Pavement Marking Faded",
+              "Agency": "Department of Transportation",
+              "Problem": "Street Condition",
+              "ProblemDetail": "Line/Marking - Faded"
+            },
+            {
+              "Name": "Street Pavement Marking Missing",
+              "Agency": "Department of Transportation",
+              "Problem": "Street Condition",
+              "ProblemDetail": "Line/Marking - After Repaving"
+            },
+            {
+              "Name": "Highway Pavement Marking Complaint",
+              "Agency": "Department of Transportation",
+              "Problem": "Highway Condition",
+              "ProblemDetail": "Painted Line/Marking"
+            }
+          ]
+        },
+        {
+          "Name": "Request New or Changed Markings",
+          "Content": "<p>You can submit a request to DOT for brand new pavement markings or a change to existing pavement markings.</p><p>Requests for new pavement markings will result in a&nbsp;traffic regulation study&nbsp;at the location to determine if the new markings are appropriate.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/contact/contact-form.shtml?routing=sm\">Submit your request to the Department of Transportation.</a></p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

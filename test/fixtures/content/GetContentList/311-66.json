@@ -1,0 +1,139 @@
+{
+  "ContentArticleList": [
+    {
+      "description": "Learn about adopting an animal in need of a home.",
+      "id": "KA-02546",
+      "title": "Adopt an Animal"
+    },
+    {
+      "description": "Report abuse or neglect of an animal.",
+      "id": "KA-02224",
+      "title": "Animal Abuse"
+    },
+    {
+      "description": "Report an animal that bit a person.",
+      "id": "KA-01109",
+      "title": "Animal Bite"
+    },
+    {
+      "description": "Report an unsanitary or unpermitted animal shelter, kennel, groomer, horse stable, boarding facility, petting zoo, or other animal facility.",
+      "id": "KA-02225",
+      "title": "Animal Facility Complaint"
+    },
+    {
+      "description": "Report animal odor from a residence.",
+      "id": "KA-01945",
+      "title": "Animal Odor"
+    },
+    {
+      "description": "Call 911 to report an animal causing a dangerous or hazardous condition.",
+      "id": "KA-01538",
+      "title": "Dangerous Animal"
+    },
+    {
+      "description": "Learn how to dispose of dead pets or wildlife on your property.",
+      "id": "KA-03451",
+      "title": "Dead Animal on Private Property"
+    },
+    {
+      "description": "Report a dead animal in a public place, including sidewalks, highways, and parks.",
+      "id": "KA-02245",
+      "title": "Dead Animal on Public Property"
+    },
+    {
+      "description": "Apply for, renew, update, or replace a dog license.",
+      "id": "KA-01890",
+      "title": "Dog License"
+    },
+    {
+      "description": "Report dog or animal waste in a park or on a street, sidewalk, or private property.",
+      "id": "KA-02247",
+      "title": "Dog or Animal Waste"
+    },
+    {
+      "description": "Learn about the rules for bringing a non-service dog into a restaurant.",
+      "id": "KA-02689",
+      "title": "Dogs in Restaurants"
+    },
+    {
+      "description": "Give money or supplies to an animal shelter.",
+      "id": "KA-02693",
+      "title": "Donate to Animal Shelters"
+    },
+    {
+      "description": "Learn about emergency preparedness, including tips, educational events, and how to create an emergency plan for businesses, schools, students, and pets.",
+      "id": "KA-02713",
+      "title": "Emergency Preparedness"
+    },
+    {
+      "description": "Register a trained guard dog or report loss, theft, or transfer of ownership.",
+      "id": "KA-01556",
+      "title": "Guard Dog Registration"
+    },
+    {
+      "description": "Report a person selling or keeping a wild or illegal animal as a pet.",
+      "id": "KA-02255",
+      "title": "Illegal Animal"
+    },
+    {
+      "description": "Get help for an injured or sick animal.",
+      "id": "KA-01789",
+      "title": "Injured or Sick Animal"
+    },
+    {
+      "description": "Get help for an owner whose pet is lost or has been seized by the police or the Animal Care Centers.",
+      "id": "KA-02852",
+      "title": "Lost or Found Pet"
+    },
+    {
+      "description": "Find free or low-cost pet food, vaccines, and spay and neuter services.",
+      "id": "KA-02921",
+      "title": "Pet Health and Welfare Resources"
+    },
+    {
+      "description": "Report the sale of pets.",
+      "id": "KA-02279",
+      "title": "Pet Sale Complaint"
+    },
+    {
+      "description": "Learn about vaccination for dogs and cats.",
+      "id": "KA-02947",
+      "title": "Pet Vaccination"
+    },
+    {
+      "description": "Report unsanitary conditions caused by pigeons.",
+      "id": "KA-02280",
+      "title": "Pigeon Droppings or Odor"
+    },
+    {
+      "description": "Report an animal that may have rabies, dead or alive.",
+      "id": "KA-02349",
+      "title": "Rabid Animal"
+    },
+    {
+      "description": "Learn about raccoon roundworm infection and prevention.",
+      "id": "KA-01348",
+      "title": "Raccoon Roundworm Infection"
+    },
+    {
+      "description": "Learn about rules and licensing for service dogs who help people with disabilities.",
+      "id": "KA-01499",
+      "title": "Service Dogs"
+    },
+    {
+      "description": "Report a stray or abandoned animal.",
+      "id": "KA-02300",
+      "title": "Stray or Abandoned Animal"
+    },
+    {
+      "description": "Learn what to do with a pet you can't keep.",
+      "id": "KA-03069",
+      "title": "Surrender a Pet"
+    },
+    {
+      "description": "Report a dog that is not leashed in a park or other public place.",
+      "id": "KA-01051",
+      "title": "Unleashed Dog"
+    }
+  ]
+}

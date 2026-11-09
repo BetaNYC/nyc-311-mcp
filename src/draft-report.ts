@@ -355,7 +355,7 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
 
   const first_line =
     reports.length > 1
-      ? `${unmatched ? `${SAFETY_LINE} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
+      ? `${unmatched ? `${GENERIC_911} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
       : one.status === "not_a_311_report"
         ? `The City's own article says it does not take this (${one.report_at?.ka_number}); its words are in where_to_go. No draft is made.`
         : one.status === "no_exact_match"
@@ -395,7 +395,8 @@ function cityDoesNot(m: Matched): boolean {
 
 /** No article matched: how_to_report's no-match answer, which leads with 911. No draft. */
 function noMatchAnswer(whole: Matched) {
-  const first = whole.first_line.startsWith(SAFETY_LINE) ? whole.first_line : `${GENERIC_911} ${whole.first_line}`;
+  // No article: how_to_report's no-match line (it names 911); the response ends with SAFETY_LINE.
+  const first = whole.first_line;
   return finish({
     ...SAFETY,
     first_line: first,
@@ -624,7 +625,7 @@ export const DRAFT_TOOLS = [
   {
     name: "draft_311_report",
     description:
-      `Draft a 311 report for the person to submit themselves: a short ready-to-paste text (problem, where, when, what they saw), the 311 Online article link to report it on, questions to ask them for anything missing (marked [add: …], never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the City's article says about contact details and photos, and what happens next. Uses how_to_report's matching. Files nothing, sends nothing, and fills no form: the City does not publish each form's fields, so the form may ask for more. If the description suggests an emergency it does not draft and says to call 911. A description of two problems gets one draft each. Every answer and error starts with "If anyone is in danger right now, call 911." ${ASSISTANT_INSTRUCTION}`,
+      `Draft a 311 report for the person to submit themselves: a short ready-to-paste text (problem, where, when, what they saw), the 311 Online article link to report it on, questions to ask them for anything missing (marked [add: …], never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the City's article says about contact details and photos, and what happens next. Uses how_to_report's matching. Files nothing, sends nothing, and fills no form: the City does not publish each form's fields, so the form may ask for more. If the description suggests an emergency it does not draft and says to call 911. A description of two problems gets one draft each. Every answer and error starts with "${SAFETY_LINE}" ${ASSISTANT_INSTRUCTION}`,
     inputSchema: {
       type: "object",
       additionalProperties: false,

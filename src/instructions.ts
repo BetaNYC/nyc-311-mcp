@@ -4,6 +4,8 @@
  * keeps a short version that is enough to call it correctly.
  */
 
+import { SAFETY_LINE } from "./emergency.js";
+
 export const ABOUT_BOARDSTAT =
   "BoardStat: the district tools read files that BoardStat (BetaNYC) builds every night from NYC Open Data, with 311 requests from 2020 on, so the numbers match the BoardStat page each answer links to. It is not an official City report. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
 
@@ -22,4 +24,6 @@ export const SERVER_INSTRUCTIONS = [
   DISTRICT_IDS,
   DATE_OPTIONS,
   LL47_REBUILD,
+  // Noel's closing text (beta round 18), once here; every tool response also ends with it.
+  SAFETY_LINE,
 ].join("\n\n");
