@@ -123,6 +123,16 @@ export const SR_NUMBER_NOTE =
 export const NOT_FOUND_HINT =
   "If this number came from NYC Open Data or BoardStat (an 8-digit unique_key such as 60061097), it is not a 311 number: the two use different numbers. Use address_history or find_requests for Open Data requests.";
 
+/**
+ * A 311 number the API does not know, in one plain sentence plus the hint, without the
+ * City's raw error body (beta retest 1, 2026-11-08). A request or trace id the API sent
+ * is kept, for anyone asking the City about the error.
+ */
+export function notFoundMessage(srNumber: string, apiMessage: string): string {
+  const id = apiMessage.match(/\b(?:request|activity|trace|correlation)[ _-]?id\b["']?\s*[:=]\s*["']?([A-Za-z0-9-]{6,})/i)?.[1];
+  return `311 has no service request ${srNumber}. ${NOT_FOUND_HINT}${id ? ` (311 API request id ${id}.)` : ""}`;
+}
+
 /** A copy with ZIP keys dropped and ZIP codes removed from every string. */
 function sanitize(value: unknown): unknown {
   if (typeof value === "string") return redactZip(value);

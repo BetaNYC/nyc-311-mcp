@@ -265,11 +265,19 @@ test("get_service_request / get_service_request_list through callTool: plain_lan
 
     const miss = await callTool("get_service_request", { sr_number: "311-70999528" });
     assert.equal(miss.isError, true);
-    assert.match(miss.content[0].text, /404.*not a 311 number/s);
+    assert.match(miss.content[0].text, /311 has no service request 311-70999528\. If this number came from NYC Open Data.*not a 311 number/s);
+    // Only the plain sentence: not the City's raw error body (beta retest 1).
+    assert.doesNotMatch(miss.content[0].text, /Response body|wasn't found!|"Error"|NotFound/);
 
     const many = await callTool("get_service_request_list", { sr_numbers: ["311-17323508", "311-17323514", "311-70999528"] });
     assert.deepEqual(JSON.parse(many.content[0].text).not_found, ["311-70999528"]);
   } finally {
     globalThis.fetch = realFetch;
   }
+});
+
+test("a not-found message keeps a request id the API sent, and nothing else of its body", async () => {
+  const { notFoundMessage, NOT_FOUND_HINT } = await import("../dist/service-requests.js");
+  assert.equal(notFoundMessage("311-1", 'NYC 311 API error 404: Not Found Response body: {"Error":{"Code":"NotFound"}}'), `311 has no service request 311-1. ${NOT_FOUND_HINT}`);
+  assert.match(notFoundMessage("311-1", 'NYC 311 API error 404: Not Found Response body: {"requestId": "abc123-def"}'), /\(311 API request id abc123-def\.\)$/);
 });

@@ -6,7 +6,7 @@ import {
   getServiceRequestList,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
-import { describeServiceRequest, describeServiceRequestList, NOT_FOUND_HINT } from "./service-requests.js";
+import { describeServiceRequest, describeServiceRequestList, notFoundMessage } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
@@ -169,7 +169,7 @@ export async function callTool(name: string, args: unknown) {
           results = await getServiceRequest(sr_number);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          throw new Error(/ error 404/.test(message) ? `${message} ${NOT_FOUND_HINT}` : message);
+          throw new Error(/ error 404/.test(message) ? notFoundMessage(sr_number, message) : message);
         }
         results = describeServiceRequest(results);
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
