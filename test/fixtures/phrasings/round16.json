@@ -1,0 +1,367 @@
+[
+{
+"src": "r16 report",
+"d": "man wit knife chasing ppl on 125th",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "lady fell on tracks at jay st train comin",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "baby not breathin help",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a kid is locked in a hot car outside the supermarket",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "smel gas in hallway real strong",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "fire in basment of my bldg",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a construction guy is pinned under a steel beam on the site next door",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a little girl fell down an open sewer hole on our street",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "my roommate overdosed and is turning gray",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a teenager climbed over the bridge railing and is about to fall",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "someone just got slashed with a box cutter on the bus",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "dude passed out on the L train not breathin",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "man overboard off the staten island ferry",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a kayaker flipped in the east river and is yelling for help",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a bus jumped the curb and hit people at the stop",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "the scaffolding just collapsed onto the sidewalk with people under it",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "we're stuck in the elevator and my mom is having chest pains",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "shots fired on my block rn",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "an electrician got shocked on the pole and isnt moving",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "a car went off the pier into the water with someone inside",
+"ok": null,
+"danger": true
+},
+{
+"src": "r16 report",
+"d": "my landlord is killing me with these rent hikes",
+"ok": [
+"KA-03296",
+"KA-03707",
+"KA-01042"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the potholes on my street are a death trap for cyclists",
+"ok": [
+"KA-01093"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "my neighbor's dog barks like it's being murdered all night",
+"ok": [
+"KA-01087"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the stench from the garbage truck depot is toxic",
+"ok": [
+"KA-01548",
+"KA-01408",
+"KA-02315",
+"KA-02363"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the radiator won't turn off and my apartment is suffocating",
+"ok": [
+"KA-01036"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "my upstairs neighbors stomp like they're trying to break through the ceiling",
+"ok": [
+"KA-01017"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the subway station stairs are a disaster waiting to happen, half the steps are broken",
+"ok": [
+"KA-01014"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "there's a fire sale at the electronics store and the line blocks the whole sidewalk",
+"ok": [
+"KA-01980"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "I'm dying to know when they'll fix the streetlight on my corner",
+"ok": [
+"KA-02463"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "barbecue smoke from the park blows into my window every weekend",
+"ok": [
+"KA-02228",
+"KA-02219"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the swings at my daughter's playground are broken",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "teens hang out in the stairwell of my building smoking weed",
+"ok": [
+"KA-03662",
+"KA-02295"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the crossing guard at my son's school never shows up",
+"ok": [],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "a woman sells food from a cart without a permit outside the school",
+"ok": [
+"KA-02152"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "my baby's stroller can't get past the cars parked on the sidewalk",
+"ok": [
+"KA-01986"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the water fountain at the dog run doesn't work",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "pigeons nesting under the train overpass drop poop on people",
+"ok": [
+"KA-02280"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the parking meter ate my quarters",
+"ok": [
+"KA-01240"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the deli doesn't post its letter grade",
+"ok": [
+"KA-01057",
+"KA-01111"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the taxi driver refused to take me to brooklyn",
+"ok": [
+"KA-01241"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "a store on my block keeps its door open with the AC blasting",
+"ok": [
+"KA-01893"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the sidewalk shed has been up for 3 yrs with no work happening",
+"ok": [
+"KA-02291"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "somebody shattered the glass on the bus stop shelter",
+"ok": [
+"KA-01071"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "abandoned car with no plates on my street for a month",
+"ok": [
+"KA-02130"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the public pool locker room has black mold",
+"ok": [
+"KA-01060"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "leaf blowers going at 7am every day",
+"ok": [
+"KA-01101"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "my basement floods with sewage every time it rains",
+"ok": [
+"KA-01510"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "someone dumped a mattress on the corner",
+"ok": [
+"KA-02097"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the hot dog cart leaves grease all over the sidewalk",
+"ok": [
+"KA-02152",
+"KA-01803"
+],
+"danger": false
+},
+{
+"src": "r16 report",
+"d": "the public library bathroom sink has been broken for weeks",
+"ok": [],
+"danger": false
+}
+]

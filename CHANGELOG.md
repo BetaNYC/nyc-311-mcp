@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.16] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 15, 2026-11-09: four missed emergencies in classes the server had)
+
+- **Danger words are read through typos** (`fuzzyDangerWords`): a word of 4 letters or more one
+  edit from a danger keyword (smell, smoke, fire, bleeding, breathing, unconscious, choking,
+  drowning, overdose, seizure, stabbing, shooting, overboard, ...) is read as it, unless it is a
+  real English word (a list generated from the system dictionary: "cooking" is not "choking",
+  "parking" is not "sparking"); plus common misspellings ("smel", "gass", "fyre", "bleding",
+  "siezure"). "smel gas in hallway real strong" now leads with the gas 911 line.
+- **Each danger class widened** to its nouns and verbs in every tense and voice: a vehicle that
+  hit, struck, ran over, plowed into, drove into or jumped the curb into people or a crowd;
+  someone over, outside or on the outside of a railing or ledge, or about to fall or jump;
+  anyone overboard; anything "is burning" (not a body part); smoke from a home, a hallway or a
+  grate, never quieted by a recurrence word; a carbon monoxide alarm "in the hallway" going
+  off, or carbon monoxide leaking (not a detector chirping for a battery).
+- **Ordinary complaint with a 911 lead:** "stomp like they're trying to break through the
+  ceiling" is noise, not a break-in. Slang ("this place is fire") is not a fire.
+- **Generator test** (`test/danger-generator.test.mjs`): 557 phrasings across 13 danger classes
+  (subjects x verbs x places x tense), each class at least 30, all must lead with 911; and 56
+  ordinary near misses, none may. On beta.15: 112 generated emergencies missed and 2 near
+  misses flagged; now 0 and 0.
+- **Measured** on 971 phrasings (rounds 6 to 16): on beta.15, 4 missed emergencies, 1 ordinary
+  complaint leading with 911 and 1 wrong answer rated strong; now none.
+
 ## [1.2.0-beta.15] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.
