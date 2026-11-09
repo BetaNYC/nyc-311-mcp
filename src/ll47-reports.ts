@@ -619,9 +619,22 @@ export const DA_BACKGROUND_MS = 4 * 60_000;
 export const DA_MONTH_TRIES = 4;
 export const DA_RETRY_PAUSE_MS = 3_000;
 export const DA_RETRY_PAUSE_MAX_MS = 30_000;
+/**
+ * The tries are counted per month for the life of the server, across calls and background
+ * loads, and cleared when the month answers. After DA_MONTH_TRIES failures in a row the month
+ * rests this long, asking NYC Open Data nothing, then a new round of tries starts. Beta retest
+ * 7, 2026-11-09: the count lived in each load and restarted at 1 with every new one, so July
+ * failed six times and every answer said "try 1 of 4", and the limit never applied.
+ */
+export const DA_REST_MS = 10 * 60_000;
 /** Why a month is missing while it waits to be asked again. */
 export function retryingWhy(trouble: Trouble, tries: number): string {
-  return `retrying: NYC Open Data ${trouble === "slow" ? "was too slow to answer" : "returned an error or could not be reached"} for this month (try ${tries} of ${DA_MONTH_TRIES}). It is asked again in the background after a pause, and saved when it answers; ask again in a minute.`;
+  return `retrying: NYC Open Data ${trouble === "slow" ? "was too slow to answer" : "returned an error or could not be reached"} for this month (try ${tries} of ${DA_MONTH_TRIES} failed). It is asked again in the background after a pause, and saved when it answers; ask again in a minute.`;
+}
+/** Why a month is missing while it rests after DA_MONTH_TRIES failures in a row. */
+export function restingWhy(last: string, until: number): string {
+  const at = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" }).format(new Date(until));
+  return `${last}. It failed ${DA_MONTH_TRIES} times in a row, so it is not asked again until ${at} New York time (a ${DA_REST_MS / 60_000}-minute rest, to spare the portal); ask again after that.`;
 }
 /** Why a fiscal-year month is missing when the answer did not wait for it. */
 export const STILL_LOADING =
@@ -685,7 +698,7 @@ async function monthCalls(
     await waitFor([running], Math.max(0, deadline - soda.clock()));
     if (r) return r;
     if (saved) return { ym, groups: saved.value, from: "old_cache", fetched_at: iso(saved.fetched_at_ms) };
-    return { ym, missing: retrying.get(soda)?.get(ym) ?? STILL_LOADING, trouble: "slow", loading: true };
+    return { ym, missing: pendingWhy(soda, ym), trouble: "slow", loading: true };
   }
   try {
     const groups = await fetchMonth(soda, ym, { deadline, ...request });
@@ -746,8 +759,22 @@ async function savedMonth(
  */
 const loading = new WeakMap<SodaClient, Map<string, Promise<MonthResult>>>();
 
-/** Why each month that failed is waiting to be asked again, per client (retryingWhy). */
-const retrying = new WeakMap<SodaClient, Map<string, string>>();
+/**
+ * Failures in a row per month, per client, kept across calls and loads (DA_REST_MS): how many
+ * tries failed, the last trouble and reason, and, after DA_MONTH_TRIES, when the rest ends.
+ */
+type Failures = { tries: number; trouble: Trouble; last: string; restUntil?: number };
+const failed = new WeakMap<SodaClient, Map<string, Failures>>();
+function failuresOf(soda: SodaClient): Map<string, Failures> {
+  let m = failed.get(soda);
+  if (!m) failed.set(soda, (m = new Map()));
+  return m;
+}
+/** Why a month not yet in is missing: still loading, or retrying after n failed tries. */
+function pendingWhy(soda: SodaClient, ym: string): string {
+  const f = failed.get(soda)?.get(ym);
+  return f && !f.restUntil ? retryingWhy(f.trouble, f.tries) : STILL_LOADING;
+}
 
 /**
  * Fetch `months`, one at a time (DA_CONCURRENT_MONTHS), and save each as it arrives. A month
@@ -767,9 +794,7 @@ function loadMonths(
 ): Map<string, Promise<MonthResult>> {
   let busy = loading.get(soda);
   if (!busy) loading.set(soda, (busy = new Map()));
-  let notes = retrying.get(soda);
-  if (!notes) retrying.set(soda, (notes = new Map()));
-  const why = notes;
+  const fails = failuresOf(soda);
   const out = new Map<string, Promise<MonthResult>>();
   type Job = { ym: string; tries: number; last?: Extract<MonthResult, { missing: string }>; done: (r: MonthResult) => void };
   const queue: Job[] = [];
@@ -779,16 +804,21 @@ function loadMonths(
       out.set(ym, running);
       continue;
     }
+    const f = fails.get(ym);
+    if (f?.restUntil !== undefined) {
+      if (soda.clock() < f.restUntil) {
+        out.set(ym, Promise.resolve({ ym, missing: restingWhy(f.last, f.restUntil), trouble: f.trouble }));
+        continue;
+      }
+      fails.delete(ym); // the rest is over: a new round of tries
+    }
     let done!: (r: MonthResult) => void;
     const p = new Promise<MonthResult>((r) => (done = r));
     const own = busy;
     busy.set(ym, p);
-    p.then(() => {
-      own.delete(ym);
-      why.delete(ym);
-    });
+    p.then(() => own.delete(ym));
     out.set(ym, p);
-    queue.push({ ym, tries: 0, done });
+    queue.push({ ym, tries: fails.get(ym)?.tries ?? 0, done });
   }
   const one = async (ym: string): Promise<MonthResult & { late?: boolean }> => {
     try {
@@ -812,7 +842,7 @@ function loadMonths(
   // Out of background time: a month that was tried says what went wrong and how often.
   const outOfTime = (x: Job): MonthResult =>
     x.last
-      ? { ...x.last, missing: `${x.last.missing}; tried ${x.tries} ${x.tries === 1 ? "time" : "times"} before this load's time ran out; ask again later` }
+      ? { ...x.last, missing: retryingWhy(x.last.trouble, x.tries), loading: true }
       : { ym: x.ym, missing: "NYC Open Data did not finish answering in the time allowed; ask again later", trouble: "slow" };
   const worker = async () => {
     let failures = 0;
@@ -831,21 +861,33 @@ function loadMonths(
         const r = await one(j.ym);
         if ("groups" in r) {
           failures = 0;
+          fails.delete(j.ym);
           j.done(r);
           continue;
         }
         failures += 1;
-        const { late, ...result } = r;
-        if (late) {
-          for (const x of [j, ...queue.splice(0)]) x.done(x === j && !j.last ? result : outOfTime(x));
-          return;
-        }
-        j.last = result as Extract<MonthResult, { missing: string }>;
-        if (r.trouble && j.tries < DA_MONTH_TRIES) {
-          why.set(j.ym, retryingWhy(r.trouble, j.tries));
+        const { late, ...rest } = r;
+        // A try the load's time limit cut short still counts: a request was sent and not answered.
+        const result = (late ? { ...rest, trouble: rest.trouble ?? "slow" } : rest) as Extract<MonthResult, { missing: string }>;
+        j.last = result;
+        if (!result.trouble) {
+          fails.delete(j.ym);
+          j.done(result);
+        } else if (j.tries < DA_MONTH_TRIES) {
+          fails.set(j.ym, { tries: j.tries, trouble: result.trouble, last: result.missing });
+          if (late) {
+            for (const x of [j, ...queue.splice(0)]) x.done(outOfTime(x));
+            return;
+          }
           queue.push(j);
         } else {
-          j.done(result);
+          const until = soda.clock() + DA_REST_MS;
+          fails.set(j.ym, { tries: j.tries, trouble: result.trouble, last: result.missing, restUntil: until });
+          j.done({ ...result, missing: restingWhy(result.missing, until) });
+          if (late) {
+            for (const x of queue.splice(0)) x.done(outOfTime(x));
+            return;
+          }
         }
       } catch (err) {
         j.done({ ym: j.ym, missing: `failed: ${err instanceof Error ? err.message : String(err)}`, trouble: null });
@@ -941,7 +983,7 @@ export async function directoryAssistanceReport(
   args: z.infer<z.ZodObject<typeof DA_SHAPE>>,
   soda: SodaClient = sodaClient(),
   now: number = Date.now(),
-  opts: { budgetMs?: number; requestTimeoutMs?: number; answerWaitMs?: number; retryPauseMs?: number } = {}
+  opts: { budgetMs?: number; requestTimeoutMs?: number; answerWaitMs?: number; retryPauseMs?: number; backgroundMs?: number } = {}
 ) {
   const today = nycToday(now);
   // The dataset is published daily, through yesterday at best.
@@ -986,7 +1028,7 @@ export async function directoryAssistanceReport(
     const waitUntil = Date.now() + wait;
     // Months an earlier call started and that are still loading: this call waits on them.
     const inherited = new Set(todo.filter((ym) => loading.get(soda)?.has(ym)));
-    const started = loadMonths(soda, meta, todo, request, soda.clock() + DA_BACKGROUND_MS, pause);
+    const started = loadMonths(soda, meta, todo, request, soda.clock() + (opts.backgroundMs ?? DA_BACKGROUND_MS), pause);
     const done = new Map<string, MonthResult>();
     for (const [ym, p] of started) p.then((r) => done.set(ym, r));
     await waitFor([...started.values()], wait);
@@ -997,7 +1039,7 @@ export async function directoryAssistanceReport(
     // Still one month at a time (loadMonths; standards §6).
     const retry = todo.filter((ym) => inherited.has(ym) && "missing" in (done.get(ym) ?? { groups: [] }));
     if (retry.length && Date.now() < waitUntil) {
-      const again = loadMonths(soda, meta, retry, request, soda.clock() + DA_BACKGROUND_MS, pause);
+      const again = loadMonths(soda, meta, retry, request, soda.clock() + (opts.backgroundMs ?? DA_BACKGROUND_MS), pause);
       for (const ym of retry) done.delete(ym);
       for (const [ym, p] of again) p.then((r) => done.set(ym, r));
       await waitFor([...again.values()], Math.max(0, waitUntil - Date.now()));
@@ -1008,7 +1050,7 @@ export async function directoryAssistanceReport(
       else
         results.set(
           ym,
-          older.get(ym) ?? r ?? { ym, missing: retrying.get(soda)?.get(ym) ?? STILL_LOADING, trouble: null, loading: true }
+          older.get(ym) ?? r ?? { ym, missing: pendingWhy(soda, ym), trouble: null, loading: true }
         );
     }
   }

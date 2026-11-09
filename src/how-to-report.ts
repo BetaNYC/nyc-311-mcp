@@ -28,7 +28,7 @@ const STOP = new Set(
     " "
   )
 );
-const IRREGULAR: Record<string, string> = { mice: "mouse", neighbour: "neighbor", neighbours: "neighbor", mould: "mold", children: "child", people: "person", geese: "goose" };
+const IRREGULAR: Record<string, string> = { mice: "mouse", neighbour: "neighbor", neighbours: "neighbor", mould: "mold", children: "child", people: "person", geese: "goose", buses: "bus", busses: "bus" };
 
 /** A word reduced the same way on both sides: lower case, plural, -ment, -ing and -ed endings dropped. */
 export function stem(word: string): string {
@@ -117,6 +117,13 @@ type Concept = {
   family?: string;
   /** A Spanish word for the problem (the answer then points to 311's language help). */
   spanish?: boolean;
+  /**
+   * The terms are other words for one thing ("dirty", "litter", "trash"), so an article sharing
+   * several of them has still matched one thing the person said (strongEvidence). Without this,
+   * each term is its own facet of the problem ("missed" + "collection"), and an article sharing
+   * several facets matches more of what was said.
+   */
+  synonyms?: true;
 };
 
 // A pickup that did not happen: the City's Missed Trash, Recycling, or Compost Collection
@@ -171,6 +178,8 @@ const AFTER_HOURS = "\\b(([1-6]|1[0-2]) ?(am|a\\.m\\.)|([6-9]|1[01]) ?(pm|p\\.m\
 // Rat or Mouse Complaint still offered. Beta retest 3, 2026-11-09.
 const DEAD_ANIMAL = /\bdead (rats?|mice|mouse|birds?|pigeons?|cats?|dogs?|raccoons?|squirrels?|deer|animals?|possums?|opossums?|geese|goose|ducks?|seagulls?|gulls?|skunks?)\b|\b(rats?|mouse|birds?|pigeons?|cats?|dogs?|raccoons?|squirrels?|animals?) (is |was |lying |laying )*dead\b|\b(roadkill|carcass\w*)\b/;
 
+// The subway, an MTA bus or a station (not a gas, police or fire station).
+const TRANSIT = /\b(subways?|subway (station|stop|car|platform)s?|train stations?|mta|metrocard|omny|metro ?north|lirr|(the )?[a-z0-9] train|bus (driver|operator)s?|on the bus|select bus|express bus)\b/;
 // A smoke or carbon monoxide detector, and an owner who did not put one in.
 const DETECTOR = "\\b(smoke|carbon monoxide|co) (detectors?|alarms?)\\b";
 const NOT_PUT_IN = "\\b(didn'?t|did not|won'?t|will not|never|refus\\w* to|hasn'?t|has not|haven'?t|have not|doesn'?t|does not|failed to)\\b[^.]{0,20}\\b(install\\w*|put (in|up)|replac\\w*|provid\\w*|give|fix\\w*|have)\\b";
@@ -190,7 +199,7 @@ export const DIRTY_AT_HOME = new RegExp(`\\b${HOME_ROOM}\\b[^.]{0,30}\\b${DIRTY}
 // Spanish words cover the top problems only; matching is by keyword, not translation.
 export const CONCEPTS: Concept[] = [
   // Noise (category "Noise")
-  { when: /\b(noise|noisy|loud|music|blasting|bass|yell(?!ow)|shout|scream|bang|pound|stomp|stereo|speakers?|tv\b|television|racket|barks?\b|barking|honk\w*|horns? (blar|honk)\w*|blaring|jingl\w*)/, terms: ["noise"], categories: ["Noise"], family: "noise" },
+  { when: /\b(noise|noisy|loud|music|blasting|bass|yell(?!ow)|shout|scream|bang|pound|stomp|stereo|speakers?|tv\b|television|racket|barks?\b|barking|honk\w*|horns? (blar|honk)\w*|blaring|jingl\w*|howl\w*|yap\w*|whin(e|es|ing)\b|revv\w*|rev(s)? (their |the |its )?engines?|mufflers?)/, terms: ["noise"], categories: ["Noise"], family: "noise" },
   { when: /\bice cream (trucks?|vans?)\b/, terms: ["ice", "cream", "truck"], weight: 3, categories: ["Noise"] },
   { when: /\b(ruido|música alta|musica alta|fiesta|gritos)/, terms: ["noise"], categories: ["Noise"], family: "noise", spanish: true },
   { when: /\b(neighbou?rs?|next ?do?or|upstairs|downstairs|apartment (above|below)|across the hall|my building|the building|vecin[oa]s?)\b/, terms: ["neighbor"], weight: 2 },
@@ -208,14 +217,16 @@ export const CONCEPTS: Concept[] = [
   // Construction Site No Smoking Sign article on the word "construction".
   { when: /\b(jackhammer\w*|pile[- ]?driv\w*|drilling|demolition)\b/, terms: ["noise", "construction", "jackhammer"], weight: 3, against: ["smoking", "sign", "dust", "permit"], categories: ["Noise"], family: "noise" },
   { when: new RegExp(`\\b(construction|jackhammer\\w*|drilling|demolition)\\b[^.]*${AFTER_HOURS}|${AFTER_HOURS}[^.]*\\b(construction|jackhammer\\w*|drilling|demolition)\\b`), terms: ["noise", "after", "hours"], weight: 2, against: ["smoking", "sign", "dust"], categories: ["Noise"], family: "noise" },
-  { when: /\b(alarm)/, unless: /\b(smoke|carbon monoxide|co) (alarm|detector)/, terms: ["alarm", "noise"], weight: 2, categories: ["Noise"], family: "noise" },
+  { when: /\b(alarm)/, unless: /\b(smoke|carbon monoxide|co) (alarm|detector)/, terms: ["alarm", "noise"], weight: 3, categories: ["Noise"], family: "noise" },
   { when: /\b(car (was |got )?hit|hit my car|accident|crash(ed)?|collision|fender[- ]bender)\b/, terms: ["accident", "vehicle"], weight: 3, categories: ["Safety & Crime"], family: "crash" },
   { when: /\bsmok(e|es|ing)\b[^.]{0,25}\b(cigarettes?|cigars?|weed|marijuana|hallway|stairwell|lobby|building)\b|\b(cigarette|secondhand|second-hand) smoke\b/, onlyIf: (t) => !new RegExp(DETECTOR).test(t) || /\b(cigarettes?|cigars?|weed|marijuana|smokers?|smoking)\b/.test(t), terms: ["smoke", "free", "air", "act", "complaint"], weight: 3, categories: ["Tenants", "Public Health"], family: "smoking" },
-  { when: /\b(smell|smells|odor|odour|stink\w*|fumes|exhaust)\b/, unless: /\bgas\b/, terms: ["odor", "smell"], weight: 2, categories: ["Air"], family: "odor" },
+  { when: /\b(smell|smells|odor|odour|stink\w*|fumes|exhaust)\b/, unless: /\bgas\b/, terms: ["odor", "smell"], synonyms: true, weight: 2, categories: ["Air"], family: "odor" },
   // Chimney and vent words only when said: an odor alone is not chimney smoke (with the Air
   // category recorded, "cooking odor" tied with Chimney or Ventilation Smoke; 2026-11-08).
   { when: /\b(chimney|chimneys|vents?|ventilation|exhaust)\b/, terms: ["ventilation", "chimney"], weight: 2, categories: ["Air"] },
-  { when: /\b(dog|dogs|barking|barks|animal|perro)\b/, terms: ["dog", "animal"], weight: 2 },
+  { when: /\b(dog|dogs|barking|barks|howl\w*|yapp?\w*|animal|perro)\b/, terms: ["dog", "animal"], weight: 2 },
+  // A party or a crowd: Noise from Large Party or Crowd (KA-01591); not a permit question.
+  { when: /\b(party|parties|dj|crowds?|block party)\b/, unless: /\b(permits?|apply|application)\b/, terms: ["party", "crowd", "noise"], weight: 2, against: ["permit"], categories: ["Noise"], family: "noise" },
   { when: /\bfireworks?\b|\bfuegos artificiales\b/, terms: ["fireworks"], weight: 3, categories: ["Noise", "Safety & Crime"], family: "fireworks" },
   // Parking and vehicles
   { when: /\b(parked|parking|double[- ]?parked|park(ed)? illegally|mal estacionad\w*|estacionad\w*)\b/, unless: new RegExp(`\\b(parking )?meters?\\b|\\bmuni-?meters?\\b|${STREET_SIGN.source}|${IDLING.source}`), terms: ["parking", "illegal", "parked", "vehicle"], categories: ["Parking", "Tickets & Tows"], family: "parking" },
@@ -223,7 +234,8 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(parking )?meters?\b|\bmuni-?meters?\b/, unless: /\bwater meters?\b/, terms: ["parking", "meter", "complaint"], weight: 3, against: ["illegal"], categories: ["Parking"], family: "meter" },
   { when: /\bhydrant/, terms: ["hydrant"], weight: 2, categories: ["Water", "Sidewalks"] },
   { when: /\bdriveway/, terms: ["driveway", "blocked"], weight: 3, against: ["commercial"], categories: ["Parking"], family: "parking" },
-  { when: /\b(abandoned|derelict|junk car|no (license )?plates?|hasn'?t moved|not moved|been (sitting|there) for)/, terms: ["abandoned", "vehicle"], weight: 3, categories: ["Tickets & Tows", "Parking"], family: "parking" },
+  // Stage 8 stress set: "a car with flat tires has been sitting on my street for a month" found nothing.
+  { when: /\b(abandoned|derelict|junk car|no (license )?plates?|hasn'?t moved|not moved|been (sitting|there) for|been (sitting|parked|left|there)\b[^.]{0,30}\bfor (a |over a |more than a |two |three |several |many )?(weeks?|months?|years?)\b|flat tires?|missing (wheels?|tires?))/, unless: /\babandoned (dogs?|cats?|animals?|pets?|puppy|puppies|kittens?)\b/, terms: ["abandoned", "vehicle"], weight: 3, categories: ["Tickets & Tows", "Parking"], family: "parking" },
   { when: /\b(no|without|missing) (license )?plates?\b/, terms: ["without"], weight: 3 },
   { when: /\bwith (a )?(license )?plates?\b/, terms: ["with"], weight: 3 },
   { when: /\bbike lane\b/, terms: ["bike", "lane"], weight: 3, categories: ["Bikes", "Parking"], family: "bike_lane" },
@@ -232,10 +244,16 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(hot water|agua caliente)\b/, terms: ["hot", "water", "heat"], weight: 2, categories: ["Tenants"], family: "heat" },
   { when: NO_WATER, unless: /\bhot water\b/, terms: ["water", "pressure", "temperature"], weight: 3, against: ["heat", "leak", "main"], categories: ["Tenants", "Water"], family: "no_water" },
   { when: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building|rent|apartamento|casero|due[ñn]o|edificio)\b/, terms: ["apartment", "residential", "building"], weight: 1, against: ["commercial", "nycha", "loft"], categories: ["Tenants"] },
-  { when: /\b(harass\w*|forcing (me|us) out|trying to (evict|force)|acoso|acosando)\b/, terms: ["harass", "tenant"], weight: 3, categories: ["Tenants"], family: "harassment" },
+  // A room of one's home says the place is a residence (stage 8 stress set: "mice keep getting
+  // into my kitchen cabinets" got Rat or Mouse Complaint, not Residential Pest Complaint).
+  // Pests only: for other problems the room's word tips a specific article (Mold Complaint)
+  // toward the general Apartment Maintenance Complaint.
+  { when: /\bmy (kitchen|bathroom|bedroom|living room|closet)s?\b/, unless: /\b(apartment|landlord|super|superintendent|tenant|my unit|my building)\b/, onlyIf: (t) => /\b(mice|mouse|rats?|rodents?|roach(es)?|cockroach(es)?|pests?|vermin|fleas|flies|bed ?bugs?)\b/.test(t), terms: ["residential"], weight: 2, categories: ["Tenants"] },
+  { when: /\b(harass\w*|forcing (me|us) out|trying to (evict|force)|threaten\w* to evict|illegal(ly)? evict\w*|lock(ed|ing)? (me|us) out|cut(ting)? off (my|our) (services|utilities|heat|water|gas|electricity)|acoso|acosando)\b/, terms: ["harass", "tenant"], weight: 3, categories: ["Tenants"], family: "harassment" },
   // Bed bugs: the City's Bed Bug Complaint (KA-01236), its own article. Beta retest 2026-11-08.
   { when: /\bbed ?bugs?\b|\bchinches\b/, terms: ["bed", "bug", "complaint"], weight: 3, categories: ["Tenants", "Pests & Wildlife"], family: "pests" },
-  { when: DEAD_ANIMAL, unless: /\b(apartment|my (home|house|yard|backyard|basement)|in (my|the|our) building|inside)\b/, terms: ["dead", "animal", "public", "property"], weight: 3, against: ["private"], categories: ["Pests & Wildlife", "Sidewalks"], family: "dead_animal" },
+  // Only inside or on one's own property is private: "in front of my house" is the sidewalk.
+  { when: DEAD_ANIMAL, unless: /\b(apartment|(in|inside|on|under) (my|our) (home|house|yard|backyard|basement|property|roof|porch|deck)|my (yard|backyard|basement)|in (my|the|our) building|inside)\b/, terms: ["dead", "animal", "public", "property"], weight: 3, against: ["private"], categories: ["Pests & Wildlife", "Sidewalks"], family: "dead_animal" },
   // Rodents and insects apart: a roach is not a rat. Beta retest 6 stress set: "roaches all over
   // my kitchen" got Rat or Mouse Complaint, rated strong, because one word list gave it "rat" too.
   // (The rodent list keeps "roach": with it, Residential Pest Complaint, whose summary names mice
@@ -249,9 +267,9 @@ export const CONCEPTS: Concept[] = [
   // A detector the owner did not put in is the same complaint as a broken one: owners must install
   // smoke and carbon monoxide detectors (KA-01074, "Smoke Detectors" and its CO section). Beta
   // retest 6, 2026-11-09: "landlord didn't install a CO detector" got no housing article at all.
-  { when: new RegExp(`${DETECTOR}[^.]{0,30}\\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\\w*|needs? (a )?(new )?batter\\w*)|\\b(no|missing|broken|without (a |any )?)\\s?${DETECTOR}|${NOT_PUT_IN}[^.]{0,25}${DETECTOR}`), terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
+  { when: new RegExp(`${DETECTOR}[^.]{0,30}\\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\\w*|needs? (a )?(new )?batter\\w*)|\\b(no|missing|broken|without (a |any )?)\\s?${DETECTOR}|${NOT_PUT_IN}[^.]{0,25}${DETECTOR}|${DETECTOR}[^.]{0,40}\\b(never|not)( been)? (install\\w*|put (in|up)|provid\\w*|replac\\w*)`), terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
   { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, unless: STREET_FLOOD, onlyIf: (t) => !isStreetLeak(t) && !(HYDRANT_WATER.test(t) && !INDOOR_WATER.test(t)) && !(WATER_MAIN.test(t) && !INDOOR_WATER.test(t)), terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
-  { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, terms: ["elevator", "escalator"], weight: 3, categories: ["Buildings & Property"], family: "elevator" },
+  { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, unless: TRANSIT, terms: ["elevator", "escalator"], synonyms: true, weight: 3, against: ["inspector", "inspection", "permit", "code"], categories: ["Buildings & Property"], family: "elevator" },
   { when: /\bfire escapes?\b|\b(blocked|locked) (building )?exits?\b/, terms: ["fire", "escape", "exit", "blocked"], weight: 3, categories: ["Buildings & Property"], family: "exit" },
   // Streets and sidewalks
   { when: /\b(pothole|potholes|hole in the (road|street)|cave[- ]?in|sinkhole|crater|bache|baches|hoyo en la calle)/, terms: ["pothole", "cave", "street"], weight: 3, categories: ["Streets & Highways"], family: "pothole" },
@@ -273,15 +291,15 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(dead|dying)\b[^.]{0,20}\b(trees?|[aá]rbol)\b|\btrees?\b[^.]{0,40}\b(dead|dying)\b/, unless: /\b(fell|fallen|falling|came down|knocked down|blew down|toppled)\b/, terms: ["dead"], weight: 3, against: ["fallen"], family: "tree" },
   // A sidewalk shed or scaffold left up: the City's Scaffold or Sidewalk Shed Complaint (KA-02291).
   { when: /\b(sidewalk|construction) sheds?\b|\bscaffold\w*/, terms: ["scaffold", "sidewalk", "shed", "complaint"], weight: 3, against: ["permit"], categories: ["Sidewalks", "Buildings & Property"], family: "scaffold" },
-  { when: /\b(snow|ice(?! cream)|icy|unshoveled|shovel|slush|plow|nieve|hielo)/, terms: ["snow", "ice"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "snow" },
+  { when: /\b(snow|ice(?! cream)|icy|unshoveled|shovel|slush|plow|nieve|hielo)/, terms: ["snow", "ice"], synonyms: true, weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "snow" },
   // Water
   { when: STREET_FLOOD, terms: ["street", "flooding", "ponding"], weight: 3, categories: ["Streets & Highways"], family: "street_flooding" },
   { when: /\b(water ?mains?|main (broke|burst|break)|gushing|water (all )?over the street|water in the street)/, onlyIf: (t) => !INDOOR_WATER.test(t) && !(HYDRANT_WATER.test(t) && !WATER_MAIN.test(t)), terms: ["water", "main", "break"], weight: 3, against: ["building", "meter"], categories: ["Water", "Sidewalks"], family: "water" },
-  { when: HYDRANT_WATER, terms: ["hydrant", "leak", "running"], weight: 3, against: ["building", "request", "permit"], categories: ["Water", "Sidewalks"], family: "water" },
+  { when: HYDRANT_WATER, terms: ["fire", "hydrant", "complaint", "leak", "running"], weight: 3, against: ["building", "request", "permit"], categories: ["Water", "Sidewalks"], family: "water" },
   { when: STREET_LEAK, onlyIf: isStreetLeak, terms: ["water", "leak", "street", "sidewalk"], weight: 3, against: ["building", "apartment", "meter", "commercial", "drinking"], categories: ["Sidewalks", "Streets & Highways"], family: "water" },
   // Trash
   { when: TRASH_INDOORS, unless: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\bbaskets?\b/, terms: ["apartment", "maintenance", "complaint"], weight: 3, against: ["gutter", "sidewalk", "street", "basket", "lot"], categories: ["Tenants"], family: "building_trash" },
-  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: new RegExp(`${MISSED_COLLECTION.source}|${TRASH_INDOORS.source}|${PARK_RESTROOM.source}|${DIRTY_AT_HOME.source}`), terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
+  { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: new RegExp(`${MISSED_COLLECTION.source}|${TRASH_INDOORS.source}|${PARK_RESTROOM.source}|${DIRTY_AT_HOME.source}`), terms: ["dirty", "litter", "trash"], synonyms: true, weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
   { when: DIRTY_AT_HOME, unless: new RegExp(`${PARK_RESTROOM.source}|${TRASH_INDOORS.source}|${NOT_HOME.source}`), terms: ["apartment", "maintenance"], weight: 2, against: ["basket", "gutter", "sidewalk", "street"], categories: ["Tenants"] },
   // Trash inside a building is not a public litter basket ("trash in the lobby" got Litter
   // Basket once that article was recorded, 2026-11-08); a can, basket or bin said wins.
@@ -303,6 +321,23 @@ export const CONCEPTS: Concept[] = [
   { when: PARK_RESTROOM, terms: ["park", "maintenance"], weight: 3, against: ["apartment", "residential", "meter", "garage", "illegal"], categories: ["Parks & Recreation"], family: "park_maintenance" },
   // Illness from food: the City's Food Poisoning article (KA-02051). Beta retest 2026-11-08.
   { when: /\bfood poisoning\b|\bintoxicaci[oó]n alimentaria\b|\b(sick|ill|vomit\w*|threw up|throwing up)\b[^.]{0,40}\b(ate|eating|food|meal|restaurant|takeout)\b|\b(ate|eating)\b[^.]{0,40}\b(sick|ill|vomit\w*|threw up|throwing up)\b/, terms: ["food", "poisoning", "illness"], weight: 3, against: ["noise"], categories: ["Public Health"], family: "food_illness" },
+  // The subway and MTA buses: the City's Buses and Subways article (KA-01014), whose "Bus or
+  // Subway Complaint" section sends "maintenance, comfort, or cleanliness issues in a station or
+  // on a bus or train" to the MTA. Not a building elevator (Buildings) or a litter basket. Beta
+  // retest 7, 2026-11-09: a subway station elevator got Elevator or Escalator Complaint.
+  { when: TRANSIT, terms: ["bus", "subway"], weight: 3, against: ["elevator", "escalator", "basket", "building", "school", "lane", "camera", "construction", "pass", "fair", "arrival", "sign", "port", "authority"], categories: ["Public Transportation"], family: "transit" },
+  // Animals (category "Pets", recorded 2026-11-09). A dog off its leash: Unleashed Dog (KA-01051),
+  // "a dog that is not leashed in a park or other public place". Beta retest 7: "people let their
+  // dogs run off leash in the park" got Dog or Animal Waste.
+  { when: /\b(off[- ]?(the[- ])?leash(es|ed)?|unleashed|without (a |their |its )?leash(es)?|no leash(es)?|not on (a |their |its )?leash(es)?|not leashed)\b/, terms: ["unleashed", "dog"], weight: 3, against: ["waste", "noise", "license", "restaurant"], categories: ["Pets", "Parks & Recreation"], family: "unleashed_dog" },
+  // A stray or abandoned animal: Stray or Abandoned Animal (KA-02300). An aggressive one is a
+  // danger (emergency.ts, the City's Dangerous Animal article: call 911).
+  { when: /\b(stray|abandoned|loose|roaming|lost) (dogs?|cats?|animals?|pets?|pit ?bulls?|puppy|puppies|kittens?)\b|\b(dogs?|cats?|animals?) (is |are )?(roaming|wandering|running loose|on the loose)\b/, terms: ["stray", "abandoned", "animal"], weight: 3, against: ["waste", "noise", "dead", "vehicle", "property"], categories: ["Pets"], family: "stray_animal" },
+  // Something broken or out: a complaint about a problem, not a request for a new one or an
+  // inspection or a permit. Context only (weight 1, no family): it breaks ties such as
+  // Elevator or Escalator Complaint against Elevator or Escalator Inspection, and Street Light
+  // Complaint against Street Light Installation or Relocation Request (beta retest 7).
+  { when: /\b(broken|broke|not working|isn'?t working|doesn'?t work|out of (service|order)|(is|are|has been|have been|went|been) out|stopped working|stuck|damaged|busted)\b/, terms: ["problem", "complaint"], weight: 1 },
   // Records
   { when: /\bbirth certificate|acta de nacimiento/, terms: ["birth", "certificate", "order"], weight: 3, categories: ["Public Health", "Birth & Adoption"], family: "records" },
   // Crime that is not happening now (danger is handled in emergency.ts)
@@ -317,9 +352,9 @@ type Query = {
   text: string;
   against: Set<string>;
   /**
-   * Where each weighted word came from: the word list entries (CONCEPTS index, "c3") or danger
-   * kinds ("d:gas") that added it. One entry's words are one piece of evidence, however many
-   * of them an article shares (strongEvidence).
+   * Where each weighted word came from, as units of evidence (strongEvidence): "c3:heat" for a
+   * facet of word-list entry 3, "c3" for an entry whose words are synonyms (all one unit), or
+   * a danger kind ("d:gas").
    */
   sources: Map<string, Set<string>>;
   /** The sources that name a problem (an entry with a family, or a danger), not just context. */
@@ -358,18 +393,20 @@ export function parseQuery(description: string): Query {
     matched.push(m[0].trim());
     const from = `c${i}`;
     if (c.family) problemSources.add(from);
-    for (const t of c.terms) add(t, c.weight ?? 2, from);
+    for (const t of c.terms) add(t, c.weight ?? 2, c.synonyms ? from : `${from}:${stem(t)}`);
     for (const t of c.against ?? []) against.add(stem(t));
     for (const cat of c.categories ?? []) if (!categories.includes(cat)) categories.push(cat);
     if (c.family && !families.includes(c.family)) families.push(c.family);
     if (c.spanish) spanish = true;
   }
   // A danger adds its words and always searches Safety & Crime, where the City's "Call 911" articles are.
-  const dv = danger.kinds.some((k) => k.id === "domestic_violence");
+  // An animal attacking people is the City's Dangerous Animal article, not the general danger
+  // one, though "attacking" is also a crime word.
+  const ownArticle = danger.kinds.some((k) => k.id === "domestic_violence" || k.id === "dangerous_animal");
   for (const k of danger.kinds) {
-    // Domestic violence: the City's own Domestic Violence article, not the general danger one.
+    // Domestic violence or a dangerous animal: the City's own article, not the general danger one.
     problemSources.add(`d:${k.id}`);
-    if (!(dv && k.id === "crime")) for (const t of k.terms) add(t, 3, `d:${k.id}`);
+    if (!(ownArticle && k.id === "crime")) for (const t of k.terms) add(t, 3, `d:${k.id}`);
     if (!categories.includes("Safety & Crime")) categories.unshift("Safety & Crime");
     matched.push(...danger.suggested_by);
   }
@@ -459,16 +496,20 @@ function scoreCategory(q: Query, c: Category): number {
  * Enough of the person's own problem words in the article's title or summary to call it
  * strong. Problem words are the word list's (weight 2 or more), not every word of the description.
  *
- * Evidence is counted per word-list entry, not per word (beta retest 6, 2026-11-09). One entry's
- * words are one thing the person said: "dirty" adds dirty, litter and trash, and an article
- * sharing two of them (Litter Basket Complaint) was rated strong for "bathroom in my house is
- * dirty". And the evidence must include the problem itself (an entry with a family, or a
- * danger): context alone (a vehicle, a building, a street) is never strong. "landlord didn't
- * install a carbon monoxide detector" was rated strong for Vehicle Stored on Residential
- * Property on "car" (inside "carbon") plus "residential" (from "landlord").
+ * Evidence is counted in units, not words. An entry whose words are synonyms (Concept.synonyms)
+ * is one unit: "dirty" adds dirty, litter and trash, and an article sharing two of them (Litter
+ * Basket Complaint) was rated strong for "bathroom in my house is dirty" (beta retest 6). Other
+ * entries' words are facets, one unit each: "skipped our garbage pickup" adds missed and
+ * collection, and Missed Trash, Recycling, or Compost Collection shares both. (Beta retest 7:
+ * counting every entry as one unit dropped that, "rodents in my building" and "a homeless
+ * person on my block needs help" to "close call".) And the evidence must include the problem
+ * itself (an entry with a family, or a danger): context alone (a vehicle, a building, a
+ * street) is never strong. "landlord didn't install a carbon monoxide detector" was rated
+ * strong for Vehicle Stored on Residential Property on "car" (inside "carbon") plus
+ * "residential" (from "landlord").
  *
- * Strong, then, is two entries that include a problem, or one problem entry whose words few
- * titles in the pool share. One entry whose words several titles share ("construction" in
+ * Strong, then, is two units that include a problem, or one problem unit whose words few
+ * titles in the pool share. One unit whose words several titles share ("construction" in
  * Buildings & Property) is never strong (beta retest 3: the Construction Site No Smoking Sign
  * article was rated strong for 6am jackhammering), unless it names the article: more than half
  * of the article title's own words are the person's, and the article beats every other title
@@ -482,7 +523,7 @@ export function strongEvidence(q: Query, best: ArticleSummary, pool: ArticleSumm
   const own = [...q.terms].filter(([t, w]) => w >= 2 && (title.has(t) || desc.has(t))).map(([t]) => t);
   if (own.length === 0) return false;
   const units = new Set(own.flatMap((t) => [...(q.sources.get(t) ?? [])]));
-  if (![...units].some((u) => q.problemSources.has(u))) return false;
+  if (![...units].some((u) => q.problemSources.has(u.split(":")[0]))) return false;
   if (units.size >= 2) return true;
   const rivals = pool.filter((a) => a.ka_number !== best.ka_number && own.some((t) => stems(a.title).has(t)));
   if (rivals.length <= 1) return true;
@@ -546,6 +587,8 @@ function whatHappensNext(text: string): string | null {
 const PHONE_ONLY = /(by phone only|must be reported by phone|can only be (reported|made) by phone)/i;
 const CALL_311 = /Call 311 or 212-NEW-YORK \(212-639-9675\)/;
 const NOT_HANDLED = /(The City does not|does not accept|doesn'?t accept|is not handled by|contact the [^.]* directly)/i;
+/** An authority named in the text: "the Metropolitan Transportation Authority (MTA)" (beta retest 7: subway answers named no agency). */
+const AUTHORITY_IN_TEXT = /\b((?:[A-Z][A-Za-z&]+ )+Authority)\s\(([A-Z]{2,6})\)/g;
 const AGENCY_IN_TEXT = /\b((?:Department|Office|Administration|Commission|Police Department|Fire Department) (?:of |for )?[A-Z][A-Za-z&'’ ]+?)\s\(([A-Z]{2,6})\)/g;
 
 /**
@@ -555,7 +598,8 @@ const AGENCY_IN_TEXT = /\b((?:Department|Office|Administration|Commission|Police
  * the Carbon Monoxide article's agency carried the stray "'s".
  */
 export function agenciesNamedIn(text: string): string[] {
-  return [...new Set([...text.matchAll(AGENCY_IN_TEXT)].map((m) => `${m[1].trim().replace(/['’]s?$/, "")} (${m[2]})`))];
+  const found = [...text.matchAll(AGENCY_IN_TEXT), ...text.matchAll(AUTHORITY_IN_TEXT)];
+  return [...new Set(found.map((m) => `${m[1].trim().replace(/^The /, "").replace(/['’]s?$/, "")} (${m[2]})`))];
 }
 
 function scoreAction(q: Query, x: ContentAction, section: string, ignore: Set<string>): number {

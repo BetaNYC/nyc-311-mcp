@@ -1,0 +1,31 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02300",
+      "Title": "Stray or Abandoned Animal",
+      "Description": "Report a stray or abandoned animal.",
+      "Section": [
+        {
+          "Name": "Stray or Abandoned Animal Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02224\">Animal Abuse</a>&nbsp;to report a neglected&nbsp;or abused animal</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01538\">Dangerous Animal</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01789\">Injured or Sick Animal</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01790\">Wild Animal</a></li></ul></div><p>You can report:</p><ul><li>a stray animal (an animal that does not have an identified owner)</li><li>a pet that has been abandoned by its owner&nbsp;</li><li>a pet that has been abandoned due to an owner&rsquo;s death, hospitalization, or incarceration&nbsp;</li></ul><p>To report a lost pet or a pet that you have found and believe to have an owner, visit&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02852\">Lost or Found&nbsp;Pet</a>.</p><p>Always use caution when near stray animals or wildlife.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Report a Stray or Abandoned Dog",
+          "Content": "<p>Animal Care Centers of NYC (ACC) accepts reports of stray dogs by phone during regular business hours.</p><p>Be prepared with the following information:</p><ul><li>Your contact information</li><li>Exact location with cross streets or address</li><li>Description of the dog (size, color, breed if known)</li><li>Dog&rsquo;s condition and behavior</li><li>How long the dog has been there</li><li>Photos if safe to take</li><li>Owner information if known</li></ul><p>You can also bring a stray dog to an ACC location.</p><p>To report a lost pet or a pet that you have found and believe to have an owner, visit&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02852\">Lost or Found Pet</a>.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Report a Stray or Abandoned Cat",
+          "Content": "<p>Animal Care Centers of NYC (ACC) does not capture or accept reports of healthy stray or feral cats. Bringing in a stray cat may not be in their best interest if the cat appears healthy and thriving in the community. If you have found a sick or injured outdoor cat, please review ACC&rsquo;s <a class=\"externallink\" target=\"_blank\" href=\"https://www.nycacc.org/programs/community-cats/\">Outdoor Kittens and Cats</a>&nbsp;page for assistance.</p><p>ACC accepts reports of stray or abandoned indoor cats by phone during regular business hours.</p><p>You can also bring a stray or abandoned indoor cat to an ACC location.</p><p>To report a lost pet or a pet that you have found and believe to have an owner, visit&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02852\">Lost or Found Pet</a>.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p><p><strong>Report Stray Kittens</strong></p><p>ACC accepts reports of orphaned kittens. You may also bring an orphaned kitten to an ACC location.</p><p>Do not separate stray or feral kittens from their mother. You should always monitor the kittens from a distance for a few hours in case the mother cat returns.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nycacc.org/wp-content/uploads/2024/06/ACC-Kitten-Season-Flow-Chart.pdf\">Learn more about found kittens.</a></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p><p><strong>Feral Cats</strong></p><p>Feral cats do not have owners, are unsocialized to humans, and have an extreme fear of contact with people. The Feral Cat Initiative (FCI) was created to help with the feral cat overpopulation crisis through the humane method of Trap-Neuter-Return (TNR). In TNR programs, a feral cat is trapped, sterilized, vaccinated for rabies, and returned to the place where it was found.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.bideawee.org/programs/feral-cat-initiative/\">Learn more about Bideawee&#39;s Feral Cat Initiative (FCI).</a></p><p>Learn more about Trap-Neuter-Return (TNR) with the <a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/animalwelfare/resources/outdoor-cats-and-tnr.page\">NYC Mayor&rsquo;s Office of Animal Welfare</a> and <a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/doh/health/health-topics/trap-neuter-return-of-feral-cats-in-nyc.page\">NYC Health</a>.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Call 311 Help",
+          "Content": "<p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p><p>Animal Care Centers of NYC (ACC) locations are closed on the following holidays:</p><ul><li>New Year&rsquo;s Day&nbsp;</li><li>Martin Luther King Jr. Day&nbsp;</li><li>Memorial Day&nbsp;</li><li>Juneteenth&nbsp;</li><li>Independence Day&nbsp;</li><li>Labor Day&nbsp;</li><li>Thanksgiving Day</li><li>Christmas Day</li></ul><p style=\"line-height:116%;\">Please call&nbsp;before arriving with a stray animal.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nycacc.org/locations-and-hours/\">Find an ACC location.</a></p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

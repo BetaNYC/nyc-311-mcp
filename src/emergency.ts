@@ -97,6 +97,21 @@ export const DANGERS: DangerKind[] = [
     terms: [],
   },
   {
+    // The City's Dangerous Animal article (KA-01538): "Call 911 to report animals that are
+    // currently threatening or endangering people. This includes animals that are: Aggressive,
+    // Ferocious, Vicious, Foaming at the mouth, Showing signs of rabies. Do not call 911 to file
+    // a complaint about animals that have bitten other animals." Beta retest 7, 2026-11-09:
+    // "a stray dog is roaming the block and looks aggressive" found no article.
+    // Before "crime", so an animal attacking people quotes this article, not Assault.
+    id: "dangerous_animal",
+    label: "a dangerous animal",
+    when: /\b(aggressive|vicious|ferocious|rabid|foaming at the mouth)\b[^.]{0,30}\b(dogs?|animals?|pit ?bulls?|raccoons?|coyotes?)\b|\b(dogs?|animals?|pit ?bulls?|raccoons?|coyotes?)\b[^.]{0,40}\b(aggressive|vicious|ferocious|rabid|foaming at the mouth|lunging at (people|kids|children|someone|me|us)|attacking (people|kids|children|someone|me|us)|chasing (people|kids|children|someone|me|us))\b/,
+    // The whole sentence is excused, so "a vicious dog bit my dog" is not a 911 case.
+    unless: /[^.]*\b(bit|bitten|attacked|attacking)\b[^.]{0,20}\b(my|a|the|another|other|our|his|her|their) (dogs?|cats?|pets?)\b[^.]*/,
+    city: /^Dangerous Animal$/,
+    terms: ["dangerous", "animal"],
+  },
+  {
     id: "crime",
     label: "a crime in progress",
     when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|(someone|somebody|he|she|they|a (man|guy|woman|person)|people|burglars?|thie(f|ves)) broke in\b|^broke in\b|broke in (last|yesterday|while|and|through|at)\b|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
@@ -268,6 +283,7 @@ export const BUILT_IN_911: ArticleLike[] = [
   { ka_number: "KA-02907", title: "Overdose", description: "Call 911 to report someone in very bad condition who needs immediate medical help." },
   { ka_number: "KA-01513", title: "Accident with Injury", description: "Call 911 to report an accident in progress." },
   { ka_number: "KA-01046", title: "Missing Person", description: "Call 911 to report someone who may be missing, abducted, or kidnapped. Check if a missing person has been found." },
+  { ka_number: "KA-01538", title: "Dangerous Animal", description: "Call 911 to report an animal causing a dangerous or hazardous condition." },
   { ka_number: "KA-01635", title: "Suicide", description: "Call 911 to report that someone is considering suicide or endangering themselves." },
 ];
 

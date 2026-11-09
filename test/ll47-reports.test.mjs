@@ -908,7 +908,9 @@ test("fiscal-year call, portal failing: every month says not responding (none 'n
   assert.equal(fy.complete, false);
   assert.equal(fy.calls, undefined);
   const whys = fy.months_missing.map((m) => m.why);
-  assert.ok(whys.some((w) => /not responding/.test(w)), JSON.stringify(whys));
+  // Each month says the portal returned an error, and how many of its 4 tries failed so far
+  // (the count is kept across calls since beta retest 7).
+  assert.ok(whys.every((w) => /returned an error or could not be reached .*\(try [1-4] of 4 failed\)|not responding/.test(w)), JSON.stringify(whys));
   assert.ok(!whys.some((w) => /not tried/.test(w)), JSON.stringify(whys));
   // A slow 503 (6 s) is not retried inside one try; each month is tried again after a pause,
   // until the background time runs out (beta retest 6).
@@ -1137,7 +1139,7 @@ test("retest 6: a month waiting to be asked again says so, and the load keeps go
   const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 2_500, retryPauseMs: 1_000 });
   const fy = env.data.fiscal_year;
   assert.equal(fy.complete, false);
-  assert.match(fy.months_missing[0].why, /^retrying: NYC Open Data returned an error .*\(try 1 of 4\).*ask again in a minute/);
+  assert.match(fy.months_missing[0].why, /^retrying: NYC Open Data returned an error .*\(try 1 of 4 failed\).*ask again in a minute/);
   assert.match(fy.note, /still loading/);
   for (let i = 0; i < 100 && asked.length < 3; i++) await pause(50);
   await pause(100);

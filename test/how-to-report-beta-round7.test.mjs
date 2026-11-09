@@ -16,14 +16,12 @@
 // 7 of these 68 were wrong (6 rated strong): the two above, "landlord didn't install a CO
 // detector", roaches → Rat or Mouse, a gushing hydrant → Water Main Break, a dirty subway
 // bathroom → Litter Basket, and smoke detectors never installed → Smoke Free Air Act Complaint.
+// (Since round 8 a dirty subway bathroom goes to Buses and Subways, KA-01014, the MTA.)
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readdir, readFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import path from "node:path";
 import { howToReport, parseQuery, strongEvidence, CONCEPTS, DIRTY_AT_HOME } from "../dist/how-to-report.js";
-import { ContentClient } from "../dist/content-311.js";
-import { CONTENT, fixtureContent, recorded } from "./content-fixture.mjs";
+import { fixtureContent } from "./content-fixture.mjs";
+import { stressClient as stressClient_ } from "./stress-client.mjs";
 
 const { client } = await fixtureContent();
 const HPD = "Department of Housing Preservation and Development";
@@ -72,28 +70,7 @@ test("root cause: one word-list entry is one piece of evidence, and context alon
   assert.ok(!parseQuery("the ice cream truck jingle is driving me crazy").families.includes("snow"));
 });
 
-// Articles the stress set reaches that were never recorded in full are served from their own
-// summary in the recorded category lists (title and description, no sections). Ranking and
-// confidence read only the summary, so the answer's article and confidence are the same as
-// with the full text; only its report options are missing.
-const lists = path.join(CONTENT, "GetContentList");
-const summaries = new Map();
-for (const f of await readdir(lists)) for (const a of JSON.parse(await readFile(path.join(lists, f), "utf8")).ContentArticleList ?? []) summaries.set(a.id, a);
-const stressClient = new ContentClient({
-  apiKey: () => "test-key-never-sent-anywhere",
-  cacheDir: await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-stress-")),
-  minIntervalMs: 0,
-  logger: () => {},
-  fetch: async (u) => {
-    const body = await recorded(u);
-    if (body) return Response.json(body);
-    const url = new URL(String(u));
-    const op = url.pathname.split("/").pop();
-    const s = op === "GetContent" ? summaries.get(url.searchParams.get("SearchText")) : null;
-    if (s) return Response.json({ KnowledgeArticle: [{ ArticlePublicNumber: s.id, Title: s.title, Description: s.description, Section: [] }] });
-    return Response.json(op === "GetContentList" ? { ContentArticleList: [] } : { KnowledgeArticle: [] });
-  },
-});
+const stressClient = await stressClient_();
 
 // d: the description; ok: the articles that are right for it (empty: none is); must: the first
 // article must be one of ok (otherwise only a strong answer must be); danger: 911 first.
@@ -160,7 +137,7 @@ const CASES = [
   { d: "how do I get a free smoke alarm installed", ok: ["KA-03606"] },
   { d: "my landlord didn't install heat", ok: ["KA-01036"] },
   { d: "the house across the street has a huge pile of garbage in the yard", ok: ["KA-02133", "KA-01074"] },
-  { d: "bathroom in the subway station is dirty", ok: [] },
+  { d: "bathroom in the subway station is dirty", ok: ["KA-01014"] },
   { d: "the residential building next door has scaffolding up for years", ok: ["KA-02291"] },
   { d: "the tenants upstairs are noisy", ok: ["KA-01017"] },
   { d: "my car got towed", ok: ["KA-02055"] },

@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.8] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 7, 2026-11-09)
+
+- **`how_to_report`: right answers back to "strong".** Round 7 counted each word-list entry as
+  one piece of evidence, which also merged entries whose words are different facets of one
+  problem ("skipped our garbage pickup" adds missed + collection). Missed garbage pickup,
+  rodents in my building and a homeless person who needs help dropped to "close call". Now
+  only entries whose words are synonyms ("dirty" / litter / trash; odor / smell; elevator /
+  escalator; snow / ice) count once; a dirty bathroom at home and a carbon monoxide detector
+  stay as fixed in beta.7.
+- **`ll47_directory_assistance_report`: the try count climbs and the limit holds.** The count
+  lived in each background load and restarted at 1 with every new one, and a try cut short by
+  a load's time limit was not counted, so July failed six times and every answer said "try 1
+  of 4". Now it is kept per month for the life of the server and cleared on success; after 4
+  failures in a row the month rests 10 minutes (`DA_REST_MS`), asking nothing, and says until
+  when.
+- **Routes** (City text recorded 2026-11-09, read-only): smoke detectors "never installed" →
+  Apartment Maintenance Complaint; dogs off leash → Unleashed Dog (KA-01051, category Pets now
+  searched); a stray animal → Stray or Abandoned Animal; an aggressive animal or one attacking
+  people → 911 first with the City's Dangerous Animal line (KA-01538), not for an animal that
+  bit a pet; subway stations, cars and MTA buses → Buses and Subways (KA-01014), agency the
+  MTA (an "Authority" named in an article's text is now read as its agency); a car alarm stays
+  Noise from Alarm, now strong; a broken elevator → Elevator or Escalator Complaint, strong,
+  not the inspector or inspection articles; a streetlight out → Street Light Complaint, strong.
+- **Stress set, round 8:** 43 new phrasings. Before: 10 wrong best matches or none (2 rated
+  strong): mice in a kitchen → Rat or Mouse; eviction threats → Heat or Hot Water; a hydrant
+  spraying water → Water Leak on Street; a dirty subway car → Litter Basket; nothing for a
+  howling dog, a DJ party, revving motorcycles, a dead pigeon in front of a house, a car sitting
+  for a month, or a dog off its leash on the block. Now none. Every danger case leads with 911.
+
 ## [1.2.0-beta.7] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

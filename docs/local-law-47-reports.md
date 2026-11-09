@@ -130,7 +130,12 @@ and the failed one goes to the back of the line and is asked again, at most 4 ti
 (`DA_MONTH_TRIES`). Before each request after a failure it pauses: 3 s, doubling with each failure
 in a row, up to 30 s (`DA_RETRY_PAUSE_MS`, `DA_RETRY_PAUSE_MAX_MS`); a success resets it. A failure
 that is not the portal's (a 400) is not asked again. A month waiting for its next try is listed as
-"retrying: … (try n of 4) … ask again in a minute". So a 503 early in a call is usually asked again
+"retrying: … (try n of 4 failed) … ask again in a minute". The count is kept per month for the
+life of the server, across calls and background loads, and a try cut short by a load's time
+limit counts; it is cleared when the month answers. After 4 failures in a row the month rests 10
+minutes (`DA_REST_MS`), asking nothing, and says until when; then a new round starts. (Beta retest
+7, 2026-11-09: the count lived in each load and restarted at 1 with every new one, so July failed
+six times, every answer said "try 1 of 4", and the limit never applied.) So a 503 early in a call is usually asked again
 within that call's 12 s, and a portal that stays down sees at most one request per pause. When a
 load an earlier call started has ended without the month, the next call starts it again. Every month
 missing has a plain reason; the section says `complete: false` and gives no `calls` total. It does

@@ -1,0 +1,34 @@
+{
+  "ContentArticleList": [
+    {
+      "description": "Report bed bugs.",
+      "id": "KA-01236",
+      "title": "Bed Bug Complaint"
+    },
+    {
+      "description": "Report graffiti. Learn about what your options are when someone else reports graffiti on your building.",
+      "id": "KA-02070",
+      "title": "Graffiti"
+    },
+    {
+      "description": "Report a heat problem in a commercial or public school building.",
+      "id": "KA-02122",
+      "title": "Heat Complaint in a Commercial Building"
+    },
+    {
+      "description": "Report poison ivy in a park or tree, on school property, or on private property.",
+      "id": "KA-02281",
+      "title": "Poison Ivy"
+    },
+    {
+      "description": "Report rats, mice, and conditions that might attract them.",
+      "id": "KA-01107",
+      "title": "Rat or Mouse Complaint"
+    },
+    {
+      "description": "Report a public school that needs repair or maintenance.",
+      "id": "KA-01067",
+      "title": "School Maintenance Complaint"
+    }
+  ]
+}
