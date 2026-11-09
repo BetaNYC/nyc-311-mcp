@@ -65,7 +65,7 @@ export const TYPO_VOCAB = [
   "plumbing", "toilet", "roaches", "elevator", "harassing", "graffiti", "recycling", "collection", "shoveled", "illegal",
   "sanitation", "radiator", "cockroach", "mattress", "blocking", "parking",
 ];
-const TYPO_SAFE = new Set(["barking", "parked", "barked", "beating", "leaning", "night", "broke", "streak", "ceilings", "noisy", "musics", "hydrants", "signals", "sidewalks", "toilets", "landlords", "elevators", "mattresses"]);
+const TYPO_SAFE = new Set(["sparking", "sparkling", "barking", "parked", "barked", "beating", "leaning", "night", "broke", "streak", "ceilings", "noisy", "musics", "hydrants", "signals", "sidewalks", "toilets", "landlords", "elevators", "mattresses"]);
 
 function oneEdit(a: string, b: string): boolean {
   if (a === b || Math.abs(a.length - b.length) > 1) return false;
@@ -195,7 +195,9 @@ type Query = {
 export function parseQuery(description: string): Query {
   const fixed = correctTypos(normalize(description));
   const text = fixed.text;
-  const danger = assessDanger(text);
+  // Danger is read from the person's own words, never the typo-corrected ones: a fix such
+  // as "sparking" → "parking" must not be able to hide a 911 line (review, 2026-11-08).
+  const danger = assessDanger(normalize(description));
   const terms = new Map<string, number>();
   const against = new Set<string>();
   const categories: string[] = [];
@@ -550,12 +552,17 @@ async function matchOne(q: Query, client: ContentClient, cats: Category[], used:
   return { routed, articlesScored: pool.size, pool: [...pool.values()].map((x) => x.a), best, alternatives, unreadable };
 }
 
+/** The New York calendar date of an ISO timestamp (its UTC date runs a day ahead every evening). */
+function nycDate(iso: string): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date(iso));
+}
+
 function matchLine(m: Match): string {
   return (
     `Best match: "${m.title}" (${m.ka_number})` +
     (m.agency ? `, handled by the ${m.agency}` : "") +
     (m.problem_type ? `, 311 problem type "${m.problem_type}"` : "") +
-    `. Confidence ${m.confidence.split(":")[0]}. Article text as of ${m.article_fetched_at.slice(0, 10)}.`
+    `. Confidence ${m.confidence.split(":")[0]}. Article text as of ${nycDate(m.article_fetched_at)}.`
   );
 }
 
