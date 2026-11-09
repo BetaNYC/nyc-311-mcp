@@ -549,9 +549,45 @@ test("Open Data failing on the asked month: stop there, no fiscal-year months, a
   const t0 = soda.clock();
   await assert.rejects(
     directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW),
-    (e) => /NYC Open Data is having trouble right now/.test(e.message) && /Try again in a few minutes/.test(e.message) && !/Gave up on|Service Unavailable/.test(e.message)
+    (e) => /NYC Open Data is not responding right now/.test(e.message) && /Try again later/.test(e.message) && !/Gave up on|Service Unavailable/.test(e.message)
   );
   const months = new Set(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").map((r) => /date >= '(\d{4}-\d{2})/.exec(r.url.searchParams.get("$where"))[1]));
   assert.deepEqual([...months], ["2026-10"], "only the asked month was tried");
   assert.ok(soda.clock() - t0 < 45_000, `${soda.clock() - t0} ms`);
+});
+
+// Beta retest 1 (2026-11-08): October still took the full 45 s when NYC Open Data answered
+// 503 slowly, and ended on "this call ran out of time". Now: few tries, a plain sentence
+// that NYC Open Data is not responding, and a pointer to trying later or a fiscal year.
+const OUTAGE = (e) =>
+  /NYC Open Data is not responding right now/.test(e.message) &&
+  /Try again later, or ask for the fiscal year/.test(e.message) &&
+  !/Gave up on|Service Unavailable|Ran out of time|HTTP 503/.test(e.message);
+
+test("slow 503s from NYC Open Data: a plain outage message well inside the budget", async () => {
+  const { soda, requests } = await fixtureSoda({
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+    cost: 10_000,
+  });
+  const t0 = soda.clock();
+  await assert.rejects(directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW), OUTAGE);
+  // A slow 503 (10 s here) is not retried: one try for the month, after one for the metadata.
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 1);
+  assert.ok(soda.clock() - t0 <= 20_000, `${soda.clock() - t0} ms`);
+});
+
+test("a fast 503 is retried once, then the plain outage message", async () => {
+  const { soda, requests } = await fixtureSoda({
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+    cost: 200,
+  });
+  const t0 = soda.clock();
+  await assert.rejects(directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW), OUTAGE);
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 2);
+  assert.ok(soda.clock() - t0 < 5_000, `${soda.clock() - t0} ms`);
+});
+
+test("NYC Open Data down before the metadata answers, nothing saved: the same plain outage message", async () => {
+  const { soda } = await fixtureSoda({ respond: async () => new Response("Service Unavailable", { status: 503 }), cost: 1_000 });
+  await assert.rejects(directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW), OUTAGE);
 });

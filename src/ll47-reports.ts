@@ -525,6 +525,18 @@ export const SETTLED_AFTER_DAYS = 7;
 export const SETTLED_TTL_DAYS = 30;
 /** One call's time budget for NYC Open Data, waits and retries included. */
 export const DA_BUDGET_MS = 45_000;
+/**
+ * Each request to NYC Open Data in this report: two tries at most, 30 s each, and no retry
+ * after a failure that took 5 s or more. When the portal is failing, the answer comes in
+ * seconds, not after the whole budget (beta retest 1, 2026-11-08: slow 503s used all 45 s).
+ */
+export const DA_REQUEST = { maxTries: 2, timeoutMs: 30_000, noRetryAfterMs: 5_000 } as const;
+
+/** The plain message when NYC Open Data is not answering this report. */
+export function openDataDown(ym: string | null): string {
+  return `NYC Open Data is not responding right now: the 311 Call Center Inquiry dataset (wewp-mm3p) did not answer${ym ? ` for ${ym}` : ""}. That is on the City's side, not the question. Try again later, or ask for the fiscal year instead of one month (fiscal_year, without month): months already saved answer it without NYC Open Data.`;
+}
+const OUTAGE_TEXT = /HTTP 5\d\d|fetch failed|no answer within|Ran out of time|Gave up on NYC Open Data|could not be reached|ran out of time|not tried: NYC Open Data/;
 
 type MonthResult =
   | { ym: string; groups: CallGroup[]; from: "cache" | "query" | "old_cache"; fetched_at: string }
@@ -559,7 +571,7 @@ async function monthCalls(
     return { ym, missing: meta.stale ? "NYC Open Data could not be reached and no saved copy exists" : give.why ?? "this call ran out of time before reaching it" };
   }
   try {
-    const groups = (await soda.queryAll(CALL_CENTER_DATASET, monthQuery(ym), { deadline })).map(toGroup);
+    const groups = (await soda.queryAll(CALL_CENTER_DATASET, monthQuery(ym), { deadline, ...DA_REQUEST })).map(toGroup);
     await soda.writeCache(key, meta.meta.rowsUpdatedAt, groups);
     return { ym, groups, from: "query", fetched_at: iso(soda.clock()) };
   } catch (err) {
@@ -644,7 +656,13 @@ export async function directoryAssistanceReport(
   const periods = reportPeriods(args, window, lastCompleteMonth(window.end));
   const limit = args.limit ?? 50;
   const deadline = soda.clock() + (opts.budgetMs ?? DA_BUDGET_MS);
-  const mr = await soda.metadataOrCached(CALL_CENTER_DATASET, { deadline });
+  let mr: Awaited<ReturnType<SodaClient["metadataOrCached"]>>;
+  try {
+    mr = await soda.metadataOrCached(CALL_CENTER_DATASET, { deadline, ...DA_REQUEST });
+  } catch (err) {
+    if (OUTAGE_TEXT.test(err instanceof Error ? err.message : String(err)) || err instanceof DeadlineError) throw new Error(openDataDown(periods.month?.month ?? null));
+    throw err;
+  }
   const meta = mr.meta;
   const months = monthsBetween(periods.fiscal_year.start, periods.fiscal_year.end);
   // The asked-for month first, so a short budget still answers it; then the rest, oldest first.
@@ -657,11 +675,7 @@ export async function directoryAssistanceReport(
     // The asked-for month failed: stop, rather than spend the rest of the budget on the
     // fiscal-year months against a portal that is failing (beta test 2026-11-08: 45 s of 503s).
     if (periods.month && ym === periods.month.month && "missing" in r) {
-      throw new Error(
-        /HTTP 5\d\d|fetch failed|no answer within/.test(r.missing)
-          ? `NYC Open Data is having trouble right now: the 311 Call Center Inquiry dataset (wewp-mm3p) did not answer for ${ym}. Try again in a few minutes; the question itself is fine.`
-          : `No answer for ${ym}: ${r.missing}. Try again later.`
-      );
+      throw new Error(OUTAGE_TEXT.test(r.missing) ? openDataDown(ym) : `No answer for ${ym}: ${r.missing}. Try again later.`);
     }
   }
   const missing = [...results.values()].filter((r): r is { ym: string; missing: string } => "missing" in r);

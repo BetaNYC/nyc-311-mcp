@@ -134,7 +134,7 @@ export class SodaClient {
    * `deadline` (epoch ms) bounds the whole call, retries and waits included: an
    * interactive tool must answer, not wait four timeouts (QA on #21).
    */
-  async getJson(pathname: string, params: Record<string, string> = {}, opts: { deadline?: number } = {}): Promise<unknown> {
+  async getJson(pathname: string, params: Record<string, string> = {}, opts: RequestOpts = {}): Promise<unknown> {
     assertNoZipSoql(params);
     const url = new URL(pathname, this.portal + "/");
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
@@ -143,15 +143,17 @@ export class SodaClient {
     return this.serial(async () => {
       let lastErr: unknown;
       const left = () => (opts.deadline === undefined ? Infinity : opts.deadline - this.now());
-      for (let attempt = 1; attempt <= this.maxTries; attempt++) {
+      const tries = opts.maxTries ?? this.maxTries;
+      for (let attempt = 1; attempt <= tries; attempt++) {
         if (left() <= 0) throw new DeadlineError(url.pathname, lastErr);
         await this.pace();
-        const limit = Math.min(this.timeout, left());
+        const limit = Math.min(opts.timeoutMs ?? this.timeout, left());
         if (limit <= 0) throw new DeadlineError(url.pathname, lastErr);
         const ac = new AbortController();
         const timer = setTimeout(() => ac.abort(new Error(`NYC Open Data sent no answer within ${Math.round(limit)} ms (${url.pathname}).`)), limit);
         let status: number | null = null;
         let retryAfter: string | null = null;
+        const started = this.now();
         try {
           const res = await this.fetchImpl(url.toString(), { headers, signal: ac.signal });
           status = res.status;
@@ -174,7 +176,8 @@ export class SodaClient {
           this.gap = Math.min(this.maxGap, Math.max(this.gap * 2, this.minGap));
           this.log("soda_slow_down", { gap_ms: this.gap });
         }
-        if (attempt === this.maxTries) break;
+        if (attempt === tries) break;
+        if (opts.noRetryAfterMs !== undefined && this.now() - started >= opts.noRetryAfterMs) break;
         const wait =
           (status === 429 || status === 503) && retryAfter
             ? Math.min(RETRY_AFTER_CAP_MS, retryAfterMs(retryAfter))
@@ -183,12 +186,12 @@ export class SodaClient {
         this.log("soda_retry", { path: url.pathname, attempt, status, wait_ms: wait });
         await this.sleep(wait);
       }
-      throw new Error(`Gave up on NYC Open Data after ${this.maxTries} tries: ${lastErr instanceof Error ? lastErr.message : String(lastErr)}`);
+      throw new Error(`Gave up on NYC Open Data after ${tries} tries: ${lastErr instanceof Error ? lastErr.message : String(lastErr)}`);
     });
   }
 
   /** Dataset metadata (/api/views/<id>.json), trusted for an hour, and saved to disk. */
-  async metadata(id: string, opts: { deadline?: number } = {}): Promise<SodaMetadata> {
+  async metadata(id: string, opts: RequestOpts = {}): Promise<SodaMetadata> {
     const hit = this.meta.get(id);
     if (hit && this.now() - hit.at < this.metaTtl) return hit.value;
     const raw = (await this.getJson(`/api/views/${id}.json`, {}, opts)) as Record<string, unknown>;
@@ -202,7 +205,7 @@ export class SodaClient {
    * Metadata, or, when the portal cannot be reached, the last copy saved to disk with
    * `stale: true` and a plain warning. Throws only when there is no saved copy either.
    */
-  async metadataOrCached(id: string, opts: { deadline?: number } = {}): Promise<{ meta: SodaMetadata; stale: boolean; warning?: string }> {
+  async metadataOrCached(id: string, opts: RequestOpts = {}): Promise<{ meta: SodaMetadata; stale: boolean; warning?: string }> {
     try {
       return { meta: await this.metadata(id, opts), stale: false };
     } catch (err) {
@@ -222,7 +225,7 @@ export class SodaClient {
    * Every row of one SoQL query, paged with $limit/$offset. `params` must include an
    * $order, so pages do not overlap or skip rows.
    */
-  async queryAll(id: string, params: Record<string, string>, opts: { pageSize?: number; deadline?: number } = {}): Promise<Record<string, unknown>[]> {
+  async queryAll(id: string, params: Record<string, string>, opts: RequestOpts & { pageSize?: number } = {}): Promise<Record<string, unknown>[]> {
     const pageSize = opts.pageSize ?? 50_000;
     if (!params.$order) throw new Error("A paged SoQL query needs an $order (https://dev.socrata.com/docs/paging).");
     const out: Record<string, unknown>[] = [];
@@ -262,6 +265,18 @@ export class SodaClient {
 }
 
 /** The call's time budget ran out before NYC Open Data answered. */
+/**
+ * Per-call limits: `deadline` (epoch ms) bounds the whole call; `maxTries` and `timeoutMs`
+ * override the client's defaults for one call (an interactive report fails fast).
+ */
+export type RequestOpts = {
+  deadline?: number;
+  maxTries?: number;
+  timeoutMs?: number;
+  /** A failed try that took at least this long is not retried: a slow failure is an overloaded portal. */
+  noRetryAfterMs?: number;
+};
+
 export class DeadlineError extends Error {
   constructor(
     readonly where: string,
