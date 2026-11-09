@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.19] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (before merge, 2026-11-09)
+
+- "a dog walker fell into a sinkhole" got a pothole answer and no 911 in `how_to_report` and
+  `draft_311_report`. The holes class required the person before the verb to be a known
+  person word ("walker" was not one); beta.17's test used only the hole-first wording ("a
+  sinkhole opened and a dog walker fell in") and only the danger detector. Now the verb and the
+  hole are enough (fell into, fell in, fell down, fallen into, slipped into, dropped into a
+  sinkhole, manhole, trench, hole or shaft), with objects, vehicles and animals excused. A new
+  test crosses those verbs and holes and calls both tools.
+
 ## [1.2.0-beta.18] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.
