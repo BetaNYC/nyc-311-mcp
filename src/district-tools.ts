@@ -72,9 +72,48 @@ export function manifestDistricts(m: BoardStatManifest): { cd: DistrictEntry[]; 
   return { cd: d.cd, cc: d.cc };
 }
 
-function toId(v: number | string, name: string): number {
-  const s = String(v).trim();
-  if (!/^\d{1,3}$/.test(s)) throw new Error(`Invalid ${name} '${v}': expected a number such as 101 or 4.`);
+// Community district codes as boards, the City and Council staff write them. The two-letter
+// codes are the City's (Department of City Planning: MN, BX, BK, QN, SI); the borough digit
+// is the one BoardStat's ids start with. County names are accepted too (Kings 9 = BK09).
+const BOROUGH_DIGIT: Record<string, number> = {
+  mn: 1, manhattan: 1, "new york": 1, "new york county": 1,
+  bx: 2, bronx: 2, "the bronx": 2, "bronx county": 2,
+  bk: 3, brooklyn: 3, kings: 3, "kings county": 3,
+  qn: 4, queens: 4, "queens county": 4,
+  si: 5, "staten island": 5, richmond: 5, "richmond county": 5,
+};
+const BOROUGH_WORDS = Object.keys(BOROUGH_DIGIT).sort((a, b) => b.length - a.length).join("|");
+const CD_WORDS = "(?:community\\s+(?:district|board)|cd|cb|district|board)?\\s*(?:#|no\\.?)?";
+const CD_BOROUGH_FIRST = new RegExp(`^(${BOROUGH_WORDS})\\s*[-,]?\\s*${CD_WORDS}\\s*-?\\s*(\\d{1,2})$`, "i");
+const CD_NUMBER_FIRST = new RegExp(`^${CD_WORDS}\\s*(\\d{1,2})\\s*,?\\s*(?:in\\s+)?(${BOROUGH_WORDS})$`, "i");
+
+/** The forms community_district accepts, said in every error about one. */
+export const CD_FORMS =
+  "Give BoardStat's number (309), the board code (BK09 or BK9; MN, BX, BK, QN, SI), or the borough and number (Brooklyn 9, Brooklyn CD 9, Brooklyn Community District 9). " +
+  "For example, Brooklyn Community District 9 is 309 or BK09.";
+
+const code = (id: number) => `${["MN", "BX", "BK", "QN", "SI"][Math.floor(id / 100) - 1]}${String(id % 100).padStart(2, "0")}`;
+
+/**
+ * A community district in any of the accepted forms, as BoardStat's id (borough digit +
+ * district number: BK09 = 309). Throws a plain error with the accepted forms otherwise.
+ */
+export function parseCommunityDistrict(v: number | string): number {
+  const s = String(v).trim().replace(/\s+/g, " ");
+  if (/^\d{1,3}$/.test(s)) return Number(s);
+  const a = CD_BOROUGH_FIRST.exec(s);
+  const b = a ? null : CD_NUMBER_FIRST.exec(s);
+  const borough = a ? a[1] : b ? b[2] : null;
+  const n = a ? a[2] : b ? b[1] : null;
+  if (borough && n && Number(n) > 0) return BOROUGH_DIGIT[borough.toLowerCase().replace(/\s+/g, " ")] * 100 + Number(n);
+  throw new Error(`'${v}' is not a community district this tool can read. ${CD_FORMS}`);
+}
+
+function toCouncilId(v: number | string): number {
+  const s = String(v).trim().replace(/^(?:(?:nyc\s+)?(?:city\s+)?council\s+)?(?:district\s*)?(?:#|no\.?)?\s*/i, "");
+  if (!/^\d{1,2}$/.test(s)) {
+    throw new Error(`'${v}' is not a Council district. Give its number, 1 to 51 (for example 7 or 'Council District 7').`);
+  }
   return Number(s);
 }
 
@@ -91,15 +130,17 @@ export function resolveDistrict(
   }
   const all = manifestDistricts(m);
   const geo: Geo = hasCd ? "cd" : "cc";
-  const id = toId((hasCd ? args.community_district : args.council_district) as number | string, hasCd ? "community_district" : "council_district");
+  const id = hasCd ? parseCommunityDistrict(args.community_district as number | string) : toCouncilId(args.council_district as number | string);
   const entry = all[geo].find((e) => Number(e.id) === id);
   if (!entry) {
     if (geo === "cc") throw new Error(`There is no Council District ${id}. Council districts are numbered 1 to 51.`);
     const jias = all.cd.filter((e) => e.jia).map((e) => e.id).join(", ");
+    const asked = String(args.community_district).trim();
+    const named = /^\d+$/.test(asked) ? `${id}` : `${asked} (${id}${id >= 100 && id < 600 ? `, ${code(id)}` : ""})`;
     throw new Error(
-      `There is no community district ${id} in BoardStat. Community districts are numbered borough digit + district number: ` +
+      `There is no community district ${named} in BoardStat. Community districts are numbered borough digit + district number: ` +
         `Manhattan 101-112, Bronx 201-212, Brooklyn 301-318, Queens 401-414, Staten Island 501-503 ` +
-        `(so Brooklyn Community District 6 is 306). Joint Interest Areas (parks and other areas outside every community district): ${jias}.`
+        `(so Brooklyn Community District 6 is 306, or BK06). Joint Interest Areas (parks and other areas outside every community district): ${jias}. ${CD_FORMS}`
     );
   }
   if (!entry.file) throw new Error(`${entry.label} has no requests in BoardStat's data, so there is nothing to count.`);
@@ -479,7 +520,7 @@ export const DISTRICT_JSON = {
   community_district: {
     type: ["integer", "string"],
     description:
-      "BoardStat id, borough digit + district: 306 = Brooklyn CD 6 (all ids: server instructions). Not with council_district.",
+      "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district.",
   },
   council_district: {
     type: ["integer", "string"],

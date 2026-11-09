@@ -906,7 +906,7 @@ export const LL47_TOOLS = [
       REBUILD,
     inputSchema: obj(
       {
-        community_district: { type: ["integer", "string"], description: "BoardStat id: 306 = Brooklyn CD 6 (all ids: server instructions)." },
+        community_district: { type: ["integer", "string"], description: "306, BK06 or 'Brooklyn 6' (all forms: server instructions)." },
         month: { type: "string", description: "Month, YYYY-MM. Default: the newest complete month (the law's 'immediately preceding month')." },
         part: {
           type: "string",

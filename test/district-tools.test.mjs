@@ -148,7 +148,7 @@ test("resolveDistrict: one of the two, BoardStat's ids, plain errors", () => {
   assert.throws(() => resolveDistrict(MANIFEST, { community_district: 101, council_district: 1 }), /exactly one/);
   assert.throws(() => resolveDistrict(MANIFEST, { community_district: 6 }), /Brooklyn Community District 6 is 306/);
   assert.throws(() => resolveDistrict(MANIFEST, { council_district: 52 }), /1 to 51/);
-  assert.throws(() => resolveDistrict(MANIFEST, { community_district: "MN01" }), /expected a number/);
+  assert.equal(resolveDistrict(MANIFEST, { community_district: "MN01" }).id, 101);
 });
 
 test("periods: default is BoardStat's opening view; last_days ends on the newest request's day", () => {
