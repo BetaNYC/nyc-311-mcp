@@ -522,8 +522,8 @@ export const LIMIT_JSON = (def: number, max: number) => ({
   description: `Rows to list (default ${def}).`,
 });
 
-const OFFSET_JSON = { type: "integer", minimum: 0, description: "Rows to skip, for the next page (default 0): next_page.offset, with next_page.data_as_of." } as const;
-export const DATA_AS_OF_JSON = { type: "string", description: "For the next page: next_page.data_as_of. A page from a newer build is refused, so pages line up." } as const;
+const OFFSET_JSON = { type: "integer", minimum: 0, description: "Rows to skip (default 0); for the next page, next_page.offset." } as const;
+export const DATA_AS_OF_JSON = { type: "string", description: "For the next page, next_page.data_as_of; a page from a newer build is refused." } as const;
 
 // Short sentence on every district tool; the full text is ABOUT_BOARDSTAT in the server instructions.
 const ABOUT = "From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.";
@@ -1660,7 +1660,7 @@ export const DISTRICT_TOOLS = [
       statuses: {
         type: "array",
         items: { type: "string" },
-        description: "The City's status values to keep (seen: Closed, Open, In Progress, Pending, Assigned, Started, Unspecified). Any case; a value no request has is refused with the values present.",
+        description: "The City's status values to keep (seen: Closed, Open, In Progress, Pending, Assigned, Started, Unspecified); any case.",
       },
       limit: LIMIT_JSON(25, 200),
       offset: OFFSET_JSON,
