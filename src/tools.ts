@@ -144,18 +144,22 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
 }
 
 /**
- * Every response from every tool, success or error, carries SAFETY_LINE (Noel, beta round 13): first
- * in the text, and as the first field of the structured output. A tool that detects danger
- * (how_to_report, draft_311_report) still leads its own first_line with a stronger 911 line.
+ * Every response from every tool, success or error, ends with SAFETY_LINE as its last line (Noel,
+ * beta round 17), and every structured answer carries it as its first field (safety_line). A tool
+ * that detects danger (how_to_report, draft_311_report) still leads first_line with a stronger 911
+ * line at the top. An error message carries it once, at the end.
  */
 export async function callTool(name: string, args: unknown) {
   const out = await runToolRaw(name, args);
   const text = out.content[0].text;
-  if (out.isError) {
-    const rest = text.startsWith(SAFETY_LINE) ? text.slice(SAFETY_LINE.length).trim() : text;
-    return { content: [{ type: "text", text: `${SAFETY_LINE} ${rest}` }], isError: true };
-  }
-  return { content: [{ type: "text", text: `${SAFETY_LINE}\n\n${text}` }] };
+  if (out.isError) return { content: [{ type: "text", text: `${withoutSafetyLine(text)}\n\n${SAFETY_LINE}` }], isError: true };
+  // The JSON keeps its safety_line field; the sentence is the text's last line once more, as Noel asked.
+  return { content: [{ type: "text", text: `${text}\n\n${SAFETY_LINE}` }] };
+}
+
+/** An error message without the sentence, which the response adds once at the end. */
+function withoutSafetyLine(message: string): string {
+  return message.split(`${SAFETY_LINE} `).join("").split(SAFETY_LINE).join("").trim();
 }
 
 /** The structured answer with the safety line as its first field. */
@@ -241,7 +245,6 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
     const message = err instanceof Error ? err.message : String(err);
     // The reporting-help tools put the safety line first on every error too, argument
     // errors included: a person describing a problem may be in danger (QA on #23, #24).
-    const rest = message.startsWith(SAFETY_LINE) ? message.slice(SAFETY_LINE.length).trim() : message;
-    return { content: [{ type: "text", text: `${SAFETY_LINE} Error: ${rest}` }], isError: true };
+    return { content: [{ type: "text", text: `Error: ${withoutSafetyLine(message)}` }], isError: true };
   }
 }

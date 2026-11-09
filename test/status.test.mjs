@@ -48,7 +48,7 @@ test("get_status through callTool returns plain_language", async () => {
   try {
     const r = await callTool("get_status", { type: "SnowOnStreet" });
     assert.notEqual(r.isError, true, r.content[0].text);
-    const out = JSON.parse(r.content[0].text.slice(SAFETY_LINE.length));
+    const out = JSON.parse(r.content[0].text.slice(0, -SAFETY_LINE.length));
     assert.equal(out.inEffect, false);
     assert.match(out.plain_language.answer, /^No: .*Snow or Ice on Street emergency is not in effect/);
   } finally {

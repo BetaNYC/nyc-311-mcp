@@ -23,11 +23,12 @@
 //     present: "still inside", "still here", "right now", or a named weapon keeps it.
 
 /**
- * On every response from every tool (callTool), first in the text and as the first field of the
- * structured output, whatever was or was not detected: the danger words will always miss some
- * wording (beta retest 11, 2026-11-09). Noel's exact sentence (beta round 13).
+ * On every response from every tool (callTool): the last line of the text, like the end of a
+ * doctor's office phone message, and the first field (safety_line) of the structured output,
+ * whatever was or was not detected. Danger spotting is a best effort and will miss some wording;
+ * this sentence is what the server relies on. Noel's exact words (beta round 17).
  */
-export const SAFETY_LINE = "If this is an emergency, please call 911.";
+export const SAFETY_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 export const SAFETY_LINE_SOURCE = "BetaNYC wording, on every answer.";
 export const GENERIC_911 = "If anyone is in danger right now, call 911. 311 is for problems that are not emergencies.";
 
@@ -223,13 +224,13 @@ export const DANGERS: DangerKind[] = [
   {
     id: "collapse",
     label: "a collapse",
-    when: /\b(building|ceiling|wall|roof|scaffold\w*|balcony|stairs?|staircase|floor|facade|façade|crane|sidewalk shed)\b[^.]{0,20}\b(collaps\w*|caving in|caved in|falling down|about to (fall|collapse)|is falling|fell( in| down| onto| on| off)?|shaking|swaying|cracking|tipping|buckling)\b|\bcollapse\b|\b(came|coming|come) crashing down\b|\bderrumb\w*/,
+    when: /\b(building|ceiling|wall|roof|scaffold\w*|balcony|stairs?|staircase|floor|facade|façade|crane|sidewalk shed)\b[^.]{0,40}\b(tipping( over)?|toppling|keeling over|leaning (over|dangerously)|collaps\w*|caving in|caved in|falling down|about to (fall|collapse)|is falling|fell( in| down| onto| on| off)?|shaking|swaying|cracking|tipping|buckling)\b|\bcollapse\b|\b(came|coming|come) crashing down\b|\bderrumb\w*/,
     terms: ["dangerous", "situation", "location"],
   },
   {
     id: "trapped",
     label: "someone trapped",
-    when: /\b(trapped|stuck in (an |the |a )?elevator|(stuck|caught|pinned) in (the |a )?(train|subway|bus|elevator) doors?|(someone|somebody|people|person|kids?|children|child|man|woman|driver|passengers?) (is |are )?stuck|stuck[^.]{0,40}\b(with )?(kids|people|children|someone|a person|passengers?) inside|atrapad[oa]s?)\b/,
+    when: /\b(doors?) (closed|shut|closing) on (a |her |his |my |someone'?s |a \w+'?s )?(arm|hand|leg|foot|coat|bag|stroller|dress)\b[^.]{0,40}\b(dragging|moving|pulling|leaving)\b|\b(train|subway|bus)\b[^.]{0,40}\bdragging (her|him|them|someone|somebody|a (man|woman|person|kid|child))\b|\b(trapped|stuck in (an |the |a )?elevator|(stuck|caught|pinned) in (the |a )?(train|subway|bus|elevator) doors?|(someone|somebody|people|person|kids?|children|child|man|woman|driver|passengers?) (is |are )?stuck|stuck[^.]{0,40}\b(with )?(kids|people|children|someone|a person|passengers?) inside|atrapad[oa]s?)\b/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -304,8 +305,8 @@ export const DANGERS: DangerKind[] = [
     // collapse (beta retest 14: "a worker fell into a manhole" got Manhole Cover Complaint and no 911).
     id: "fell_in",
     label: "someone fallen into a hole or trapped",
-    when: new RegExp(`\\b(${PERSON.slice(1, -1)}|he|she|they|i|worker|workers|man|woman)\\b[^.]{0,25}\\b(fell|fallen|falls|slipped|dropped|is stuck|are stuck|got stuck|is trapped|are trapped|got trapped|trapped|stuck) (down |in(to)? |at the bottom of )(an? |the )?(open )?(manhole|hole|trench|ditch|shaft|elevator shaft|air ?shaft|sinkhole|pit|well|sewer|excavation|construction pit|storm drain|cellar|vault|crawl ?space)s?\\b|\\b(trapped|stuck|pinned|buried) (under|in|beneath) (the )?(rubble|debris|collapse|collapsed \\w+|fallen \\w+|dirt|bricks|concrete|a (wall|ceiling|scaffold\\w*|tree))\\b|\\b(collapsed|caved[- ]in) (trench|ditch|building|wall|ceiling|scaffold\\w*)\\b[^.]{0,30}\\b(people|someone|workers?|man|woman|kids?) (are |is )?(inside|trapped|under|stuck)\\b|\\b(trapped|stuck) in (a |the )?collapsed\\b|\\b(crushed|pinned|trapped|stuck) (by|under|beneath) (a |an |the )?(falling |fallen )?[\\w-]+\\b|\\b(dropped|fell|collapsed)\\b[^.]{0,40}\\b(someone|somebody|a (man|woman|worker|person|guy)|people|workers?) (is |are )?(under|beneath|pinned under|trapped under) (it|them|the \\w+)\\b`),
-    unless: /\b(phone|keys?|wallet|bag|ring|toy|ball|glasses|earrings?|airpods?|card|cat|dog|kitten|puppy)\b[^.]{0,15}\b(fell|dropped|went|is stuck)\b/,
+    when: new RegExp(`\\b(${PERSON.slice(1, -1)}|he|she|they|i|worker|workers|man|woman)\\b[^.]{0,25}\\b(fell|fallen|falls|slipped|dropped|is stuck|are stuck|got stuck|is trapped|are trapped|got trapped|trapped|stuck) (down |in(to)? |at the bottom of )(an? |the )?(open )?(manhole|hole|trench|ditch|shaft|elevator shaft|air ?shaft|sinkhole|pit|well|sewer|excavation|construction pit|storm drain|cellar|vault|crawl ?space)s?\\b|\\b(trapped|stuck|pinned|buried) (under|in|beneath) (the )?(rubble|debris|collapse|collapsed \\w+|fallen \\w+|dirt|bricks|concrete|a (wall|ceiling|scaffold\\w*|tree))\\b|\\b(collapsed|caved[- ]in) (trench|ditch|building|wall|ceiling|scaffold\\w*)\\b[^.]{0,30}\\b(people|someone|workers?|man|woman|kids?) (are |is )?(inside|trapped|under|stuck)\\b|\\b(trapped|stuck) in (a |the )?collapsed\\b|\\b(sinkholes?|manholes?|holes?|trench(es)?|shafts?|pits?)\\b[^.]{0,40}\\b(someone|somebody|a [\\w-]+( walker| worker)?|people|man|woman|kid|child|person|he|she|they) (fell|fallen|is|was|got|went) (in|into it|inside|down)\\b|\\b(crushed|pinned|trapped|stuck) (by|under|beneath) (a |an |the )?(falling |fallen )?[\\w-]+\\b|\\b(dropped|fell|collapsed)\\b[^.]{0,40}\\b(someone|somebody|a (man|woman|worker|person|guy)|people|workers?) (is |are )?(under|beneath|pinned under|trapped under) (it|them|the \\w+)\\b`),
+    unless: /\b(phone|keys?|wallet|bag|ring|toy|ball|glasses|earrings?|airpods?|card|cat|dog|kitten|puppy)\b(?! (walker|owner|sitter))[^.]{0,15}\b(fell|dropped|went|is stuck)\b/,
     terms: ["dangerous", "situation", "location"],
   },
   {
@@ -417,6 +418,7 @@ const DANGER_SHORTHAND: [RegExp, string][] = [
   [/\b(strt|stret|steet|sreet)\b/g, "street"],
   [/\bbldg\b/g, "building"],
   [/\bapt\b/g, "apartment"],
+  [/\b(bsmt|bsmnt|basment)\b/g, "basement"],
   [/\bw\/? (?=(a |an |the )?(gun|knife|machete|weapon|bat))/g, "with "],
   [/\b(breathng|breating|breahting|brething|breathin)\b/g, "breathing"],
   [/\b(drownin|drowing|drownding)\b/g, "drowning"],
@@ -505,6 +507,9 @@ const COMMON_MISSPELLINGS: [RegExp, string][] = [
   [/\b(unconcious|unconsious|unconscous)\b/g, "unconscious"],
   [/\b(overdoze|overdossed|overdosed)\b/g, "overdosed"],
   [/\b(chokeing|choaking)\b/g, "choking"],
+  [/\b(beepin|beepn|beping)\b/g, "beeping"],
+  [/\b(oder|odur|odr)\b/g, "odor"],
+  [/\b(goin off|goign off)\b/g, "going off"],
 ];
 function oneEditAway(a: string, b: string): boolean {
   if (a === b || Math.abs(a.length - b.length) > 1) return false;

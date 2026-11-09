@@ -66,9 +66,10 @@ for (const r of ALL.filter((x) => x.src.startsWith("r10") || x.src === "n60")) {
 test("a sensitive article is never shown on a generic word, for any phrasing in the set", async () => {
   for (const r of ALL) {
     const out = await howToReport({ description: r.d }, client);
-    for (const a of [out.best_match, ...(out.alternatives ?? [])].filter(Boolean)) {
-      assert.ok(sensitiveAllowed(a.title, parseQuery(r.d)), `${r.d}: ${a.title}`);
-    }
+    // Anywhere in the answer: the best match, its alternatives, and every other problem's answer
+    // and alternatives (beta retest 16: a sensitive article showed up as an alternative).
+    const shown = [out.best_match, ...(out.alternatives ?? []), ...(out.other_problems ?? []).flatMap((p) => [p.best_match, ...(p.alternatives ?? [])])].filter(Boolean);
+    for (const a of shown) assert.ok(sensitiveAllowed(a.title, parseQuery(r.d)), `${r.d}: ${a.title}`);
   }
   const river = await howToReport({ description: "a child fell into the river and is struggling" }, client);
   assert.ok(river.emergency);
@@ -80,7 +81,7 @@ test("every recorded article on abuse, sexual crimes, exploitation, suicide, hat
   for (const f of readdirSync(path.join(CONTENT, "GetContentList"))) {
     for (const a of JSON.parse(readFileSync(path.join(CONTENT, "GetContentList", f), "utf8")).ContentArticleList ?? []) titles.add(a.title);
   }
-  const risky = [...titles].filter((t) => /abuse|sexual|porn|traffick|suicide|lewd|prostitut|obscen|hate crime|\bminors?\b|abandoned baby|overdose|domestic violence/i.test(t));
+  const risky = [...titles].filter((t) => /abuse|sexual|porn|traffick|suicide|lewd|prostitut|obscen|hate crime|\bminors?\b|abandoned baby|overdose|domestic violence|foster|protective|death investigation|funeral|cemetery|missing person|runaway/i.test(t));
   assert.ok(risky.length >= 10, risky.join("; "));
   for (const t of risky) assert.ok(SENSITIVE_ARTICLES.some((r) => r.title.test(t)), `no guard for ${t}`);
 });

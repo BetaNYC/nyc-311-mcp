@@ -72,7 +72,7 @@ test("review: the 10 harder cases", async () => {
   // T3: no article, so no draft: how_to_report's no-match answer, 911 first (QA round 1 on #24).
   assert.equal(by.T3.out.drafted, false);
   assert.deepEqual(by.T3.out.reports, []);
-  assert.ok(by.T3.out.first_line.startsWith(SAFETY_LINE));
+  assert.match(by.T3.out.first_line, /^No 311 article matched this description\. If anyone is in danger right now, call 911/);
   assert.ok(by.T3.out.no_match.portal_search_url);
   // T7: the City's own summary says it does not take this: no draft, City words.
   const odor = by.T7.out.reports[0];
@@ -323,11 +323,11 @@ test("every error starts with the safety line: direct calls and through the tool
   for (const args of [{ description: "a pothole", neighborhood: "x" }, { description: "x" }, {}]) {
     const r = await callTool("draft_311_report", args);
     assert.equal(r.isError, true);
-    assert.ok(r.content[0].text.startsWith(`${SAFETY_LINE} Error: `), r.content[0].text);
+    assert.ok(r.content[0].text.startsWith("Error: ") && r.content[0].text.endsWith(`\n\n${SAFETY_LINE}`), r.content[0].text);
   }
   const h = await callTool("how_to_report", { description: "a pothole", nope: 1 });
-  assert.ok(h.content[0].text.startsWith(`${SAFETY_LINE} Error: `), h.content[0].text);
-  assert.doesNotMatch(h.content[0].text, new RegExp(`Error: ${SAFETY_LINE.replace(/[.]/g, "\\.")}`), "said once, not twice");
+  assert.ok(h.content[0].text.startsWith("Error: ") && h.content[0].text.endsWith(`\n\n${SAFETY_LINE}`), h.content[0].text);
+  assert.equal(h.content[0].text.split(SAFETY_LINE).length, 2, "said once, not twice");
 });
 
 for (const e of EMERGENCY) {
@@ -370,5 +370,5 @@ test(`review ${MISSED.id}: danger assessDanger misses gets no draft, 911 first, 
   assert.deepEqual(out.reports, []);
   assert.equal(out.safety_line, SAFETY_LINE);
   assert.equal(out.assistant_instruction, ASSISTANT_INSTRUCTION);
-  assert.ok(out.first_line.startsWith(SAFETY_LINE), out.first_line);
+  assert.match(out.first_line, /911/, out.first_line);
 });

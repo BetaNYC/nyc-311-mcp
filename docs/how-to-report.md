@@ -107,12 +107,12 @@ keyword-based and will miss some emergencies. If anything the person says sugges
 in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag
 it."
 
-**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer starts with
-`safety_line`: "If this is an emergency, please call 911." (BetaNYC wording), and every error
-message starts with the same sentence. Since 1.2.0-beta.13 that sentence, "If this is an emergency, please call 911.", is
-also the first line of the text of every response from every one of the server's 21 tools, and
-the first field (`safety_line`) of every structured answer, success or error, whatever was or was
-not detected (defense in depth: keyword detection will always miss some wording). A description that suggests danger
+**Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer carries
+`safety_line`: "If this is an emergency, or if you think this is an emergency, call 911." (Noel's words, beta round 17). It is
+the last line of the text of every response from every one of the server's 21 tools, success or
+error, and the first field (`safety_line`) of every structured answer, whatever was or was not
+detected. That sentence is what the server relies on; danger spotting is a best effort and will
+miss some wording. A description that suggests danger
 still leads `first_line` with its own 911 line. A recurring condition ("every morning") quiets
 only the ambiguous signals, and never when anything says it is happening now. Every no-match
 answer leads with the BetaNYC 911 line. A description that

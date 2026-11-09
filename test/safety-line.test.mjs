@@ -1,8 +1,9 @@
-// Every response from every tool carries one fixed sentence, Noel's (beta round 13): "If this is an
-// emergency, please call 911." It is first in the text and the first field of the structured output,
-// on success and on error, for all 21 tools, whatever was or was not detected (defense in depth:
-// beta retest 11 found eight emergencies the danger words missed). A detected danger still leads
-// how_to_report's and draft_311_report's first_line with its own 911 line.
+// Every response from every tool carries one fixed sentence, Noel's (beta round 17): "If this is an
+// emergency, or if you think this is an emergency, call 911." It is the LAST line of the text, like
+// the end of a doctor's office phone message, on success and on error, for all 21 tools, whatever
+// was or was not detected; and the first field (safety_line) of every structured answer. Danger
+// spotting is a best effort; a detected danger still leads how_to_report's and draft_311_report's
+// first_line with its own 911 line at the top.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile } from "node:fs/promises";
@@ -19,7 +20,7 @@ import { fixtureSla } from "./sla-fixture.mjs";
 import { fixtureData } from "./district-fixture.mjs";
 
 test("the safety line is Noel's sentence, word for word", () => {
-  assert.equal(SAFETY_LINE, "If this is an emergency, please call 911.");
+  assert.equal(SAFETY_LINE, "If this is an emergency, or if you think this is an emergency, call 911.");
 });
 
 /** Calls that reach each tool without the network: fixtures for content, BoardStat and Socrata; the 311 API tools answer from an argument error or a stubbed fetch. */
@@ -53,7 +54,7 @@ const CALLS = [
   ["no_such_tool", {}],
 ];
 
-test("every response from all 21 tools starts with the safety line, success or error", async (t) => {
+test("every response from all 21 tools ends with the safety line, success or error", async (t) => {
   const SODA_FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "soda", "wewp-mm3p");
   setContentClient(await stressClient());
   setBoardStatData((await fixtureData()).data);
@@ -86,14 +87,18 @@ test("every response from all 21 tools starts with the safety line, success or e
   for (const [name, args] of CALLS) {
     const r = await callTool(name, args);
     const text = r.content[0].text;
-    assert.ok(text.startsWith(SAFETY_LINE), `${name}: ${text.slice(0, 140)}`);
+    assert.ok(text.endsWith(`\n\n${SAFETY_LINE}`), `${name}: ...${text.slice(-160)}`);
+    assert.ok(!text.startsWith(SAFETY_LINE), `${name}: no longer the first line`);
+    if (r.isError) assert.equal(text.split(SAFETY_LINE).length, 2, `${name}: once in an error`);
     if (!r.isError) {
-      const out = JSON.parse(text.slice(SAFETY_LINE.length));
+      const out = JSON.parse(text.slice(0, -SAFETY_LINE.length));
+      // The sentence is the structured field and the last line, nowhere else.
+      assert.equal(text.split(SAFETY_LINE).length, 3, `${name}: field and last line only`);
       assert.equal(Object.keys(out)[0], "safety_line", name);
       assert.equal(out.safety_line, SAFETY_LINE, name);
     }
   }
   // A detected danger still leads first_line with its own 911 line.
-  const gas = JSON.parse((await callTool("how_to_report", { description: "I smell gas in my kitchen" })).content[0].text.slice(SAFETY_LINE.length));
+  const gas = JSON.parse((await callTool("how_to_report", { description: "I smell gas in my kitchen" })).content[0].text.slice(0, -SAFETY_LINE.length));
   assert.match(gas.first_line, /^Call 911/);
 });

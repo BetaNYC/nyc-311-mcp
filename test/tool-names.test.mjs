@@ -11,6 +11,6 @@ test("names inherited from Object are unknown tools, not a tool run", async () =
     assert.ok(!TOOLS.some((t) => t.name === name));
     const out = await callTool(name, {});
     assert.equal(out.isError, true, name);
-    assert.equal(out.content[0].text, `${SAFETY_LINE} Unknown tool: ${name}`, name);
+    assert.equal(out.content[0].text, `Unknown tool: ${name}\n\n${SAFETY_LINE}`, name);
   }
 });

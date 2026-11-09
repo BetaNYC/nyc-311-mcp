@@ -355,7 +355,7 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
 
   const first_line =
     reports.length > 1
-      ? `${unmatched ? `${SAFETY_LINE} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
+      ? `${unmatched ? `${GENERIC_911} ` : ""}This sounds like ${reports.length} problems; 311 takes one problem per report, so there is a draft for each that matched (${drafts.length} of ${reports.length}). ${FIELDS_NOTE}`
       : one.status === "not_a_311_report"
         ? `The City's own article says it does not take this (${one.report_at?.ka_number}); its words are in where_to_go. No draft is made.`
         : one.status === "no_exact_match"
@@ -395,8 +395,8 @@ function cityDoesNot(m: Matched): boolean {
 
 /** No article matched: how_to_report's no-match answer, which leads with 911. No draft. */
 function noMatchAnswer(whole: Matched) {
-  // No article: the safety line, then that nothing matched (how_to_report's no-match line names 911 again).
-  const first = whole.first_line.startsWith(SAFETY_LINE) ? whole.first_line : `${SAFETY_LINE} No 311 article matched this description.`;
+  // No article: how_to_report's no-match line (it names 911); the response ends with SAFETY_LINE.
+  const first = whole.first_line;
   return finish({
     ...SAFETY,
     first_line: first,

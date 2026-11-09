@@ -139,7 +139,7 @@ Following the Model Context Protocol's guide,
 4. To check it worked: in a chat, open the **+** menu by the message box, then
    **Connectors** › **Manage connectors**, and look for `nyc-311-beta`. Or ask Claude
    "Which nyc-311 tools do you have?" You should see 21, including `draft_311_report`.
-   The beta calls itself version `1.2.0-beta.16` (the released version is 1.1.0); your
+   The beta calls itself version `1.2.0-beta.17` (the released version is 1.1.0); your
    app's MCP or connector settings show it.
 
 If it does not show up, the same guide's
@@ -218,7 +218,7 @@ draft make anything up, or did it ask you (marked `[add: …]`) for what was mis
   report, send anything, or fill in a form. You submit the report yourself on 311
   Online, the 311 app, or by calling 311.
 - **Danger detection is keyword-based, and it will miss some emergencies.** Every answer
-  starts with "If this is an emergency, please call 911." Do not count on the tool to
+  ends with "If this is an emergency, or if you think this is an emergency, call 911." Do not count on the tool to
   recognize an emergency.
 - **In an emergency, call 911.**
 - Numbers come from NYC Open Data through BoardStat and BetaNYC's own code. They are not

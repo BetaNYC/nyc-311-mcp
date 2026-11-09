@@ -260,7 +260,7 @@ test("get_service_request / get_service_request_list through callTool: plain_lan
   try {
     const one = await callTool("get_service_request", { sr_number: "311-17323508" });
     assert.notEqual(one.isError, true, one.content[0].text);
-    const parsed = JSON.parse(one.content[0].text.slice(SAFETY_LINE.length));
+    const parsed = JSON.parse(one.content[0].text.slice(0, -SAFETY_LINE.length));
     assert.equal(parsed.plain_language.status, "Closed");
     assert.doesNotMatch(one.content[0].text, /99999/);
 
@@ -271,7 +271,7 @@ test("get_service_request / get_service_request_list through callTool: plain_lan
     assert.doesNotMatch(miss.content[0].text, /Response body|wasn't found!|"Error"|NotFound/);
 
     const many = await callTool("get_service_request_list", { sr_numbers: ["311-17323508", "311-17323514", "311-70999528"] });
-    assert.deepEqual(JSON.parse(many.content[0].text.slice(SAFETY_LINE.length)).not_found, ["311-70999528"]);
+    assert.deepEqual(JSON.parse(many.content[0].text.slice(0, -SAFETY_LINE.length)).not_found, ["311-70999528"]);
   } finally {
     globalThis.fetch = realFetch;
   }
@@ -301,10 +301,10 @@ test("get_service_request_list with only unknown numbers: one plain sentence and
   try {
     const one = await callTool("get_service_request_list", { sr_numbers: ["311-99999999"] });
     assert.equal(one.isError, true);
-    assert.equal(one.content[0].text, `${SAFETY_LINE} Error: 311 has no service request 311-99999999. ${NOT_FOUND_HINT}`);
+    assert.equal(one.content[0].text, `Error: 311 has no service request 311-99999999. ${NOT_FOUND_HINT}\n\n${SAFETY_LINE}`);
     const two = await callTool("get_service_request_list", { sr_numbers: ["311-99999998", "311-99999999"] });
     assert.equal(two.isError, true);
-    assert.match(two.content[0].text.slice(SAFETY_LINE.length + 1), /^Error: 311 has none of these service requests: 311-99999998, 311-99999999\. /);
+    assert.match(two.content[0].text, /^Error: 311 has none of these service requests: 311-99999998, 311-99999999\. /);
     for (const r of [one, two]) assert.doesNotMatch(r.content[0].text, /Response body|No SR record|error 404|Not Found/);
   } finally {
     globalThis.fetch = realFetch;

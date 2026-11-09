@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.17] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Changed: the closing safety sentence (Noel's decision, beta round 17)
+
+- Every response from all 21 tools, success or error, now ends with exactly "If this is an
+  emergency, or if you think this is an emergency, call 911." as its last line, like the end
+  of a doctor's office phone message; it is no longer the first line. The structured answer
+  keeps it as its first field (`safety_line`). An error message carries it once, at the end.
+  When a danger is detected, `how_to_report` and `draft_311_report` still lead `first_line`
+  with their stronger 911 line at the top. This sentence is what the server relies on; danger
+  spotting stays a best effort.
+
+### Fixed (beta retest 16, 2026-11-09)
+
+- The sensitive-article guard covers every article shown, best match, alternatives and other
+  problems alike, and now also family, protective and end-of-life articles (Foster Care
+  Agency, Adult Protective Services, Death Investigation, funeral and cemetery articles,
+  Missing Person, Runaway). "Foster Care Agency Complaint" is no longer offered for trash
+  outside a daycare. A test audits every recorded title and every answer in the measured set.
+- Five missed emergencies, as small additions to existing classes: "co alarm beepin",
+  "gas oder in bsmt" (more misspellings and shorthand), a dog walker who fell into a sinkhole,
+  a crane tipping over, train doors closed on a woman's arm and dragging her.
+
 ## [1.2.0-beta.16] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

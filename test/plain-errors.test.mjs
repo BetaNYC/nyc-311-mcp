@@ -45,10 +45,11 @@ for (const [name, args, re] of CASES) {
   });
 }
 
-test("the reporting tools still put the safety line first on argument errors", async () => {
+test("the reporting tools end argument errors with the safety line", async () => {
   for (const name of ["how_to_report", "draft_311_report"]) {
     const { text } = await err(name, { description: "" });
-    assert.ok(text.startsWith(SAFETY_LINE), text);
+    assert.ok(text.endsWith(`\n\n${SAFETY_LINE}`), text);
+    assert.equal(text.split(SAFETY_LINE).length, 2, "once");
   }
 });
 

@@ -1085,6 +1085,14 @@ export const SENSITIVE_ARTICLES: { title: RegExp; needs: RegExp }[] = [
   { title: /hate crime/i, needs: /\b(hate|hateful|racist|racial|slurs?|antisemit\w*|homophob\w*|transphob\w*|islamophob\w*|swastikas?|bias)\b/ },
   { title: /domestic violence/i, needs: /\b(domestic|husband|wife|boyfriend|girlfriend|partner|spouse|ex)\b/ },
   { title: /overdose/i, needs: /\b(overdos\w*|od'?(ing|ed)?|pills|drugs?|fentanyl|heroin|narcan|naloxone|unresponsive)\b/ },
+  // Family, protective and end-of-life articles (beta retest 16: "Foster Care Agency Complaint"
+  // was offered as an alternative for trash outside a daycare).
+  { title: /foster care/i, needs: /\b(foster\w*)\b/ },
+  { title: /adult protective|protective services/i, needs: /\b(protective|vulnerable adult|elderly|elder|exploit\w*|neglect\w*|abus\w*|can'?t care for)\b/ },
+  { title: /death investigation/i, needs: /\b(died|dead|death|body|deceased|corpse|passed away)\b/ },
+  { title: /funeral|cemetery/i, needs: /\b(funeral|cemetery|burial|grave|headstone|cremat\w*|died|death)\b/ },
+  { title: /missing person/i, needs: /\b(missing|disappeared|can'?t find|hasn'?t come home|kidnap\w*|abduct\w*|lost (my|a) (child|kid|son|daughter))\b/ },
+  { title: /runaway/i, needs: /\b(runaway|ran away|homeless youth|kicked out)\b/ },
   { title: /\bminors?\b/i, needs: /\b(minors?|kids?|teens?|teenagers?|under ?age|underage|children|students?)\b/ },
 ];
 export function sensitiveAllowed(title: string, q: Pick<Query, "text"> & Partial<Pick<Query, "danger">>, summary = ""): boolean {
