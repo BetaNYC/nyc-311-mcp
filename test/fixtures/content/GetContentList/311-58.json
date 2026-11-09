@@ -1,0 +1,384 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Learn about the added sugars warning requirements for chain restaurants.",
+   "id": "KA-03654",
+   "title": "Added Sugars Warning"
+  },
+  {
+   "description": "Report an animal that bit a person.",
+   "id": "KA-01109",
+   "title": "Animal Bite"
+  },
+  {
+   "description": "Report an upsetting anti-smoking advertisement.",
+   "id": "KA-02560",
+   "title": "Anti-Smoking Advertising Complaint"
+  },
+  {
+   "description": "Report asbestos that is exposed or illegally removed.",
+   "id": "KA-02197",
+   "title": "Asbestos Complaint"
+  },
+  {
+   "description": "Learn about asthma and resources for families with children with asthma.",
+   "id": "KA-02563",
+   "title": "Asthma"
+  },
+  {
+   "description": "Learn about the task force to reduce the unnecessary arrest and incarceration of people with behavioral health issues.",
+   "id": "KA-01258",
+   "title": "Behavioral Health and the Criminal Justice System Task Force"
+  },
+  {
+   "description": "Learn about bird flu (avian influenza).",
+   "id": "KA-03667",
+   "title": "Bird Flu Information"
+  },
+  {
+   "description": "Correct or update a birth certificate.",
+   "id": "KA-01013",
+   "title": "Birth Certificate Change"
+  },
+  {
+   "description": "Get a copy of a birth certificate if you were born in Puerto Rico.",
+   "id": "KA-01022",
+   "title": "Birth Certificate from Puerto Rico"
+  },
+  {
+   "description": "Get a copy of a birth certificate.",
+   "id": "KA-01012",
+   "title": "Birth Certificate Order"
+  },
+  {
+   "description": "Report a problem with plain bottled water.",
+   "id": "KA-01941",
+   "title": "Bottled Water Complaint"
+  },
+  {
+   "description": "Learn about calorie posting requirements information for restaurants and mobile vendors. Report failed to display calorie information.",
+   "id": "KA-02237",
+   "title": "Calorie Posting"
+  },
+  {
+   "description": "Get a clinical bulletin for health care providers.",
+   "id": "KA-02640",
+   "title": "City Health Information (CHI) for Health Care Providers"
+  },
+  {
+   "description": "Learn about hearings for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-02019",
+   "title": "City-Issued Summons Hearing"
+  },
+  {
+   "description": "Pay a summons for violations of quality of life laws, health code, or other City rules.",
+   "id": "KA-03622",
+   "title": "City-Issued Summons Payment"
+  },
+  {
+   "description": "Pay New York City bills and fees online.",
+   "id": "KA-02520",
+   "title": "CityPay"
+  },
+  {
+   "description": "Request for a community health profile.",
+   "id": "KA-02655",
+   "title": "Community Health Profile"
+  },
+  {
+   "description": "Learn about the City's plan to expand and improve mental health care and services citywide.",
+   "id": "KA-01380",
+   "title": "Community Mental Health Plan"
+  },
+  {
+   "description": "Find places near you outdoors to hydrate, refresh, and stay in the shade.",
+   "id": "KA-03323",
+   "title": "Cool It! NYC"
+  },
+  {
+   "description": "Find a cooling center, an air-conditioned place to go when it is dangerously hot.",
+   "id": "KA-02663",
+   "title": "Cooling Centers"
+  },
+  {
+   "description": "Learn about symptoms, prevention, and health guidance for COVID-19.",
+   "id": "KA-03288",
+   "title": "Coronavirus (COVID-19)"
+  },
+  {
+   "description": "Get a COVID-19 test.",
+   "id": "KA-03322",
+   "title": "Coronavirus (COVID-19) Testing"
+  },
+  {
+   "description": "Get the COVID-19 vaccine.",
+   "id": "KA-03360",
+   "title": "Coronavirus (COVID-19) Vaccine"
+  },
+  {
+   "description": "Report a problem with cosmetics or makeup.",
+   "id": "KA-01413",
+   "title": "Cosmetics Complaint"
+  },
+  {
+   "description": "Cyclosporiasis is an illness spread by food and water.",
+   "id": "KA-03738",
+   "title": "Cyclosporiasis Information"
+  },
+  {
+   "description": "Get a birth certificate for a birth that wasn't registered.",
+   "id": "KA-03551",
+   "title": "Delayed Birth Registration"
+  },
+  {
+   "description": "Learn about the rules for bringing a non-service dog into a restaurant.",
+   "id": "KA-02689",
+   "title": "Dogs in Restaurants"
+  },
+  {
+   "description": "Make an appointment to donate blood.",
+   "id": "KA-01419",
+   "title": "Donate Blood"
+  },
+  {
+   "description": "Report cold or drinking water odor, taste, discoloration, or illness caused by drinking water. Get water quality and building water tank inspection info.",
+   "id": "KA-01402",
+   "title": "Drinking Water"
+  },
+  {
+   "description": "Get a health inspection report for a mobile food vendor.",
+   "id": "KA-01302",
+   "title": "Food Cart Inspection Report"
+  },
+  {
+   "description": "Learn about recalled food or medicine.",
+   "id": "KA-01544",
+   "title": "Food or Medicine Recall"
+  },
+  {
+   "description": "Report illness caused by food.",
+   "id": "KA-02051",
+   "title": "Food Poisoning"
+  },
+  {
+   "description": "Report an unsanitary restaurant, deli, grocery, market, cafeteria, bakery, or facility where food is made or stored.",
+   "id": "KA-01111",
+   "title": "Food Safety Complaint"
+  },
+  {
+   "description": "Report a problem with a gym or health spa membership.",
+   "id": "KA-01558",
+   "title": "Gym or Health Spa Membership Complaint"
+  },
+  {
+   "description": "Hantavirus pulmonary syndrome is a rare but potentially serious disease.",
+   "id": "KA-03722",
+   "title": "Hantavirus Information"
+  },
+  {
+   "description": "Learn about commenting on proposals to changes in the Health Code or attend public hearings.",
+   "id": "KA-01564",
+   "title": "Health Code Public Hearings"
+  },
+  {
+   "description": "Learn about the City's Health Survey 50.",
+   "id": "KA-03318",
+   "title": "Health Survey 50"
+  },
+  {
+   "description": "Learn about and report invasive plant species.",
+   "id": "KA-03169",
+   "title": "Invasive Plant Species"
+  },
+  {
+   "description": "Learn about the lead law; get a copy of the Childhood Lead Prevention Act or the Annual Lead and Window Guard Notice.",
+   "id": "KA-02840",
+   "title": "Lead Law"
+  },
+  {
+   "description": "Report lead paint, peeling paint, or lead dust due to construction. The City will send an inspector where applicable.",
+   "id": "KA-02134",
+   "title": "Lead Paint"
+  },
+  {
+   "description": "Learn about lead poisoning, lead poisoning prevention, and lead paint repair.",
+   "id": "KA-02842",
+   "title": "Lead Safety"
+  },
+  {
+   "description": "Learn about safe lead paint work practices for landlords and construction professionals.",
+   "id": "KA-02843",
+   "title": "Lead Safety for Landlords and Construction Professionals"
+  },
+  {
+   "description": "Learn about a potentially fatal type of pneumonia.",
+   "id": "KA-02845",
+   "title": "Legionnaires' Disease"
+  },
+  {
+   "description": "Learn about a pilot program providing modular public restrooms in public plazas and high-traffic areas. Submit a complaint or feedback about the program.",
+   "id": "KA-03748",
+   "title": "Modular Public Restrooms Pilot"
+  },
+  {
+   "description": "Learn about the health effects of being exposed to mold.",
+   "id": "KA-02871",
+   "title": "Mold Cleaning and Health Guidelines"
+  },
+  {
+   "description": "Report mold in an apartment, loft, commercial, or abandoned building.",
+   "id": "KA-02262",
+   "title": "Mold Complaint"
+  },
+  {
+   "description": "Get information about symptoms, prevention, and other health guidance for monkeypox (mpox).",
+   "id": "KA-03484",
+   "title": "Monkeypox (Mpox)"
+  },
+  {
+   "description": "Learn about health care services for New Yorkers who cannot afford insurance or are not eligible for it.",
+   "id": "KA-03317",
+   "title": "NYC Care"
+  },
+  {
+   "description": "Learn about controlling rats, mice, and bugs and pest control training for the public and professionals.",
+   "id": "KA-01110",
+   "title": "Pest Control Guidance"
+  },
+  {
+   "description": "Report someone using a pesticide without warning occupants or neighbors in advance.",
+   "id": "KA-01597",
+   "title": "Pesticide Application Without Notice"
+  },
+  {
+   "description": "Learn about vaccination for dogs and cats.",
+   "id": "KA-02947",
+   "title": "Pet Vaccination"
+  },
+  {
+   "description": "Give feedback about a pharmacy you visited to get naloxone or general comments about access to naloxone.",
+   "id": "KA-02922",
+   "title": "Pharmacy Without Naloxone"
+  },
+  {
+   "description": "Get information about symptoms, prevention, and other health guidance about polio.",
+   "id": "KA-03499",
+   "title": "Polio"
+  },
+  {
+   "description": "Find a public restroom.",
+   "id": "KA-03643",
+   "title": "Public Restrooms"
+  },
+  {
+   "description": "Report a person defecating or urinating in public.",
+   "id": "KA-01958",
+   "title": "Public Urination or Defecation"
+  },
+  {
+   "description": "Report an animal that may have rabies, dead or alive.",
+   "id": "KA-02349",
+   "title": "Rabid Animal"
+  },
+  {
+   "description": "Learn about raccoon roundworm infection and prevention.",
+   "id": "KA-01348",
+   "title": "Raccoon Roundworm Infection"
+  },
+  {
+   "description": "Learn about the health effects of radiation, how to detect it, and what to do during a radiological emergency.",
+   "id": "KA-01349",
+   "title": "Radiation"
+  },
+  {
+   "description": "Report rats, mice, and conditions that might attract them.",
+   "id": "KA-01107",
+   "title": "Rat or Mouse Complaint"
+  },
+  {
+   "description": "Learn about rat poison signs posted in neighborhoods.",
+   "id": "KA-01350",
+   "title": "Rat Poison Sign"
+  },
+  {
+   "description": "Report a missing, incorrect, or improperly displayed food establishment allergy poster.",
+   "id": "KA-01942",
+   "title": "Restaurant Allergy Poster Complaint"
+  },
+  {
+   "description": "Learn about letter grading for restaurants, food trucks and food carts. Report a missing, fake, or incorrect letter grade.",
+   "id": "KA-01057",
+   "title": "Restaurant and Mobile Food Letter Grading"
+  },
+  {
+   "description": "Learn about smoking rules in multiple dwellings. Request a waiver to the Smoke Free Air Act.",
+   "id": "KA-03007",
+   "title": "Smoke Free Air Act"
+  },
+  {
+   "description": "Report violations of the Smoke Free Air Act.",
+   "id": "KA-03662",
+   "title": "Smoke Free Air Act Complaint"
+  },
+  {
+   "description": "Report illegal tobacco or marijuana smoking or vaping.",
+   "id": "KA-02295",
+   "title": "Smoking or Vaping Complaint"
+  },
+  {
+   "description": "Learn about the residential building smoking policy disclosure law.",
+   "id": "KA-03009",
+   "title": "Smoking Policy"
+  },
+  {
+   "description": "Report a chain restaurant that does not post warnings about sodium content.",
+   "id": "KA-02297",
+   "title": "Sodium Warning Complaint"
+  },
+  {
+   "description": "Learn about the rules for chain food service establishments posting warnings about sodium content.",
+   "id": "KA-03010",
+   "title": "Sodium Warning Rules"
+  },
+  {
+   "description": "Learn about laws for selling tobacco, e-cigarettes, and related products.",
+   "id": "KA-01978",
+   "title": "Tobacco Laws"
+  },
+  {
+   "description": "Report a business operating without a license.",
+   "id": "KA-02206",
+   "title": "Unlicensed Business"
+  },
+  {
+   "description": "Learn about or report the sale of pesticides or other unsafe products.",
+   "id": "KA-03068",
+   "title": "Unsafe Product"
+  },
+  {
+   "description": "Request birth or death verification if you are a government agency.",
+   "id": "KA-02580",
+   "title": "Vital Record Verification"
+  },
+  {
+   "description": "Get help for users of EVERS, the registration system of births and deaths in New York City, which is being replaced by eVital.",
+   "id": "KA-03084",
+   "title": "Vital Records EVERS System"
+  },
+  {
+   "description": "Learn about air quality health advisories due to wildfires and how to protect yourself from air pollution.",
+   "id": "KA-03580",
+   "title": "Wildfire Air Quality Alert"
+  },
+  {
+   "description": "Learn how to stay warm, healthy, and safe during winter storms and extreme cold.",
+   "id": "KA-03098",
+   "title": "Winter Weather Safety"
+  },
+  {
+   "description": "Learn about programs and policies to address disparities that impact boys and men of color.",
+   "id": "KA-03103",
+   "title": "Young Men's Initiative"
+  }
+ ]
+}

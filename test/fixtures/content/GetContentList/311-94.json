@@ -1,0 +1,859 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Get a poster that warns against drinking alcohol during pregnancy.",
+   "id": "KA-02554",
+   "title": "Alcohol and Pregnancy Warning Poster"
+  },
+  {
+   "description": "Learn about the certificate to manage a pet shop or business that sells, grooms, or houses cats, dogs, or other small animals.",
+   "id": "KA-02559",
+   "title": "Animal Care and Handling Course"
+  },
+  {
+   "description": "Apply for art, office, and household supplies for artists and cultural organizations.",
+   "id": "KA-01121",
+   "title": "Art Supplies"
+  },
+  {
+   "description": "Learn about the certification needed for an artist to qualify for a joint living-working space.",
+   "id": "KA-02562",
+   "title": "Artist Certification"
+  },
+  {
+   "description": "Learn about the law for automated tools that help with employment decisions.",
+   "id": "KA-03552",
+   "title": "Automated Employment Decision Tools"
+  },
+  {
+   "description": "Learn about the Banking Corporation Tax (BCT).",
+   "id": "KA-02565",
+   "title": "Banking Corporation Tax"
+  },
+  {
+   "description": "Learn about the rules for commercial and residential barbecuing, find a place to barbecue in a park, or report barbecuing where it is not allowed.",
+   "id": "KA-02228",
+   "title": "Barbecuing"
+  },
+  {
+   "description": "Learn about becoming a Human Resources Administration (HRA) food pantry or soup kitchen.",
+   "id": "KA-01133",
+   "title": "Become a Food Provider"
+  },
+  {
+   "description": "Learn about keeping honeybees in New York City.",
+   "id": "KA-02316",
+   "title": "Beekeeping"
+  },
+  {
+   "description": "Get the New York City Bike Map or have a bicycle shop location added to the map.",
+   "id": "KA-02575",
+   "title": "Bike Map"
+  },
+  {
+   "description": "Get a Breastfeeding Is Welcome Here sign and toolkit for businesses.",
+   "id": "KA-02589",
+   "title": "Breastfeeding Welcome Sign and Toolkit"
+  },
+  {
+   "description": "Learn about workshops, assistance, and training to support businesses, including women-owned, minority, and small businesses.",
+   "id": "KA-02594",
+   "title": "Business Courses"
+  },
+  {
+   "description": "Learn about financial assistance for small business owners, entrepreneurs, and minority and women-owned businesses.",
+   "id": "KA-02595",
+   "title": "Business Financial Assistance"
+  },
+  {
+   "description": "Pay a Department of Consumer and Worker Protection fine or inspection fee.",
+   "id": "KA-02596",
+   "title": "Business Fine Payment"
+  },
+  {
+   "description": "Learn about resources for Business Improvement Districts (BID), including how to make one.",
+   "id": "KA-01266",
+   "title": "Business Improvement District (BID) Guide"
+  },
+  {
+   "description": "Learn about incentives for small businesses.",
+   "id": "KA-02597",
+   "title": "Business Incentives"
+  },
+  {
+   "description": "Get free legal assistance for small businesses.",
+   "id": "KA-02598",
+   "title": "Business Legal Assistance"
+  },
+  {
+   "description": "Update the address or name of your business.",
+   "id": "KA-02599",
+   "title": "Business Name or Address Change"
+  },
+  {
+   "description": "Learn how to file a Business Certificate, also called a Certificate of Assumed Name.",
+   "id": "KA-02601",
+   "title": "Business Registration"
+  },
+  {
+   "description": "Get help with business tax filing, payment, and account issues. Get a copy of a filed business tax return.",
+   "id": "KA-02602",
+   "title": "Business Tax Assistance"
+  },
+  {
+   "description": "Learn about calorie posting requirements information for restaurants and mobile vendors. Report failed to display calorie information.",
+   "id": "KA-02237",
+   "title": "Calorie Posting"
+  },
+  {
+   "description": "Apply to register a charity.",
+   "id": "KA-01525",
+   "title": "Charity Registration"
+  },
+  {
+   "description": "Learn about Childcare Business Pathways, a 15-week program that works directly with NYCHA residents to help them launch in-home childcare businesses.",
+   "id": "KA-01269",
+   "title": "Child Care Business Pathways for NYCHA Residents"
+  },
+  {
+   "description": "Learn about refundable tax credit for businesses that provide free or subsidized infant/toddler care for their employees.",
+   "id": "KA-03600",
+   "title": "Child Care Business Tax Credit"
+  },
+  {
+   "description": "Learn about group child care center performance summary cards.",
+   "id": "KA-02618",
+   "title": "Child Care Performance Card"
+  },
+  {
+   "description": "Learn more about day care center licensing, operation, and conditions.",
+   "id": "KA-02339",
+   "title": "Child Care Permit and Operation"
+  },
+  {
+   "description": "Get a poster for a restaurant or other food establishment with instructions to help a person who is choking.",
+   "id": "KA-01889",
+   "title": "Choking Poster"
+  },
+  {
+   "description": "Learn about the tax on cigarettes for businesses and consumers.",
+   "id": "KA-02628",
+   "title": "Cigarette Tax"
+  },
+  {
+   "description": "Buy or get permission to use high-quality photos of classic images of New York City.",
+   "id": "KA-02632",
+   "title": "City Archive Photograph"
+  },
+  {
+   "description": "Learn about doing business with New York City, including contracts, programs, payments, and business opportunities for existing vendors.",
+   "id": "KA-03474",
+   "title": "City Contracts for Existing Vendors"
+  },
+  {
+   "description": "Learn about doing business with New York City, including contracts, programs, payments, and business opportunities for new vendors.",
+   "id": "KA-02637",
+   "title": "City Contracts for New Vendors"
+  },
+  {
+   "description": "Apply to use sealed, on-street containers to hold commercial waste.",
+   "id": "KA-03477",
+   "title": "Clean Curbs"
+  },
+  {
+   "description": "Learn about the rules for businesses that employ delivery workers who use bikes, e-bikes, or cargo bikes. Report a business not following the laws.",
+   "id": "KA-02651",
+   "title": "Commercial Bicycling Laws"
+  },
+  {
+   "description": "Learn about tax benefits for owners and developers who build or make improvements to commercial or industrial properties.",
+   "id": "KA-02532",
+   "title": "Commercial Construction Tax Benefit Programs"
+  },
+  {
+   "description": "Get support and legal help for small businesses with commercial lease related issues.",
+   "id": "KA-01277",
+   "title": "Commercial Lease Assistance"
+  },
+  {
+   "description": "Learn about the New York City Commercial Motor Vehicle Tax (CMVT).",
+   "id": "KA-02652",
+   "title": "Commercial Motor Vehicle Tax"
+  },
+  {
+   "description": "Learn about the requirements for range hood systems in restaurant and cafeteria kitchens.",
+   "id": "KA-01531",
+   "title": "Commercial Range Hood Rules"
+  },
+  {
+   "description": "Learn about the Commercial Rent Tax (CRT) paid by businesses in Manhattan south of 96th Street.",
+   "id": "KA-02653",
+   "title": "Commercial Rent Tax"
+  },
+  {
+   "description": "Learn about the law requiring employers to provide commuter benefits to their employees.",
+   "id": "KA-02657",
+   "title": "Commuter Benefits Law"
+  },
+  {
+   "description": "Learn about planning conferences in New York City, for businesses and trade organizations.",
+   "id": "KA-01535",
+   "title": "Conference Planning"
+  },
+  {
+   "description": "Learn how to get rid of used cooking oil and grease.",
+   "id": "KA-02662",
+   "title": "Cooking Oil and Grease Disposal"
+  },
+  {
+   "description": "Get ID Cards for critical business employees to enter restricted areas after an emergency.",
+   "id": "KA-01165",
+   "title": "Corporate Emergency Access System (CEAS) Program"
+  },
+  {
+   "description": "Learn how to dissolve a corporation that has conducted business in New York City.",
+   "id": "KA-01166",
+   "title": "Corporation Dissolution"
+  },
+  {
+   "description": "Get a pass for lawyers and investigators to visit clients at correctional facilities.",
+   "id": "KA-01167",
+   "title": "Correctional Facility Pass for Attorneys"
+  },
+  {
+   "description": "Learn about the cross connection or water backflow program and business requirements.",
+   "id": "KA-01173",
+   "title": "Cross Connection and Water Backflow Prevention"
+  },
+  {
+   "description": "Apply for a grant for a non-profit cultural program.",
+   "id": "KA-01174",
+   "title": "Cultural Program Grant"
+  },
+  {
+   "description": "Make a complaint about a food delivery app.",
+   "id": "KA-03470",
+   "title": "Delivery App Complaint"
+  },
+  {
+   "description": "Get help for delivery workers and the apps that employ delivery workers.",
+   "id": "KA-03468",
+   "title": "Delivery App Worker Assistance"
+  },
+  {
+   "description": "Register to install a dental amalgam separator.",
+   "id": "KA-01286",
+   "title": "Dental Amalgam Separator Registration"
+  },
+  {
+   "description": "Request a sign that licensed businesses must post for customers.",
+   "id": "KA-01178",
+   "title": "Department of Consumer and Worker Protection License and Complaint Sign"
+  },
+  {
+   "description": "Get help for a business with a Department of Consumer and Worker Protection (DCWP) violation.",
+   "id": "KA-02683",
+   "title": "Department of Consumer and Worker Protection Violation Business Assistance"
+  },
+  {
+   "description": "Get help with disaster preparedness and recovery for businesses.",
+   "id": "KA-03618",
+   "title": "Disaster Preparedness and Recovery for Businesses"
+  },
+  {
+   "description": "Learn about the rules for bringing a non-service dog into a restaurant.",
+   "id": "KA-02689",
+   "title": "Dogs in Restaurants"
+  },
+  {
+   "description": "Get bulletins, guides, and other information about healthy eating.",
+   "id": "KA-02734",
+   "title": "Eating Healthy"
+  },
+  {
+   "description": "Get technical assistance for a store's EBT card reader.",
+   "id": "KA-01436",
+   "title": "Electronic Benefit Transfer (EBT) Card Reader Assistance for Retailers"
+  },
+  {
+   "description": "Learn about emergency preparedness, including tips, educational events, and how to create an emergency plan for businesses, schools, students, and pets.",
+   "id": "KA-02713",
+   "title": "Emergency Preparedness"
+  },
+  {
+   "description": "Learn about a program that certifies socially and economically disadvantaged business owners whose current net worth is less than one million dollars.",
+   "id": "KA-01440",
+   "title": "Emerging Business Enterprise Program"
+  },
+  {
+   "description": "Learn how to transition a business to employee ownership.",
+   "id": "KA-03358",
+   "title": "Employee Ownership NYC"
+  },
+  {
+   "description": "Get a poster with legal requirements for employment agencies.",
+   "id": "KA-02714",
+   "title": "Employment Agency Law Poster"
+  },
+  {
+   "description": "Businesses can get help with meeting environmental regulations, including incentives for environmental compliance and green business development.",
+   "id": "KA-01443",
+   "title": "Environmental Business Assistance"
+  },
+  {
+   "description": "Learn about exporting and importing goods.",
+   "id": "KA-01448",
+   "title": "Exporting and Importing Goods"
+  },
+  {
+   "description": "Learn about the law that protects fast food, retail, and utility safety workers.",
+   "id": "KA-02719",
+   "title": "Fair Workweek Law"
+  },
+  {
+   "description": "Get a certificate of fitness, which is required for certain hazardous occupations.",
+   "id": "KA-01455",
+   "title": "FDNY Certificate of Fitness"
+  },
+  {
+   "description": "Apply for a federal employer identification number.",
+   "id": "KA-01457",
+   "title": "Federal Employer ID Number (EIN)"
+  },
+  {
+   "description": "Get federal tax information for businesses.",
+   "id": "KA-01458",
+   "title": "Federal Tax for Businesses"
+  },
+  {
+   "description": "Apply for a new film, video, or photography permit, or check the status of an existing permit.",
+   "id": "KA-02073",
+   "title": "Film, Video, or Photography Permit"
+  },
+  {
+   "description": "Get non-criminal fingerprints, which are required for certain permits and licenses.",
+   "id": "KA-02726",
+   "title": "Fingerprinting"
+  },
+  {
+   "description": "Learn about permit required to open or use a hydrant.",
+   "id": "KA-01507",
+   "title": "Fire Hydrant Commercial Use Permit"
+  },
+  {
+   "description": "Learn about taxes for foreign insurance companies who provide fire coverage for New York City properties.",
+   "id": "KA-02729",
+   "title": "Fire Premiums Tax"
+  },
+  {
+   "description": "Learn about fire safety from the Fire Department, including fire safety notices. Request a fire safety education speaker.",
+   "id": "KA-03561",
+   "title": "Fire Safety"
+  },
+  {
+   "description": "Request a poster for a restaurant about protecting customers with food allergies.",
+   "id": "KA-02737",
+   "title": "Food Allergy Poster"
+  },
+  {
+   "description": "Learn about licensing, permits, and operating guidelines for food carts.",
+   "id": "KA-02739",
+   "title": "Food Cart Rules"
+  },
+  {
+   "description": "Replace a food certificate or card or request status of a replacement request.",
+   "id": "KA-02741",
+   "title": "Food Protection Certificate Replacement"
+  },
+  {
+   "description": "Learn about food protection courses for owners and operators of restaurants and other food establishments.",
+   "id": "KA-02742",
+   "title": "Food Protection Course"
+  },
+  {
+   "description": "Get help for freelance workers and those who employ them.",
+   "id": "KA-02743",
+   "title": "Freelance Worker and Hiring Party Assistance"
+  },
+  {
+   "description": "File and pay the tax for corporations that do business, employ capital, own or lease property, or have offices in NYC.",
+   "id": "KA-02504",
+   "title": "General Corporation Tax"
+  },
+  {
+   "description": "Get help for food distributors to promote healthier products.",
+   "id": "KA-02754",
+   "title": "Good Choice Healthy Food Program for Distributors"
+  },
+  {
+   "description": "Learn about the rules and required permits for running a mobile fruit and vegetable cart.",
+   "id": "KA-02758",
+   "title": "Green Cart Permit"
+  },
+  {
+   "description": "Learn about legal requirements and rights for grocery store owners and employees after the store is sold.",
+   "id": "KA-01555",
+   "title": "Grocery Store Sale Requirements"
+  },
+  {
+   "description": "Learn about programs and services for starting a small business or non-profit organization.",
+   "id": "KA-03016",
+   "title": "Grow a Small Business"
+  },
+  {
+   "description": "Learn about the fee payment policy for brokers.",
+   "id": "KA-01560",
+   "title": "HASA Broker Fee Assistance"
+  },
+  {
+   "description": "Learn whether your food establishment needs a Hazard Analysis Critical Control Point Plan and how to create one.",
+   "id": "KA-01562",
+   "title": "Hazard Analysis Critical Control Point Plan"
+  },
+  {
+   "description": "Get help with the Health Academy Registration System.",
+   "id": "KA-01189",
+   "title": "Health Academy Registration Assistance"
+  },
+  {
+   "description": "Learn how to correct a violation issued by the Department of Health and Mental Hygiene (DOHMH).",
+   "id": "KA-03583",
+   "title": "Health Department Violation Correction"
+  },
+  {
+   "description": "Learn about resources that help businesses hire qualified workers.",
+   "id": "KA-02776",
+   "title": "Hiring Services"
+  },
+  {
+   "description": "Order warning signs for permitted non-tobacco hookah establishments.",
+   "id": "KA-03176",
+   "title": "Hookah Warning Signs"
+  },
+  {
+   "description": "Learn about courses for horse drawn carriage drivers.",
+   "id": "KA-02609",
+   "title": "Horse Drawn Carriage Handling Course"
+  },
+  {
+   "description": "Learn about the tax on the admission price of horse racing tickets.",
+   "id": "KA-02792",
+   "title": "Horse Race Admissions Tax"
+  },
+  {
+   "description": "Get help with the hotel room occupancy tax.",
+   "id": "KA-02794",
+   "title": "Hotel Room Occupancy Tax"
+  },
+  {
+   "description": "Report identify theft or get tips for consumers and businesses about preventing it.",
+   "id": "KA-02533",
+   "title": "Identity Theft"
+  },
+  {
+   "description": "Get help starting, running, or growing an industrial or manufacturing business.",
+   "id": "KA-02819",
+   "title": "Industrial and Manufacturing Business Assistance"
+  },
+  {
+   "description": "Learn about grants to help businesses with employee training.",
+   "id": "KA-02831",
+   "title": "Job Training Grants for Businesses"
+  },
+  {
+   "description": "Learn about yard waste disposal rules for landscapers.",
+   "id": "KA-02482",
+   "title": "Landscaper Waste Requirements"
+  },
+  {
+   "description": "Learn about safe lead paint work practices for landlords and construction professionals.",
+   "id": "KA-02843",
+   "title": "Lead Safety for Landlords and Construction Professionals"
+  },
+  {
+   "description": "Request a bumper sticker for home improvement contractors with valid licenses only.",
+   "id": "KA-02848",
+   "title": "Licensed Home Improvement Contractor Bumper Sticker"
+  },
+  {
+   "description": "Learn about the Retail Beer, Wine and Liquor License Tax.",
+   "id": "KA-02557",
+   "title": "Liquor License Tax"
+  },
+  {
+   "description": "Register as a lobbyist.",
+   "id": "KA-02851",
+   "title": "Lobbyist Registration"
+  },
+  {
+   "description": "Learn about a program that helps small businesses.",
+   "id": "KA-01321",
+   "title": "Love Your Local Program"
+  },
+  {
+   "description": "Learn about the Made in New York Incentive Program for film and television productions.",
+   "id": "KA-01725",
+   "title": "Made in New York Incentive Program"
+  },
+  {
+   "description": "Get an application for material and equipment acceptance.",
+   "id": "KA-01727",
+   "title": "Material and Equipment Acceptance Application"
+  },
+  {
+   "description": "Get forms used by medical facilities to register births, deaths, and terminations of pregnancy.",
+   "id": "KA-02862",
+   "title": "Medical Facility Vital Event Registration"
+  },
+  {
+   "description": "Apply for a permit to perform in subways, streets, parks, and ferry terminals.",
+   "id": "KA-02069",
+   "title": "Musician or Performer Permit"
+  },
+  {
+   "description": "Learn how New Yorkers can easily search, apply for, and track City services and benefits.",
+   "id": "KA-03557",
+   "title": "MyCity"
+  },
+  {
+   "description": "Get online help for starting and operating a business in New York City.",
+   "id": "KA-02888",
+   "title": "MyCity Business"
+  },
+  {
+   "description": "Learn about a competitive grant competition for New York City Community Based Development Organizations (CBDOs).",
+   "id": "KA-01731",
+   "title": "Neighborhood Challenge Innovation Grant"
+  },
+  {
+   "description": "Learn about the benefits of New York City Tourism + Conventions membership for businesses.",
+   "id": "KA-01592",
+   "title": "New York City Tourism + Conventions Business Membership"
+  },
+  {
+   "description": "Request for information and registration forms for newsrack owners or operators.",
+   "id": "KA-02882",
+   "title": "Newsrack Registration"
+  },
+  {
+   "description": "Get help with credit, funding, office space, tax credits, training and other assistance for non-profit organizations.",
+   "id": "KA-02885",
+   "title": "Non-Profit Assistance"
+  },
+  {
+   "description": "Learn about the NYC Biotechnology Tax Credit and how to apply.",
+   "id": "KA-02579",
+   "title": "NYC Biotechnology Tax Credit"
+  },
+  {
+   "description": "Learn about an interagency initiative led by the Department of Small Business Services (SBS) to help businesses reopen and navigate City regulations.",
+   "id": "KA-03439",
+   "title": "NYC Business Express Service Team (BEST)"
+  },
+  {
+   "description": "Find a center offering support to start and run a small business.",
+   "id": "KA-02898",
+   "title": "NYC Business Solutions Center"
+  },
+  {
+   "description": "Get help for paid care workers and their employers.",
+   "id": "KA-02908",
+   "title": "Paid Care Worker or Employer Assistance"
+  },
+  {
+   "description": "Learn the rules for selling art, photography, reading material, or sculpture in City parks.",
+   "id": "KA-02912",
+   "title": "Park Art Vendor Rules"
+  },
+  {
+   "description": "Request an authorized parking space on a City street.",
+   "id": "KA-02914",
+   "title": "Parking Space Request"
+  },
+  {
+   "description": "Fight parking tickets or camera violations issued to commercial vehicle owners or operators.",
+   "id": "KA-02323",
+   "title": "Parking Ticket or Camera Violation Dispute for Businesses"
+  },
+  {
+   "description": "Enroll in programs to help your business track and pay parking and camera violations.",
+   "id": "KA-02059",
+   "title": "Parking Ticket or Camera Violation Programs for Businesses"
+  },
+  {
+   "description": "Learn about tax exempt financing for manufacturing, industrial, and not-for-profit corporations.",
+   "id": "KA-01940",
+   "title": "Payment in Lieu of Taxes (PILOT) Program"
+  },
+  {
+   "description": "Appeal the denial, removal, or reduction of a property tax exemption.",
+   "id": "KA-02333",
+   "title": "Personal Property Tax Exemption Appeals"
+  },
+  {
+   "description": "Get a list of scheduled water main shutdowns and water disruptions.",
+   "id": "KA-02127",
+   "title": "Planned Water Shutdowns"
+  },
+  {
+   "description": "Learn how to hire a police officer for private work.",
+   "id": "KA-01602",
+   "title": "Police Officer for Private Duty"
+  },
+  {
+   "description": "Apply for portable fire extinguisher servicing.",
+   "id": "KA-02927",
+   "title": "Portable Fire Extinguisher Recognition"
+  },
+  {
+   "description": "Get information or make a complaint about United States Postal Service (USPS) products and services.",
+   "id": "KA-01103",
+   "title": "Postal Service"
+  },
+  {
+   "description": "Authorize someone else to represent you in business tax matters with the Department of Finance.",
+   "id": "KA-03146",
+   "title": "Power of Attorney for Department of Finance"
+  },
+  {
+   "description": "Apply for or renew property tax benefits for properties used for charitable, educational, medical, or religious purposes.",
+   "id": "KA-02285",
+   "title": "Property Tax Exemption for Non-Profits"
+  },
+  {
+   "description": "Learn about the Protected Time Off Law. Report an employer violating the law.",
+   "id": "KA-02909",
+   "title": "Protected Time Off"
+  },
+  {
+   "description": "Learn about tax incentives for businesses who move to certain areas of New York City.",
+   "id": "KA-02530",
+   "title": "Relocation and Employment Assistance Program (REAP)"
+  },
+  {
+   "description": "Learn about public bathroom requirements for restaurants. Report no toilets for customers in a restaurant required to provide toilet facilities.",
+   "id": "KA-01351",
+   "title": "Restaurant Bathroom Rules"
+  },
+  {
+   "description": "Learn about CPR and equipment requirements for restaurants.",
+   "id": "KA-01352",
+   "title": "Restaurant CPR Rules"
+  },
+  {
+   "description": "Learn about the Salary Transparency Law.",
+   "id": "KA-03530",
+   "title": "Salary Transparency Law"
+  },
+  {
+   "description": "Get information for consumers and businesses about sales tax.",
+   "id": "KA-01675",
+   "title": "Sales Tax"
+  },
+  {
+   "description": "Learn about registration for businesses that sell taxable tangible personal property or taxable services.",
+   "id": "KA-01977",
+   "title": "Sales Tax Vendor Registration"
+  },
+  {
+   "description": "Get a free and confidential security survey for a home or business.",
+   "id": "KA-02993",
+   "title": "Security Survey"
+  },
+  {
+   "description": "Learn about an education and outreach campaign for the law requiring certain businesses to close their doors when running air conditioning systems.",
+   "id": "KA-01362",
+   "title": "Shut the Front Door"
+  },
+  {
+   "description": "Request to get help complying with laws if you're a business.",
+   "id": "KA-01755",
+   "title": "Small Business Compliance Consultation"
+  },
+  {
+   "description": "Apply for your store to accept SNAP benefits from customers.",
+   "id": "KA-01205",
+   "title": "SNAP for Retailers"
+  },
+  {
+   "description": "Learn about the rules for chain food service establishments posting warnings about sodium content.",
+   "id": "KA-03010",
+   "title": "Sodium Warning Rules"
+  },
+  {
+   "description": "Learn how to start an adult day care program.",
+   "id": "KA-01629",
+   "title": "Start an Adult Day Care"
+  },
+  {
+   "description": "Learn how to start and operate an after school program.",
+   "id": "KA-01630",
+   "title": "Start an After School Program"
+  },
+  {
+   "description": "Learn about anti-sexual harassment training in the workplace.",
+   "id": "KA-03020",
+   "title": "Stop Sexual Harassment Act (SSHA)"
+  },
+  {
+   "description": "Learn about the required sign for air conditioning complaints that chain stores must post.",
+   "id": "KA-03268",
+   "title": "Store Air Conditioning Law"
+  },
+  {
+   "description": "Learn about the training required to get a Pool Operator Certificate.",
+   "id": "KA-03037",
+   "title": "Swimming Pool Operation Technology Course"
+  },
+  {
+   "description": "Get health risk fact sheets and warning posters for indoor tanning establishments.",
+   "id": "KA-03039",
+   "title": "Tanning Health Risk Poster and Fact Sheet"
+  },
+  {
+   "description": "Learn about the training required to get a Tattoo Artist License.",
+   "id": "KA-03040",
+   "title": "Tattoo Artist Infection Control Course"
+  },
+  {
+   "description": "Apply for a clearance certificate showing that you paid City taxes.",
+   "id": "KA-03075",
+   "title": "Tax Clearance Certificate"
+  },
+  {
+   "description": "Help for taxi licensees, including owners, taxi drivers, and car service drivers.",
+   "id": "KA-01763",
+   "title": "Taxi Driver or Licensee Assistance"
+  },
+  {
+   "description": "Learn about yellow taxi medallion sales.",
+   "id": "KA-01376",
+   "title": "Taxi Medallion Sale"
+  },
+  {
+   "description": "Get help if you've been unable to resolve a tax or rent freeze issue with the Department of Finance through the normal process.",
+   "id": "KA-01663",
+   "title": "Taxpayer Advocate"
+  },
+  {
+   "description": "Learn about laws for selling tobacco, e-cigarettes, and related products.",
+   "id": "KA-01978",
+   "title": "Tobacco Laws"
+  },
+  {
+   "description": "Learn about registering a tobacco or electronic shop with the Department of Health.",
+   "id": "KA-01382",
+   "title": "Tobacco or Electronic Cigarette Shop Registration"
+  },
+  {
+   "description": "Learn about registering for trademarks and patents.",
+   "id": "KA-01765",
+   "title": "Trademarks and Patents"
+  },
+  {
+   "description": "Get information for general obligation bond investors.",
+   "id": "KA-01647",
+   "title": "Transitional Finance Authority Bond"
+  },
+  {
+   "description": "Learn about truck routes and regulations from NYC Department of Transportation Traffic Rules.",
+   "id": "KA-03065",
+   "title": "Truck Traffic Rules and Routes"
+  },
+  {
+   "description": "Learn about the Unincorporated Business Tax (UBT).",
+   "id": "KA-03067",
+   "title": "Unincorporated Business Tax"
+  },
+  {
+   "description": "Learn about taxes for utilities and vendors of utility services.",
+   "id": "KA-03071",
+   "title": "Utility Tax"
+  },
+  {
+   "description": "Request a free, no-violation visit of your business from the Department of Consumer and Worker Protection (DCWP).",
+   "id": "KA-03628",
+   "title": "Visiting Inspector Program (VIP)"
+  },
+  {
+   "description": "Learn about rules for selling carpets with VOCs.",
+   "id": "KA-01650",
+   "title": "Volatile Organic Compound (VOC) Carpet Rules"
+  },
+  {
+   "description": "Learn about volunteer opportunities for businesses and their employees.",
+   "id": "KA-01687",
+   "title": "Volunteer Opportunities for Businesses"
+  },
+  {
+   "description": "Get resources for volunteer organizations.",
+   "id": "KA-01209",
+   "title": "Volunteer Program Management"
+  },
+  {
+   "description": "Learn about the Go Pass background check program for non-profits.",
+   "id": "KA-01652",
+   "title": "Volunteer Screening for Non-Profits"
+  },
+  {
+   "description": "Learn about trash, recycling, and organics rules for businesses, including any business operating in a residential building, and Commercial Waste Zones.",
+   "id": "KA-01787",
+   "title": "Waste Disposal for Businesses"
+  },
+  {
+   "description": "Learn about wastewater treatment rules for businesses.",
+   "id": "KA-01771",
+   "title": "Wastewater Guidelines for Businesses"
+  },
+  {
+   "description": "Apply for a water potability certificate, which confirms that water is safe to drink.",
+   "id": "KA-03090",
+   "title": "Water Potability Certificate"
+  },
+  {
+   "description": "Learn about having water service turned on or off for a residential or commercial property.",
+   "id": "KA-03091",
+   "title": "Water Service"
+  },
+  {
+   "description": "Apply for certification to unload water from a shipping hydrant for general use.",
+   "id": "KA-03092",
+   "title": "Water Vessel for Shipping Hydrant Certificate"
+  },
+  {
+   "description": "Learn about and apply for required permits for boating, fishing, hunting and other recreational activities on upstate reservoir lands.",
+   "id": "KA-02077",
+   "title": "Watershed Recreation and Access Permit"
+  },
+  {
+   "description": "Get a decal that promotes that a food service establishment is accessible to wheelchairs.",
+   "id": "KA-03094",
+   "title": "Wheelchair Friendly Decal"
+  },
+  {
+   "description": "Learn about a program that helps women start, operate, and grow their businesses.",
+   "id": "KA-01395",
+   "title": "Women Entrepreneurs NYC (WE NYC)"
+  },
+  {
+   "description": "Learn about programs, resources, and support for women.",
+   "id": "KA-03099",
+   "title": "Women NYC"
+  },
+  {
+   "description": "Learn about workers' compensation resources for businesses.",
+   "id": "KA-01779",
+   "title": "Workers' Compensation for Businesses"
+  },
+  {
+   "description": "Learn about the rules and restrictions for working horses.",
+   "id": "KA-01396",
+   "title": "Working Horse Rules"
+  },
+  {
+   "description": "Learn about employment programs for young people, including SYEP.",
+   "id": "KA-03107",
+   "title": "Youth Employment"
+  }
+ ]
+}

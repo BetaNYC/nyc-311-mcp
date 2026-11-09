@@ -10,7 +10,7 @@ Vibe coded with [Claude](https://claude.ai) by [BetaNYC](https://beta.nyc).
 
 ## What it does
 
-Exposes 17 tools over MCP. Four use the NYC 311 Public API (they need an API key):
+Exposes 20 tools over MCP. Six use the NYC 311 Public API (they need an API key):
 
 | Tool | Description |
 |---|---|
@@ -18,6 +18,8 @@ Exposes 17 tools over MCP. Four use the NYC 311 Public API (they need an API key
 | `get_status` | Current city status for an emergency or weather condition (Code Blue, fire hydrants, OEM alerts, snow) |
 | `get_service_request` | Look up one 311 service request by its 311 number, with BetaNYC's plain-language reading of its status (the City publishes no definitions) and the agency's resolution text; for other requests at its address, use `address_history` |
 | `get_service_request_list` | Look up several at once; numbers the API did not find are listed in `not_found` |
+| `how_to_report` | From a plain description ("a pothole on my block"), the 311 article that fits (title, KA number, link on 311 Online), the agency and 311 problem type it names, what it says to do, and the ways to report, all from the City's own 311 content; one match per problem when a description names several. Every answer and every error starts with "If anyone is in danger right now, call 911."; a description that suggests danger, and every no-match answer, leads with 911, in the City's words only when the City article is that danger. **Danger detection is keyword-based; it will miss some emergencies**, so every answer also tells the calling assistant to send the person to 911 whenever anything suggests danger. Matching is BetaNYC's, by keyword (some Spanish, simple typos). **Files nothing.** Details: [docs/how-to-report.md](docs/how-to-report.md) |
+| `list_311_categories` | 311's own topic categories, or the articles in one, to browse when a match looks wrong |
 
 Eleven answer district questions from the files [BoardStat](https://www.beta.nyc/boardstat/)
 publishes every night (no key needed; only `www.beta.nyc` is contacted). Their numbers match
@@ -180,6 +182,14 @@ get_service_request(sr_number="311-17323508")                          → one r
 get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → several at once
 ```
 
+### Find out how to report a problem
+
+```
+how_to_report(description="no heat in my apartment")                   → KA-01036, HPD, "Heat/Hot Water", how to report
+how_to_report(description="a pothole on my block", community_district=306)  → plus how often it was reported in Brooklyn CD 6
+list_311_categories(category_id="311-12")                               → every Noise article, to pick another
+```
+
 ---
 
 ## Prerequisites
@@ -192,7 +202,7 @@ get_service_request_list(sr_numbers=["311-17323508", "311-17323514"])  → sever
 
 ## API key
 
-**For the four 311 API tools, yes — a free API key is required.** The ten district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
+**For the six 311 API tools (the four lookup tools, `how_to_report` and `list_311_categories`), yes — a free API key is required.** The eleven district tools read BoardStat's public files and need no key. The NYC 311 Public API requires a subscription key on every request. Get one (free) from the NYC API portal and set it as the `NYC_311_API_KEY` environment variable:
 
 1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and register / sign in.
 2. Subscribe to the **NYC 311 Public Developers** product (see the table below for which product to choose).
@@ -311,13 +321,14 @@ Once connected, you can ask your AI assistant things like:
 More district work is planned under epic
 [#12](https://github.com/BetaNYC/nyc-311-mcp/issues/12): the monthly reports that
 [Local Law 47 of 2005](https://intro.nyc/0174-2004) (Int 0174-2004) asked for (#15), request lookup by address and district (#16), and help reporting a
-problem to 311 (#17, #18). None of those are released yet.
+problem to 311 (#17, #18). None of those are released yet. Drafting a report for a person to
+send (#18) is next; the server will not file requests on anyone's behalf.
 
 ---
 
 ## Data source
 
-The four lookup tools use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The ten district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data.
+The four lookup tools and the two reporting-help tools (`how_to_report`, `list_311_categories`, through the API's content operations GetCategory, GetContentList and GetContent) use the [NYC 311 Public API](https://api-portal.nyc.gov/), operated by the NYC Office of Technology and Innovation (OTI); access requires a free subscription key. The eleven district tools read the files [BoardStat](https://www.beta.nyc/boardstat/) publishes nightly from NYC Open Data.
 
 This is an independent, community-built project from BetaNYC. It is not affiliated with, endorsed by, or an official product of the City of New York.
 

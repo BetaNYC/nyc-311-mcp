@@ -1,0 +1,79 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01397",
+   "Title": "Snow or Ice on Sidewalk",
+   "Description": "Report snow or ice on a sidewalk. Learn about snow shoveling rules for property owners.",
+   "Section": [
+    {
+     "Name": "911 Snow or Ice on Sidewalk",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report a medical or health-related emergency, or a person in need of medical assistance.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03706\">Snow or Ice on Building</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02296\">Snow or Ice on Street or Highway</a></li></ul></div><p>Property owners must clear snow or ice from their sidewalks to keep them safe and accessible for everyone.</p><p>The City does <strong>not:</strong></p><ul><li>Clear snow or ice from sidewalks in front of residential or commercial property</li><li>Clear snow or ice from alleys</li><li>Clear snow or ice blocking access to sidewalks, vehicles, or driveways, even if it was caused by plowing</li></ul><p><strong>Snow Clearing Rules</strong></p><p>If you own a building or lot, you must clear your sidewalk thoroughly after it snows.&nbsp;Snow may be moved against the building, to the curb line, or areas on private property.</p><p>If you don&#39;t follow these rules, you may receive a fine (up to $250) from the Department of Sanitation (DSNY):</p><ul><li>Clear a path at least 4 feet wide.</li><li>Clear access to the crosswalk and pedestrian ramp (curb cut) if you own a corner property.</li><li>Shovel bus stops (without shelters) and fire hydrants.</li><li>Spread salt, sand, or other granular material if the ground is frozen.</li><li><strong>Do</strong> <strong>not </strong>shovel snow into a&nbsp;street, crosswalk, or bike lane.</li></ul><p>If the snow stops falling between:</p><ul><li><strong>7 AM and 5 PM,</strong> clear the sidewalk within <strong>4 hours</strong></li><li><strong>5 PM and 9 PM,</strong> clear the sidewalk within <strong>14 hours</strong></li><li><strong>9 PM and 7 AM, </strong>clear the sidewalk by <strong>11 AM</strong></li></ul><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dsny/what-we-do/snow-response/snow-laws.page\">Learn more about the rules for removing snow and ice from sidewalks.</a></p><p><strong>File a Complaint</strong></p><p>DSNY isn&rsquo;t taking complaints right now. Either it hasn&rsquo;t snowed, or property owners still have time to clear their sidewalks.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Bus Stops",
+     "Content": "<p>You can report snow at a bus stop or inside a bus stop shelter.</p><p>If snow or ice<strong> on the street</strong> is blocking access to the bus stop, visit the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02296\">Snow or Ice on Street or Highway</a> page instead to report a snowy or icy street in front of&nbsp;a bus stop.</p><p><strong>Bus Stop Without a Shelter</strong></p><p>Property owners are responsible for removing snow on the sidewalk at bus stops <strong>without</strong> a bus shelter.&nbsp;Report it as a snowy or icy sidewalk in front of a residence or business.</p><p><strong>Bus Stop With a Shelter</strong></p><p>Department of Transportation (DOT) is responsible for removing snow or ice&nbsp;<strong>inside of bus stop shelters. </strong></p><p>You can submit a report to DOT. The agency&nbsp;will send your complaint to a contractor for snow and ice removal. If no shelter exists at the reported location, no further action will be taken.</p>",
+     "ContentAction": [
+      {
+       "Name": "Snow or Ice Inside Bus Shelter",
+       "Agency": "Department of Transportation",
+       "Problem": "Bus Stop Shelter Complaint",
+       "ProblemDetail": "Snow Removal Requested"
+      }
+     ]
+    },
+    {
+     "Name": "Fire Hydrants",
+     "Content": "<p>Property owners are responsible for clearing snow from hydrants in front of their property. You can report snow blocking a fire hydrant to the Fire Department.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Overpasses and Underpasses",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from pedestrian overpasses and underpasses once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every overpass or underpass&nbsp;will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Pedestrian Medians",
+     "Content": "<p>The Department of Sanitation (DSNY) hires emergency snow laborers to help clear snow from medians once all streets have been cleared. This effort takes time because it requires manual labor.</p><p>You may file service requests beginning 72 hours after streets have been cleared. There is no guarantee that every median will be cleared.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Parks",
+     "ContentAction": [
+      {
+       "Name": "Snow or Ice on Park Path",
+       "Agency": "Department of Parks and Recreation",
+       "Problem": "Maintenance or Facility",
+       "ProblemDetail": "Snow or Ice"
+      }
+     ]
+    },
+    {
+     "Name": "Schools",
+     "Content": "<p><strong>Public Schools</strong></p><p>You can report a snowy or icy sidewalk in front of a public school.</p><p><strong>Private or Charter Schools</strong></p><p>To report snow or ice on the sidewalk in front of a private or charter school, contact the school directly.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Police Stations",
+     "Content": "<p>You can report snow or ice on sidewalks in front of police precincts.&nbsp;</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/nypd/about/about-nypd/email-the-commissioner.page\">Email the New York City Police Department.</a></p><p><strong>By Phone</strong></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p><p><strong>What Happens Next</strong></p><p>Officers from your local police precinct will respond when they are not handling emergency situations.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Subway Stations and Elevated Tracks",
+     "Content": "<p>You can report snow or ice on sidewalks in front of a subway station.&nbsp;You can also report ice or snow falling from&nbsp;elevated tracks or other above ground MTA structures.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://contact.mta.info/s/customer-feedback\">Contact the Metropolitan Transportation Authority (MTA).</a></p><p><strong>By Phone</strong></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Post Offices",
+     "Content": "<p>You can report snow or ice on sidewalks in front of a post office.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://emailus.usps.com/emailUs/iq/usps/request.do?forward=emailUs\">Contact the United States Post Office (USPS).</a></p><p><strong>By Phone</strong></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Courthouses",
+     "Content": "<p>You can report snow or ice on a sidewalk in front of a courthouse.</p><p>If there is an emergency or a condition that needs immediate attention, you can speak to the chief clerk or the court officer of that court.</p><p>If the situation is not an emergency, you can&nbsp;<a class=\"externallink\" target=\"_blank\" href=\"https://www.nycourts.gov/howdoi/fileacomplaint.shtml\">file a complaint</a>&nbsp;on the NY Courts website.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

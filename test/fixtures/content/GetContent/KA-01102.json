@@ -1,0 +1,27 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01102",
+   "Title": "Noise from Vehicle",
+   "Description": "Report noise from a vehicle, including horn honking, engine idling, or loud music.",
+   "Section": [
+    {
+     "Name": "911 Noise from Vehicle",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <font color=\"#ff0004\"><b>911</b></font>&nbsp;to report:&nbsp; &nbsp;<ul><li>A car accident</li><li>Drag racing in progress</li><li>An all-terrain vehicle (ATV)&nbsp;in use</li><li>An unregistered dirt bike currently being driven on a City street</li><li>A car alarm going off</li></ul></div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"externallink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02125#vehicles\">Noise Complaints</a>&nbsp;to report other types of noise from vehicles</li></ul></div><p>You can report noise from a vehicle caused by an idling engine, loud music, or horn honking. Horn honking is only allowed as a warning of danger.</p><p><strong>What Happens Next</strong></p><p>Officers from the New York Police Department (NYPD) will respond within 8 hours when they are not handling emergencies. They will be able to take action if the noise is still happening when they arrive.&nbsp;</p><p><strong>Legal Noise Limits</strong></p><p>There is a limit to the amount of noise a vehicle&#39;s muffler or exhaust system may make on public roads where the speed limit is 35 miles per hour or less. According to New York City&#39;s Noise Code, sound is too loud if it can be heard:</p><ul><li>From 150 feet or more from a vehicle weighing less than 10,000 pounds</li><li>From 200 feet or more from a vehicle weighing more than 10,000 pounds</li><li>From 200 feet from a motorcycle</li></ul>",
+     "ContentAction": [
+      {
+       "Name": "Noise from Vehicle",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Vehicle"
+      }
+     ]
+    },
+    {
+     "Name": "DEP NYC Noise App",
+     "Content": "<p>NYC Noise is New York City&rsquo;s Department of Environmental Protection (DEP) free iPhone and Android mobile app. The app will collect noise data for DEP to better understand noise levels, sources, and patterns.</p><p>The app does not submit noise complaint services requests.</p><p>NYC Noise is for data collection only. It provides DEP with:</p><ul><li>Noise decibel level</li><li>Date, time, and source of noise</li><li>Defines noise by types:<ul><li>Alarm</li><li>Car and bus traffic</li><li>Construction</li><li>Dog/animal</li><li>HVAC/fan</li><li>Loud music</li><li>Siren</li><li>Vehicle horn</li></ul></li></ul><p>Submitted data appears in map and table formats. Data will help DEP identify noise hotspots and guide their targeted enforcement efforts.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/news/25-030/dep-launches-new-innovative-mobile-app-better-understand-city-s-noise#/0\">Learn more about DEP&#39;s NYC Noise App.</a></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

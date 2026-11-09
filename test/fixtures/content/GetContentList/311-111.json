@@ -1,0 +1,139 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Report an abandoned vehicle (including boats) on public property or request the removal of an abandoned vehicle with no license plates on private property.",
+   "id": "KA-02130",
+   "title": "Abandoned Vehicle"
+  },
+  {
+   "description": "Learn about Alternate Side Parking (ASP) suspensions, rules, and change requests.",
+   "id": "KA-01011",
+   "title": "Alternate Side Parking and Street Cleaning"
+  },
+  {
+   "description": "Report a vehicle that is blocking your driveway.",
+   "id": "KA-01062",
+   "title": "Blocked Driveway"
+  },
+  {
+   "description": "Learn what to do if your vehicle has been booted because of unpaid parking or camera violations.",
+   "id": "KA-02054",
+   "title": "Booted Vehicle"
+  },
+  {
+   "description": "Make a complaint about a business that places wheel locks on illegally parked cars.",
+   "id": "KA-02194",
+   "title": "Booting Company Complaint"
+  },
+  {
+   "description": "Apply for, renew, or report a problem with a New York City Parking Permit for People with Disabilities.",
+   "id": "KA-01243",
+   "title": "City Parking Permit for People with Disabilities"
+  },
+  {
+   "description": "Report an issue with a City vehicle.",
+   "id": "KA-01158",
+   "title": "City Vehicle Complaint"
+  },
+  {
+   "description": "Report a commercial vehicle parked in a residential driveway or lot.",
+   "id": "KA-01920",
+   "title": "Commercial Vehicle Parked in Residential Driveway"
+  },
+  {
+   "description": "Request a translation of DOT forms, guides, and other literature in a language not currently available.",
+   "id": "KA-03127",
+   "title": "Department of Transportation Document Translation"
+  },
+  {
+   "description": "Report a disabled vehicle on a City street, limited access highway, bridge, or tunnel.",
+   "id": "KA-02052",
+   "title": "Disabled Vehicle"
+  },
+  {
+   "description": "Report a vehicle parked with its engine running for more than three minutes. Learn how to file a Citizen's Air Complaint.",
+   "id": "KA-02222",
+   "title": "Idling Vehicle"
+  },
+  {
+   "description": "Report a vehicle parked illegally on public property, a blocked hydrant, parking permit misuse, or overnight commercial parking on residential street.",
+   "id": "KA-01986",
+   "title": "Illegal Parking"
+  },
+  {
+   "description": "Learn about the tax exemption for Manhattan residents who rent long-term parking spaces.",
+   "id": "KA-02261",
+   "title": "Manhattan Resident Parking Tax Exemption"
+  },
+  {
+   "description": "Learn about a citywide effort to resolve persistent quality-of-life concerns through the newly created NYPD Quality of Life Division.",
+   "id": "KA-03672",
+   "title": "NYPD Quality of Life Division"
+  },
+  {
+   "description": "Report a vehicle with a covered license plate.",
+   "id": "KA-03584",
+   "title": "Obscured License Plate Complaint"
+  },
+  {
+   "description": "Report the use or sale of unauthorized paper license plates, also known as ghost plates.",
+   "id": "KA-03492",
+   "title": "Paper License Plate Complaint"
+  },
+  {
+   "description": "Report a problem with a parking meter or request a refund. Request a new parking meter or removal or relocation of an existing parking meter.",
+   "id": "KA-01240",
+   "title": "Parking Meter Complaint or Request"
+  },
+  {
+   "description": "Learn about metered parking.",
+   "id": "KA-01239",
+   "title": "Parking Meters"
+  },
+  {
+   "description": "Apply for a parking permit or get information and assistance.",
+   "id": "KA-02913",
+   "title": "Parking Permit"
+  },
+  {
+   "description": "Learn about parking regulations and find out the rules for a specific location.",
+   "id": "KA-01026",
+   "title": "Parking Signs and Rules"
+  },
+  {
+   "description": "Pay for street parking using a mobile app or website.",
+   "id": "KA-01238",
+   "title": "ParkNYC Parking Payment"
+  },
+  {
+   "description": "Make a complaint about a privately-owned parking facility.",
+   "id": "KA-02177",
+   "title": "Private Garage or Parking Lot Complaint"
+  },
+  {
+   "description": "Find a City-owned parking facility. Report problems with maintenance, cleanliness, lighting, or other conditions in City-owned parking facilities.",
+   "id": "KA-02380",
+   "title": "Public Garages and Parking Lots"
+  },
+  {
+   "description": "Apply for, renew, or report a problem with a New York State Parking Permit for People with Disabilities.",
+   "id": "KA-01242",
+   "title": "State Parking Permit for People with Disabilities"
+  },
+  {
+   "description": "Learn about truck routes and regulations from NYC Department of Transportation Traffic Rules.",
+   "id": "KA-03065",
+   "title": "Truck Traffic Rules and Routes"
+  },
+  {
+   "description": "Report an individual distributing flyers or posting signs on public or private property, including vehicles and construction sites.",
+   "id": "KA-02311",
+   "title": "Unwanted Ad or Menu"
+  },
+  {
+   "description": "Report a vehicle stored on residential property or in a vacant lot.",
+   "id": "KA-01991",
+   "title": "Vehicle Stored on Residential Property or Vacant Lot"
+  }
+ ]
+}

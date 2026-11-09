@@ -1,0 +1,81 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02235",
+   "Title": "Broken Sidewalk",
+   "Description": "Report a sidewalk condition that may cause a trip hazard. Learn about how to maintain or repair the sidewalk next to your property.",
+   "Section": [
+    {
+     "Name": "Broken Sidewalk Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01505\">Trees and Sidewalks Repair</a>&nbsp;to request free repair for&nbsp;sidewalks that are damaged by curbside tree roots</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01955\">Sidewalk Collapsed</a>&nbsp;to report a sidewalk that has caved-in or fallen into a deep hole</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01506\">Sidewalk Violation and Repair</a>&nbsp;to learn about repairing or clearing a sidewalk violation from your property or getting&nbsp;a status/copy of a violation</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01956\">Sidewalk Utility Hardware Complaint</a></li></ul></div><p>Property owners are responsible for installing, maintaining, and repairing the sidewalks adjacent to their properties.&nbsp;</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/infrastructure/sidewalkintro.shtml#repair\">Learn about sidewalk repair.</a></p><p>The Department of Transportation&#39;s (DOT)&nbsp;goal is to make the City&#39;s sidewalks safe for pedestrians and help prevent trip hazards. DOT inspects sidewalk conditions&nbsp;not caused by tree roots.</p><p>A sidewalk condition includes: &nbsp;</p><ul><li>Loose, cracked, uneven, or missing sections</li><li>Improper slope causing drainage issues</li><li>Patchwork or hardware sticking out</li></ul><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/infrastructure/sidewalkintro.shtml#defects\">Learn about common sidewalk defects.</a></p><p>You can report a broken sidewalk. For sidewalk conditions <strong>not </strong>caused by tree roots,&nbsp;DOT will inspect the location and notify the property owner.</p><p>You can report a sidewalk condition located:</p><ul><li>Next to a residential or commercial property</li><li>Next to&nbsp;a vacant lot</li><li>Next to City-owned property</li><li>At an extended sidewalk at a bus stop&nbsp;</li><li>Under a bridge or on a traffic median</li></ul><p>An exact street address for the sidewalk defect is required for all reports.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "1, 2 and 3 Family Residential Properties",
+     "Content": "<p>Property owners are responsible for installing, maintaining, and repairing the sidewalks adjacent to their properties except for sidewalks damaged by tree roots.&nbsp;</p><p><strong>Sidewalk Damaged by Tree Roots</strong></p><p>If the sidewalk in front of the&nbsp;1-, 2-, or 3-family residential property&nbsp;is damaged due to tree roots, it&nbsp;may qualify for free repair through the Parks Department Trees and Sidewalks Repair Program.</p><p>To make a repair request, visit the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01505\">Trees and Sidewalks Repair</a> page instead.</p><p><strong>Sidewalk <u>Not </u>Damaged by Tree Roots</strong></p><p>If the damaged or broken sidewalk next to the property is <strong>not </strong>caused by tree roots, the Department of Transportation (DOT) will inspect the sidewalk complaint. If warranted, a Notice of Violation will be sent to the property owner.</p>",
+     "ContentAction": [
+      {
+       "Name": "Broken Sidewalk Next to Residential Property with 1-3 Units",
+       "Agency": "Department of Transportation",
+       "Problem": "Sidewalk Condition",
+       "ProblemDetail": "Broken Sidewalk"
+      }
+     ]
+    },
+    {
+     "Name": "Residential Property (4+ Units), Commercial Property, or Vacant Lot",
+     "Content": "<p>Property owners are responsible for installing, maintaining and repairing the sidewalks adjacent to their properties, including tree root damage.&nbsp;</p><p>You can report a broken sidewalk next to:</p><ul><li>Residential properties with four or more units</li><li>Residential properties with at least one commercial space</li><li>Commercial properties</li><li>Vacant lots</li></ul><p>The Department of Transportation will inspect the sidewalk complaint. If warranted, a Notice of Sidewalk Violation will be sent to the property owner.</p>",
+     "ContentAction": [
+      {
+       "Name": "Broken Sidewalk Next to Residential Property (4+ Units), Commercial Property, or Vacant Lot",
+       "Agency": "Department of Transportation",
+       "Problem": "Sidewalk Condition",
+       "ProblemDetail": "Broken Sidewalk"
+      }
+     ]
+    },
+    {
+     "Name": "City-Owned Property",
+     "Content": "<p>The City is responsible for installing, maintaining,&nbsp;and repairing the sidewalks adjacent to City-owned&nbsp;property.</p><p>You can report a broken sidewalk next to:</p><ul><li>Public housing</li><li>Public hospitals</li><li>Public parks (perimeter only)</li><li>Public schools</li><li>Public shelters</li><li>Libraries</li><li>City agency office buildings</li><li>Any other City-Owned property</li></ul><p>The Department of Transportation will verify that it is City-owned property and will inspect the sidewalk. If installation, maintenance, or repairs are required, the responsible agency will be notified.</p>",
+     "ContentAction": [
+      {
+       "Name": "Broken Sidewalk Next to City-owned Property",
+       "Agency": "Department of Transportation",
+       "Problem": "Sidewalk Condition",
+       "ProblemDetail": "Broken Sidewalk"
+      }
+     ]
+    },
+    {
+     "Name": "Extended Sidewalk at a Bus Stop",
+     "Content": "<p>You can report an extended sidewalk platform that is broken or missing.</p><p>An extended sidewalk is the widening of the sidewalk platforms typically located at select bus stops.</p><p><img alt=\"A catch basin partially clogged with debris and leaves with storm water running over it.\" style=\"width: 501px; height: 353px;\" src=\"https://portal.311.nyc.gov/article/bus-stop-platform.jpg\" /></p><p>They provide a raised area, allowing the bus to pull up alongside smoothly without needing to merge in and out of traffic. The materials are usually rubber texture&nbsp;in black with white markings.&nbsp;</p>",
+     "ContentAction": [
+      {
+       "Name": "Broken or Missing Extended Sidewalk Platform at Bus Stop",
+       "Agency": "Department of Transportation",
+       "Problem": "Curb Condition",
+       "ProblemDetail": "Broken Curb"
+      }
+     ]
+    },
+    {
+     "Name": "Under a Bridge or on a Traffic Median",
+     "Content": "<p>The Department of Transportation (DOT) maintains many of the overpasses (bridges)&nbsp;and traffic medians for City roadways and highways.</p><p>Complaints about a damaged sidewalk, including tree root damage,&nbsp;under an overpass&nbsp;or on a traffic median or island are accepted.</p><p>DOT will verify that it is City-owned property and will inspect the sidewalk. If installation, maintenance, or repairs are required, the responsible agency or entity will be notified.</p>",
+     "ContentAction": [
+      {
+       "Name": "Broken Sidewalk Under Bridge or on Traffic Median",
+       "Agency": "Department of Transportation",
+       "Problem": "Sidewalk Condition",
+       "ProblemDetail": "Broken Sidewalk"
+      }
+     ]
+    },
+    {
+     "Name": "Damage Caused by Another Party",
+     "Content": "<p>As the property owner, you are responsible for building or repairing the sidewalks next to your property and maintaining them in a reasonably safe condition. Regardless of what or who caused the damage, you will be liable for any violations and fines accrued by the damaged sidewalks.</p><p>If the sidewalk was broken by someone or something else:</p><ul><li>Document the damage and source of the damage.</li><li>If you do not know the source of the damage, the borough&#39;s Permit Office can do a search of construction permits issued on the property for a small fee. The Permit Office&#39;s telephone number is on the back of the Notice of Violation.</li><li>Repair and restore the broken sidewalk flags to avoid future violations.</li><li>Retain receipts documenting the cost of the repair and restoration.</li><li>Seek repayment of the repair costs from the responsible party.&nbsp;</li><li>If the damage was done by a City worker or contractor working for the City, you may file a claim against the City. To learn more, go to the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01094\">City Claim</a>&nbsp;page.</li><li>If the damage was done by a utility or private contractor, you should seek repayment from them.</li></ul>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

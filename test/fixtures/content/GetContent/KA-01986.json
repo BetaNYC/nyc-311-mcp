@@ -1,0 +1,119 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01986",
+   "Title": "Illegal Parking",
+   "Description": "Report a vehicle parked illegally on public property, a blocked hydrant, parking permit misuse, or overnight commercial parking on residential street.",
+   "Section": [
+    {
+     "Name": "Illegal Parking Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02130\">Abandoned Vehicle</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01062\">Blocked Driveway</a>&nbsp;</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01980\">Blocked Sidewalk or Street</a>&nbsp;to report&nbsp;cones or other personal property blocking the street</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03492\">Paper License Plate Complaint</a>&nbsp;to report&nbsp;the use or sale of unauthorized paper license plates</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03584\">Obscured License Plate Complaint</a>&nbsp;to report a vehicle with a&nbsp;partially or completely covered license plate</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02091\">NYCHA Fees, Charges, and Parking</a>&nbsp;to report unauthorized vehicles in a NYCHA parking lot</li></ul></div><p>You can report a non-emergency vehicle illegally parked on&nbsp;public property. You can also report the improper use of a parking permit.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Report Illegally Parked Vehicles",
+     "Content": "<p>You can report non-emergency vehicles and motorcycles that are:</p><ul><li>Double parked</li><li>Parked over 7 days in the same spot</li><li>Blocking a:<ul><li>Fire hydrant</li><li>Crosswalk</li><li>Bike lane</li><li>Sidewalk</li><li>Bus stop</li><li>Parking space for people with disabilities</li></ul></li><li>Commercial vehicles (including construction equipment)&nbsp;parked overnight on a residential street</li><li>Violating any other posted parking regulation</li></ul><ul></ul><p>Include in your report the vehicle&#39;s:</p><ul><li>Color</li><li>Make</li><li>Model</li><li>License plate number</li></ul><p><strong>Issue Not Listed on Complaint Form</strong></p><p>If you don&#39;t see the specific issue listed on the complaint form, choose &quot;Posted Parking Sign Violation&quot; and describe the exact problem in your report. Do this to report vehicles that are parked:</p><ul><li>Blocking a bus stop</li><li>In the same spot for 7 days</li><li>Against the flow of traffic</li><li>At a charging station but not actively charging</li><li>Violating any other posted parking regulation</li></ul><p><strong>What Happens Next</strong></p><p>Officers from your local police precinct will respond when they are not handling emergency situations.</p>",
+     "ContentAction": [
+      {
+       "Name": "Illegal Parking",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking"
+      }
+     ]
+    },
+    {
+     "Name": "Report Illegally Parked City Vehicles or City Permit Misuse",
+     "Content": "<p>Report misuse of a City parking permit or placard or illegal parking by a marked City vehicle that is:</p>",
+     "ContentAction": [
+      {
+       "Name": "City Vehicle Blocking Driveway",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Double Parked",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked at a Bus Stop",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked in a “No Standing” Area",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked in a “No Stopping\" Area",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked in a Bike Lane",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked in a Bus Lane",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked in a Crosswalk",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked in front of a Fire Hydrant",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Parked on the Sidewalk",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking",
+       "ProblemDetail": "Parking Permit Improper Use"
+      },
+      {
+       "Name": "City Vehicle Improper Identification",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking"
+      }
+     ]
+    },
+    {
+     "Name": "Report Illegally Parked Intercity Buses",
+     "Content": "<p>Intercity buses operate scheduled, low-cost transportation options into or out of New York City.</p><p>You can report an intercity or interstate bus that is:</p><ul><li>Violating a posted parking regulation</li><li>Double parked</li><li>Parked at a bus stop for over 15 minutes</li><li>Blocking a crosswalk, hydrant, sidewalk, or parking space reserved for people with disabilities</li><li>Illegally picking up or dropping off passengers at non-permitted locations</li></ul><p>The following are <strong>not </strong>considered intercity buses:</p><ul><li>School buses</li><li>Buses providing public transportation (MTA)</li><li>Exempt private bus operators under contract with a local government to provide public transportation</li></ul><p>You should include the following details in your report:</p><ul><li>Bus company name</li><li>Color of bus</li><li>License plate number</li></ul><p>Please note: for reports of buses illegally picking up or dropping off passengers, choose &quot;Unauthorized Bus Layover&quot; in the request form.</p><p><strong>What Happens Next</strong></p><p>Officers from your local police precinct will respond when they are not handling emergency situations.</p>",
+     "ContentAction": [
+      {
+       "Name": "Illegal Parking",
+       "Agency": "New York City Police Department",
+       "Problem": "Illegal Parking"
+      }
+     ]
+    },
+    {
+     "Name": "Booted Vehicles",
+     "Content": "<p>If a booted vehicle is blocking your driveway, double parked and blocking you in, or parked illegally, you can report the vehicle. First, you should look at the boot. If the boot has a keypad, it is a sheriff/marshal boot. If the boot doesn&rsquo;t have a keypad it is an NYPD boot.</p><p>If it&rsquo;s a sheriff/marshal boot, call DOF&rsquo;s Booting Program to request that the vehicle be towed or ask about the status of a tow truck if one has already been dispatched. Most tows are completed in 1 to 2 hours. When reporting a booted vehicle to DOF, you will need to provide the vehicle plate number, description, and location.</p><p>If the boot doesn&rsquo;t have a keypad you should contact the NYPD to request that the vehicle be towed.</p><p>To learn more about booted vehicles, including how to make a report, go to the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02054\">Booted Vehicle</a>&nbsp;page.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Parking Rules",
+     "Content": "<p>Parking and traffic rules are listed in &quot;The New York City Traffic Rules and Regulations,&quot; which is Chapter 4 of Title 34 of the &quot;Rules of the City of New York.&quot;</p><p>Detailed information about all parking regulations is available online.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/motorist/parking-regulations.shtml\">Learn about New York City parking regulations.</a></p><p>The following is a <strong>partial </strong>list of parking rules and regulations:</p><p><strong>Alternate Side Parking (ASP)</strong></p><p>ASP regulations allow for street cleaning. ASP rules are posted on signs with a &quot;P&quot; crossed by a broom and indicate the days and times parking isn&rsquo;t allowed.</p><p>When ASP is in effect, you can&rsquo;t park on the side of the street that is being cleaned. The rules apply for the entire time posted on the sign, even if a street sweeper has passed. Learn more on the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01011\">Alternate Side Parking and Street Cleaning (ASP)</a>&nbsp;page.</p><p><strong>Double Parking</strong></p><p>It is illegal to double park passenger vehicles at all times, including when street cleaning is occurring, regardless of location, purpose or duration.</p><p>An occupied illegally parked vehicle causes the same safety hazard and congestion as an unoccupied vehicle.&nbsp;Commercial vehicles may double park to make quick pick-ups, deliveries, or service calls during posted hours only.</p><p>More details are in the City&#39;s <a class=\"externallink\" target=\"_blank\" href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-102231\">NYC Traffic Rules</a>&nbsp;in Chapter 4, Section 4-08, subdivision (f), paragraph (1) of the Rules of the City of New York.</p><p><strong>Parking by a Fire Hydrant</strong></p><p>It is illegal to park within 15 feet of either side of a fire hydrant. The painted curbs at hydrant locations do not show where a vehicle can park.</p><p><strong>Parking by a Standpipe</strong></p><p>A standpipe is the two-headed pipe in front of every mid-rise and high-rise building in New York City. It is often red, but could be another color. Standpipes are not considered hydrants. You can park in front of a standpipe.</p><p><strong>Parking in the Same Spot for Over Seven Days</strong></p><p>Unless a posted sign says otherwise, you may not leave a vehicle parked in the same spot for more than seven days in a row. This rule includes spots in all types of neighborhoods, including residential areas.</p><p><strong>Commercial Vehicle Street Storage</strong></p><p>Unless posted signs say otherwise, commercial vehicles may not be parked on any street for more than 3 hours.</p><p><strong>Commercial Vehicle Overnight Parking</strong></p><p>Commercial vehicles may not park on a residential street between 9 PM and 5 AM.</p><p><strong>Definition of a Commercial Vehicle or Truck</strong></p><p>The City&#39;s definition of commercial vehicles and trucks determines how you can park and operate your vehicle on City roadways. Yellow taxis and vehicles with TLC plates are not considered commercial vehicles.</p><p>New York City Traffic Rules define trucks and commercial vehicles as:</p><ul><li><u>Truck</u>: any vehicle or combination of vehicles designed for the transportation of property that has 2 axles and 6 tires, or 3 or more axles. At least one of the vehicles has commercial plates.</li><li><u>Commercial Vehicle</u>: any vehicle with commercial plates that has been permanently altered to facilitate the transportation of property, and that has the registrant&#39;s name on the door or side panels.</li></ul><p><strong>School Bus Parking</strong></p><p>A school bus is not considered a commercial vehicle. According to the City&#39;s Traffic Rules, school buses can park at any time, including overnight, at a parking spot in front of and within the building lines of a public or private school.</p><p><strong>Motorcycle, Motor Scooter, and&nbsp;Moped Parking</strong></p><p>When you park a motorcycle, motor scooter, or moped, you must follow the same rules that apply to other vehicles. It is illegal to park motorcycles, motor scooters, and mopeds on the sidewalk.</p><p>You may park a motorcycle, motor scooter, or moped at an angle to the curb. If you park at an angle, at least one wheel must touch the curb and no portion of the vehicle may be more than 6 feet from the curb.</p><p><strong>RV or Motor Home Parking</strong></p><p>If you park an RV or motor home in a metered space, you only need to pay the front meter. Different rules apply if the RV or motor home is registered for commercial use.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-02097",
+   "Title": "Illegal Dumping",
+   "Description": "Report past or chronic dumping on public property.",
+   "Section": [
+    {
+     "Name": "911 Illegal Dumping",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span> to report illegal dumping in progress.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02130\">Abandoned Vehicle</a>&nbsp;to report an abandoned vehicle or boat on public or private property</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01803\">Dirty Sidewalk</a>&nbsp;for small amounts of garbage or litter</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01060\">Park Maintenance Complaint</a> for dumping in parks</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02133\">Dirty Yard or Alley</a> for dumping in a lot or alley</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02143\">Litter Basket Complaint</a>&nbsp;for&nbsp;misused litter baskets</li></ul></div><p>It&#39;s illegal to dump trash or debris of any type onto public or private property,&nbsp;such as:</p><ul><li>Trash bags</li><li>Construction debris</li><li>Appliances</li></ul><p>You can report:</p><ul><li>Past dumping of material, no matter where it came from</li><li>Chronic dumping of material coming from a vehicle</li></ul><p>Both the vehicle owner and driver are legally responsible for dumping. Fines for the vehicle owner range from $4,000 to $18,000.</p><p>Note that if you&#39;re a property owner or manager, you&#39;re responsible for the removal of small amounts of trash dumped on public sidewalks next to your property. You&#39;re responsible even if you filed a report. You may get a ticket for trash you should have cleared but didn&#39;t.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Past Dumping",
+     "Content": "<p><strong>What You Can Report</strong></p><p>You can request the removal of a large amount of trash or bulk items (enough to fill one bathtub) dumped on sidewalks or streets.</p><p>If you are reporting a dumped mattress or box spring, you don&#39;t have to cover it in a sealed plastic bag for collection. If a refrigerator or freezer is dumped with its door attached, please visit the <a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01504\">Trash or Recycling Disposal Complaint</a> page to report it.</p><p><strong>What You Can&rsquo;t Report</strong></p><p>The Department of Sanitation (DSNY) doesn&#39;t remove items from private property, including community driveways and parking lots.</p><p>DSNY also doesn&rsquo;t remove small amounts of trash or debris from public sidewalks. It is the property owner&rsquo;s responsibility to remove small amounts of dumped items or trash.</p><p>If possible, include photos in your report.</p>",
+     "ContentAction": [
+      {
+       "Name": "Illegal Dumping Removal Request",
+       "Agency": "Department of Sanitation",
+       "Problem": "Illegal Dumping",
+       "ProblemDetail": "Removal Request"
+      }
+     ]
+    },
+    {
+     "Name": "Chronic Dumping from a Vehicle",
+     "Content": "<p>You can report illegal dumping from a vehicle on public property that has happened repeatedly at the same location.</p><p>If a large amount of trash or dumped items are currently at the location, please also submit a Past Dumping complaint to request removal.</p><p><strong>What You Need</strong></p><p>Your report must include:</p><ul><li>The vehicle&#39;s license plate number or ID number</li><li>Your contact information</li></ul><p>It&rsquo;s also helpful to provide:</p><ul><li>A description of the vehicle</li><li>The date and time the material was dumped</li><li>The type and amount of material dumped</li></ul><p>If possible, include photos in your report.</p><p><strong>What Happens Next</strong></p><p>DSNY will monitor the location within 3 to 7 business days and try to catch the person in action. The agency may also contact you to get more details about your complaint.</p>",
+     "ContentAction": [
+      {
+       "Name": "Chronic Illegal Dumping",
+       "Agency": "Department of Sanitation",
+       "Problem": "Illegal Dumping",
+       "ProblemDetail": "Chronic Dumping"
+      }
+     ]
+    },
+    {
+     "Name": "Electronics",
+     "Content": "<p>You can report electronics that were illegally dumped on a sidewalk.</p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Reward Program",
+     "Content": "<p>If you provide information about illegal dumping that leads to a fine or civil penalty, you may be eligible to receive up to half of the payment. To earn the reward, you must complete the Illegal Dumping Award Program Affidavit.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dsny/what-we-do/cleaning/illegal-dumping.page#illegal-dumping-award-program\">Learn more about the Illegal Dumping Award Program.</a></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/assets/dsny/downloads/what-we-do/cleaning/illegal-dumping/dsny-illegal-dumping-complaint-affidavit.pdf\">Download the affidavit form.</a></p><p><strong>What You Need</strong></p><p>Your affidavit&nbsp;must include:</p><ul><li>The time, date, and location of the incident</li><li>A description of the vehicle, including license plate number</li><li>The type and amount of dumped material</li></ul><p><strong>Mailing Address</strong></p><p>Mail the completed, notarized<strong> </strong>affidavit to:</p><p>Director of Enforcement<br />NYC Department of Sanitation<br />1824 Shore Parkway<br />Brooklyn, New York 99999</p><p><strong>What Happens Next </strong></p><p>DSNY will mail you a status update in a few weeks.</p><p>If the person accused of illegal dumping pleads not guilty to the notice of violation, you will be required to testify at the hearing. You can also request a hearing on the affidavit form. If a hearing is necessary, you will receive the date and time of the hearing in the mail.</p><p>If you&#39;re available by phone and can guarantee your appearance in court within two hours of being called, you can request a telephone standby on the affidavit form. Telephone standbys are only available at 8:30 AM, 10:30 AM, and 1 PM.</p><p>Illegal dumping cases are heard in the borough where the violation occurs. For locations and hours, visit the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02019\">City-Issued Summons Hearing</a>&nbsp;page.</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

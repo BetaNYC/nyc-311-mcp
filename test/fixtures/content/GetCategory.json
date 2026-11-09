@@ -1,0 +1,1634 @@
+{
+ "Categories": [
+  {
+   "Name": "A to Z",
+   "Description": "Everything in alphabetical order.",
+   "CategoryId": "311-19",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-19"
+  },
+  {
+   "Name": "Accessible Transportation",
+   "Description": "Access-A-Ride, taxis for people with disabilities, accessibility complaints.",
+   "CategoryId": "311-93",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-93",
+   "ParentCategoryId": "311-18"
+  },
+  {
+   "Name": "Administration",
+   "CategoryId": "311-106",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-106",
+   "ParentCategoryId": "311-41"
+  },
+  {
+   "Name": "Adult Learning",
+   "Description": "Continuing education, GED, TASC, literacy.",
+   "CategoryId": "311-44",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-44",
+   "ParentCategoryId": "311-5"
+  },
+  {
+   "Name": "After School & Summer Programs",
+   "Description": "Out-of-school options for pre-K to grade 12.",
+   "CategoryId": "311-42",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-42",
+   "ParentCategoryId": "311-5"
+  },
+  {
+   "Name": "Air",
+   "Description": "Odor reports, indoor and outdoor air pollution.",
+   "CategoryId": "311-48",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-48",
+   "ParentCategoryId": "311-7"
+  },
+  {
+   "Name": "Arrests",
+   "Description": "Find someone who was arrested, warrants, bail.",
+   "CategoryId": "311-97",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-97",
+   "ParentCategoryId": "311-34"
+  },
+  {
+   "Name": "Arts & Culture",
+   "Description": "Museums, libraries, permits to perform or film, funding.",
+   "CategoryId": "311-37",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-37",
+   "ParentCategoryId": "311-4"
+  },
+  {
+   "Name": "Auctions & Consumers",
+   "CategoryId": "311-112",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-112",
+   "ParentCategoryId": "311-88"
+  },
+  {
+   "Name": "Benefits & Support",
+   "Description": "Affordable housing, homelessness, SNAP (food stamps), cash assistance, child care, volunteering, donating.",
+   "CategoryId": "311-121",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-121",
+   "PicURL": "https://portal.311.nyc.gov/benefits.jpg",
+   "SubCategory": [
+    {
+     "Name": "Cash & Expenses",
+     "Description": "Benefit screening, public assistance, Social Security, Unemployment Insurance, help with bills, money management.",
+     "CategoryId": "311-23",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-23",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Children & Families",
+     "Description": "Child care and safety, Head Start and early childhood education, parenting support, family services.",
+     "CategoryId": "311-25",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-25",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Food",
+     "Description": "SNAP (food stamps), food pantries, soup kitchens. ",
+     "CategoryId": "311-22",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-22",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Health Insurance",
+     "Description": "Medicaid, Medicare, other insurance options for people of all ages.",
+     "CategoryId": "311-24",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-24",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Homelessness",
+     "Description": "Shelters, social services, support for people who are homeless or in danger of becoming homeless.",
+     "CategoryId": "311-21",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-21",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Housing",
+     "Description": "Affordable housing, housing lotteries, New York City Housing Authority (NYCHA) public housing, Mitchell-Lama, rent freezes, eviction prevention.",
+     "CategoryId": "311-20",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-20",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Immigrants",
+     "Description": "Immigration, citizenship, IDNYC, business and social services.",
+     "CategoryId": "311-26",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-26",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "LGBTQ",
+     "Description": "Health and social services for the lesbian, gay, bisexual, transgender, and queer community.",
+     "CategoryId": "311-27",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-27",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Older Adults",
+     "Description": "Rent freezes, tax exemptions, housing options, home care, social services for adults age 60 and older.",
+     "CategoryId": "311-29",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-29",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "People with Disabilities",
+     "Description": "Access-A-Ride, parking permits, tax exemptions, rent freezes, health and social services.",
+     "CategoryId": "311-28",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-28",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Veterans & Military",
+     "Description": "Tax exemptions, benefits and social services for former and current service members.",
+     "CategoryId": "311-30",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-30",
+     "ParentCategoryId": "311-121"
+    },
+    {
+     "Name": "Volunteer & Donate",
+     "Description": "Help out by giving time, goods, or money to a good cause.",
+     "CategoryId": "311-31",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-31",
+     "ParentCategoryId": "311-121"
+    }
+   ]
+  },
+  {
+   "Name": "Bikes",
+   "Description": "Bike Share, maps, rules, safety, abandoned or illegally chained bikes.",
+   "CategoryId": "311-92",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-92",
+   "ParentCategoryId": "311-18"
+  },
+  {
+   "Name": "Birth & Adoption",
+   "Description": "Birth certificates, paternity acknowledgement, adoption records.",
+   "CategoryId": "311-71",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-71",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Boats & Airplanes",
+   "Description": "Ferries, JFK, LaGuardia, and Newark airports.",
+   "CategoryId": "311-91",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-91",
+   "ParentCategoryId": "311-18"
+  },
+  {
+   "Name": "Bridges & Tunnels",
+   "Description": "Traffic conditions, closures, maintenance.",
+   "CategoryId": "311-79",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-79",
+   "ParentCategoryId": "311-16"
+  },
+  {
+   "Name": "Builders & Contractors",
+   "Description": "Buildings Information System (BIS), permits, licenses, inspections, Plan Examiner, safety.",
+   "CategoryId": "311-63",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-63",
+   "ParentCategoryId": "311-11"
+  },
+  {
+   "Name": "Buildings & Property",
+   "Description": "Construction, maintenance, violations.",
+   "CategoryId": "311-64",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-64",
+   "ParentCategoryId": "311-11"
+  },
+  {
+   "Name": "Business",
+   "Description": "Business tax policy, procedures, payments.",
+   "CategoryId": "311-83",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-83",
+   "ParentCategoryId": "311-17"
+  },
+  {
+   "Name": "Businesses",
+   "Description": "Education, incentives, licenses, permits, government contracts.",
+   "CategoryId": "311-32",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-32",
+   "ParentCategoryId": "311-2",
+   "SubCategory": [
+    {
+     "Name": "Do Business with Government",
+     "CategoryId": "311-96",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-96",
+     "ParentCategoryId": "311-32"
+    },
+    {
+     "Name": "Licenses, Permits & Inspections",
+     "CategoryId": "311-95",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-95",
+     "ParentCategoryId": "311-32"
+    },
+    {
+     "Name": "Start & Run a Business",
+     "CategoryId": "311-94",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-94",
+     "ParentCategoryId": "311-32"
+    }
+   ]
+  },
+  {
+   "Name": "Businesses & Consumers",
+   "Description": "Starting and running a business, licenses, permits, government contracts, consumer protection.",
+   "CategoryId": "311-2",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-2",
+   "PicURL": "https://portal.311.nyc.gov/businessesconsumers.jpg",
+   "SubCategory": [
+    {
+     "Name": "Businesses",
+     "Description": "Education, incentives, licenses, permits, government contracts.",
+     "CategoryId": "311-32",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-32",
+     "ParentCategoryId": "311-2",
+     "SubCategory": [
+      {
+       "Name": "Do Business with Government",
+       "CategoryId": "311-96",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-96",
+       "ParentCategoryId": "311-32"
+      },
+      {
+       "Name": "Licenses, Permits & Inspections",
+       "CategoryId": "311-95",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-95",
+       "ParentCategoryId": "311-32"
+      },
+      {
+       "Name": "Start & Run a Business",
+       "CategoryId": "311-94",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-94",
+       "ParentCategoryId": "311-32"
+      }
+     ]
+    },
+    {
+     "Name": "Consumers",
+     "Description": "Business background checks, consumer protection and complaints.",
+     "CategoryId": "311-33",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-33",
+     "ParentCategoryId": "311-2"
+    },
+    {
+     "Name": "NYC Business Portal",
+     "Description": "The ultimate resource for NYC businesses, regulation and incentive information, tools to interact with City Agencies and stay in compliance.",
+     "CategoryId": "311-1000",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-1000",
+     "ParentCategoryId": "311-2"
+    }
+   ]
+  },
+  {
+   "Name": "Calendar & Closures",
+   "CategoryId": "311-101",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-101",
+   "ParentCategoryId": "311-41"
+  },
+  {
+   "Name": "Cash & Expenses",
+   "Description": "Benefit screening, public assistance, Social Security, Unemployment Insurance, help with bills, money management.",
+   "CategoryId": "311-23",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-23",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Children & Families",
+   "Description": "Child care and safety, Head Start and early childhood education, parenting support, family services.",
+   "CategoryId": "311-25",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-25",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Choices & Enrollment",
+   "CategoryId": "311-102",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-102",
+   "ParentCategoryId": "311-41"
+  },
+  {
+   "Name": "City Agencies",
+   "Description": "Service Requests and other City government records.",
+   "CategoryId": "311-78",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-78",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "City Agencies",
+   "CategoryId": "311-107",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-107",
+   "ParentCategoryId": "311-52"
+  },
+  {
+   "Name": "City Government",
+   "Description": "Service Request status, Agency feedback and performance, government jobs, elected officials, data.",
+   "CategoryId": "311-52",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-52",
+   "ParentCategoryId": "311-9",
+   "SubCategory": [
+    {
+     "Name": "City Agencies",
+     "CategoryId": "311-107",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-107",
+     "ParentCategoryId": "311-52"
+    },
+    {
+     "Name": "Data & Reports",
+     "CategoryId": "311-109",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-109",
+     "ParentCategoryId": "311-52"
+    },
+    {
+     "Name": "Elected Officials",
+     "CategoryId": "311-108",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-108",
+     "ParentCategoryId": "311-52"
+    }
+   ]
+  },
+  {
+   "Name": "Cleaning",
+   "Description": "Street cleaning, illegal dumping, littering.",
+   "CategoryId": "311-51",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-51",
+   "ParentCategoryId": "311-8"
+  },
+  {
+   "Name": "Collection & Disposal",
+   "Description": "Schedules, rules, missed collections, violations.",
+   "CategoryId": "311-50",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-50",
+   "ParentCategoryId": "311-8"
+  },
+  {
+   "Name": "College",
+   "Description": "Preparation, enrollment, financial support.",
+   "CategoryId": "311-43",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-43",
+   "ParentCategoryId": "311-5"
+  },
+  {
+   "Name": "Consumers",
+   "Description": "Business background checks, consumer protection and complaints.",
+   "CategoryId": "311-33",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-33",
+   "ParentCategoryId": "311-2"
+  },
+  {
+   "Name": "Courts & Law",
+   "Description": "Jails, incarcerated people, tickets, legal cases and assistance, jury duty, marriage, domestic partnership.",
+   "CategoryId": "311-3",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-3",
+   "PicURL": "https://portal.311.nyc.gov/courtslaw.jpg",
+   "SubCategory": [
+    {
+     "Name": "Courts & Law",
+     "Description": "Tickets, legal cases and assistance, jury duty, marriage, domestic partnership.",
+     "CategoryId": "311-35",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-35",
+     "ParentCategoryId": "311-3"
+    },
+    {
+     "Name": "Jails & Incarcerated People",
+     "Description": "Arrests, visits, support for currently and formerly incarcerated people.",
+     "CategoryId": "311-34",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-34",
+     "ParentCategoryId": "311-3",
+     "SubCategory": [
+      {
+       "Name": "Arrests",
+       "Description": "Find someone who was arrested, warrants, bail.",
+       "CategoryId": "311-97",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-97",
+       "ParentCategoryId": "311-34"
+      },
+      {
+       "Name": "Incarcerated People",
+       "Description": "Lookup, visits, property pickup, support for currently and formerly incarcerated people.",
+       "CategoryId": "311-98",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-98",
+       "ParentCategoryId": "311-34"
+      },
+      {
+       "Name": "Jails & Detention Centers",
+       "Description": "Facility information and complaints, legal passes.",
+       "CategoryId": "311-99",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-99",
+       "ParentCategoryId": "311-34"
+      },
+      {
+       "Name": "Probation & Parole",
+       "Description": "Adult and juvenile probation, parole information and violations.",
+       "CategoryId": "311-100",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-100",
+       "ParentCategoryId": "311-34"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "Courts & Law",
+   "Description": "Tickets, legal cases and assistance, jury duty, marriage, domestic partnership.",
+   "CategoryId": "311-35",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-35",
+   "ParentCategoryId": "311-3"
+  },
+  {
+   "Name": "Culture & Recreation",
+   "Description": "Parks, park maintenance, places to go and things to do for visitors and locals.",
+   "CategoryId": "311-4",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-4",
+   "PicURL": "https://portal.311.nyc.gov/culture.jpg",
+   "SubCategory": [
+    {
+     "Name": "Arts & Culture",
+     "Description": "Museums, libraries, permits to perform or film, funding.",
+     "CategoryId": "311-37",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-37",
+     "ParentCategoryId": "311-4"
+    },
+    {
+     "Name": "Events",
+     "Description": "Fireworks, street fairs, parades, recreational and cultural activities.",
+     "CategoryId": "311-38",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-38",
+     "ParentCategoryId": "311-4"
+    },
+    {
+     "Name": "New York City & Visitors",
+     "Description": "Landmarks, tours, maps, guides, souvenirs.",
+     "CategoryId": "311-39",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-39",
+     "ParentCategoryId": "311-4"
+    },
+    {
+     "Name": "Parks & Recreation",
+     "Description": "Parks, pools, beaches, playgrounds, recreation centers, locations, activities, maintenance.",
+     "CategoryId": "311-36",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-36",
+     "ParentCategoryId": "311-4"
+    }
+   ]
+  },
+  {
+   "Name": "Data & Reports",
+   "CategoryId": "311-109",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-109",
+   "ParentCategoryId": "311-52"
+  },
+  {
+   "Name": "Death",
+   "Description": "Death certificates, autopsy reports.",
+   "CategoryId": "311-72",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-72",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Do Business with Government",
+   "CategoryId": "311-96",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-96",
+   "ParentCategoryId": "311-32"
+  },
+  {
+   "Name": "Driving, Parking & Tickets",
+   "Description": "Tickets, towed vehicles, parking, street closures, vehicle auctions, blocked driveways, driver’s licenses.",
+   "CategoryId": "311-88",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-88",
+   "ParentCategoryId": "311-18",
+   "SubCategory": [
+    {
+     "Name": "Auctions & Consumers",
+     "CategoryId": "311-112",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-112",
+     "ParentCategoryId": "311-88"
+    },
+    {
+     "Name": "Licenses, Permits, Registration, Inspections",
+     "CategoryId": "311-115",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-115",
+     "ParentCategoryId": "311-88"
+    },
+    {
+     "Name": "Parking",
+     "CategoryId": "311-111",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-111",
+     "ParentCategoryId": "311-88"
+    },
+    {
+     "Name": "Rules & Routes",
+     "CategoryId": "311-113",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-113",
+     "ParentCategoryId": "311-88"
+    },
+    {
+     "Name": "Safety & Accidents",
+     "CategoryId": "311-114",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-114",
+     "ParentCategoryId": "311-88"
+    },
+    {
+     "Name": "Tickets & Tows",
+     "CategoryId": "311-110",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-110",
+     "ParentCategoryId": "311-88"
+    }
+   ]
+  },
+  {
+   "Name": "Early Childhood",
+   "Description": "Child care, Head Start.",
+   "CategoryId": "311-40",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-40",
+   "ParentCategoryId": "311-5"
+  },
+  {
+   "Name": "Education",
+   "Description": "Schools and learning opportunities for all ages.",
+   "CategoryId": "311-5",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-5",
+   "PicURL": "https://portal.311.nyc.gov/education.jpg",
+   "SubCategory": [
+    {
+     "Name": "Adult Learning",
+     "Description": "Continuing education, GED, TASC, literacy.",
+     "CategoryId": "311-44",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-44",
+     "ParentCategoryId": "311-5"
+    },
+    {
+     "Name": "After School & Summer Programs",
+     "Description": "Out-of-school options for pre-K to grade 12.",
+     "CategoryId": "311-42",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-42",
+     "ParentCategoryId": "311-5"
+    },
+    {
+     "Name": "College",
+     "Description": "Preparation, enrollment, financial support.",
+     "CategoryId": "311-43",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-43",
+     "ParentCategoryId": "311-5"
+    },
+    {
+     "Name": "Early Childhood",
+     "Description": "Child care, Head Start.",
+     "CategoryId": "311-40",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-40",
+     "ParentCategoryId": "311-5"
+    },
+    {
+     "Name": "Pre-K to Grade 12",
+     "Description": "School calendar, closures, enrollment, student and parent support, complaints.",
+     "CategoryId": "311-41",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-41",
+     "ParentCategoryId": "311-5",
+     "SubCategory": [
+      {
+       "Name": "Administration",
+       "CategoryId": "311-106",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-106",
+       "ParentCategoryId": "311-41"
+      },
+      {
+       "Name": "Calendar & Closures",
+       "CategoryId": "311-101",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-101",
+       "ParentCategoryId": "311-41"
+      },
+      {
+       "Name": "Choices & Enrollment",
+       "CategoryId": "311-102",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-102",
+       "ParentCategoryId": "311-41"
+      },
+      {
+       "Name": "Maintenance",
+       "CategoryId": "311-105",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-105",
+       "ParentCategoryId": "311-41"
+      },
+      {
+       "Name": "Rules & Safety",
+       "CategoryId": "311-104",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-104",
+       "ParentCategoryId": "311-41"
+      },
+      {
+       "Name": "Student & Parent Support",
+       "CategoryId": "311-103",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-103",
+       "ParentCategoryId": "311-41"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "Education",
+   "Description": "School records for current and former students.",
+   "CategoryId": "311-76",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-76",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Elected Officials",
+   "CategoryId": "311-108",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-108",
+   "ParentCategoryId": "311-52"
+  },
+  {
+   "Name": "Elections & Voting",
+   "Description": "Voter registration, poll site locations, running for local public office.",
+   "CategoryId": "311-53",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-53",
+   "ParentCategoryId": "311-9"
+  },
+  {
+   "Name": "Employees",
+   "Description": "Fingerprinting, Social Security, Unemployment Insurance, worker protection and support.",
+   "CategoryId": "311-46",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-46",
+   "ParentCategoryId": "311-6"
+  },
+  {
+   "Name": "Employment",
+   "Description": "Jobs, training, worker protection and support.",
+   "CategoryId": "311-6",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-6",
+   "PicURL": "https://portal.311.nyc.gov/employment1.jpg",
+   "SubCategory": [
+    {
+     "Name": "Employees",
+     "Description": "Fingerprinting, Social Security, Unemployment Insurance, worker protection and support.",
+     "CategoryId": "311-46",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-46",
+     "ParentCategoryId": "311-6"
+    },
+    {
+     "Name": "Jobs & Training",
+     "Description": "Adult and youth employment, government jobs, internships, training.",
+     "CategoryId": "311-45",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-45",
+     "ParentCategoryId": "311-6"
+    }
+   ]
+  },
+  {
+   "Name": "Environment",
+   "Description": "Water and air quality, odors, environmental protection.",
+   "CategoryId": "311-7",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-7",
+   "PicURL": "https://portal.311.nyc.gov/environment1.jpg",
+   "SubCategory": [
+    {
+     "Name": "Air",
+     "Description": "Odor reports, indoor and outdoor air pollution.",
+     "CategoryId": "311-48",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-48",
+     "ParentCategoryId": "311-7"
+    },
+    {
+     "Name": "Environmental Protection",
+     "Description": "Violations, education, conservation programs.",
+     "CategoryId": "311-49",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-49",
+     "ParentCategoryId": "311-7"
+    },
+    {
+     "Name": "Water",
+     "Description": "Drinking water, waterways, wastewater.",
+     "CategoryId": "311-47",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-47",
+     "ParentCategoryId": "311-7"
+    }
+   ]
+  },
+  {
+   "Name": "Environmental Protection",
+   "Description": "Violations, education, conservation programs.",
+   "CategoryId": "311-49",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-49",
+   "ParentCategoryId": "311-7"
+  },
+  {
+   "Name": "Events",
+   "Description": "Fireworks, street fairs, parades, recreational and cultural activities.",
+   "CategoryId": "311-38",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-38",
+   "ParentCategoryId": "311-4"
+  },
+  {
+   "Name": "Food",
+   "Description": "SNAP (food stamps), food pantries, soup kitchens. ",
+   "CategoryId": "311-22",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-22",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Foreign Government",
+   "Description": "Consulates, embassies.",
+   "CategoryId": "311-54",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-54",
+   "ParentCategoryId": "311-9"
+  },
+  {
+   "Name": "Fraud",
+   "Description": "Evasion of taxes including sales, payroll, and cigarette.",
+   "CategoryId": "311-87",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-87",
+   "ParentCategoryId": "311-17"
+  },
+  {
+   "Name": "Government & Elections",
+   "Description": "Service Request status, Agency feedback and performance, elected officials, data, voter information.",
+   "CategoryId": "311-9",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-9",
+   "PicURL": "https://portal.311.nyc.gov/governmentelections.jpg",
+   "SubCategory": [
+    {
+     "Name": "City Government",
+     "Description": "Service Request status, Agency feedback and performance, government jobs, elected officials, data.",
+     "CategoryId": "311-52",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-52",
+     "ParentCategoryId": "311-9",
+     "SubCategory": [
+      {
+       "Name": "City Agencies",
+       "CategoryId": "311-107",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-107",
+       "ParentCategoryId": "311-52"
+      },
+      {
+       "Name": "Data & Reports",
+       "CategoryId": "311-109",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-109",
+       "ParentCategoryId": "311-52"
+      },
+      {
+       "Name": "Elected Officials",
+       "CategoryId": "311-108",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-108",
+       "ParentCategoryId": "311-52"
+      }
+     ]
+    },
+    {
+     "Name": "Elections & Voting",
+     "Description": "Voter registration, poll site locations, running for local public office.",
+     "CategoryId": "311-53",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-53",
+     "ParentCategoryId": "311-9"
+    },
+    {
+     "Name": "Foreign Government",
+     "Description": "Consulates, embassies.",
+     "CategoryId": "311-54",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-54",
+     "ParentCategoryId": "311-9"
+    }
+   ]
+  },
+  {
+   "Name": "Health",
+   "Description": "Insurance, care, healthy living, violations.",
+   "CategoryId": "311-10",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-10",
+   "PicURL": "https://portal.311.nyc.gov/health.jpg",
+   "SubCategory": [
+    {
+     "Name": "Health Care",
+     "Description": "Clinics, hospitals, vaccinations, testing, treatment, other medical care for physical and mental health.",
+     "CategoryId": "311-56",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-56",
+     "ParentCategoryId": "311-10"
+    },
+    {
+     "Name": "Health Insurance",
+     "Description": "Medicaid, Medicare, other insurance options for people of all ages.",
+     "CategoryId": "311-55",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-55",
+     "ParentCategoryId": "311-10"
+    },
+    {
+     "Name": "Healthy Living",
+     "Description": "Quitting smoking, fitness, eating well, health and wellness support.",
+     "CategoryId": "311-57",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-57",
+     "ParentCategoryId": "311-10"
+    },
+    {
+     "Name": "Public Health",
+     "Description": "Violations, rats, mice, mold, lead, food and water safety, health advisories, birth certificates.",
+     "CategoryId": "311-58",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-58",
+     "ParentCategoryId": "311-10"
+    }
+   ]
+  },
+  {
+   "Name": "Health",
+   "Description": "Immunization and medical records.",
+   "CategoryId": "311-75",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-75",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Health Care",
+   "Description": "Clinics, hospitals, vaccinations, testing, treatment, other medical care for physical and mental health.",
+   "CategoryId": "311-56",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-56",
+   "ParentCategoryId": "311-10"
+  },
+  {
+   "Name": "Health Insurance",
+   "Description": "Medicaid, Medicare, other insurance options for people of all ages.",
+   "CategoryId": "311-24",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-24",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Health Insurance",
+   "Description": "Medicaid, Medicare, other insurance options for people of all ages.",
+   "CategoryId": "311-55",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-55",
+   "ParentCategoryId": "311-10"
+  },
+  {
+   "Name": "Healthy Living",
+   "Description": "Quitting smoking, fitness, eating well, health and wellness support.",
+   "CategoryId": "311-57",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-57",
+   "ParentCategoryId": "311-10"
+  },
+  {
+   "Name": "Homelessness",
+   "Description": "Shelters, social services, support for people who are homeless or in danger of becoming homeless.",
+   "CategoryId": "311-21",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-21",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Homeowners",
+   "Description": "Property records, taxes, maintenance, violations.",
+   "CategoryId": "311-62",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-62",
+   "ParentCategoryId": "311-11"
+  },
+  {
+   "Name": "Housing",
+   "Description": "Affordable housing, housing lotteries, New York City Housing Authority (NYCHA) public housing, Mitchell-Lama, rent freezes, eviction prevention.",
+   "CategoryId": "311-20",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-20",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Housing & Buildings",
+   "Description": "Housing options, building and property maintenance, construction.",
+   "CategoryId": "311-11",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-11",
+   "PicURL": "https://portal.311.nyc.gov/housingbuildings.jpg",
+   "SubCategory": [
+    {
+     "Name": "Builders & Contractors",
+     "Description": "Buildings Information System (BIS), permits, licenses, inspections, Plan Examiner, safety.",
+     "CategoryId": "311-63",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-63",
+     "ParentCategoryId": "311-11"
+    },
+    {
+     "Name": "Buildings & Property",
+     "Description": "Construction, maintenance, violations.",
+     "CategoryId": "311-64",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-64",
+     "ParentCategoryId": "311-11"
+    },
+    {
+     "Name": "Homeowners",
+     "Description": "Property records, taxes, maintenance, violations.",
+     "CategoryId": "311-62",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-62",
+     "ParentCategoryId": "311-11"
+    },
+    {
+     "Name": "Housing Options",
+     "Description": "Housing lotteries, New York City Housing Authority (NYCHA) public housing, Mitchell-Lama, ownership, homeless shelters.",
+     "CategoryId": "311-59",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-59",
+     "ParentCategoryId": "311-11"
+    },
+    {
+     "Name": "Rental Property Owners",
+     "Description": "Property records, taxes, management, maintenance, violations.",
+     "CategoryId": "311-61",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-61",
+     "ParentCategoryId": "311-11"
+    },
+    {
+     "Name": "Tenants",
+     "Description": "Maintenance problems, rent regulation, rent freezes, eviction prevention.",
+     "CategoryId": "311-60",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-60",
+     "ParentCategoryId": "311-11"
+    }
+   ]
+  },
+  {
+   "Name": "Housing Options",
+   "Description": "Housing lotteries, New York City Housing Authority (NYCHA) public housing, Mitchell-Lama, ownership, homeless shelters.",
+   "CategoryId": "311-59",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-59",
+   "ParentCategoryId": "311-11"
+  },
+  {
+   "Name": "ID & Citizenship",
+   "Description": "IDNYC, fingerprinting, passports, driver's licenses, immigration records.",
+   "CategoryId": "311-70",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-70",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Immigrants",
+   "Description": "Immigration, citizenship, IDNYC, business and social services.",
+   "CategoryId": "311-26",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-26",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Incarcerated People",
+   "Description": "Lookup, visits, property pickup, support for currently and formerly incarcerated people.",
+   "CategoryId": "311-98",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-98",
+   "ParentCategoryId": "311-34"
+  },
+  {
+   "Name": "Income",
+   "Description": "City, State, and Federal taxes and credits.",
+   "CategoryId": "311-84",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-84",
+   "ParentCategoryId": "311-17"
+  },
+  {
+   "Name": "Jails & Detention Centers",
+   "Description": "Facility information and complaints, legal passes.",
+   "CategoryId": "311-99",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-99",
+   "ParentCategoryId": "311-34"
+  },
+  {
+   "Name": "Jails & Incarcerated People",
+   "Description": "Arrests, visits, support for currently and formerly incarcerated people.",
+   "CategoryId": "311-34",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-34",
+   "ParentCategoryId": "311-3",
+   "SubCategory": [
+    {
+     "Name": "Arrests",
+     "Description": "Find someone who was arrested, warrants, bail.",
+     "CategoryId": "311-97",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-97",
+     "ParentCategoryId": "311-34"
+    },
+    {
+     "Name": "Incarcerated People",
+     "Description": "Lookup, visits, property pickup, support for currently and formerly incarcerated people.",
+     "CategoryId": "311-98",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-98",
+     "ParentCategoryId": "311-34"
+    },
+    {
+     "Name": "Jails & Detention Centers",
+     "Description": "Facility information and complaints, legal passes.",
+     "CategoryId": "311-99",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-99",
+     "ParentCategoryId": "311-34"
+    },
+    {
+     "Name": "Probation & Parole",
+     "Description": "Adult and juvenile probation, parole information and violations.",
+     "CategoryId": "311-100",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-100",
+     "ParentCategoryId": "311-34"
+    }
+   ]
+  },
+  {
+   "Name": "Jobs & Training",
+   "Description": "Adult and youth employment, government jobs, internships, training.",
+   "CategoryId": "311-45",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-45",
+   "ParentCategoryId": "311-6"
+  },
+  {
+   "Name": "LGBTQ",
+   "Description": "Health and social services for the lesbian, gay, bisexual, transgender, and queer community.",
+   "CategoryId": "311-27",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-27",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Licenses, Permits & Inspections",
+   "CategoryId": "311-95",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-95",
+   "ParentCategoryId": "311-32"
+  },
+  {
+   "Name": "Licenses, Permits, Registration, Inspections",
+   "CategoryId": "311-115",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-115",
+   "ParentCategoryId": "311-88"
+  },
+  {
+   "Name": "Maintenance",
+   "CategoryId": "311-105",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-105",
+   "ParentCategoryId": "311-41"
+  },
+  {
+   "Name": "Marriage & Partnership",
+   "Description": "Marriage, divorce, domestic partnership.",
+   "CategoryId": "311-73",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-73",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "New York City & Visitors",
+   "Description": "Landmarks, tours, maps, guides, souvenirs.",
+   "CategoryId": "311-39",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-39",
+   "ParentCategoryId": "311-4"
+  },
+  {
+   "Name": "Noise",
+   "Description": "Rules and reports of noisy neighbors, vehicles, dogs, and more.",
+   "CategoryId": "311-12",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-12",
+   "PicURL": "https://portal.311.nyc.gov/noise.jpg"
+  },
+  {
+   "Name": "NYC Business Portal",
+   "Description": "The ultimate resource for NYC businesses, regulation and incentive information, tools to interact with City Agencies and stay in compliance.",
+   "CategoryId": "311-1000",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-1000",
+   "ParentCategoryId": "311-2"
+  },
+  {
+   "Name": "Older Adults",
+   "Description": "Rent freezes, tax exemptions, housing options, home care, social services for adults age 60 and older.",
+   "CategoryId": "311-29",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-29",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Parking",
+   "CategoryId": "311-111",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-111",
+   "ParentCategoryId": "311-88"
+  },
+  {
+   "Name": "Parks & Recreation",
+   "Description": "Parks, pools, beaches, playgrounds, recreation centers, locations, activities, maintenance.",
+   "CategoryId": "311-36",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-36",
+   "ParentCategoryId": "311-4"
+  },
+  {
+   "Name": "People with Disabilities",
+   "Description": "Access-A-Ride, parking permits, tax exemptions, rent freezes, health and social services.",
+   "CategoryId": "311-28",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-28",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Pests & Wildlife",
+   "Description": "Bed bugs, rats, mice, mosquitoes, dead animals, help with pest control.",
+   "CategoryId": "311-67",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-67",
+   "ParentCategoryId": "311-13"
+  },
+  {
+   "Name": "Pets",
+   "Description": "Licenses, lost and found, adoption, illegal pets, abuse, unleashed dogs, waste not picked up.",
+   "CategoryId": "311-66",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-66",
+   "ParentCategoryId": "311-13"
+  },
+  {
+   "Name": "Pets, Pests & Wildlife",
+   "Description": "Licenses, lost and found, rats, mice, bed bugs.",
+   "CategoryId": "311-13",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-13",
+   "PicURL": "https://portal.311.nyc.gov/petspestswildlife.JPG",
+   "SubCategory": [
+    {
+     "Name": "Pests & Wildlife",
+     "Description": "Bed bugs, rats, mice, mosquitoes, dead animals, help with pest control.",
+     "CategoryId": "311-67",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-67",
+     "ParentCategoryId": "311-13"
+    },
+    {
+     "Name": "Pets",
+     "Description": "Licenses, lost and found, adoption, illegal pets, abuse, unleashed dogs, waste not picked up.",
+     "CategoryId": "311-66",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-66",
+     "ParentCategoryId": "311-13"
+    }
+   ]
+  },
+  {
+   "Name": "Pre-K to Grade 12",
+   "Description": "School calendar, closures, enrollment, student and parent support, complaints.",
+   "CategoryId": "311-41",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-41",
+   "ParentCategoryId": "311-5",
+   "SubCategory": [
+    {
+     "Name": "Administration",
+     "CategoryId": "311-106",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-106",
+     "ParentCategoryId": "311-41"
+    },
+    {
+     "Name": "Calendar & Closures",
+     "CategoryId": "311-101",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-101",
+     "ParentCategoryId": "311-41"
+    },
+    {
+     "Name": "Choices & Enrollment",
+     "CategoryId": "311-102",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-102",
+     "ParentCategoryId": "311-41"
+    },
+    {
+     "Name": "Maintenance",
+     "CategoryId": "311-105",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-105",
+     "ParentCategoryId": "311-41"
+    },
+    {
+     "Name": "Rules & Safety",
+     "CategoryId": "311-104",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-104",
+     "ParentCategoryId": "311-41"
+    },
+    {
+     "Name": "Student & Parent Support",
+     "CategoryId": "311-103",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-103",
+     "ParentCategoryId": "311-41"
+    }
+   ]
+  },
+  {
+   "Name": "Preparation",
+   "Description": "Free help filing your taxes.",
+   "CategoryId": "311-82",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-82",
+   "ParentCategoryId": "311-17"
+  },
+  {
+   "Name": "Preparedness & Recovery",
+   "Description": "Snowstorms, hurricanes, and other events that disrupt normal life.",
+   "CategoryId": "311-69",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-69",
+   "ParentCategoryId": "311-14"
+  },
+  {
+   "Name": "Probation & Parole",
+   "Description": "Adult and juvenile probation, parole information and violations.",
+   "CategoryId": "311-100",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-100",
+   "ParentCategoryId": "311-34"
+  },
+  {
+   "Name": "Property",
+   "Description": "Deeds, Borough-Block-Lot (BBL), Real Property Income and Expense (RPIE), Notice of Property Value (NOPV).",
+   "CategoryId": "311-74",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-74",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Property",
+   "Description": "School Tax Relief (STAR), Senior Citizen Homeowner Exemption (SCHE), payments.",
+   "CategoryId": "311-85",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-85",
+   "ParentCategoryId": "311-17"
+  },
+  {
+   "Name": "Public Health",
+   "Description": "Violations, rats, mice, mold, lead, food and water safety, health advisories, birth certificates.",
+   "CategoryId": "311-58",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-58",
+   "ParentCategoryId": "311-10"
+  },
+  {
+   "Name": "Public Safety",
+   "Description": "Police precincts, firehouses, police auctions, fingerprinting, illegal activity, emergency preparedness and recovery.",
+   "CategoryId": "311-14",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-14",
+   "PicURL": "https://portal.311.nyc.gov/publicsafety.jpg",
+   "SubCategory": [
+    {
+     "Name": "Preparedness & Recovery",
+     "Description": "Snowstorms, hurricanes, and other events that disrupt normal life.",
+     "CategoryId": "311-69",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-69",
+     "ParentCategoryId": "311-14"
+    },
+    {
+     "Name": "Safety & Crime",
+     "Description": "Dangerous and illegal activity, police auctions, fingerprinting, precincts, firehouses, crime prevention.",
+     "CategoryId": "311-68",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-68",
+     "ParentCategoryId": "311-14"
+    }
+   ]
+  },
+  {
+   "Name": "Public Safety",
+   "Description": "Police, accident, ambulance, and fire reports, criminal records, Certificates of Good Conduct, Relief, and Disposition.",
+   "CategoryId": "311-77",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-77",
+   "ParentCategoryId": "311-15"
+  },
+  {
+   "Name": "Public Transportation",
+   "Description": "Buses, subways, trains, trams.",
+   "CategoryId": "311-89",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-89",
+   "ParentCategoryId": "311-18"
+  },
+  {
+   "Name": "Records",
+   "Description": "ID, birth, death, marriage, property, health, school, fire and police reports, City documents.",
+   "CategoryId": "311-15",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-15",
+   "PicURL": "https://portal.311.nyc.gov/records1.jpg",
+   "SubCategory": [
+    {
+     "Name": "Birth & Adoption",
+     "Description": "Birth certificates, paternity acknowledgement, adoption records.",
+     "CategoryId": "311-71",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-71",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "City Agencies",
+     "Description": "Service Requests and other City government records.",
+     "CategoryId": "311-78",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-78",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "Death",
+     "Description": "Death certificates, autopsy reports.",
+     "CategoryId": "311-72",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-72",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "Education",
+     "Description": "School records for current and former students.",
+     "CategoryId": "311-76",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-76",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "Health",
+     "Description": "Immunization and medical records.",
+     "CategoryId": "311-75",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-75",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "ID & Citizenship",
+     "Description": "IDNYC, fingerprinting, passports, driver's licenses, immigration records.",
+     "CategoryId": "311-70",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-70",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "Marriage & Partnership",
+     "Description": "Marriage, divorce, domestic partnership.",
+     "CategoryId": "311-73",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-73",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "Property",
+     "Description": "Deeds, Borough-Block-Lot (BBL), Real Property Income and Expense (RPIE), Notice of Property Value (NOPV).",
+     "CategoryId": "311-74",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-74",
+     "ParentCategoryId": "311-15"
+    },
+    {
+     "Name": "Public Safety",
+     "Description": "Police, accident, ambulance, and fire reports, criminal records, Certificates of Good Conduct, Relief, and Disposition.",
+     "CategoryId": "311-77",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-77",
+     "ParentCategoryId": "311-15"
+    }
+   ]
+  },
+  {
+   "Name": "Rental Property Owners",
+   "Description": "Property records, taxes, management, maintenance, violations.",
+   "CategoryId": "311-61",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-61",
+   "ParentCategoryId": "311-11"
+  },
+  {
+   "Name": "Rules & Routes",
+   "CategoryId": "311-113",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-113",
+   "ParentCategoryId": "311-88"
+  },
+  {
+   "Name": "Rules & Safety",
+   "CategoryId": "311-104",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-104",
+   "ParentCategoryId": "311-41"
+  },
+  {
+   "Name": "Safety & Accidents",
+   "CategoryId": "311-114",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-114",
+   "ParentCategoryId": "311-88"
+  },
+  {
+   "Name": "Safety & Crime",
+   "Description": "Dangerous and illegal activity, police auctions, fingerprinting, precincts, firehouses, crime prevention.",
+   "CategoryId": "311-68",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-68",
+   "ParentCategoryId": "311-14"
+  },
+  {
+   "Name": "Sales",
+   "Description": "Information for consumers and businesses.",
+   "CategoryId": "311-86",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-86",
+   "ParentCategoryId": "311-17"
+  },
+  {
+   "Name": "Sidewalks",
+   "Description": "Violations, repair, maintenance of sidewalks, street trees, fire hydrants, streetlights, LinkNYC kiosks.",
+   "CategoryId": "311-80",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-80",
+   "ParentCategoryId": "311-16"
+  },
+  {
+   "Name": "Sidewalks, Streets & Highways",
+   "Description": "Maintenance, violations, closures, bridges, tunnels.",
+   "CategoryId": "311-16",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-16",
+   "PicURL": "https://portal.311.nyc.gov/sidewalks_streets_highways.jpg",
+   "SubCategory": [
+    {
+     "Name": "Bridges & Tunnels",
+     "Description": "Traffic conditions, closures, maintenance.",
+     "CategoryId": "311-79",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-79",
+     "ParentCategoryId": "311-16"
+    },
+    {
+     "Name": "Sidewalks",
+     "Description": "Violations, repair, maintenance of sidewalks, street trees, fire hydrants, streetlights, LinkNYC kiosks.",
+     "CategoryId": "311-80",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-80",
+     "ParentCategoryId": "311-16"
+    },
+    {
+     "Name": "Streets & Highways",
+     "Description": "Traffic conditions, closures, illegal parking, maintenance of roadways, signs, signals.",
+     "CategoryId": "311-81",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-81",
+     "ParentCategoryId": "311-16"
+    }
+   ]
+  },
+  {
+   "Name": "Start & Run a Business",
+   "CategoryId": "311-94",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-94",
+   "ParentCategoryId": "311-32"
+  },
+  {
+   "Name": "Streets & Highways",
+   "Description": "Traffic conditions, closures, illegal parking, maintenance of roadways, signs, signals.",
+   "CategoryId": "311-81",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-81",
+   "ParentCategoryId": "311-16"
+  },
+  {
+   "Name": "Student & Parent Support",
+   "CategoryId": "311-103",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-103",
+   "ParentCategoryId": "311-41"
+  },
+  {
+   "Name": "Taxes",
+   "Description": "Preparation, exemptions.",
+   "CategoryId": "311-17",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-17",
+   "PicURL": "https://portal.311.nyc.gov/taxes.jpg",
+   "SubCategory": [
+    {
+     "Name": "Business",
+     "Description": "Business tax policy, procedures, payments.",
+     "CategoryId": "311-83",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-83",
+     "ParentCategoryId": "311-17"
+    },
+    {
+     "Name": "Fraud",
+     "Description": "Evasion of taxes including sales, payroll, and cigarette.",
+     "CategoryId": "311-87",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-87",
+     "ParentCategoryId": "311-17"
+    },
+    {
+     "Name": "Income",
+     "Description": "City, State, and Federal taxes and credits.",
+     "CategoryId": "311-84",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-84",
+     "ParentCategoryId": "311-17"
+    },
+    {
+     "Name": "Preparation",
+     "Description": "Free help filing your taxes.",
+     "CategoryId": "311-82",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-82",
+     "ParentCategoryId": "311-17"
+    },
+    {
+     "Name": "Property",
+     "Description": "School Tax Relief (STAR), Senior Citizen Homeowner Exemption (SCHE), payments.",
+     "CategoryId": "311-85",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-85",
+     "ParentCategoryId": "311-17"
+    },
+    {
+     "Name": "Sales",
+     "Description": "Information for consumers and businesses.",
+     "CategoryId": "311-86",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-86",
+     "ParentCategoryId": "311-17"
+    }
+   ]
+  },
+  {
+   "Name": "Taxis & Car Services",
+   "Description": "Driver and vehicle complaints, lost and found, fare information.",
+   "CategoryId": "311-90",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-90",
+   "ParentCategoryId": "311-18"
+  },
+  {
+   "Name": "Tenants",
+   "Description": "Maintenance problems, rent regulation, rent freezes, eviction prevention.",
+   "CategoryId": "311-60",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-60",
+   "ParentCategoryId": "311-11"
+  },
+  {
+   "Name": "Tickets & Tows",
+   "CategoryId": "311-110",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-110",
+   "ParentCategoryId": "311-88"
+  },
+  {
+   "Name": "Transportation",
+   "Description": "Tickets, tows, driving, parking, public transportation, taxis, airports, bikes, accessibility.",
+   "CategoryId": "311-18",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-18",
+   "PicURL": "https://portal.311.nyc.gov/transport.jpg",
+   "SubCategory": [
+    {
+     "Name": "Accessible Transportation",
+     "Description": "Access-A-Ride, taxis for people with disabilities, accessibility complaints.",
+     "CategoryId": "311-93",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-93",
+     "ParentCategoryId": "311-18"
+    },
+    {
+     "Name": "Bikes",
+     "Description": "Bike Share, maps, rules, safety, abandoned or illegally chained bikes.",
+     "CategoryId": "311-92",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-92",
+     "ParentCategoryId": "311-18"
+    },
+    {
+     "Name": "Boats & Airplanes",
+     "Description": "Ferries, JFK, LaGuardia, and Newark airports.",
+     "CategoryId": "311-91",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-91",
+     "ParentCategoryId": "311-18"
+    },
+    {
+     "Name": "Driving, Parking & Tickets",
+     "Description": "Tickets, towed vehicles, parking, street closures, vehicle auctions, blocked driveways, driver’s licenses.",
+     "CategoryId": "311-88",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-88",
+     "ParentCategoryId": "311-18",
+     "SubCategory": [
+      {
+       "Name": "Auctions & Consumers",
+       "CategoryId": "311-112",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-112",
+       "ParentCategoryId": "311-88"
+      },
+      {
+       "Name": "Licenses, Permits, Registration, Inspections",
+       "CategoryId": "311-115",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-115",
+       "ParentCategoryId": "311-88"
+      },
+      {
+       "Name": "Parking",
+       "CategoryId": "311-111",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-111",
+       "ParentCategoryId": "311-88"
+      },
+      {
+       "Name": "Rules & Routes",
+       "CategoryId": "311-113",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-113",
+       "ParentCategoryId": "311-88"
+      },
+      {
+       "Name": "Safety & Accidents",
+       "CategoryId": "311-114",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-114",
+       "ParentCategoryId": "311-88"
+      },
+      {
+       "Name": "Tickets & Tows",
+       "CategoryId": "311-110",
+       "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-110",
+       "ParentCategoryId": "311-88"
+      }
+     ]
+    },
+    {
+     "Name": "Public Transportation",
+     "Description": "Buses, subways, trains, trams.",
+     "CategoryId": "311-89",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-89",
+     "ParentCategoryId": "311-18"
+    },
+    {
+     "Name": "Taxis & Car Services",
+     "Description": "Driver and vehicle complaints, lost and found, fare information.",
+     "CategoryId": "311-90",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-90",
+     "ParentCategoryId": "311-18"
+    }
+   ]
+  },
+  {
+   "Name": "Trash & Recycling",
+   "Description": "Disposal, collection, street cleaning, sanitation violations, illegal dumping.",
+   "CategoryId": "311-8",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-8",
+   "PicURL": "https://portal.311.nyc.gov/garbagerecycling.jpg",
+   "SubCategory": [
+    {
+     "Name": "Cleaning",
+     "Description": "Street cleaning, illegal dumping, littering.",
+     "CategoryId": "311-51",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-51",
+     "ParentCategoryId": "311-8"
+    },
+    {
+     "Name": "Collection & Disposal",
+     "Description": "Schedules, rules, missed collections, violations.",
+     "CategoryId": "311-50",
+     "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-50",
+     "ParentCategoryId": "311-8"
+    }
+   ]
+  },
+  {
+   "Name": "Veterans & Military",
+   "Description": "Tax exemptions, benefits and social services for former and current service members.",
+   "CategoryId": "311-30",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-30",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Volunteer & Donate",
+   "Description": "Help out by giving time, goods, or money to a good cause.",
+   "CategoryId": "311-31",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-31",
+   "ParentCategoryId": "311-121"
+  },
+  {
+   "Name": "Water",
+   "Description": "Drinking water, waterways, wastewater.",
+   "CategoryId": "311-47",
+   "CategoryURL": "https://portal.311.nyc.gov/kacategory/?id=311-47",
+   "ParentCategoryId": "311-7"
+  }
+ ]
+}

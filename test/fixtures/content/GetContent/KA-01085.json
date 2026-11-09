@@ -1,0 +1,51 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01085",
+   "Title": "Noise from Bar, Club, or Restaurant",
+   "Description": "Report noise, including music, coming from a bar, club, or restaurant. Learn how mediation can help quality of life disputes between restaurants, bars,",
+   "Section": [
+    {
+     "Name": "Noise Bar, Club, or Restaurant Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01090\">Noise from Store or Business</a>&nbsp;to report noise from a store or business</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02125\">Noise Complaints</a>&nbsp;to report other types of noise</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03641\">Noise Code</a></li></ul></div><p>You can report noise coming from a bar, club, or restaurant.</p><p>Officers from the New York Police Department (NYPD) will respond within 8 hours when they are not handling emergencies. They will be able to take action if the noise is still happening when they arrive.&nbsp;</p><p>For loud music complaints, if you include your name and address in your report, you also will receive a City survey from the Department of Environmental Protection (DEP). When you return the survey reporting a chronic issue, depending upon your request, City officials will either schedule an appointment to take noise level readings in your home or conduct an inspection from the public street. The establishment you report will be fined when appropriate.</p><p><strong>File a Complaint</strong></p><p>Report:</p><p><strong>Recurring Loud Music</strong></p><p>If you file another loud music complaint within six months of&nbsp;previously submitting a survey that resulted in a DEP inspection, DEP will automatically enter another request for an inspection on your behalf in the DEP complaint system.</p><p><strong>Legal Noise Limits</strong></p><p>Between 10 PM and 7 AM, music from bars and restaurants may not exceed 42 decibels when measured from inside nearby residences AND&nbsp;may not exceed 7 decibels over the surrounding area sound level when measured on a public street 15 or more feet away from source.</p>",
+     "ContentAction": [
+      {
+       "Name": "Noise from Bar, Club, or Restaurant (Banging or Pounding)",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Commercial",
+       "ProblemDetail": "Banging/Pounding"
+      },
+      {
+       "Name": "Noise from Bar, Club, or Restaurant (Loud Music or Party)",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Commercial",
+       "ProblemDetail": "Loud Music/Party"
+      },
+      {
+       "Name": "Noise from Bar, Club, or Restaurant (Loud Talking)",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Commercial",
+       "ProblemDetail": "Loud Talking"
+      },
+      {
+       "Name": "Noise from Bar, Club, or Restaurant (Loud Television)",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Commercial",
+       "ProblemDetail": "Loud Television"
+      }
+     ]
+    },
+    {
+     "Name": "Mediation",
+     "Content": "<p>MEND NYC is a free mediation service dedicated to resolving quality of life disputes between restaurants, bars, and nightlife establishments and their neighbors through direct communication and compromise.</p><p>The Office of Nightlife has collaborated with the Center for Creative Conflict Resolution (CCCR) at the Office of Administrative Trials and Hearings (OATH), who will be administering MEND NYC. The mediations are conducted by experienced, neutral third parties to help New York City residents and hospitality businesses negotiate immediate and lasting understanding in order to find common ground and coexist as neighbors.</p><p>To send a request for mediation regarding an ongoing quality of life issue,&nbsp;email&nbsp;<a class=\"notranslate\" href=\"mailto:MendNYC@oath.nyc.gov\">MendNYC@oath.nyc.gov</a>.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/oath/conflict-resolution/mend-establishment-neighborhood-disputes.page\">Learn more about MEND NYC.</a></p><p>The following types of conflict <strong>do not</strong> qualify for MEND NYC mediation:</p><ul><li>If the conflict is between two residents, such as neighbors in the same apartment building</li><li>If the parties are already engaged in an adversarial or formal litigation process</li><li>If the landlord and commercial tenant are already in litigation or court process</li><li>If a small business is looking for a review of their commercial lease or seeking other types of legal assistance</li></ul>",
+     "ContentAction": []
+    },
+    {
+     "Name": "DEP NYC Noise App",
+     "Content": "<p>NYC Noise is New York City&rsquo;s Department of Environmental Protection (DEP) free iPhone and Android mobile app. The app will collect noise data for DEP to better understand noise levels, sources, and patterns.</p><p>The app does not submit noise complaint services requests.</p><p>NYC Noise is for data collection only. It provides DEP with:</p><ul><li>Noise decibel level</li><li>Date, time, and source of noise</li><li>Defines noise by types:<ul><li>Alarm</li><li>Car and bus traffic</li><li>Construction</li><li>Dog/animal</li><li>HVAC/fan</li><li>Loud music</li><li>Siren</li><li>Vehicle horn</li></ul></li></ul><p>Submitted data appears in map and table formats. Data will help DEP identify noise hotspots and guide their targeted enforcement efforts.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/news/25-030/dep-launches-new-innovative-mobile-app-better-understand-city-s-noise#/0\">Learn more about DEP&#39;s NYC Noise App.</a></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

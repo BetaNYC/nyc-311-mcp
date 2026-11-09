@@ -1,0 +1,23 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01233",
+   "Title": "Water Main Break",
+   "Description": "Report a possible water main break.",
+   "Section": [
+    {
+     "Name": "Water Main Break Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01234\">Water Leak on Street or Sidewalk</a>&nbsp;to report a water leak in a public area such as a street or sidewalk</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01235\">Manhole Flooding</a>&nbsp;to report water or sewage coming from an overflowing manhole cover</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01405\">No Water, Low Water Pressure, or Water Temperature Complaint</a>&nbsp;to report no water or low water pressure</li></ul></div><p>A water main break usually involves water flowing up onto the street from below ground and low water pressure in nearby homes and businesses.</p><p><strong>What Happens Next</strong></p><p>You must provide your contact information so The Department of Environmental Protection (DEP) can contact you, if necessary. DEP cannot action the service request without it.</p><p>DEP will respond within 8 hours.</p>",
+     "ContentAction": [
+      {
+       "Name": "Water Main Break",
+       "Agency": "Department of Environmental Protection",
+       "Problem": "Water Maintenance",
+       "ProblemDetail": "Water Main Break"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

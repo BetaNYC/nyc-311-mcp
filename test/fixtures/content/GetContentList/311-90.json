@@ -1,0 +1,84 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Request a wheelchair accessible taxi for pick-up anywhere in the five boroughs.",
+   "id": "KA-02542",
+   "title": "Accessible Taxi Dispatch"
+  },
+  {
+   "description": "Report a problem with a limousine, ambulette, Access-A-Ride taxi, black cab, or car service company.",
+   "id": "KA-01244",
+   "title": "Car Service Complaint"
+  },
+  {
+   "description": "Give positive feedback about a car service driver.",
+   "id": "KA-02607",
+   "title": "Car Service Driver Compliment"
+  },
+  {
+   "description": "Report an item lost or found in a car service, limousine, or black car.",
+   "id": "KA-01050",
+   "title": "Car Service Lost and Found"
+  },
+  {
+   "description": "Learn about car service operations, fares, and rules in New York City.",
+   "id": "KA-03372",
+   "title": "Car Services"
+  },
+  {
+   "description": "Learn about transportation to medical appointments for people who have Medicaid.",
+   "id": "KA-01583",
+   "title": "Medical Transportation for Medicaid Clients"
+  },
+  {
+   "description": "Learn about the congestion surcharge for taxis and for-hire vehicles.",
+   "id": "KA-03191",
+   "title": "Taxi and For-Hire Vehicle Congestion Surcharge"
+  },
+  {
+   "description": "Learn about the official website for taxi information.",
+   "id": "KA-03042",
+   "title": "Taxi and Limousine Commission's Website"
+  },
+  {
+   "description": "Report a problem with a taxi driver or vehicle, including rudeness, unsafe driving, refusing a request, maintenance issues, or route complaints.",
+   "id": "KA-01241",
+   "title": "Taxi Complaint"
+  },
+  {
+   "description": "Give positive feedback about a yellow or green taxi driver.",
+   "id": "KA-01055",
+   "title": "Taxi Driver Compliment"
+  },
+  {
+   "description": "Help for taxi licensees, including owners, taxi drivers, and car service drivers.",
+   "id": "KA-01763",
+   "title": "Taxi Driver or Licensee Assistance"
+  },
+  {
+   "description": "Report an item lost or found in a yellow or green taxi.",
+   "id": "KA-01045",
+   "title": "Taxi Lost and Found"
+  },
+  {
+   "description": "Request insurance information if you had property damaged or were in an accident involving a taxi or for-hire vehicle.",
+   "id": "KA-01056",
+   "title": "Taxi or Car Service Insurance Information"
+  },
+  {
+   "description": "Get a duplicate receipt for a yellow or green taxi ride.",
+   "id": "KA-01764",
+   "title": "Taxi Receipt Copy"
+  },
+  {
+   "description": "Get general information about taxis, including fares and rules.",
+   "id": "KA-01245",
+   "title": "Taxis"
+  },
+  {
+   "description": "Learn about transportation options for people age 60 and older. Make a complaint about a senior transportation provider.",
+   "id": "KA-02307",
+   "title": "Transportation for Older Adults"
+  }
+ ]
+}

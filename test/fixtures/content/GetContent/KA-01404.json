@@ -1,0 +1,36 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01404",
+   "Title": "Traffic or Bicycle Signal Complaint or Request",
+   "Description": "Report a problem with an existing traffic or bicycle signal. Request a new traffic or bicycle signal.",
+   "Section": [
+    {
+     "Name": "911 Traffic or Bicycle Signal Complaint or Request",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report:<ul><li>Signal problems causing dangerous traffic conditions</li><li>Signals stuck on steady green in all directions</li><li>Downed power lines</li></ul></div></div></div></div><ul></ul><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01047\">Pedestrian Signal Complaint or Request</a>&nbsp;to report a problem with an existing pedestrian signal or to request a new pedestrian signal</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01048\">Electrical Complaint</a>&nbsp;to report stray voltage</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02070\">Graffiti</a>&nbsp;to report graffiti impacting the visibility or operation of a traffic or bicycle signal</li></ul></div><p><style type=\"text/css\">.asp {\n  max-width: 100%;\n  height: auto;\n}</style></p><p><img alt=\"A traffic signal.\" class=\"asp\" height=\"600\" width=\"506\" src=\"https://portal.311.nyc.gov/article/trafficandbikesignal.jpg\" /></p><p>You can report a problem&nbsp;with a traffic or bicycle signal.</p><p>You can also request a timing review of an existing traffic or bicycle signal or request a new traffic signal.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/infrastructure/signals.shtml\">Learn more about traffic signals.</a></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Report a Traffic or Bicycle Signal Problem",
+     "Content": "<p>You can report a traffic or bicycle&nbsp;signal that:</p><ul><li>Is missing or damaged</li><li>Has burned out lights</li><li>Is leaning, hanging, or knocked-over poles and signals</li><li>Has wires outside the base or open electrical control boxes</li><li>Is blocked by signs, sneakers, or other hanging objects</li><li>Is changing out of sequence or stuck on one color</li><li>Is facing the wrong direction</li></ul><p>Complaints can be made by phone only. Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> to report the problem.</p><p><strong>What Happens Next</strong></p><p>Department of Transportation (DOT) contractors maintain traffic and&nbsp;bicycle signals in each borough.</p><p>Repairs are scheduled based on the urgency of the problem:</p><ul><li>Fallen signal poles are addressed within 2 hours.</li><li>Exposed wiring or open electrical control boxes are addressed within 12 hours.</li><li>Priority issues such as problems with timing, outages,&nbsp;and hanging signals are addressed within 48 hours.</li><li>General maintenance issues are addressed within 30 days.</li><li>The response time for long-term construction issues varies depending on the project.</li></ul>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Check Repair Status",
+     "Content": "<p>You need your work order number to check the status of a signal repair request filed with the Department of Transportation (DOT).</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://service.nyctmc.org/service4/main.asp\">Check the status of a traffic signal service request.</a></p><p><strong>By Phone</strong></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Request a Timing Review",
+     "Content": "<p>If there is a non-emergency problem with a signal&#39;s timing, you can request a timing review.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/contact/contact-form.shtml\">Contact the Department of Transportation.</a></p><p><strong>By Mail</strong></p><p>Mail your request to:</p><p>Department of Transportation Commissioner<br />55 Water Street, 9th Floor<br />New York, NY 99999</p><p><strong>By Phone</strong></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Request a New Traffic or Bicycle Signal",
+     "Content": "<p>You can submit a request for a new traffic or bicycle signal to the Department of Transportation (DOT).&nbsp;You must specify the type of signal in your request.</p><p><strong>Online</strong></p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/html/dot/html/contact/contact-form.shtml\">Contact the Department of Transportation.</a></p><p><strong>By Mail</strong></p><p>Mail your request to:</p><p>Department of Transportation Commissioner<br />55 Water Street, 9th Floor<br />New York, NY 99999</p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

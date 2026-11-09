@@ -1,0 +1,34 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Get information about bridges, request bridge maintenance or report a bridge condition.",
+   "id": "KA-01079",
+   "title": "Bridges"
+  },
+  {
+   "description": "Report graffiti. Learn about what your options are when someone else reports graffiti on your building.",
+   "id": "KA-02070",
+   "title": "Graffiti"
+  },
+  {
+   "description": "Report a problem with a street light.",
+   "id": "KA-02463",
+   "title": "Street Light Complaint"
+  },
+  {
+   "description": "Learn about street, highway, bridge, and tunnel closures.",
+   "id": "KA-01081",
+   "title": "Street, Highway, Bridge, and Tunnel Closures"
+  },
+  {
+   "description": "Learn about traffic and travel conditions in the NY metro area. Report a non-emergency traffic condition, such as congestion or chronic speeding.",
+   "id": "KA-02305",
+   "title": "Traffic Condition"
+  },
+  {
+   "description": "Get information or make a complaint about a tunnel.",
+   "id": "KA-01230",
+   "title": "Tunnels"
+  }
+ ]
+}

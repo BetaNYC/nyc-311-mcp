@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added: help reporting a problem to 311 (Phase 4, #17)
+
+- `how_to_report`: from a plain description, the best 311 article (title, KA number, link
+  on 311 Online) and up to four others, with the agency and 311 problem type the article names
+  (NYC Open Data's `complaint_type`), what happens next, what the City says it does not
+  handle, and the ways to report. All of it is City text: the article, and for the NYC311
+  app, phone 311 / 212-NEW-YORK and text 311-692, portal.311.nyc.gov/about-nyc-311/ (read
+  2026-11-07). When the description suggests danger, `first_line` is the City's own
+  "Call 911" summary. Optional district: how often that problem type was reported there
+  (`problem_trend`). It files nothing.
+- `list_311_categories`: 311's categories, or one category's articles.
+- `src/content-311.ts`: client for the API's GetCategory, GetContentList and GetContent,
+  built from the portal's operation list and checked against live responses (several
+  differ from the documented schema). Disk cache, 7 days, with a stale copy when the API
+  is down; one request at a time, 1 s apart, 30 s timeout, one 429/503 retry.
+- Matching is deterministic keyword scoring over the articles of a few routed categories
+  (`CONCEPTS` in `src/how-to-report.ts`). Reviewed on the 20 most common problem types:
+  the right article 20 of 20; the article names the open-data problem type in 14
+  (`docs/how-to-report.md`).
+- QA round 1 on #23 (safety first): `src/emergency.ts` (`assessDanger`, `emergencyLead`,
+  `SAFETY_LINE`, `CITY_988`, `CRIME_POINTER`) detects many more dangers and leads with 911;
+  a City "Call 911" article is quoted only when it is the danger detected, otherwise BetaNYC's
+  own line, labeled. Every answer carries `safety_line`. Negation, smoking, odors and past
+  crimes do not lead with 911. 988 for suicide (from KA-01635). `crime` pointer to the City's
+  articles. `other_problems` for several problems; Spanish keywords with `language_help`;
+  one-edit typo correction (`spelling_corrected`). New concepts (harassment, fire escape,
+  broken detector, broken sidewalk, elevator, fireworks, missed collection, crash, smoking).
+  Article date in every answer; time-sensitive articles refreshed daily; a missing key is named
+  as such. 46 phrasings in `test/how-to-report-phrasings.test.mjs`.
+- QA round 2 on #23: danger detection is keyword-based and will miss some emergencies, so
+  every answer and both tool descriptions carry `assistant_instruction` telling the calling
+  assistant to send the person to 911 whenever anything suggests danger. `safety_line` is the
+  first field of every answer and starts every error; every no-match answer leads with 911.
+  Much wider patterns (medical, smoke and outlets, gas smell, structural, violence and
+  threats, people at risk, domestic violence quoting KA-01217). "Shooting a video" is not
+  gunfire. 50 emergencies and 23 look-alikes in `test/how-to-report-emergencies.test.mjs`, plus
+  14 suicide and self-harm phrasings that must lead with 911 and the City's 988 text.
+- QA round 3 on #23: falls from a window or roof, calls for help, swallowed objects, "ODing",
+  "reeks of gas", "came crashing down", jumping in front of a train lead with 911; "gun store",
+  "shot glass", "flu shot" and "sparks shooting out" are not gunfire. 34 more cases in the tests.
+- Decision of 2026-11-08 on #23: "not an emergency" and "not urgent" quiet only ambiguous
+  signals (smoke, a crash, water near electricity, a shaking structure), never someone hurt or
+  not breathing, gas, carbon monoxide, fire, or suicide and self-harm (`HIGH_SEVERITY`). A
+  past-time word no longer quiets a crime when the words say it is still going on ("still
+  inside", "right now") or name a weapon. "Broke in" is a crime word; "Gun Hill Road" is not
+  a gun. Cases in `test/emergency-disclaimer.test.mjs`.
+
 ### Added: request lookup by district, and statuses in plain words (Phase 3, #16)
 
 - `find_requests`: every request in a community or council district, any status, newest

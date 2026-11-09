@@ -1,0 +1,184 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Apply for or renew a permit to add chemicals to a building's drinking water supply.",
+   "id": "KA-01806",
+   "title": "Add Chemicals to Water Supply Permit"
+  },
+  {
+   "description": "Find a station where boat owners can legally dispose of onboard septic waste.",
+   "id": "KA-02583",
+   "title": "Boat Pump Out"
+  },
+  {
+   "description": "Learn when heavy rain causes wastewater treatment plants or sewers to get too full and untreated sewage to spill into waterways.",
+   "id": "KA-02650",
+   "title": "Combined Sewage Overflow (CSO) Waterbody Advisory"
+  },
+  {
+   "description": "Learn about the cross connection or water backflow program and business requirements.",
+   "id": "KA-01173",
+   "title": "Cross Connection and Water Backflow Prevention"
+  },
+  {
+   "description": "Report a dead animal in a public place, including sidewalks, highways, and parks.",
+   "id": "KA-02245",
+   "title": "Dead Animal on Public Property"
+  },
+  {
+   "description": "Report cold or drinking water odor, taste, discoloration, or illness caused by drinking water. Get water quality and building water tank inspection info.",
+   "id": "KA-01402",
+   "title": "Drinking Water"
+  },
+  {
+   "description": "There is no drought for New York City at this time. Learn about water saving tips.",
+   "id": "KA-02697",
+   "title": "Drought"
+  },
+  {
+   "description": "Report water flowing through a sewer outfall pipe during dry weather.",
+   "id": "KA-02128",
+   "title": "Dry Weather Sewage Discharge Complaint"
+  },
+  {
+   "description": "Report a fire hydrant that is leaking, running, missing, misused, or damaged (including fender post), or blocked by a vehicle.",
+   "id": "KA-01034",
+   "title": "Fire Hydrant Complaint"
+  },
+  {
+   "description": "Request installation, removal, relocation, spray cap fitting, or fender post installation.",
+   "id": "KA-01035",
+   "title": "Fire Hydrant Request"
+  },
+  {
+   "description": "Report trash in a waterway. Learn about reducing floatables and other trash in waterways.",
+   "id": "KA-01475",
+   "title": "Floatable Trash in Waterway Boom or Net Containments"
+  },
+  {
+   "description": "Learn about flood zone designations for specific properties.",
+   "id": "KA-01701",
+   "title": "Flood Zones"
+  },
+  {
+   "description": "Learn about Gowanus Canal Construction Project. Report excessive or after hours construction noise.",
+   "id": "KA-03601",
+   "title": "Gowanus Canal Construction Project"
+  },
+  {
+   "description": "Get a kit to test drinking water for high levels of lead and tips to reduce lead exposure.",
+   "id": "KA-01403",
+   "title": "Lead in Drinking Water"
+  },
+  {
+   "description": "Learn about pilot programs to replace water service lines made of lead or galvanized steel at no cost to eligible homeowners in specific areas.",
+   "id": "KA-03651",
+   "title": "Lead Service Line Replacement Program"
+  },
+  {
+   "description": "New York City property owners must ensure their downspouts (rain gutters) are not connected to the City’s sanitary sewer system.",
+   "id": "KA-03696",
+   "title": "Mandatory Downspout Disconnection"
+  },
+  {
+   "description": "Information about Newtown Creek Nature Walk and Visitor Center.",
+   "id": "KA-01333",
+   "title": "Newtown Creek"
+  },
+  {
+   "description": "Report no water, water pressure, or temperature problems.",
+   "id": "KA-01405",
+   "title": "No Water, Low Water Pressure, or Water Temperature Complaint"
+  },
+  {
+   "description": "Learn about the Department of Environmental Protection's (DEP) Rainfall Ready NYC action plan.",
+   "id": "KA-03493",
+   "title": "Rainfall Ready NYC"
+  },
+  {
+   "description": "Report a problem with a private, on-site sewage disposal system (septic or cesspool).",
+   "id": "KA-01916",
+   "title": "Septic or Cesspool Complaint"
+  },
+  {
+   "description": "Learn about the requirements for cleaning a septic tank.",
+   "id": "KA-01498",
+   "title": "Septic Tank Cleaning"
+  },
+  {
+   "description": "Report a condition at a private solid waste transfer station.",
+   "id": "KA-02336",
+   "title": "Solid Waste Transfer Station Complaint"
+  },
+  {
+   "description": "Report standing water outdoors during Mosquito Season.",
+   "id": "KA-02298",
+   "title": "Standing Water"
+  },
+  {
+   "description": "Learn about the Staten Island Bluebelt maintenance and cleanup program.",
+   "id": "KA-03019",
+   "title": "Staten Island Bluebelt"
+  },
+  {
+   "description": "Learn about wastewater treatment rules for businesses.",
+   "id": "KA-01771",
+   "title": "Wastewater Guidelines for Businesses"
+  },
+  {
+   "description": "Report noise or a bad smell from a wastewater treatment plant, sewage treatment plant, or pumping station.",
+   "id": "KA-02126",
+   "title": "Wastewater Treatment Plant Complaint"
+  },
+  {
+   "description": "Report the use of too much water or water waste in any facility.",
+   "id": "KA-02129",
+   "title": "Wasting Water"
+  },
+  {
+   "description": "Learn about water hardness.",
+   "id": "KA-01773",
+   "title": "Water Hardness"
+  },
+  {
+   "description": "Report water leaking into an apartment, public area of a residential building, or basement. Learn how to prevent leaks.",
+   "id": "KA-01509",
+   "title": "Water Leak in a Building"
+  },
+  {
+   "description": "Apply for a water potability certificate, which confirms that water is safe to drink.",
+   "id": "KA-03090",
+   "title": "Water Potability Certificate"
+  },
+  {
+   "description": "Get items to help you conserve water at home including: low-flow showerheads, faucet aerators, toilet tank bank, and leak detector dye tablets.",
+   "id": "KA-01775",
+   "title": "Water Saving Kit"
+  },
+  {
+   "description": "Learn how to conserve water.",
+   "id": "KA-01776",
+   "title": "Water Saving Tips"
+  },
+  {
+   "description": "Learn about DEP's Water Tunnel No. 3 construction project and related controlled blasting in Long Island City, Queens.",
+   "id": "KA-03483",
+   "title": "Water Tunnel No. 3 Construction"
+  },
+  {
+   "description": "Apply for certification to unload water from a shipping hydrant for general use.",
+   "id": "KA-03092",
+   "title": "Water Vessel for Shipping Hydrant Certificate"
+  },
+  {
+   "description": "Learn about and apply for required permits for boating, fishing, hunting and other recreational activities on upstate reservoir lands.",
+   "id": "KA-02077",
+   "title": "Watershed Recreation and Access Permit"
+  },
+  {
+   "description": "Report floating debris, oil, gasoline, sewage, or unusual color in a waterway.",
+   "id": "KA-01784",
+   "title": "Waterway Complaint"
+  }
+ ]
+}

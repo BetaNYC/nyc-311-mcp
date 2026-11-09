@@ -1,0 +1,33 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01093",
+   "Title": "Pothole or Cave-In on Street",
+   "Description": "Report a pothole or cave-in on a street.",
+   "Section": [
+    {
+     "Name": "911 Pothole or Cave-In on Street",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report an unprotected street opening that could cause an accident.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01094\">City Claim</a> to report vehicle damage</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01106\">Pothole or Cave-In on Highway</a></li></ul></div><p>You can report a pothole or cave-in on a street, including in a bike lane.</p><p>A pothole is a shallow hole or crack in the street surface.</p><p>A cave-in is a collapse in the pavement into a deep empty space without a solid bottom.</p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Pothole Complaint",
+     "Content": "<style type=\"text/css\">.asp {\n  max-width: 100%;\n  height: auto;\n}</style><p><img alt=\"Shallow pothole in a city street filled with rainwater.\" class=\"asp\" src=\"https://portal.311.nyc.gov/article/pothole.jpg\" /></p><p>A pothole is either a circular-shaped or a shallow hole or crack in the street surface.&nbsp;</p><p>A pothole is <strong>not</strong>:</p><ul><li>Found inside a repaired patch of the street. To report this, go to the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01095\">Street Repair Complaint</a>&nbsp;page instead.</li><li>A deep or hollow hole. This is considered a cave-in.&nbsp;</li><li>Located next to a catch basin. To report this, go to the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01084\">Catch Basin Complaint</a>&nbsp;page instead.</li></ul><p><strong>File a Complaint</strong></p><p><strong><a class=\"externallink\" target=\"_blank\" href=\"https://a841-dotvweb01.nyc.gov/potholeform\">Report a pothole on a street.</a></strong></p><p><strong>What Happens Next</strong></p><p>The Department of Transportation (DOT) will fill most potholes within 15 days.</p><p><strong>Check Service Request Status</strong></p><p>You need your service request number to check the status of a street pothole service request filed with the Department of Transportation (DOT).</p><p><a class=\"externallink\" target=\"_blank\" href=\"http://a841-dotvweb01.nyc.gov/Potholeform/ViewController/CheckStatus.aspx\">Check the status of a street pothole service request.</a></p>",
+     "ContentAction": []
+    },
+    {
+     "Name": "Cave-In Complaint",
+     "Content": "<style type=\"text/css\">.asp {\n  max-width: 100%;\n  height: auto;\n}</style><p><img alt=\"Cave-in on a city street showing a deep hole with jagged edges. Trash bags and a traffic cone are inside the hole.\" class=\"asp\" src=\"https://portal.311.nyc.gov/article/cave-in.jpg\" /></p><p>A cave-in is a collapse of the roadway surface in which the pavement has cracked apart and fallen into a deep empty space without a solid bottom beneath the surface. Large pieces of pavement can be seen in the hole. The edges of a cave-in are usually jagged and the surrounding roadway surface may be sunken.</p><p><strong>File a Complaint</strong></p><p>If a&nbsp;cave-in is next to a catch basin, use the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01084\">Catch Basin Complaint</a> page.</p><p>If there is a water leak in a&nbsp;cave-in, use the&nbsp;<a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01234\">Water Leak on Street or Sidewalk</a> page.</p><p><strong>What Happens Next</strong></p><p>The Department of Transportation (DOT) investigates reports of cave-ins, determines who is responsible for restoring the roadway and then refers the cave-in to that agency or utility for repair. DOT is not responsible for the repair of any cave-ins.</p><p>Information about the agency or utility responsible for repairing the cave-in will be available within 10 days of submitting a service request.</p>",
+     "ContentAction": [
+      {
+       "Name": "Cave-In on Street",
+       "Agency": "Department of Transportation",
+       "Problem": "Street Condition",
+       "ProblemDetail": "Cave-in"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

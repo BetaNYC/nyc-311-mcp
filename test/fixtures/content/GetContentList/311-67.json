@@ -1,0 +1,124 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Report abuse or neglect of an animal.",
+   "id": "KA-02224",
+   "title": "Animal Abuse"
+  },
+  {
+   "description": "Report an animal that bit a person.",
+   "id": "KA-01109",
+   "title": "Animal Bite"
+  },
+  {
+   "description": "Report bed bugs.",
+   "id": "KA-01236",
+   "title": "Bed Bug Complaint"
+  },
+  {
+   "description": "Learn about preventing and getting rid of bed bugs safely, including how to comply with a NYC Health Commissioner's Order.",
+   "id": "KA-01793",
+   "title": "Bed Bug Prevention and Control"
+  },
+  {
+   "description": "Make a complaint about bees or wasps.",
+   "id": "KA-02230",
+   "title": "Bees or Wasps Complaint"
+  },
+  {
+   "description": "Call 911 to report an animal causing a dangerous or hazardous condition.",
+   "id": "KA-01538",
+   "title": "Dangerous Animal"
+  },
+  {
+   "description": "Learn how to dispose of dead pets or wildlife on your property.",
+   "id": "KA-03451",
+   "title": "Dead Animal on Private Property"
+  },
+  {
+   "description": "Report a dead animal in a public place, including sidewalks, highways, and parks.",
+   "id": "KA-02245",
+   "title": "Dead Animal on Public Property"
+  },
+  {
+   "description": "Report dog or animal waste in a park or on a street, sidewalk, or private property.",
+   "id": "KA-02247",
+   "title": "Dog or Animal Waste"
+  },
+  {
+   "description": "Report a person selling or keeping a wild or illegal animal as a pet.",
+   "id": "KA-02255",
+   "title": "Illegal Animal"
+  },
+  {
+   "description": "Get help for an injured or sick animal.",
+   "id": "KA-01789",
+   "title": "Injured or Sick Animal"
+  },
+  {
+   "description": "Learn about spraying schedules and preventing mosquitoes by getting rid of standing water. Report an unusual number of mosquitoes during Mosquito Season.",
+   "id": "KA-02263",
+   "title": "Mosquitoes"
+  },
+  {
+   "description": "Learn about controlling rats, mice, and bugs and pest control training for the public and professionals.",
+   "id": "KA-01110",
+   "title": "Pest Control Guidance"
+  },
+  {
+   "description": "Report someone using a pesticide without warning occupants or neighbors in advance.",
+   "id": "KA-01597",
+   "title": "Pesticide Application Without Notice"
+  },
+  {
+   "description": "Learn about vaccination for dogs and cats.",
+   "id": "KA-02947",
+   "title": "Pet Vaccination"
+  },
+  {
+   "description": "Learn about the potential health hazards of pigeon droppings and how to clean them up properly.",
+   "id": "KA-01600",
+   "title": "Pigeon Droppings Health Effects"
+  },
+  {
+   "description": "Report someone trapping pigeons without a permit.",
+   "id": "KA-01601",
+   "title": "Pigeon Trapping or Netting"
+  },
+  {
+   "description": "Report an animal that may have rabies, dead or alive.",
+   "id": "KA-02349",
+   "title": "Rabid Animal"
+  },
+  {
+   "description": "Report rats, mice, and conditions that might attract them.",
+   "id": "KA-01107",
+   "title": "Rat or Mouse Complaint"
+  },
+  {
+   "description": "Learn about rat poison signs posted in neighborhoods.",
+   "id": "KA-01350",
+   "title": "Rat Poison Sign"
+  },
+  {
+   "description": "Report mice, bed bugs, fleas, flies, or roaches in an apartment or in a public area of a residential building.",
+   "id": "KA-02278",
+   "title": "Residential Pest Complaint"
+  },
+  {
+   "description": "Learn about the Spotted Lanternfly (SLF) and report signs of SLF infestation.",
+   "id": "KA-03449",
+   "title": "Spotted Lanternfly"
+  },
+  {
+   "description": "Get information about wildlife, including how to report wild animals or the removal of wildlife from a park.",
+   "id": "KA-01790",
+   "title": "Wild Animal"
+  },
+  {
+   "description": "Apply for a permit to exhibit exotic or wild animals for movies, commercial purposes, science, education, or display.",
+   "id": "KA-01655",
+   "title": "Wild Animal Exhibition Permit"
+  }
+ ]
+}

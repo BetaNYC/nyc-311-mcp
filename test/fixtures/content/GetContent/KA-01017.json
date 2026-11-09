@@ -1,0 +1,27 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01017",
+   "Title": "Noise from Neighbor",
+   "Description": "Report a noisy neighbor.",
+   "Section": [
+    {
+     "Name": "911 Noise from Neighbor",
+     "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report fighting, screaming, gunshots, explosions, noise from a large party or crowd that is causing danger, or suspicious breaking of glass or wood.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01016\">Mediation</a>&nbsp;for confidential, free, professional help from a trained mediator for noise issues</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02125\">Noise Complaints</a>&nbsp;to report other types of noise&nbsp;</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03641\">Noise Code</a></li></ul></div><p>You can make a complaint about noise from your neighbor including loud music,&nbsp;party,&nbsp;or television, talking, and moving or dragging of furniture.</p><p><strong>What Happens Next</strong></p><p>Officers from the New York Police Department (NYPD) will respond within 8 hours when they are not handling emergencies. They will be able to take action if the noise is still happening when they arrive.&nbsp;</p><p><strong>Other Ways to Get Help</strong></p><p>Many buildings have rules about noise. Contact your tenant association, building owner, or super if a neighbor in your building is often noisy.</p>",
+     "ContentAction": [
+      {
+       "Name": "Noise from Neighbor",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Residential"
+      }
+     ]
+    },
+    {
+     "Name": "DEP NYC Noise App",
+     "Content": "<p>NYC Noise is New York City&rsquo;s Department of Environmental Protection (DEP) free iPhone and Android mobile app. The app will collect noise data for DEP to better understand noise levels, sources, and patterns.</p><p>The app does not submit noise complaint services requests.</p><p>NYC Noise is for data collection only. It provides DEP with:</p><ul><li>Noise decibel level</li><li>Date, time, and source of noise</li><li>Defines noise by types:<ul><li>Alarm</li><li>Car and bus traffic</li><li>Construction</li><li>Dog/animal</li><li>HVAC/fan</li><li>Loud music</li><li>Siren</li><li>Vehicle horn</li></ul></li></ul><p>Submitted data appears in map and table formats. Data will help DEP identify noise hotspots and guide their targeted enforcement efforts.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/news/25-030/dep-launches-new-innovative-mobile-app-better-understand-city-s-noise#/0\">Learn more about DEP&#39;s NYC Noise App.</a></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}

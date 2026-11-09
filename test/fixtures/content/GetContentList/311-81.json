@@ -1,0 +1,634 @@
+{
+ "ContentArticleList": [
+  {
+   "description": "Report an abandoned vehicle (including boats) on public property or request the removal of an abandoned vehicle with no license plates on private property.",
+   "id": "KA-02130",
+   "title": "Abandoned Vehicle"
+  },
+  {
+   "description": "Sponsor highway cleaning.",
+   "id": "KA-01112",
+   "title": "Adopt a Highway"
+  },
+  {
+   "description": "Learn about Alternate Side Parking (ASP) suspensions, rules, and change requests.",
+   "id": "KA-01011",
+   "title": "Alternate Side Parking and Street Cleaning"
+  },
+  {
+   "description": "Get information or make a complaint about automatic public toilets.",
+   "id": "KA-02226",
+   "title": "Automatic Public Toilets"
+  },
+  {
+   "description": "Learn about the City's plan to improve bus service by adding bus lanes and busways.",
+   "id": "KA-03316",
+   "title": "Better Buses Program"
+  },
+  {
+   "description": "Report a maintenance issue with an on-street bike lane or request a new bike lane.",
+   "id": "KA-01260",
+   "title": "Bike Lane"
+  },
+  {
+   "description": "Apply for a permit to hold a block party, street fair, parade, or other event on a City street or sidewalk.",
+   "id": "KA-01261",
+   "title": "Block Party, Street Fair, or Event Permit"
+  },
+  {
+   "description": "Report a vehicle that is blocking your driveway.",
+   "id": "KA-01062",
+   "title": "Blocked Driveway"
+  },
+  {
+   "description": "Report a drain underneath a road that is clogged or blocked.",
+   "id": "KA-02199",
+   "title": "Blocked or Clogged Culvert"
+  },
+  {
+   "description": "Report a sidewalk or street blocked by an object or activity.",
+   "id": "KA-01980",
+   "title": "Blocked Sidewalk or Street"
+  },
+  {
+   "description": "Learn what to do if your vehicle has been booted because of unpaid parking or camera violations.",
+   "id": "KA-02054",
+   "title": "Booted Vehicle"
+  },
+  {
+   "description": "Learn about damaged sewer service line repair.",
+   "id": "KA-02329",
+   "title": "Broken Sewer Line"
+  },
+  {
+   "description": "Learn about cameras that film vehicles driving, parking, or standing in bus lanes, standing or stopping in a bus stop, and double parking.",
+   "id": "KA-02325",
+   "title": "Bus Lane and MTA Bus Cameras"
+  },
+  {
+   "description": "Report a damaged or defective bus lane camera.",
+   "id": "KA-02342",
+   "title": "Bus Lane Camera Complaint"
+  },
+  {
+   "description": "Request a new bus stop or relocation of an existing bus stop.",
+   "id": "KA-01265",
+   "title": "Bus Stop Request"
+  },
+  {
+   "description": "Report a street sewer catch basin that needs cleaning or has a defect, including missing curb piece or cover. Report a lost personal item in a catch basin.",
+   "id": "KA-01084",
+   "title": "Catch Basin Complaint"
+  },
+  {
+   "description": "The City no longer accepts requests for catch basin installation.",
+   "id": "KA-02611",
+   "title": "Catch Basin Installation"
+  },
+  {
+   "description": "Report a smell coming from a catch basin or sewer.",
+   "id": "KA-02315",
+   "title": "Catch Basin or Sewer Odor"
+  },
+  {
+   "description": "Report chemical odors or chemicals that are abandoned or not stored safely.",
+   "id": "KA-01982",
+   "title": "Chemical Complaint"
+  },
+  {
+   "description": "Report a spill of chemicals or other hazardous material onto a roadway, sidewalk, or indoors.",
+   "id": "KA-02239",
+   "title": "Chemical Spill"
+  },
+  {
+   "description": "Apply to use sealed, on-street containers to hold commercial waste.",
+   "id": "KA-03477",
+   "title": "Clean Curbs"
+  },
+  {
+   "description": "Submit questions about Con Edison worksites.",
+   "id": "KA-01695",
+   "title": "Con Edison Worksites"
+  },
+  {
+   "description": "Report a defective or missing crash cushion, guard rail, or concrete barrier.",
+   "id": "KA-02244",
+   "title": "Crash Barrier Complaint"
+  },
+  {
+   "description": "Request to install new crash barriers.",
+   "id": "KA-02513",
+   "title": "Crash Barrier Request"
+  },
+  {
+   "description": "Request a new crosswalk on a street.",
+   "id": "KA-01283",
+   "title": "Crosswalk Request"
+  },
+  {
+   "description": "Apply for a permit to create or modify a curb cut.",
+   "id": "KA-02117",
+   "title": "Curb Cut Permit"
+  },
+  {
+   "description": "Report a curb that is damaged, painted, or illegally cut for a driveway.",
+   "id": "KA-01083",
+   "title": "Curb or Driveway Complaint"
+  },
+  {
+   "description": "Report a dead animal in a public place, including sidewalks, highways, and parks.",
+   "id": "KA-02245",
+   "title": "Dead Animal on Public Property"
+  },
+  {
+   "description": "Request the removal of a standing dead or dying tree.",
+   "id": "KA-02006",
+   "title": "Dead Tree"
+  },
+  {
+   "description": "Report an unclean or untidy yard, alley, or court that is visible from the street.",
+   "id": "KA-02133",
+   "title": "Dirty Yard or Alley"
+  },
+  {
+   "description": "Report dog or animal waste in a park or on a street, sidewalk, or private property.",
+   "id": "KA-02247",
+   "title": "Dog or Animal Waste"
+  },
+  {
+   "description": "Report grease, gasoline, cement, oil, sewage, chemicals, or other liquids being dumped into a street sewer grate or catch basin.",
+   "id": "KA-02202",
+   "title": "Dumping in Catch Basin"
+  },
+  {
+   "description": "Report a dumpster that is blocking a sidewalk or street, overflowing, or uncovered.",
+   "id": "KA-02139",
+   "title": "Dumpster Complaint"
+  },
+  {
+   "description": "Request the removal of a fallen tree or branch, cracked branches in danger of falling, or a tree in poor condition.",
+   "id": "KA-02138",
+   "title": "Fallen Tree or Branch"
+  },
+  {
+   "description": "Report noise or other problems with a film or television production.",
+   "id": "KA-01461",
+   "title": "Film or Television Production Complaint"
+  },
+  {
+   "description": "Report waste leaking or spilling from a garbage truck or trash that spilled onto the ground while being loaded into a truck.",
+   "id": "KA-02335",
+   "title": "Garbage Truck Spill"
+  },
+  {
+   "description": "Report graffiti. Learn about what your options are when someone else reports graffiti on your building.",
+   "id": "KA-02070",
+   "title": "Graffiti"
+  },
+  {
+   "description": "Learn about the Greenstreets program.",
+   "id": "KA-01554",
+   "title": "Greenstreets Program"
+  },
+  {
+   "description": "Report a problem with a fence on a highway.",
+   "id": "KA-01667",
+   "title": "Highway Fence Complaint"
+  },
+  {
+   "description": "Report a large amount of water on a highway.",
+   "id": "KA-02200",
+   "title": "Highway Flooding"
+  },
+  {
+   "description": "Report a shifted, missing, or broken steel plate on a highway.",
+   "id": "KA-01237",
+   "title": "Highway Plate Complaint"
+  },
+  {
+   "description": "Report a segment of a New York City highway in need of paving.",
+   "id": "KA-01666",
+   "title": "Highway Resurfacing Request"
+  },
+  {
+   "description": "Report a highway sign is blocked, damaged, dangling, missing, or inaccurate or an overhead electronic sign that is damaged or inaccurate.",
+   "id": "KA-02145",
+   "title": "Highway Sign Complaint"
+  },
+  {
+   "description": "Learn about traffic lanes designated for buses and passenger vehicles with multiple people.",
+   "id": "KA-02801",
+   "title": "HOV Lanes"
+  },
+  {
+   "description": "Report past or chronic dumping on public property.",
+   "id": "KA-02097",
+   "title": "Illegal Dumping"
+  },
+  {
+   "description": "Report a vehicle parked illegally on public property, a blocked hydrant, parking permit misuse, or overnight commercial parking on residential street.",
+   "id": "KA-01986",
+   "title": "Illegal Parking"
+  },
+  {
+   "description": "Report litter, debris, or garbage alongside or on the roadway of a highway.",
+   "id": "KA-01672",
+   "title": "Litter on Highway"
+  },
+  {
+   "description": "Report a location that is the target of chronic littering.",
+   "id": "KA-01673",
+   "title": "Littering"
+  },
+  {
+   "description": "Report loose syringes or needles on public property.",
+   "id": "KA-02475",
+   "title": "Loose Syringes"
+  },
+  {
+   "description": "Report a missing, sunken, raised, damaged, noisy, or steaming manhole cover.",
+   "id": "KA-01669",
+   "title": "Manhole Cover Complaint"
+  },
+  {
+   "description": "Report a manhole that is overflowing with water or sewage.",
+   "id": "KA-01235",
+   "title": "Manhole Flooding"
+  },
+  {
+   "description": "Learn about required permit for manhole installations.",
+   "id": "KA-02033",
+   "title": "Manhole Installation Permit"
+  },
+  {
+   "description": "Report noise from a City-owned garbage truck or a private carter.",
+   "id": "KA-01096",
+   "title": "Noise from Garbage Truck"
+  },
+  {
+   "description": "Report music from an ice cream truck that isn't moving.",
+   "id": "KA-01097",
+   "title": "Noise from Ice Cream Truck"
+  },
+  {
+   "description": "Report noise from an intercity or interstate bus.",
+   "id": "KA-01098",
+   "title": "Noise from Intercity or Interstate Bus"
+  },
+  {
+   "description": "Report noise from the street or sidewalk.",
+   "id": "KA-01092",
+   "title": "Noise from Street or Sidewalk"
+  },
+  {
+   "description": "Report noise from a vehicle, including horn honking, engine idling, or loud music.",
+   "id": "KA-01102",
+   "title": "Noise from Vehicle"
+  },
+  {
+   "description": "Learn about how to volunteer to work on protecting, restoring and expanding New York City's green spaces.",
+   "id": "KA-02217",
+   "title": "NYC Parks Stewardship Program"
+  },
+  {
+   "description": "Report a vehicle with a covered license plate.",
+   "id": "KA-03584",
+   "title": "Obscured License Plate Complaint"
+  },
+  {
+   "description": "Report an automotive, heating, or industrial oil spill on a street or in a facility, apartment building, or private home.",
+   "id": "KA-02270",
+   "title": "Oil Spill"
+  },
+  {
+   "description": "Learn about the program that transforms streets into open public space for pedestrians, cyclists, and school activities.",
+   "id": "KA-03327",
+   "title": "Open Streets"
+  },
+  {
+   "description": "Report a problem with an outdoor dining structure or a restaurant or bar offering outdoor dining without authorization.",
+   "id": "KA-03321",
+   "title": "Outdoor Dining Complaint"
+  },
+  {
+   "description": "Learn about the permanent outdoor dining program that allows restaurants to add outdoor seating to sidewalks and streets.",
+   "id": "KA-03604",
+   "title": "Outdoor Dining Information and Application"
+  },
+  {
+   "description": "Learn how schools and day care centers can use City streets, play yards, and parks for classes.",
+   "id": "KA-03350",
+   "title": "Outdoor Learning"
+  },
+  {
+   "description": "Report overgrown grass or weeds on public property.",
+   "id": "KA-02271",
+   "title": "Overgrown Grass or Weeds"
+  },
+  {
+   "description": "Report the use or sale of unauthorized paper license plates, also known as ghost plates.",
+   "id": "KA-03492",
+   "title": "Paper License Plate Complaint"
+  },
+  {
+   "description": "Apply for a parade or sound permit.",
+   "id": "KA-02460",
+   "title": "Parade or Sound Permit"
+  },
+  {
+   "description": "Learn about parking regulations and find out the rules for a specific location.",
+   "id": "KA-01026",
+   "title": "Parking Signs and Rules"
+  },
+  {
+   "description": "Report missing or faded pavement markings (also known as street line markings) on a street or highway. Request brand new pavement markings.",
+   "id": "KA-01100",
+   "title": "Pavement Marking Complaint or Request"
+  },
+  {
+   "description": "Learn about pedestrian bridges in New York City.",
+   "id": "KA-01080",
+   "title": "Pedestrian Bridges"
+  },
+  {
+   "description": "Report a problem with an existing pedestrian (Walk/Don't Walk) signal. Request a new Accessible Pedestrian Signal.",
+   "id": "KA-01047",
+   "title": "Pedestrian Signal Complaint or Request"
+  },
+  {
+   "description": "Report a pothole or cave-in on a highway.",
+   "id": "KA-01106",
+   "title": "Pothole or Cave-In on Highway"
+  },
+  {
+   "description": "Report a pothole or cave-in on a street.",
+   "id": "KA-01093",
+   "title": "Pothole or Cave-In on Street"
+  },
+  {
+   "description": "Purchase a limited-edition commemorative New York City Street sign.",
+   "id": "KA-01284",
+   "title": "Purchase a Street Sign"
+  },
+  {
+   "description": "Learn about rain gardens that manage stormwater runoff from streets and sidewalks. Report a drainage or maintenance issue with a Rain Garden.",
+   "id": "KA-02948",
+   "title": "Rain Garden"
+  },
+  {
+   "description": "Report a damaged or defective red light camera.",
+   "id": "KA-02343",
+   "title": "Red Light Camera Complaint"
+  },
+  {
+   "description": "Learn about cameras that photograph vehicles running a red light or report a broken or malfunctioning camera.",
+   "id": "KA-02326",
+   "title": "Red Light Cameras"
+  },
+  {
+   "description": "Get permission to install and maintain a structure affecting the street or sidewalk, such as a stoop, cellar door, large planter, or accessibility lift.",
+   "id": "KA-02957",
+   "title": "Revocable Consent Application"
+  },
+  {
+   "description": "Request a Right Turn on Red sign at a specific intersection in Staten Island.",
+   "id": "KA-01354",
+   "title": "Right Turn on Red in Staten Island"
+  },
+  {
+   "description": "Find sidewalk seating locations. Report a city-owned bench or leaning bar needing repair. Request a new bench or leaning bar location.",
+   "id": "KA-02572",
+   "title": "Sidewalk Seating"
+  },
+  {
+   "description": "Report an icy or snowy roadway and learn about snow clearing operations.",
+   "id": "KA-02296",
+   "title": "Snow or Ice on Street or Highway"
+  },
+  {
+   "description": "Report a damaged or defective speed camera.",
+   "id": "KA-02341",
+   "title": "Speed Camera Complaint"
+  },
+  {
+   "description": "Learn about cameras that photograph vehicles speeding in school zones.",
+   "id": "KA-02324",
+   "title": "Speed Cameras"
+  },
+  {
+   "description": "Learn about City and highway speed limits.",
+   "id": "KA-01368",
+   "title": "Speed Limits"
+  },
+  {
+   "description": "Request speed reducer installation, repair, or removal.",
+   "id": "KA-02514",
+   "title": "Speed Reducer Request"
+  },
+  {
+   "description": "Learn about the Spotted Lanternfly (SLF) and report signs of SLF infestation.",
+   "id": "KA-03449",
+   "title": "Spotted Lanternfly"
+  },
+  {
+   "description": "Report someone requesting money for unwanted car window washing.",
+   "id": "KA-02062",
+   "title": "Squeegee Complaint"
+  },
+  {
+   "description": "Get the status of an active street construction or sidewalk repair permit.",
+   "id": "KA-02039",
+   "title": "Status of Active Street or Sidewalk Construction Permits"
+  },
+  {
+   "description": "Get a guide for contractors who perform construction on city streets and highways.",
+   "id": "KA-02041",
+   "title": "Street and Highway Construction Rules"
+  },
+  {
+   "description": "Learn about a team of inspectors who drive every New York City street once a month and report quality of life conditions for repair.",
+   "id": "KA-03022",
+   "title": "Street Conditions Observation Unit Team (SCOUT)"
+  },
+  {
+   "description": "Apply for a permit to perform construction on a City street or to store construction material or containers on a street or sidewalk.",
+   "id": "KA-02040",
+   "title": "Street Construction Permit"
+  },
+  {
+   "description": "Get a manual providing guidelines and options available to improve safety and quality of life in City streets.",
+   "id": "KA-03023",
+   "title": "Street Design Manual"
+  },
+  {
+   "description": "Learn about rules for street event sponsors related to clean ups after an event.",
+   "id": "KA-01370",
+   "title": "Street Event Cleanup"
+  },
+  {
+   "description": "Report street flooding or ponding.",
+   "id": "KA-02198",
+   "title": "Street Flooding"
+  },
+  {
+   "description": "Apply for a permit required to hang a banner from a street light.",
+   "id": "KA-01633",
+   "title": "Street Light Banner Permit"
+  },
+  {
+   "description": "Report a problem with a street light.",
+   "id": "KA-02463",
+   "title": "Street Light Complaint"
+  },
+  {
+   "description": "Request installation of a new street light or relocation of an existing street light.",
+   "id": "KA-02491",
+   "title": "Street Light Installation or Relocation Request"
+  },
+  {
+   "description": "Learn about having a New York City street co-named.",
+   "id": "KA-03025",
+   "title": "Street Naming"
+  },
+  {
+   "description": "Learn about pre-construction markings on a street or sidewalk that indicate underground utility company lines such as gas, electric, water, and cable.",
+   "id": "KA-03026",
+   "title": "Street or Sidewalk Utility Markings"
+  },
+  {
+   "description": "Get land use information about private streets.",
+   "id": "KA-03027",
+   "title": "Street Ownership"
+  },
+  {
+   "description": "Report a steel street plate that is shifted, noisy, missing anti-skid material, or missing during excavation of a City street.",
+   "id": "KA-01511",
+   "title": "Street Plate Complaint"
+  },
+  {
+   "description": "Report damage to a street caused by street work.",
+   "id": "KA-01095",
+   "title": "Street Repair Complaint"
+  },
+  {
+   "description": "Report a street in need of paving.",
+   "id": "KA-01099",
+   "title": "Street Resurfacing Request"
+  },
+  {
+   "description": "Report a problem with a street sign.",
+   "id": "KA-01063",
+   "title": "Street Sign Complaint"
+  },
+  {
+   "description": "Request a new parking or traffic sign or change to an existing one.",
+   "id": "KA-01064",
+   "title": "Street Sign Request"
+  },
+  {
+   "description": "Report missed or inadequate street cleaning.",
+   "id": "KA-02332",
+   "title": "Street Sweeping Complaint"
+  },
+  {
+   "description": "Request to change the direction of traffic on a street.",
+   "id": "KA-01371",
+   "title": "Street Traffic Flow Change"
+  },
+  {
+   "description": "Report a damaged, sunken, or noisy utility access cover on a street.",
+   "id": "KA-01670",
+   "title": "Street Utility Hardware Complaint"
+  },
+  {
+   "description": "Make a complaint about a vendor operating on City streets, sidewalks, or bridges.",
+   "id": "KA-02152",
+   "title": "Street Vendor Complaint"
+  },
+  {
+   "description": "Access a manual that provides guidelines on better coordination of City street construction.",
+   "id": "KA-01372",
+   "title": "Street Works Manual"
+  },
+  {
+   "description": "Learn about street, highway, bridge, and tunnel closures.",
+   "id": "KA-01081",
+   "title": "Street, Highway, Bridge, and Tunnel Closures"
+  },
+  {
+   "description": "Register to install temporary holiday lighting attached to City street light poles.",
+   "id": "KA-03024",
+   "title": "Temporary Holiday Lighting"
+  },
+  {
+   "description": "Learn about the rules and fines for parking commercial vehicles on residential streets.",
+   "id": "KA-03060",
+   "title": "Tractor-Trailer Parking Rules"
+  },
+  {
+   "description": "Learn about traffic and travel conditions in the NY metro area. Report a non-emergency traffic condition, such as congestion or chronic speeding.",
+   "id": "KA-02305",
+   "title": "Traffic Condition"
+  },
+  {
+   "description": "Report traffic lane separators (such as plastic bollards, flexible delineators, or rubber speed bumps) that are damaged, flattened, or missing.",
+   "id": "KA-03674",
+   "title": "Traffic Lane Separator Complaint"
+  },
+  {
+   "description": "Report a problem with a pedestrian fence at a traffic median.",
+   "id": "KA-01383",
+   "title": "Traffic Median Pedestrian Fence Complaint"
+  },
+  {
+   "description": "Report a problem with an existing traffic or bicycle signal. Request a new traffic or bicycle signal.",
+   "id": "KA-01404",
+   "title": "Traffic or Bicycle Signal Complaint or Request"
+  },
+  {
+   "description": "Get a copy of New York City's traffic rules.",
+   "id": "KA-03062",
+   "title": "Traffic Rules"
+  },
+  {
+   "description": "Learn about traffic safety rules, programs, and how to request safety improvements.",
+   "id": "KA-03063",
+   "title": "Traffic Safety"
+  },
+  {
+   "description": "Learn about or report traffic patterns or trends.",
+   "id": "KA-01384",
+   "title": "Traffic Trends"
+  },
+  {
+   "description": "Report a stray trash bag or loose debris in the driving or biking lane of a City street.",
+   "id": "KA-02356",
+   "title": "Trash or Debris in Street"
+  },
+  {
+   "description": "Learn about the Neighborhood Tree Planting Program. Report a problem with the location or condition of a newly planted tree.",
+   "id": "KA-01895",
+   "title": "Tree Planting"
+  },
+  {
+   "description": "Learn about City tree stump removals.",
+   "id": "KA-01386",
+   "title": "Tree Stump"
+  },
+  {
+   "description": "Report a dangerous condition at a highway construction site.",
+   "id": "KA-01952",
+   "title": "Unsafe Highway Construction"
+  },
+  {
+   "description": "Report water leaking on a street or sidewalk.",
+   "id": "KA-01234",
+   "title": "Water Leak on Street or Sidewalk"
+  },
+  {
+   "description": "Report a possible water main break.",
+   "id": "KA-01233",
+   "title": "Water Main Break"
+  }
+ ]
+}

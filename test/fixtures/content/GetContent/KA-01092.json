@@ -1,0 +1,27 @@
+{
+ "KnowledgeArticle": [
+  {
+   "ArticlePublicNumber": "KA-01092",
+   "Title": "Noise from Street or Sidewalk",
+   "Description": "Report noise from the street or sidewalk.",
+   "Section": [
+    {
+     "Name": "Noise Street or Sidewalk Intro",
+     "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-02125\">Noise Complaints</a>&nbsp;to report other types of noise</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03641\">Noise Code</a></li></ul></div><p>You can report loud music, parties, or talking on the sidewalk or street.</p><p><strong>What Happens Next</strong></p><p>Officers from the New York Police Department (NYPD) will respond within 8 hours when they are not handling emergencies. They will be able to take action if the noise is still happening when they arrive.&nbsp;</p>",
+     "ContentAction": [
+      {
+       "Name": "Noise from Street or Sidewalk",
+       "Agency": "New York City Police Department",
+       "Problem": "Noise - Street/Sidewalk"
+      }
+     ]
+    },
+    {
+     "Name": "DEP NYC Noise App",
+     "Content": "<p>NYC Noise is New York City&rsquo;s Department of Environmental Protection (DEP) free iPhone and Android mobile app. The app will collect noise data for DEP to better understand noise levels, sources, and patterns.</p><p>The app does not submit noise complaint services requests.</p><p>NYC Noise is for data collection only. It provides DEP with:</p><ul><li>Noise decibel level</li><li>Date, time, and source of noise</li><li>Defines noise by types:<ul><li>Alarm</li><li>Car and bus traffic</li><li>Construction</li><li>Dog/animal</li><li>HVAC/fan</li><li>Loud music</li><li>Siren</li><li>Vehicle horn</li></ul></li></ul><p>Submitted data appears in map and table formats. Data will help DEP identify noise hotspots and guide their targeted enforcement efforts.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/site/dep/news/25-030/dep-launches-new-innovative-mobile-app-better-understand-city-s-noise#/0\">Learn more about DEP&#39;s NYC Noise App.</a></p>",
+     "ContentAction": []
+    }
+   ]
+  }
+ ]
+}
