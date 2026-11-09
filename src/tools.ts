@@ -11,6 +11,7 @@ import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./l
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
 import { SAFETY_LINE } from "./emergency.js";
+import { plainArgsError } from "./plain-errors.js";
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -79,6 +80,7 @@ export const TOOLS = [
         sr_numbers: {
           type: "array",
           items: { type: "string" },
+          minItems: 1,
           description: "Array of service request numbers, e.g. ['311-17323508', '311-17323514']",
         },
       },
@@ -103,7 +105,10 @@ const ARG_SHAPES = {
   },
   get_status: { type: z.enum(STATUS_TYPES) },
   get_service_request: { sr_number: z.string() },
-  get_service_request_list: { sr_numbers: z.array(z.string()) },
+  // An empty list is refused here, never sent to the City (the API answers it with a raw 400).
+  get_service_request_list: {
+    sr_numbers: z.array(z.string()).min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508']."),
+  },
   ...DISTRICT_ARG_SHAPES,
   ...LL47_ARG_SHAPES,
   ...REPORT_ARG_SHAPES,
@@ -128,7 +133,7 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
   const rejected = parsed.error.issues.flatMap((issue) =>
     issue.code === "unrecognized_keys" ? issue.keys : []
   );
-  if (rejected.length === 0) throw parsed.error;
+  if (rejected.length === 0) throw plainArgsError(tool, parsed.error, shape as Record<string, z.ZodTypeAny>, args);
   throw new Error(
     `${tool} does not accept ${rejected.map((k) => `'${k}'`).join(", ")}. ` +
       `The parameters it accepts are: ${Object.keys(shape).join(", ")}. ` +
