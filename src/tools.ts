@@ -138,6 +138,11 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
 }
 
 export async function callTool(name: string, args: unknown) {
+  // Own keys only: `name in shapes` is also true for "constructor", "toString" and the
+  // rest of Object's properties, which would run a tool body for a name that is no tool.
+  if (!Object.hasOwn(ARG_SHAPES, name)) {
+    return { content: [{ type: "text", text: `Unknown tool: ${name}` }], isError: true };
+  }
   try {
     switch (name) {
       case "get_calendar": {
