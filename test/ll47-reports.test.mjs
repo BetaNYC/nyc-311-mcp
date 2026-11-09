@@ -4,7 +4,7 @@
 // list and BoardStat's columns, not from src/ll47-reports.ts). The call-center report replays
 // real responses from NYC Open Data (wewp-mm3p), recorded 2026-11-07 by
 // scripts/run-call-center-report.mjs and trimmed to nine topics.
-import { test } from "node:test";
+import { test, mock } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -21,6 +21,9 @@ import {
   directoryAssistanceReport,
   DA_REQUEST,
   DA_BUDGET_MS,
+  DA_ANSWER_WAIT_MS,
+  DA_CONCURRENT_MONTHS,
+  STILL_LOADING,
   MANDATES,
   LL47_TOOLS,
 } from "../dist/ll47-reports.js";
@@ -501,26 +504,17 @@ test("settled months are not asked again when the dataset's nightly version chan
   assert.equal(env.data.months_from_cache, 3);
 });
 
-test("one call stops at its time budget: the fiscal year says which months are missing, and asking again finishes", async () => {
+test("a fiscal-year call against a quick portal finishes in one call, and the month call after it uses the saved months", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-budget-"));
-  const slow = await fixtureSoda({ cacheDir: dir, cost: 13_000 });
-  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), slow.soda, NOW, { budgetMs: 45_000 });
-  assert.equal(env.data.fiscal_year.complete, false);
-  assert.ok(env.data.fiscal_year.months_missing.length >= 1);
-  assert.equal(env.data.fiscal_year.calls, undefined, "no partial total is given");
-  const last = slow.requests.at(-1).at - slow.requests[0].at;
-  assert.ok(last <= 45_000, `requests ran ${last} ms past the start`);
-  let again = env;
-  for (let i = 0; i < 4 && !again.data.fiscal_year.complete; i++) {
-    again = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
-  }
-  assert.equal(again.data.fiscal_year.complete, true);
-  // Every fiscal-year month is saved now, so the October call's year to date is complete.
-  const third = await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir, cost: 13_000 })).soda, NOW, { budgetMs: 45_000 });
-  assert.equal(third.data.month.calls, await monthSum("2026-10"));
-  assert.equal(third.data.fiscal_year.complete, true);
+  const quick = await fixtureSoda({ cacheDir: dir, cost: 3_000 });
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), quick.soda, NOW);
+  assert.equal(env.data.fiscal_year.complete, true, JSON.stringify(env.data.fiscal_year.months_missing));
   let fy = 0;
   for (const ym of ["2026-07", "2026-08", "2026-09", "2026-10"]) fy += await monthSum(ym);
+  assert.equal(env.data.fiscal_year.calls, fy, "November has no recorded calls in the fixture");
+  const third = await directoryAssistanceReport(daArgs({ month: "2026-10" }), (await fixtureSoda({ cacheDir: dir })).soda, NOW);
+  assert.equal(third.data.month.calls, await monthSum("2026-10"));
+  assert.equal(third.data.fiscal_year.complete, true);
   assert.equal(third.data.fiscal_year.calls, fy);
 });
 
@@ -735,12 +729,130 @@ test("the fiscal-year call answers saved months at once and lists the slow ones 
   const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW, { requestTimeoutMs: 20 });
   const fy = env.data.fiscal_year;
   assert.equal(fy.complete, false);
+  assert.equal(fy.calls, undefined, "no partial total");
   const why = Object.fromEntries(fy.months_missing.map((m) => [m.month, m.why]));
-  assert.match(why["2026-08"], /slow/);
-  assert.match(why["2026-09"], /not tried/);
+  assert.match(why["2026-08"], /too slow/);
+  // One request at a time (standards §6): after a slow month, the rest wait for the next call.
+  assert.match(why["2026-09"], /not tried: NYC Open Data was too slow/);
+  assert.match(why["2026-11"], /not tried/);
   assert.equal(why["2026-07"], undefined);
   assert.equal(why["2026-10"], undefined);
   assert.equal(env.data.months_from_cache, 2);
   const asked = requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
-  assert.deepEqual(asked, ["2026-08"], "saved months are not asked; after a slow month, no more are tried");
+  assert.ok(!asked.includes("2026-07") && !asked.includes("2026-10"), "saved months are not asked");
+  assert.equal(asked.filter((m) => m === "2026-08").length, 1, "a timeout is not retried");
 });
+
+// ── Beta retest 4 (2026-11-09): the first FY2027 call waited ~55 s on one slow month ──
+// Now saved months answer at once, the rest are fetched one at a time, the answer waits
+// DA_ANSWER_WAIT_MS at most, and months still loading are listed and saved when they land.
+
+const realSetTimeout = globalThis.setTimeout;
+const pause = (ms) => new Promise((r) => realSetTimeout(r, ms));
+/** A response that takes `ms` (on the mocked clock), unless the request is aborted first. */
+const slowly = (ms, init) =>
+  new Promise((resolve, reject) => {
+    const t = setTimeout(() => resolve(null), ms);
+    init.signal.addEventListener("abort", () => (clearTimeout(t), reject(init.signal.reason ?? new Error("aborted"))), { once: true });
+  });
+/** Advance the mocked timers in steps until `done()` or `limit` ms; returns the mocked ms that passed. */
+async function advance(done, limit, step = 250) {
+  let t = 0;
+  while (!done() && t < limit) {
+    await pause(3);
+    mock.timers.tick(step);
+    t += step;
+  }
+  await pause(10);
+  return t;
+}
+
+test("fiscal-year call, slow portal: answers within the wait from saved months, lists the rest as still loading, and asking again finishes", async (t) => {
+  assert.ok(DA_ANSWER_WAIT_MS <= 15_000 && DA_ANSWER_WAIT_MS >= 5_000, String(DA_ANSWER_WAIT_MS));
+  assert.equal(DA_CONCURRENT_MONTHS, 1, "engineering standards §6: never in parallel to one portal");
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-wait-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  let active = 0;
+  let most = 0;
+  const { soda, requests } = await fixtureSoda({
+    cacheDir: dir,
+    respond: async (u, _n, init) => {
+      if (u.pathname !== "/resource/wewp-mm3p.json") return null;
+      most = Math.max(most, ++active);
+      try {
+        await slowly(40_000, init); // each month takes 40 s, as on 2026-11-09
+      } finally {
+        active--;
+      }
+      return null;
+    },
+  });
+  const rows = () => requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json");
+  mock.timers.enable({ apis: ["setTimeout"] });
+  t.after(() => mock.timers.reset());
+  let env;
+  const first = directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW).then((e) => (env = e));
+  const waited = await advance(() => env, 60_000);
+  await first;
+  t.diagnostic(`first fiscal-year call answered after ${waited} ms on the mocked clock`);
+  assert.ok(waited <= DA_ANSWER_WAIT_MS + 500, `waited ${waited} ms`);
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.equal(fy.calls, undefined, "no total is invented");
+  assert.deepEqual(fy.months_missing.map((m) => m.month), ["2026-08", "2026-09", "2026-11"]);
+  for (const m of fy.months_missing) assert.equal(m.why, STILL_LOADING);
+  assert.match(STILL_LOADING, /ask again in a minute/);
+  assert.match(fy.note, /still loading/);
+  assert.equal(env.data.months_from_cache, 2);
+  assert.equal(most, 1, `${most} requests at once`);
+  // A second call while they load waits on the same requests: no new ones.
+  let env2;
+  const second = directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW).then((e) => (env2 = e));
+  await advance(() => env2, 60_000);
+  await second;
+  assert.equal(env2.data.fiscal_year.complete, false);
+  // The loads finish on their own (40 s each, one at a time) and are saved.
+  await advance(() => false, 150_000, 1_000);
+  assert.equal(active, 0);
+  assert.equal(most, 1, `${most} requests at once`);
+  const asked = rows().map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
+  assert.deepEqual([...asked].sort(), ["2026-08", "2026-09", "2026-11"], "each missing month asked once, across both calls");
+  mock.timers.reset();
+  const t0 = Date.now();
+  const done = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.ok(Date.now() - t0 < 1_000);
+  assert.equal(rows().length, 3, "nothing asked again");
+  assert.equal(done.data.fiscal_year.complete, true);
+  let total = 0;
+  for (const ym of FY27_TO_OCT) total += await monthSum(ym);
+  assert.equal(done.data.fiscal_year.calls, total);
+});
+
+test("fiscal-year call with every month saved answers without waiting or asking", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-saved-"));
+  await warmMonths(dir, [...FY27_TO_OCT, "2026-11"]);
+  const { soda, requests } = await fixtureSoda({ cacheDir: dir, respond: async (u, _n, init) => (u.pathname === "/resource/wewp-mm3p.json" ? hang(init) : null) });
+  const t0 = Date.now();
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.ok(Date.now() - t0 < 1_000);
+  assert.equal(env.data.fiscal_year.complete, true);
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 0);
+});
+
+test("fiscal-year call, portal failing: the months tried say not responding, the rest are not tried, and it answers fast", async () => {
+  const { soda, requests } = await fixtureSoda({
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+    cost: 6_000,
+  });
+  const t0 = Date.now();
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW);
+  assert.ok(Date.now() - t0 < 2_000);
+  const fy = env.data.fiscal_year;
+  assert.equal(fy.complete, false);
+  assert.equal(fy.calls, undefined);
+  const whys = fy.months_missing.map((m) => m.why);
+  assert.ok(whys.some((w) => /not responding/.test(w)), JSON.stringify(whys));
+  assert.ok(whys.some((w) => /not tried: NYC Open Data was failing/.test(w)), JSON.stringify(whys));
+  assert.equal(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").length, 1, "a slow 503 is not retried, and no other month is tried");
+});
+

@@ -1,0 +1,23 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01234",
+      "Title": "Water Leak on Street or Sidewalk",
+      "Description": "Report water leaking on a street or sidewalk.",
+      "Section": [
+        {
+          "Name": "Water Leak on Street or Sidewalk Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01233\">Water Main Break</a>&nbsp;if water is gushing onto the street or sidewalk and neighboring homes have low water pressure</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01235\">Manhole Flooding</a>&nbsp;if water or sewage is coming from an overflowing manhole cover</li></ul></div><p>You can report a water leak in a public area such as a street or sidewalk.</p><p><strong>What You Need</strong></p><p>You must provide your contact information so the Department of Environmental Protection (DEP) can contact you, if necessary. DEP must have this information to take action on the service request.</p>",
+          "ContentAction": [
+            {
+              "Name": "Water Leak on Street or Sidewalk",
+              "Agency": "Department of Environmental Protection",
+              "Problem": "Water Maintenance",
+              "ProblemDetail": "Leak"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

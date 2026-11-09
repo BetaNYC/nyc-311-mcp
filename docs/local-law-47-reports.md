@@ -107,15 +107,20 @@ most hourly and saved too.
 **When the portal is slow or down.** One call has a 58 s budget, waits and retries included, kept
 under a minute because many MCP clients stop waiting for a tool then. Each request may take up to
 55 s. A request that gets no answer in that time is not tried again, and neither is a failure that
-took 5 s or more. The asked-for month is fetched first, then the rest of the fiscal year. If the
-asked-for month gets no answer, the tool stops and says which: **"NYC Open Data is slow right
+took 5 s or more. A one-month call fetches only its month. If the asked-for month gets no answer, the tool stops and says which: **"NYC Open Data is slow right
 now"** when the portal was asked and did not answer in time, **"NYC Open Data is not responding
-right now"** when it returned an HTTP 5xx or could not be reached. Months not reached are listed in
-`months_missing`, each with a plain reason, the fiscal-year section says `complete: false` and
-gives no partial total, and asking again finishes from the saved months. A cold fiscal-year-to-date
-call **usually comes back `complete: false` the first time**; later calls complete it from the
-saved months. Requests are never sent in parallel (engineering standards §6 forbids it for one
-portal), so this is how a cold fiscal year stays inside client timeouts. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
+right now"** when it returned an HTTP 5xx or could not be reached.
+
+**A fiscal-year call answers within about 12 s** (`DA_ANSWER_WAIT_MS`). Saved months answer at
+once. The months not saved are fetched one at a time, never in parallel (engineering standards §6
+forbids it for one portal), and the answer waits for them 12 s at most. A month still loading then
+is listed in `months_missing` as "still loading … ask again in a minute"; it keeps loading after the
+answer and is saved when it lands, for up to 4 minutes in all (`DA_BACKGROUND_MS`), each request
+still limited to 55 s. A second call while a month loads waits on the same request rather than
+sending another. After a month is too slow or fails, the months not yet started are listed as "not
+tried" and left for the next call. Every month missing has a plain reason; the section says
+`complete: false` and gives no partial total. Beta retest 4 (2026-11-09): the first FY2027 call
+used to wait about 55 s on one slow month; on a cold cache that night it answered in 12 s. If the portal cannot be reached, the saved copies answer with `stale: true`, a `warning`
 and a caveat; with no saved copy for the asked-for month, the tool says so and does not answer.
 Politeness (engineering standards §6): one request at a time, at least 2 s between request
 starts, the gap doubled after a 429 (to 60 s) and halved after a success, `Retry-After` honored

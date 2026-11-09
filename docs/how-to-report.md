@@ -94,7 +94,11 @@ Deterministic, no model call, no new dependency (`src/how-to-report.ts`):
    title; otherwise none is picked and all are listed (`no_best_action`). An action for a narrower
    case ("City Vehicle …", "Commercial …") does not win unless the description says so.
 
-Confidence: *strong* (score 9 or more and 2 ahead of the next), *close call*, or *possible*.
+Confidence: *strong* (score 9 or more and 2 ahead of the next, with enough of the person's own
+problem words: two in the article's title or summary, or one that at most two titles share, or one
+that names the article, meaning more than half of its title's words are the person's and it scores
+3 or more above every other title with that word), *close call*, or *possible*. "No heat in my
+apartment" and "illegal fireworks every night" are strong; "construction" alone never is.
 
 **Danger detection is keyword-based; it will miss some emergencies.** No word list covers every
 way a person describes an emergency. So the calling assistant is made responsible: the tool

@@ -564,6 +564,26 @@ export const DA_BUDGET_MS = 58_000;
  */
 export const DA_REQUEST = { maxTries: 2, timeoutMs: 55_000, noRetryAfterMs: 5_000 } as const;
 
+/**
+ * A fiscal-year call answers within this long (real time). Saved months answer at once;
+ * months not saved are fetched, and any not done by then are listed as still loading.
+ * Beta retest 4, 2026-11-09: the first FY2027 call waited ~55 s on one slow month.
+ */
+export const DA_ANSWER_WAIT_MS = 12_000;
+/**
+ * Months fetched at once: one. Engineering standards §6: "Never run requests to the same
+ * portal in parallel." (The SodaClient also sends one request at a time.)
+ */
+export const DA_CONCURRENT_MONTHS = 1;
+/**
+ * A month a fiscal-year call started keeps loading after the answer, and is saved when done,
+ * for up to this long in all. Each request still has its own DA_REQUEST limits.
+ */
+export const DA_BACKGROUND_MS = 4 * 60_000;
+/** Why a fiscal-year month is missing when the answer did not wait for it. */
+export const STILL_LOADING =
+  "still loading: NYC Open Data is slow to answer this month, so this answer did not wait for it. It keeps loading and is saved when done; ask again in a minute.";
+
 /** Why a fiscal-year month is missing from a one-month call's year to date. */
 export const ONE_MONTH_ONLY = "not fetched: a one-month call fetches only its own month; this one is not saved yet";
 
@@ -617,6 +637,15 @@ async function monthCalls(
       ? { ym, missing: "NYC Open Data could not be reached and no saved copy exists", trouble: "down" }
       : { ym, missing: give.why ?? "this call ran out of time before reaching it", trouble: give.trouble ?? "slow" };
   }
+  // A fiscal-year call is already fetching this month: wait on that request, not a second one.
+  const running = loading.get(soda)?.get(ym);
+  if (running) {
+    let r: MonthResult | undefined;
+    running.then((x) => (r = x));
+    await waitFor([running], Math.max(0, deadline - soda.clock()));
+    if (r) return r;
+    return { ym, missing: STILL_LOADING, trouble: "slow" };
+  }
   try {
     const groups = await fetchMonth(soda, ym, { deadline, ...request });
     await soda.writeCache(key, meta.meta.rowsUpdatedAt, groups);
@@ -649,6 +678,88 @@ async function monthCalls(
             : `NYC Open Data failed: ${err instanceof Error ? err.message : String(err)}`;
     return { ym, missing, trouble };
   }
+}
+
+/** A month's saved answer, if it may be used now (see monthCalls); null when it must be fetched. */
+async function savedMonth(soda: SodaClient, meta: { meta: SodaMetadata; stale: boolean }, ym: string, today: string): Promise<MonthResult | null> {
+  const saved = await soda.readCache<CallGroup[]>(`${CALL_CENTER_DATASET}/${ym}`);
+  if (!saved) return meta.stale ? { ym, missing: "NYC Open Data could not be reached and no saved copy exists", trouble: "down" } : null;
+  const settled = addDays(lastOfMonth(ym), SETTLED_AFTER_DAYS) < today;
+  const fresh = settled ? soda.clock() - saved.fetched_at_ms < SETTLED_TTL_DAYS * 86_400_000 : saved.version === meta.meta.rowsUpdatedAt;
+  if (fresh || meta.stale) return { ym, groups: saved.value, from: fresh ? "cache" : "old_cache", fetched_at: new Date(saved.fetched_at_ms).toISOString() };
+  return null;
+}
+
+/**
+ * Months being fetched, per client, so a second call waits on the same request rather than
+ * asking NYC Open Data again. Each promise always resolves (never rejects): its month's
+ * calls, or why it is missing. Removed when done; the saved copy answers after that.
+ */
+const loading = new WeakMap<SodaClient, Map<string, Promise<MonthResult>>>();
+
+/**
+ * Fetch `months`, one at a time (DA_CONCURRENT_MONTHS), and save each as it arrives. After NYC
+ * Open Data is slow or failing on one, the months not yet started are not tried (the next
+ * call tries them). Returns one promise per month; none rejects, and nothing is left that
+ * can throw after the caller stops waiting.
+ */
+function loadMonths(soda: SodaClient, meta: SodaMetadata, months: string[], request: RequestOpts, deadline: number): Map<string, Promise<MonthResult>> {
+  let busy = loading.get(soda);
+  if (!busy) loading.set(soda, (busy = new Map()));
+  const out = new Map<string, Promise<MonthResult>>();
+  const queue: { ym: string; done: (r: MonthResult) => void }[] = [];
+  for (const ym of months) {
+    const running = busy.get(ym);
+    if (running) {
+      out.set(ym, running);
+      continue;
+    }
+    let done!: (r: MonthResult) => void;
+    const p = new Promise<MonthResult>((r) => (done = r));
+    const own = busy;
+    busy.set(ym, p);
+    p.then(() => own.delete(ym));
+    out.set(ym, p);
+    queue.push({ ym, done });
+  }
+  let trouble: Trouble = null;
+  const one = async (ym: string): Promise<MonthResult> => {
+    if (trouble) return { ym, missing: trouble === "slow" ? "not tried: NYC Open Data was too slow on another month in this call; ask again in a minute" : "not tried: NYC Open Data was failing on another month in this call", trouble };
+    try {
+      const groups = await fetchMonth(soda, ym, { ...request, deadline });
+      await soda.writeCache(`${CALL_CENTER_DATASET}/${ym}`, meta.rowsUpdatedAt, groups).catch(() => undefined);
+      return { ym, groups, from: "query", fetched_at: new Date(soda.clock()).toISOString() };
+    } catch (err) {
+      const t = sodaTrouble(err);
+      if (t) trouble = t;
+      const allowed = request.timeoutMs ?? DA_REQUEST.timeoutMs;
+      const missing =
+        err instanceof DeadlineError
+          ? "NYC Open Data did not finish answering in the time allowed; ask again later"
+          : t === "slow"
+            ? `NYC Open Data was too slow: it sent no answer within ${waitInWords(allowed)}; ask again later`
+            : t === "down"
+              ? "NYC Open Data was not responding (it returned an error or could not be reached)"
+              : `NYC Open Data failed: ${err instanceof Error ? err.message : String(err)}`;
+      return { ym, missing, trouble: t };
+    }
+  };
+  const worker = async () => {
+    for (let job = queue.shift(); job; job = queue.shift()) {
+      const r = await one(job.ym).catch((err): MonthResult => ({ ym: job!.ym, missing: `failed: ${err instanceof Error ? err.message : String(err)}`, trouble: null }));
+      job.done(r);
+    }
+  };
+  for (let i = 0; i < Math.min(DA_CONCURRENT_MONTHS, queue.length); i++) void worker();
+  return out;
+}
+
+/** Wait for every promise, or `ms` (real time), whichever comes first. Leaves no timer behind. */
+async function waitFor(promises: Promise<unknown>[], ms: number): Promise<void> {
+  if (!promises.length) return;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  await Promise.race([Promise.all(promises), new Promise<void>((r) => (timer = setTimeout(r, ms)))]);
+  clearTimeout(timer);
 }
 
 /** Today in New York, YYYY-MM-DD. */
@@ -713,7 +824,7 @@ export async function directoryAssistanceReport(
   args: z.infer<z.ZodObject<typeof DA_SHAPE>>,
   soda: SodaClient = sodaClient(),
   now: number = Date.now(),
-  opts: { budgetMs?: number; requestTimeoutMs?: number } = {}
+  opts: { budgetMs?: number; requestTimeoutMs?: number; answerWaitMs?: number } = {}
 ) {
   const today = nycToday(now);
   // The dataset is published daily, through yesterday at best.
@@ -738,7 +849,22 @@ export async function directoryAssistanceReport(
   const order = periods.month ? [periods.month.month, ...months.filter((m) => m !== periods.month!.month)] : months;
   const give: { up: boolean; why?: string; trouble?: Trouble } = { up: false };
   const results = new Map<string, MonthResult>();
-  for (const ym of order) {
+  if (!periods.month) {
+    // A fiscal-year call: saved months at once; the rest fetched one at a time, waited on
+    // for DA_ANSWER_WAIT_MS at most, and saved for the next call if still loading then.
+    const todo: string[] = [];
+    for (const ym of months) {
+      const r = await savedMonth(soda, mr, ym, today);
+      if (r) results.set(ym, r);
+      else todo.push(ym);
+    }
+    const started = loadMonths(soda, meta, todo, request, soda.clock() + DA_BACKGROUND_MS);
+    const done = new Map<string, MonthResult>();
+    for (const [ym, p] of started) p.then((r) => done.set(ym, r));
+    await waitFor([...started.values()], opts.answerWaitMs ?? DA_ANSWER_WAIT_MS);
+    for (const ym of todo) results.set(ym, done.get(ym) ?? { ym, missing: STILL_LOADING, trouble: null });
+  }
+  for (const ym of periods.month ? order : []) {
     const r = await monthCalls(soda, mr, ym, today, deadline, give, request);
     results.set(ym, r);
     if (periods.month && ym === periods.month.month) {
@@ -763,7 +889,9 @@ export async function directoryAssistanceReport(
         months_missing: gone.map((x) => ({ month: x.ym, why: x.missing })),
         note: gone.every((x) => x.missing === ONE_MONTH_ONLY)
           ? "A one-month call fetches only its own month, so no total is given for the year to date. Ask with fiscal_year (and no month) to fetch the other months; they are saved for later calls."
-          : "Not every month of this period could be fetched in this call, so no total is given. The months fetched are saved; ask again to finish.",
+          : gone.some((x) => x.missing === STILL_LOADING)
+            ? "Some months are still loading from NYC Open Data, so no total is given yet. The saved months are used; the others keep loading and are saved when done. Ask again in a minute."
+            : "Not every month of this period could be fetched in this call, so no total is given. The months fetched are saved; ask again to finish.",
       };
     }
     const groups = ms.flatMap((ym) => (results.get(ym) as { groups: CallGroup[] }).groups);
@@ -1018,7 +1146,7 @@ export const LL47_TOOLS = [
   {
     name: "ll47_directory_assistance_report",
     description:
-      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A month call fetches only that month; its fiscal year to date uses saved months. A fiscal_year call fetches the rest, often complete:false at first (58 s budget per call); asking again finishes it. " +
+      "Rebuilds the monthly directory-assistance report of former Charter § 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached). A month call fetches only that month; its fiscal year to date uses saved months. A fiscal_year call answers within about 12 s: saved months at once, others listed as still loading while they keep loading; asking again a minute later finishes it. " +
       REBUILD,
     inputSchema: obj({ month: MONTH_JSON, fiscal_year: FY_JSON, limit: limitJson(50, 2000, "topics") }),
   },

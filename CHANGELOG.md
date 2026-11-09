@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.5] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 4, 2026-11-09)
+
+- **`ll47_directory_assistance_report`, fiscal year.** A `fiscal_year` call now answers
+  within about 12 s. Saved months answer at once. Months not saved are fetched one at a
+  time (never in parallel to one portal, engineering standards §6); any not done after 12 s
+  are listed as "still loading … ask again in a minute", keep loading after the answer, and
+  are saved when they land (up to 4 minutes in all). A second call waits on the same request
+  instead of sending another. No total is given until every month is in. Before, the first
+  call waited about 55 s on one slow month.
+- **Water outdoors** (`how_to_report`, `draft_311_report`). Indoor and outdoor words decide.
+  Water leaking from a street or sidewalk goes to Water Leak on Street or Sidewalk
+  (KA-01234, DEP; recorded as a test fixture); a water main break, or water gushing down the
+  block, to Water Main Break (KA-01233); a leaking or open hydrant to Fire Hydrant Complaint
+  (KA-01034); water pooling in the road to Street Flooding (KA-02198). Any indoor word ("my
+  ceiling", "into my apartment", "the hallway of my building") keeps Water Leak in a
+  Building (KA-01509).
+- **Confidence.** One problem word shared by several titles is strong again when it names
+  the article: more than half of the article title's words are the person's, and it scores
+  3 or more above every other title with that word. "No heat in my apartment" and "illegal
+  fireworks every night" are strong again; "construction" alone, or "construction site"
+  for the Construction Site No Smoking Sign article, is still not.
+- **Version.** The server reports `1.2.0-beta.5`.
+
 ## [1.2.0-beta.4] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

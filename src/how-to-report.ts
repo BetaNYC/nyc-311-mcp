@@ -101,6 +101,8 @@ type Concept = {
   when: RegExp;
   /** The concept does not apply when this also matches ("cracked" with "sidewalk" is not an apartment repair). */
   unless?: RegExp;
+  /** A further check on the whole description (indoor and outdoor words for a water leak). */
+  onlyIf?: (text: string) => boolean;
   /** Words (any form; stemmed here) that 311's titles use for this, with a weight. */
   terms: string[];
   weight?: number;
@@ -123,7 +125,19 @@ type Concept = {
 const MISSED_COLLECTION = /\b(skipped|missed|didn'?t (come|pick)|never (came|picked)|forgot)\b[^.]{0,40}\b(pick ?-?ups?|collections?|garbage|trash|recycling|compost)\b|\b(not|never|wasn'?t|weren'?t) (been )?(picked up|collected)\b|\bno recogieron\b/;
 // Water standing in the street: the City's Street Flooding article (KA-02198), not a leak in
 // a building. Beta retest 2026-11-08.
-const STREET_FLOOD = /\b(street|road|roadway|intersection|corner|crosswalk|block)\b[^.]{0,30}\b(flood\w*|ponding|puddl\w*|under water)\b|\b(flood\w*|ponding)\b[^.]{0,30}\b(street|road|roadway|intersection|corner|crosswalk)\b/;
+// Beta retest 4, 2026-11-09: "water pooling in the road" found nothing, so pooling counts too.
+const STREET_FLOOD = /\b(street|road|roadway|intersection|corner|crosswalk|block)\b[^.]{0,30}\b(flood\w*|ponding|pool(s|ed|ing)|puddl\w*|under water|standing water)\b|\b(flood\w*|ponding|pool(s|ed|ing)|standing water)\b[^.]{0,30}\b(street|road|roadway|intersection|corner|crosswalk)\b/;
+// Water leaking outdoors: the City's Water Leak on Street or Sidewalk (KA-01234), not Water
+// Leak in a Building (KA-01509). Indoor and outdoor words decide: any indoor word ("my
+// ceiling", "into my apartment") keeps the building article. Beta retest 4, 2026-11-09:
+// "water is leaking from the street" got Water Leak in a Building, rated strong.
+const OUTDOOR = "(streets?|sidewalks?|road|roadway|pavement|asphalt|curb|gutter|crosswalk|intersection|corner|block)";
+const STREET_LEAK = new RegExp(`\\b(water|leak\\w*|drip\\w*|gush\\w*|bubbl\\w*|seep\\w*)\\b[^.]{0,40}\\b${OUTDOOR}\\b|\\b${OUTDOOR}\\b[^.]{0,30}\\b(leak\\w*|drip\\w*|gush\\w*|bubbl\\w*|seep\\w*)\\b`);
+const INDOOR_WATER = /\b(ceilings?|walls?|apartment|bathroom|kitchen|bedroom|basement|upstairs|downstairs|hallways?|lobby|stairwell|roof|radiators?|sinks?|toilets?|bathtub|tub|shower|faucets?|apartamento|techo)\b|\b(in|into|inside) (my|the|our) (building|home|house|unit|room|place)\b/;
+const WATER_MAIN = /\bwater ?mains?\b|\bmain (broke|burst|break)\b/;
+const HYDRANT_WATER = /\bhydrant\b[^.]*\b(open|running|leak\w*|spray\w*|gush\w*|drip\w*)\b|\b(open|running|leaking) (fire )?hydrant/;
+const LEAKY = /\b(leak\w*|drip\w*|gush\w*|bubbl\w*|seep\w*|spurt\w*|spray\w*|coming (up|out)|pour\w*|flowing|running)\b/;
+export const isStreetLeak = (text: string) => STREET_LEAK.test(text) && LEAKY.test(text) && !NO_WATER.test(text) && !INDOOR_WATER.test(text) && !STREET_FLOOD.test(text) && !WATER_MAIN.test(text) && !HYDRANT_WATER.test(text);
 
 // No water (not no hot water): the City's No Water, Low Water Pressure, or Water Temperature
 // Complaint (KA-01405), not Heat or Hot Water. Beta retest 2, 2026-11-09.
@@ -201,7 +215,7 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(paint|plaster|ceiling|walls?|cracks?|cracked|peeling|pintura|techo)\b/, unless: /\b(sidewalk|street|road|pavement|curb|acera|calle|graffiti)\b/, terms: ["maintenance", "paint"], weight: 2, categories: ["Tenants"], family: "repair" },
   { when: /\b(door|doors|locks?|windows?|puerta|ventana)\b/, unless: /\bfire escape\b|\b(coming|blowing|getting|comes|blows) (in|into|through) (my |the |our )?(windows?|doors?)\b|\bgraffiti\b/, terms: ["maintenance", "door", "window"], weight: 2, against: ["guard"], categories: ["Tenants"], family: "repair" },
   { when: /\b(smoke|carbon monoxide|co) (detector|alarm)s?\b[^.]{0,30}\b(broken|missing|not working|doesn'?t work|dead|removed|chirp\w*|needs? (a )?batter\w*)|\b(no|missing|broken) (smoke|carbon monoxide|co) (detector|alarm)/, terms: ["maintenance", "apartment"], weight: 3, against: ["installation"], categories: ["Tenants"], family: "repair" },
-  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, unless: STREET_FLOOD, terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
+  { when: /\b(leak|leaking|leaks|dripping|drips|water coming|water (is )?pouring|pouring (in|through|down)|flooding|flooded|gotera|fuga de agua|filtraci[oó]n)\b/, unless: STREET_FLOOD, onlyIf: (t) => !isStreetLeak(t) && !(HYDRANT_WATER.test(t) && !INDOOR_WATER.test(t)) && !(WATER_MAIN.test(t) && !INDOOR_WATER.test(t)), terms: ["leak", "water"], weight: 3, categories: ["Tenants", "Water"], family: "leak" },
   { when: /\b(elevators?|lifts?|escalators?|ascensor|elevador)\b/, terms: ["elevator", "escalator"], weight: 3, categories: ["Buildings & Property"], family: "elevator" },
   { when: /\bfire escapes?\b|\b(blocked|locked) (building )?exits?\b/, terms: ["fire", "escape", "exit", "blocked"], weight: 3, categories: ["Buildings & Property"], family: "exit" },
   // Streets and sidewalks
@@ -227,8 +241,9 @@ export const CONCEPTS: Concept[] = [
   { when: /\b(snow|ice|icy|unshoveled|shovel|slush|plow|nieve|hielo)/, terms: ["snow", "ice"], weight: 3, categories: ["Sidewalks", "Streets & Highways"], family: "snow" },
   // Water
   { when: STREET_FLOOD, terms: ["street", "flooding", "ponding"], weight: 3, categories: ["Streets & Highways"], family: "street_flooding" },
-  { when: /\b(water main|gushing|water (all )?over the street|water in the street)/, terms: ["water", "main", "break"], weight: 2, categories: ["Water", "Sidewalks"], family: "water" },
-  { when: /\bhydrant\b.*\b(open|running|leak|spraying|gushing)|\b(open|running|leaking) (fire )?hydrant/, terms: ["hydrant", "leak", "running"], weight: 3, categories: ["Water", "Sidewalks"], family: "water" },
+  { when: /\b(water ?mains?|main (broke|burst|break)|gushing|water (all )?over the street|water in the street)/, onlyIf: (t) => !INDOOR_WATER.test(t), terms: ["water", "main", "break"], weight: 3, against: ["building", "meter"], categories: ["Water", "Sidewalks"], family: "water" },
+  { when: HYDRANT_WATER, terms: ["hydrant", "leak", "running"], weight: 3, against: ["building", "request", "permit"], categories: ["Water", "Sidewalks"], family: "water" },
+  { when: STREET_LEAK, onlyIf: isStreetLeak, terms: ["water", "leak", "street", "sidewalk"], weight: 3, against: ["building", "apartment", "meter", "commercial", "drinking"], categories: ["Sidewalks", "Streets & Highways"], family: "water" },
   // Trash
   { when: TRASH_INDOORS, unless: /\b(trash|garbage|litter|recycling|public) (cans?|baskets?|bins?)\b|\bbaskets?\b/, terms: ["apartment", "maintenance", "complaint"], weight: 3, against: ["gutter", "sidewalk", "street", "basket", "lot"], categories: ["Tenants"], family: "building_trash" },
   { when: /\b(trash|garbage|litter|rubbish|debris|dirty|filthy|broken glass|dog (poop|waste)|basura|sucio)/, unless: new RegExp(`${MISSED_COLLECTION.source}|${TRASH_INDOORS.source}`), terms: ["dirty", "litter", "trash"], weight: 2, categories: ["Cleaning", "Collection & Disposal"], family: "trash" },
@@ -288,7 +303,7 @@ export function parseQuery(description: string): Query {
   const add = (t: string, w: number) => terms.set(stem(t), Math.max(terms.get(stem(t)) ?? 0, w));
   for (const c of CONCEPTS) {
     const m = text.match(c.when);
-    if (!m || (c.unless && c.unless.test(text))) continue;
+    if (!m || (c.unless && c.unless.test(text)) || (c.onlyIf && !c.onlyIf(text))) continue;
     matched.push(m[0].trim());
     for (const t of c.terms) add(t, c.weight ?? 2);
     for (const t of c.against ?? []) against.add(stem(t));
@@ -392,16 +407,32 @@ function scoreCategory(q: Query, c: Category): number {
  * ("construction" in Buildings & Property) is never strong (beta retest 3, 2026-11-09: the
  * Construction Site No Smoking Sign article was rated strong for 6am jackhammering).
  * Problem words are the word list's (weight 2 or more), not every word of the description.
+ *
+ * One word shared by several titles is still strong when it names the article: more than half
+ * of the article title's own words are the person's, and the article beats every other
+ * title with that word by 3 points or more. Beta retest 4, 2026-11-09: "no heat in my
+ * apartment" (Heat or Hot Water Complaint in a Residential Building) and "illegal fireworks
+ * every night" (Fireworks Complaint) had dropped to "close call". The No Smoking Sign title
+ * is mostly about a sign, so "construction" alone still never makes it strong.
  */
-export function strongEvidence(q: Query, best: ArticleSummary, pool: ArticleSummary[]): boolean {
+export function strongEvidence(q: Query, best: ArticleSummary, pool: ArticleSummary[], scores?: Map<string, number>): boolean {
   const title = stems(best.title);
   const desc = stems(best.description);
   const own = [...q.terms].filter(([t, w]) => w >= 2 && (title.has(t) || desc.has(t))).map(([t]) => t);
   if (own.length >= 2) return true;
   if (own.length === 0) return false;
-  const sharing = pool.filter((a) => stems(a.title).has(own[0])).length;
-  return sharing <= 2;
+  const rivals = pool.filter((a) => a.ka_number !== best.ka_number && stems(a.title).has(own[0]));
+  if (rivals.length <= 1) return true;
+  if (!scores || !title.has(own[0])) return false;
+  const named = [...title].filter((t) => !GENERIC_TITLE.has(t));
+  const mine = named.filter((t) => q.terms.has(t)).length;
+  if (mine * 2 <= named.length) return false;
+  const s1 = scores.get(best.ka_number) ?? 0;
+  const s2 = Math.max(0, ...rivals.map((a) => scores.get(a.ka_number) ?? 0));
+  return s1 - s2 >= 3;
 }
+/** Title words that say what kind of page it is, not what the problem is. */
+const GENERIC_TITLE = new Set(["complaint", "report", "request"].map(stem));
 
 export const MAX_CATEGORIES = 5;
 const MIN_SCORE = 4;
@@ -713,7 +744,7 @@ async function matchOne(q: Query, client: ContentClient, cats: Category[], used:
         const art = await client.article(x.a.ka_number);
         used.push(art);
         const conf =
-          s1 >= 9 && s1 - s2 >= 2 && strongEvidence(q, x.a, ranked.map((r) => r.a))
+          s1 >= 9 && s1 - s2 >= 2 && strongEvidence(q, x.a, ranked.map((r) => r.a), new Map(ranked.map((r) => [r.a.ka_number, r.score])))
             ? "strong: the best fit by a clear margin"
             : s1 >= 9
               ? "close call: the next match scored nearly as well; read both"
