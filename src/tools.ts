@@ -6,6 +6,7 @@ import {
   getServiceRequestList,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
+import { describeStatus } from "./status.js";
 import { describeServiceRequest, describeServiceRequestList, notFoundMessage } from "./service-requests.js";
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
@@ -42,7 +43,7 @@ export const TOOLS = [
   {
     name: "get_status",
     description:
-      "Get the current city status for an emergency or weather condition: Code Blue (cold weather), Fire Hydrant, OEM emergency notifications, Snow on Sidewalk, or Snow on Street.",
+      "Whether a City status is in effect right now, from the 311 Public API: Code Blue (cold weather), Fire Hydrant emergency, an OEM emergency event, Snow or Ice on Sidewalk, or Snow or Ice on Street. Returns the API's answer plus plain_language: yes or no in words, what it checks, and when it was asked. Not alternate side parking: use get_calendar for that.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -158,7 +159,7 @@ export async function callTool(name: string, args: unknown) {
 
       case "get_status": {
         const { type } = parseToolArgs("get_status", args);
-        const results = await getStatus(type);
+        const results = describeStatus(type, await getStatus(type));
         return { content: [{ type: "text", text: JSON.stringify(results, null, 2) }] };
       }
 

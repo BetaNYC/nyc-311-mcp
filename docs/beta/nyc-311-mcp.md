@@ -30,7 +30,8 @@ trying it.
 | **Local Law 47 of 2005 reports** (3): `ll47_service_request_report`, `ll47_directory_assistance_report`, `cb_monthly_list` | Rebuild, from NYC Open Data, the reports Local Law 47 of 2005 put in Charter § 1075 (two have since been repealed); the directory-assistance report is limited. These are BetaNYC rebuilds, **not the City's official reports**. | No |
 | **Request lookup** (2, improved): `get_service_request`, `get_service_request_list` | Look up a 311 request by its number (`311-XXXXXXXX`), now with a plain-language reading of its status. | Yes |
 | **Reporting help** (3): `how_to_report`, `list_311_categories`, `draft_311_report` | From a plain description ("a pothole on my block"), find the 311 article that fits, the agency, and how to report it, then draft text you can paste into 311 Online yourself. | Yes |
-| **Unchanged** (2): `get_calendar`, `get_status` | Alternate-side parking, collections and schools; Code Blue and other alerts. | Yes |
+| **Unchanged** (1): `get_calendar` | Alternate-side parking, collections and schools. | Yes |
+| **Status, improved** (1): `get_status` | Whether Code Blue, a hydrant, snow or ice, or an OEM emergency is in effect now, in words. | Yes |
 
 Full details are in the branch's
 [README](https://github.com/BetaNYC/nyc-311-mcp/blob/beta/README.md).

@@ -104,19 +104,21 @@ The three `type` values are `Alternate Side Parking`, `Collections` (trash, recy
 
 ### `get_status`
 
-Returns the current city status for one emergency or weather condition.
+Whether one City status is in effect right now. The answer is the API's own JSON (`inEffect` true or false; `OEM` also has `eventName`), plus a `plain_language` block: yes or no in words, what the status checks, and when it was asked. "Not in effect" means not in effect at that moment; ask again later for a change. It is not alternate side parking: use `get_calendar` for that.
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `type` | string | yes | — | One of: `CodeBlue`, `FireHydrant`, `OEM`, `SnowOnSidewalk`, `SnowOnStreet` |
 
-| `type` value | What it reports |
+What each one checks, in the City's words on the 311 API portal (read 2026-11-08):
+
+| `type` value | The City's description |
 |---|---|
-| `CodeBlue` | Extreme-cold-weather shelter alert (Code Blue) |
-| `FireHydrant` | Fire-hydrant clearing status |
-| `OEM` | Office of Emergency Management active alerts |
-| `SnowOnSidewalk` | Snow-on-sidewalk clearing status |
-| `SnowOnStreet` | Snow-on-street clearing status |
+| `CodeBlue` | "API to determine if Code Blue status is currently active" |
+| `FireHydrant` | "API to determine if Fire Hydrant emergency is currently active" |
+| `OEM` | "API to get OEM event currently active" |
+| `SnowOnSidewalk` | "API to determine if Snow or Ice on Sidewalk emergency is currently active" |
+| `SnowOnStreet` | "API to determine if Snow or Ice on Street emergency is currently active" |
 
 ```
 get_status(type="CodeBlue")
@@ -316,7 +318,7 @@ Once connected, you can ask your AI assistant things like:
 
 - **`get_service_request` looks up by number only.** The 311 API resolves a known SR number (`311-XXXXXXXX`); it does not search by address, agency, or area. For questions by district, address, agency or problem, use the district tools above (`top_problems`, `address_history`, `agency_response` and the rest), which read files built nightly from NYC Open Data by BoardStat, from the [311 Service Requests dataset](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).
 - **Calendar range cap.** `get_calendar` accepts a span of up to 90 days; longer ranges are rejected before the request is sent.
-- **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. `get_status` is the API's raw JSON. The service-request tools return the API's fields unchanged except that ZIP codes are removed, plus the added `plain_language` block (and `not_found` for the list).
+- **Response shapes.** `get_calendar` returns the documented `days` / `items` structure. `get_status` is the API's raw JSON plus a `plain_language` block. The service-request tools return the API's fields unchanged except that ZIP codes are removed, plus the added `plain_language` block (and `not_found` for the list).
 - **Two numbers for one request.** The 311 number (`311-XXXXXXXX`) and Open Data's `unique_key` are different numbers (two matched requests, 2026-11-07). District tools list `unique_key`; it cannot be looked up with `get_service_request`. See [docs/service-requests.md](docs/service-requests.md).
 - **Rate limits** are governed by your subscription tier on the NYC API portal, not by this server.
 
