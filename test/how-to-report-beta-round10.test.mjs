@@ -29,7 +29,7 @@ const client = await stressClient();
 const ALL = allPhrasings();
 
 test("the whole measured set: no wrong answer rated strong, no missed emergency, no 911 on an ordinary complaint", async () => {
-  assert.ok(ALL.length >= 680, String(ALL.length));
+  assert.ok(ALL.length >= 800, String(ALL.length));
   const wrongStrong = [];
   const missed = [];
   const false911 = [];

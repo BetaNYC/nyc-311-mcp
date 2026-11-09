@@ -28,7 +28,7 @@ const STOP = new Set(
     " "
   )
 );
-const IRREGULAR: Record<string, string> = { mice: "mouse", neighbour: "neighbor", neighbours: "neighbor", mould: "mold", children: "child", people: "person", geese: "goose", buses: "bus", busses: "bus", parking: "parking", parked: "parked", parks: "park" };
+const IRREGULAR: Record<string, string> = { mice: "mouse", neighbour: "neighbor", neighbours: "neighbor", mould: "mold", children: "child", people: "person", geese: "goose", buses: "bus", busses: "bus", parking: "parking", parked: "parked", parks: "park", blocked: "blocked", blocking: "blocked", blocks: "block" };
 
 /** A word reduced the same way on both sides: lower case, plural, -ment, -ing and -ed endings dropped. */
 export function stem(word: string): string {
@@ -129,7 +129,7 @@ type Concept = {
 // A pickup that did not happen: the City's Missed Trash, Recycling, or Compost Collection
 // article (KA-01788), not a litter basket. Beta retest 2026-11-08: "sanitation skipped our
 // garbage pickup" got Litter Basket Complaint.
-const MISSED_COLLECTION = /\b(trash|garbage|recycling|compost|bulk\w*|furniture|mattress\w*|sanitation|dsny)\b[^.]{0,20}\b(pick ?-?ups?|collections?)\b[^.]{0,20}\b(never (happened|came|showed)|didn'?t (happen|come|show)|was missed|got missed|was skipped)\b|\b(skipped|missed|didn'?t (come|pick)|never (came|picked)|forgot)\b[^.]{0,40}\b(pick ?-?ups?|collections?|garbage|trash|recycling|compost)\b|\b(not|never|wasn'?t|weren'?t) (been )?(picked up|collected)\b|\bno recogieron\b/;
+const MISSED_COLLECTION = /\b(nobody|no one|sanitation|they|dsny) (never )?(collected|picked up|took)\b[^.]{0,20}\b(trash|garbage|recycling|compost|bins?|bags?)\b|\b(trash|garbage|recycling|compost)( bins?| bags?)? (was |were )?(not|never) (collected|picked up)\b|\b(trash|garbage|recycling|compost|bulk\w*|furniture|mattress\w*|sanitation|dsny)\b[^.]{0,20}\b(pick ?-?ups?|collections?)\b[^.]{0,20}\b(never (happened|came|showed)|didn'?t (happen|come|show)|was missed|got missed|was skipped)\b|\b(skipped|missed|didn'?t (come|pick)|never (came|picked)|forgot)\b[^.]{0,40}\b(pick ?-?ups?|collections?|garbage|trash|recycling|compost)\b|\b(not|never|wasn'?t|weren'?t) (been )?(picked up|collected)\b|\bno recogieron\b/;
 // Water standing in the street: the City's Street Flooding article (KA-02198), not a leak in
 // a building. Beta retest 2026-11-08.
 // Beta retest 4, 2026-11-09: "water pooling in the road" found nothing, so pooling counts too.
@@ -198,7 +198,7 @@ const LOCKOUT = /\b(padlock\w*|(turn|turned|shut|shutting|cut|cutting) off (my|o
 // unsanitary restaurant, deli, grocery, ..."). Stage 9 stress set: "a restaurant has rats in the
 // kitchen" got Rat or Mouse Complaint, rated strong.
 const FOOD_PLACE = "(restaurants?|delis?|bodegas?|grocer(y|ies)|supermarkets?|markets?|cafeterias?|bakery|bakeries|cafes?|pizzeria|food carts?|food trucks?|takeout|take-out)";
-const FOOD_PLACE_PESTS = new RegExp(`\\b(rats?|mice|mouse|roach(es)?|cockroach(es)?|flies|bugs|vermin|pests?|hair|dirty|filthy|unsanitary|moldy|spoiled|rotten)\\b[^.]{0,40}\\b${FOOD_PLACE}\\b|\\b${FOOD_PLACE}\\b[^.]{0,40}\\b(rats?|mice|mouse|roach(es)?|cockroach(es)?|flies|bugs|vermin|pests?|hair|dirty|filthy|unsanitary|moldy|spoiled|rotten)\\b`);
+const FOOD_PLACE_PESTS = new RegExp(`\\b(rats?|mice|mouse|roach(es)?|cockroach(es)?|flies|bugs|vermin|pests?|hair|dirty|filthy|unsanitary|moldy|spoiled|rotten)\\b[^.]{0,40}\\b${FOOD_PLACE}\\b|\\b${FOOD_PLACE}\\b[^.]{0,40}\\b(rats?|mice|mouse|roach(es)?|cockroach(es)?|flies|bugs|vermin|pests?|hair|dirty|filthy|unsanitary|moldy|spoiled|rotten|expired|sells? expired|out of date)\\b`);
 // A vehicle blocking a bike lane, crosswalk, bus stop or bus lane: Illegal Parking (KA-01986).
 const BIKE_LANE_BLOCKED = /\b(cars?|trucks?|vans?|vehicles?|someone|people|drivers?)\b[^.]{0,30}\b(block(s|ed|ing)?|park(s|ed|ing)? (in|on))\b[^.]{0,10}\b(the |a )?(crosswalks?|bus stops?|bus lanes?)\b|\b(park(ed|ing)|double[- ]?parked|block(s|ed|ing)?|stopp(ed|ing)|standing|idling|sitting)\b[^.]{0,40}\bbike lanes?\b|\bbike lanes?\b[^.]{0,30}\b(blocked|is blocked|full of (cars|trucks)|always blocked)\b|\b(cars?|trucks?|vans?|vehicles?|ubers?|taxis?|cabs?)\b[^.]{0,20}\bin (the |a |my )?bike lanes?\b/;
 // The subway, an MTA bus or a station (not a gas, police or fire station).
@@ -446,7 +446,7 @@ export const CONCEPTS: Concept[] = [
   // Crane or Derrick Complaint (KA-02053).
   { when: /\b(cranes?|derricks?)\b/, unless: /\bcrane (fly|flies)\b/, terms: ["crane", "derrick", "complaint"], weight: 3, against: ["permit"], categories: ["Buildings & Property"], family: "crane" },
   // Trash or broken glass in a park or playground: Park Maintenance Complaint (KA-01060, "unclean conditions").
-  { when: new RegExp(`\\b(trash|garbage|litter|broken glass|glass|debris|dirty|filthy)\\b[^.]{0,40}\\b${PARK_PLACE}\\b|\\b${PARK_PLACE}\\b[^.]{0,30}\\b(trash|garbage|litter|broken glass|glass|debris|dirty|filthy)\\b`), unless: PARK_RESTROOM, terms: ["park", "maintenance"], weight: 3, against: ["basket", "sidewalk", "gutter"], categories: ["Parks & Recreation"], family: "park_maintenance" },
+  { when: new RegExp(`\\b(trash|garbage|litter|broken glass|glass|debris|dirty|filthy|(beer )?cans|bottles|cups|wrappers)\\b[^.]{0,40}\\b${PARK_PLACE}\\b|\\b${PARK_PLACE}\\b[^.]{0,30}\\b(trash|garbage|litter|broken glass|glass|debris|dirty|filthy|(beer )?cans|bottles)\\b`), unless: PARK_RESTROOM, terms: ["park", "maintenance"], weight: 3, against: ["basket", "sidewalk", "gutter"], categories: ["Parks & Recreation"], family: "park_maintenance" },
   // Gas for cooking turned off: Apartment Maintenance Complaint (KA-01074, "Cooking gas that has
   // been shut off"). A gas smell is a danger (emergency.ts) and is never this.
   { when: /\b(cooking gas|gas (stove|range|service|burners?|oven))\b[^.]{0,40}\b(off|shut|doesn'?t (light|work)|won'?t (light|work)|not working)\b|\b(turned|shut|cut) (off )?the gas\b|\bgas\b[^.]{0,30}\b(turned|shut|cut) off\b|\bno (cooking )?gas\b/, unless: /\b(smell\w*|odor|leak\w*|rotten eggs?)\b/, terms: ["apartment", "maintenance"], weight: 3, against: ["heat", "permit", "company"], categories: ["Tenants"], family: "gas_off" },
@@ -517,6 +517,10 @@ export const CONCEPTS: Concept[] = [
   { when: /\bfire escapes?\b[^.]{0,30}\b(rust\w*|wobbl\w*|loose|broken|crack\w*|collaps\w*|falling apart|damaged|unsafe|shaky)\b/, terms: ["apartment", "maintenance"], weight: 3, against: ["heat", "blocked", "exit"], categories: ["Tenants"], family: "repair" },
   // Noise from Lawn Equipment (KA-01101).
   { when: /\b(leaf ?blowers?|lawn ?mowers?|weed ?whackers?|landscap\w* (equipment|crew)|hedge trimmers?)\b/, terms: ["noise", "lawn", "equipment"], weight: 3, against: ["park", "rules"], categories: ["Noise"], family: "noise" },
+  // Catch Basin Complaint (KA-01084): a sewer grate or catch basin clogged or broken.
+  { when: /\b(sewer grates?|storm drains?|catch basins?|street drains?|drains? (on|in) (my|the) (street|corner|block))\b[^.]{0,30}\b(clogged|blocked|full|backed up|covered|broken|missing|caved)\b|\b(clogged|blocked) (sewer|storm drain|catch basin|street drain)/, terms: ["catch", "basin", "complaint"], weight: 3, against: ["odor", "apartment", "installation", "dumping"], categories: ["Streets & Highways", "Sidewalks", "Water"], family: "catch_basin" },
+  // An animal stuck in a chimney, a wall or a vent: Wild Animal (KA-01790), not chimney smoke.
+  { when: /\b(squirrels?|raccoons?|birds?|bats?|possums?|opossums?|animals?)\b[^.]{0,20}\b(stuck|trapped|living|nesting) in (my|the|our) (chimney|wall|walls|vent|attic|ceiling)\b/, terms: ["wild", "animal"], weight: 3, against: ["chimney", "smoke", "ventilation"], categories: ["Pests & Wildlife"], family: "wildlife" },
   // Injured or Sick Animal (KA-01789): an animal hurt, hit by a car, or sick (emergency.ts sends
   // these to the animal path, not the medical 911 line).
   { when: /\b(cats?|kittens?|dogs?|pupp(y|ies)|birds?|pigeons?|squirrels?|raccoons?|animals?|pets?|deer|geese|goose|ducks?|possums?|opossums?)\b[^.]{0,40}\b(hurt|injured|bleeding|limping|sick|dying|hit by a (car|truck|bus)|got hit|run over|broken (leg|wing))\b|\b(hurt|injured|bleeding|limping|sick|dying) (cat|kitten|dog|puppy|bird|pigeon|squirrel|raccoon|animal|pet|deer|goose|duck)s?\b/, unless: /\b(dead|like|as if|sounds like)\b/, terms: ["injured", "sick", "animal"], weight: 3, against: ["dead", "abuse", "bite", "waste"], categories: ["Pests & Wildlife", "Pets"], family: "injured_animal" },
@@ -1096,6 +1100,20 @@ const SOCIAL_SERVICE = /homeless|outreach|shelter|encampment|drop-in|wellness ch
 /** Words that say someone is hurt or medically at risk. */
 export const MEDICAL = /\b(injur\w*|hurt|bleeding|blood|unconscious|unresponsive|not (breathing|moving)|isn'?t (breathing|moving)|won'?t wake|seizures?|overdos\w*|hit by|struck by|run over|collapsed|broken (leg|arm|bones?)|ambulance)\b/;
 
+/**
+ * Under a detected danger, a follow-up article must fit the danger: share one of its words in its
+ * title or summary ("gas" for a gas leak), or be the City's own article for it. Otherwise it is
+ * left out, so a gas hiss "from the meter" never gets Parking Meter Complaint (beta retest 13).
+ * Dangers with no search words of their own (water near electricity) leave the articles alone.
+ */
+export function fitsDanger(a: ArticleSummary, q: Pick<Query, "danger">): boolean {
+  const withWords = q.danger.kinds.filter((k) => k.terms.length);
+  if (!withWords.length) return true;
+  if (q.danger.kinds.some((k) => k.city?.test(a.title))) return true;
+  const own = new Set([...stems(a.title), ...stems(a.description)]);
+  return withWords.some((k) => k.terms.some((t) => own.has(stem(t))));
+}
+
 /** One description against 311's articles: route, score, read the best in full. */
 async function matchOne(q: Query, client: ContentClient, cats: Category[], used: Fetched<unknown>[], categoryId: string | undefined, limit: number): Promise<OneMatch> {
   let routed: Category[];
@@ -1118,6 +1136,7 @@ async function matchOne(q: Query, client: ContentClient, cats: Category[], used:
   }
   const ranked = [...pool.values()]
     .filter((x) => sensitiveAllowed(x.a.title, q))
+    .filter((x) => fitsDanger(x.a, q))
     .map((x) => ({ ...x, ...scoreArticle(q, x.a) }))
     .filter((x) => x.score >= MIN_SCORE)
     .sort((x, y) => y.score - x.score || (x.a.title < y.a.title ? -1 : x.a.title > y.a.title ? 1 : 0));

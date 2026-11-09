@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.14] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 13, 2026-11-09: three missed emergencies)
+
+- **Medical symptoms in a person, in plain words** (new danger class `medical_symptoms`):
+  chest pain or pressure ("feels like an elephant is sitting on it", "clutching his chest"),
+  pain going down an arm, can't breathe, talk or lift an arm, slurred or garbled words, a
+  drooping face, a seizure or shaking all over, choking, severe bleeding, lips turning blue,
+  swelling after eating, wheezing with an inhaler that isn't working, overdose signs, a head
+  injury with vomiting or confusion. Never an animal ("my dog is choking"), a figure of speech
+  ("feel like I'm having a heart attack"), stress, or a complaint about dust or fumes.
+- **A child with a hazard, now** (`child_hazard`): a child, toddler, baby or kid in or between
+  traffic, left in a car, in distress in water, on a ledge or windowsill, alone at a platform's
+  edge or near a fire. A habit or a child playing safely is not.
+- **Water in every setting:** pools, bathtubs, beaches, ponds, a ferry or a pier, a current;
+  someone held under water is both a water danger and violence.
+- **Under a detected danger, a follow-up article must fit it** (share the danger's words or be
+  its City article) or is left out: a gas hiss "from the meter" no longer gets Parking Meter
+  Complaint. "A heart attack" is no longer read as an attack.
+- Also: a clogged sewer grate → Catch Basin Complaint; recycling nobody collected → Missed
+  Collection; a squirrel stuck in a chimney → Wild Animal; expired food at a store → Food
+  Safety; graffiti on a mailbox → Graffiti ("block" and "blocked" are different words now);
+  beer cans in a playground → Park Maintenance.
+- **Measured** on 811 phrasings (rounds 6 to 14, with the report's 50, 60 new emergencies and
+  15 near misses): on beta.13, 30 missed emergencies, 3 ordinary complaints leading with 911
+  and 3 wrong answers rated strong; now none.
+
 ## [1.2.0-beta.13] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.
