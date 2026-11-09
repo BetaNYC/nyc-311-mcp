@@ -1,0 +1,50 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01669",
+      "Title": "Manhole Cover Complaint",
+      "Description": "Report a missing, sunken, raised, damaged, noisy, or steaming manhole cover.",
+      "Section": [
+        {
+          "Name": "911 Manhole Cover Complaint",
+          "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\">&nbsp;</span></strong>to report an unprotected street opening that could cause an accident.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01084\">Catch Basin Complaint</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01235\">Manhole Flooding</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01093\">Pothole or Cave-In on Street</a></li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01670\">Street Utility Hardware Complaint</a></li></ul></div><p>You can report a problem with a manhole cover.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Report a Missing Manhole Cover",
+          "Content": "<p>You can report a missing manhole cover on a street or highway.</p><p>This applies to all manholes, including manholes owned by:</p><ul><li>DEP</li><li>The Fire Department</li><li>Verizon</li><li>Con Edison</li><li>The Metropolitan Transportation Authority</li><li>National Grid</li></ul><p><strong>What You Need</strong></p><p>You must provide your contact information so the Department of Environmental Protection (DEP) can contact you, if necessary. DEP will not be able to investigate your complaint without accurate information.&nbsp;</p><p>You should keep records of your 311 service request number (begins with 311- ) or DEP Customer Service Request Number (CSR#), if you receive one.</p><p><strong>What Happens Next</strong></p><p>The Department of Environmental Protection (DEP) will inspect within 4 hours.</p><p><strong>Roosevelt Island</strong></p><p>The City does not respond to manhole cover problems on Roosevelt Island. You can report the problem directly by phone.</p>",
+          "ContentAction": [
+            {
+              "Name": "Missing Manhole Cover",
+              "Agency": "Department of Environmental Protection",
+              "Problem": "Sewer Maintenance",
+              "ProblemDetail": "Manhole Cover Missing"
+            }
+          ]
+        },
+        {
+          "Name": "Report a Defective or Noisy Manhole Cover",
+          "Content": "<p>You can report manhole covers that are:</p><ul><li>Sunken</li><li>Raised</li><li>Damaged</li><li>Making noise on a City street</li></ul><p><strong>What Happens Next</strong></p><p>The Department of Transportation (DOT) determines which agency or utility owns the manhole cover, such as the Department of Environmental Protection, Con Edison, or Verizon. DOT then refers the defective manhole cover to that agency or utility for repair. DOT is not responsible for repairing manhole covers.&nbsp;</p><p>Information about the agency or utility responsible for the reported manhole cover will be available within 10 days of submitting a service request.</p>",
+          "ContentAction": [
+            {
+              "Name": "Manhole Cover Defect or Noise",
+              "Agency": "Department of Transportation",
+              "Problem": "Street Condition",
+              "ProblemDetail": "Defective Hardware"
+            }
+          ]
+        },
+        {
+          "Name": "Report Steam or Smoke from a Manhole",
+          "Content": "<p>Steam rising from a sewer manhole is a natural occurrence, especially in the winter. Steam is caused by water falling on a steam pipe or manhole cover, or a steam leak.</p><p>Unaddressed leaks from the steam system could endanger public safety. To avoid potential injury, do not walk through the steam or on the manhole cover.</p><p>You can report steam or smoke coming from manholes to Con Edison.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Parts of the New York City Sewer System",
+          "Content": "<p><strong>Catch Basin</strong></p><p>A catch basin is a part of a storm drain or sewer system which is designed to trap debris so that it cannot enter the drainage pipes.</p><p><strong>Culvert</strong></p><p>A culvert is a drain or pipe that allows water to flow under a road, railroad, trail, or similar obstruction.</p><p><strong>Manhole</strong></p><p>A manhole is the top opening to an underground utility vault used to house an access point for making connections or performing maintenance on underground and buried public utility and other services including sewers, telephone, electricity, storm drains and gas.</p><p><strong>Manhole Cover</strong></p><p>A manhole cover is a removable plate forming the lid over the opening of a manhole, to prevent anyone or anything from falling in, and to keep out unauthorized persons and material.</p><p><strong>Sewer</strong></p><p>A sewer is a pipe under the ground for carrying away water and waste.</p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

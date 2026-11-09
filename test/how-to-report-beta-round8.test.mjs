@@ -60,7 +60,7 @@ const REPORT = [
   ["a car with no plates has been parked on my block for weeks", "KA-02130", "strong", false], // Abandoned Vehicle
   ["a truck is blocking my driveway", "KA-01062", "strong", false], // Blocked Driveway
   ["a tour bus idles outside my window for half an hour every morning", "KA-02222", "strong", false], // Idling Vehicle
-  ["there's a strong smell of gas outside on the street", "KA-02048", "close call", true], // Gas Leak
+  ["there's a strong smell of gas outside on the street", "KA-02048", "strong", true], // since beta.9 an emergency's own City article is rated strong // Gas Leak
   ["the elevator in my apartment building has been broken for two weeks", "KA-02015", "strong", false], // Elevator or Escalator Complaint
   ["a stray dog is roaming the block and looks aggressive", "KA-02300", "strong", true], // Stray or Abandoned Animal
   ["sanitation skipped our garbage pickup this week", "KA-01788", "strong", false], // Missed Trash, Recycling, or Compost Collection

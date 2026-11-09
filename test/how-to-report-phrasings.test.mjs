@@ -44,7 +44,7 @@ export const PHRASINGS = [
   ["a car alarm going off for hours", null, "KA-01089", []],
   ["fire escape is blocked by the landlord", null, "KA-02233", []],
   ["the burning smell from the restaurant exhaust", null, "KA-01930", []], // Air (311-48) recorded 2026-11-08: Restaurant Odor
-  ["a bike lane is blocked by a delivery truck", null, "KA-01260", []],
+  ["a bike lane is blocked by a delivery truck", null, "KA-01986", []], // Since beta.9 a vehicle in a bike lane is Illegal Parking (KA-01986 lists "Blocking a: ... Bike lane"; KA-01260 says "Illegal Parking to report a vehicle blocking a bike lane").
   ["sidewalk is cracked and someone could trip", null, "KA-02235", []],
   ["a person sleeping on the subway", null, "KA-01037", []],
   ["I need a copy of my birth certificate", null, "KA-01012", []],

@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0-beta.9] - 2026-11-09
+
+Still a beta on the `beta` branch; not published to npm.
+
+### Fixed (beta retest 8, 2026-11-09)
+
+- **A loud party no longer says "Call 911".** No danger was detected: round 8's party entry
+  searched for "party" and "crowd", which made Noise from Large Party or Crowd (KA-01591, whose
+  only text is "Call 911 to report a large, loud party that has potential for danger") the
+  strong best match, and a strong best match whose summary says "Call 911" led the answer. Now
+  a "Call 911" summary that is conditional ("potential for danger", "in progress", ...) leads
+  only when a danger was detected in the person's words, and such an article is never rated
+  strong without one; an unconditional one (Illegal Eviction or Lockout, Drug Sale) still
+  leads, except for a crime the person says is over. A party is searched as noise, so a
+  neighbor's party is Noise from Neighbor and a street party Noise from Street or Sidewalk.
+  Also: a building fire alarm that keeps going off for no reason, and a dog that attacked a
+  cat, are no longer 911 cases. 35 ordinary complaints that must never say "Call 911" and 12
+  emergencies that must are in the tests.
+- **Wrong answers rated strong:** a landlord lockout → Illegal Eviction or Lockout (KA-02518,
+  the City's own "Call 911" line); a car parked in a bike lane, crosswalk or bus stop → Illegal
+  Parking (KA-01986), not Bike Lane upkeep. The report's other misses now have their City
+  article: helicopter, manhole cover, faded crosswalk paint, snow on a sidewalk, a missed bulk
+  pickup, taxi, rooster, raccoons, a bus that never came, Citi Bike, a stolen package (no 911
+  line: it is over), internet provider. "flies" as a verb is no longer insects.
+- **Emergency answers' confidence.** When the best match is the City's article for the
+  danger detected, it reads "strong: the City's own article for the danger detected; call 911
+  first". Otherwise `confidence_note` says the rating is for the 311 article as a follow-up.
+  Danger words now count as separate evidence, as in round 8's facets.
+- **`ll47_directory_assistance_report`: the first fiscal-year call answers in time.** The
+  ~12 s answer wait started after the dataset metadata request (about 4 s that morning; the
+  call took 16.0 s). It now counts from the start of the call. If the metadata is not in by
+  then, a saved copy of it answers; with none saved, the answer says the months are loading,
+  and the load starts in the background when the metadata arrives.
+- **Stress set, round 9:** 40 new phrasings weighted to near misses. Before: 19 wrong (8 rated
+  strong or with a wrong 911 line), e.g. a restaurant with rats → Rat or Mouse, a tree that
+  needs pruning or a bike chained to a tree → Fallen Tree, food poisoning from a cart →
+  Street Vendor, a boiler banging → Heat. Now none.
+
 ## [1.2.0-beta.8] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

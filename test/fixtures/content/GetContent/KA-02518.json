@@ -1,0 +1,16 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02518",
+      "Title": "Illegal Eviction or Lockout",
+      "Description": "Call 911 to report an eviction that was not performed by a NYC Marshal or Sheriff.",
+      "Section": [
+        {
+          "Name": "911 Illegal Eviction or Lockout",
+          "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <font color=\"#ff0004\"><b>911</b></font>&nbsp;to report commercial or residential landlords who lock out tenants, or who willfully deprive them of essential services such as electricity, heat, or water. Only a City Marshal or Sheriff is allowed to carry out a Warrant of Eviction.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01075\">Housing Court for Tenants and Landlords</a>&nbsp;to learn about assistance for landlords and tenants with ongoing disputes, including eviction</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01154\">City Marshal Complaint</a>&nbsp;for complaints about a City Marshal or legal eviction</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01041\">Eviction Prevention and HomeBase</a>&nbsp;to get help if you have gotten an eviction notice and learn about the Homebase program</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01042\">Tenant Harassment</a>&nbsp;to get help for a tenant whose landlord harasses them and tries to force them out of their apartment</li></ul></div><p><strong>No Written or Signed Lease</strong></p><p>The same rules apply even if there is no written or signed lease, as long as the tenant has lived at the location for more than 30 days.</p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

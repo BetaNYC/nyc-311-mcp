@@ -1,0 +1,38 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02255",
+      "Title": "Illegal Animal",
+      "Description": "Report a person selling or keeping a wild or illegal animal as a pet.",
+      "Section": [
+        {
+          "Name": "911 Illegal Animal",
+          "Content": "<style type=\"text/css\">.divTable {\n                display: table;\n                width: 100%;\n                margin-bottom: 15px;\n}\n.divTableRow {\n                display: table-row;\n}\n.divTableCell1, .divTableHead {\n                border: 0px solid #cccccc;\n                display: table-cell;\n                padding: 6px 12px;\n                background-color: red;\n                color: white;\n                font-weight: bold;\n                text-align: center;\n}\n.divTableCell2, .divTableHead {\n                border: 1px solid #cccccc;\n                display: table-cell;\n                padding: 12px 12px;\n                background-color: #eeeeee;\n}\n.divTableBody {\n                display: table-row-group;\n}</style><div class=\"divTable\"><div class=\"divTableBody\"><div class=\"divTableRow\"><div class=\"divTableCell1\">Call 911</div></div><div class=\"divTableRow\"><div class=\"divTableCell2\">Call <span style=\"color:#FF0004\"><strong>911</strong></span><strong><span style=\"color:#000000;\"> </span></strong>if the animal is threatening or endangering people, or causing a dangerous situation.</div></div></div></div><div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01052\">NYCHA Pet Policy</a> to report a violation of the New York City Housing Authority (NYCHA) Pet Policy</li></ul></div><p>You can report people selling or keeping wild or illegal animals.</p><p>The NYC Health Department issues violations when appropriate. By law, wild or illegal animals may not be sold or kept as pets.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Illegal Pet",
+          "Content": "<p>You can report people keeping wild or illegal animals as pets. Where applicable, you must provide the landlord&#39;s or property owner&#39;s name. By law, most farm, wild, and exotic animals cannot be kept as pets in New York City.</p><p><span style=\"font-size:16px;\"><strong>Animals Allowed as Pets</strong></span></p><p>You can keep the following animals as pets:</p><ul><li>Domesticated cat or dog</li><li>Rabbit</li><li>Horse</li><li>Gerbil, hamster, guinea pig, chinchilla, and other small animals</li><li>Parakeet, parrot, pigeon, canary, hen or female chicken, other small birds</li><li>Non-snapping turtle larger than 4 inches</li><li>Certain reptiles</li><li>Honeybees</li></ul><p>Pigeon coops are also allowed if they are properly maintained and constructed.</p><p><span style=\"font-size:16px;\"><strong>Animals Not Allowed as Pets</strong></span></p><p>You can&#39;t keep the following animals as pets:</p><ul><li>Wolves, foxes, coyotes, hyenas, dingoes, jackals, and other undomesticated dogs</li><li>Lions, tigers, leopards, jaguars, pumas, panthers, mountain lions, cheetahs, cougars, bobcats, lynxes, and other undomesticated cats</li><li>Ferrets, weasels, minks, badgers, wolverines, skunks, and mongooses</li><li>Squirrels, raccoons, and bats</li><li>Bears, elephants, zebras, rhinoceroses, giraffes, and hippopotamuses</li><li>Tarantulas, black widows, and other venomous spiders</li><li>Iguanas, Gila monsters, and many other lizards</li><li>Monkeys, apes, chimpanzees, and gorillas</li><li>Vipers, cobras, pythons, anacondas, and many other snakes</li><li>Alligators, crocodiles, snapping turtles, and other turtles less than four inches in length</li><li>Eagles, hawks, falcons, owls, vultures, emus, ostriches, and other large or predatory birds</li><li>Roosters, ducks, geese, and turkeys</li><li>Bees (other than honeybees), hornets, wasps, and other venomous insects</li><li>Gophers, woodchucks, beavers, hedgehogs, porcupines, and other large rodents</li><li>Deer, antelopes, llamas, and camels</li><li>Sheep, goats, pigs, including potbellied pigs, and most farm animals</li><li>Kangaroos, opossums, koalas, and other marsupials</li><li>Dolphins, whales, seals, sea lions, walruses, and other sea mammals</li><li>Sharks and piranhas</li></ul><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nyc.gov/assets/doh/downloads/pdf/about/healthcode/health-code-article161.pdf\">Learn more about which animals you can and cannot keep as pets in NYC.</a></p><p>The NYC Health Department will only respond to a snake complaint if the pet is venomous or a constrictor. It is illegal to keep as a pet a snapping turtle or any turtle whose shell is less than 4 inches in length.</p><p><span style=\"font-size:16px;\"><strong>Turning in an Illegal Animal</strong></span></p><p>If you have an illegal pet, you may drop the animal off at any one of the Animal Care Centers of NYC shelters in each borough. You will not receive a violation for dropping off an illegal animal.</p><p>Animal Care Centers of NYC (ACC) locations are closed on the following holidays:</p><ul><li>New Year&rsquo;s Day&nbsp;</li><li>Martin Luther King Jr. Day&nbsp;</li><li>Memorial Day&nbsp;</li><li>Juneteenth&nbsp;</li><li>Independence Day&nbsp;</li><li>Labor Day&nbsp;</li><li>Thanksgiving Day</li><li>Christmas Day</li></ul><p style=\"line-height:116%;\">Please call&nbsp;before arriving with a stray animal.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.nycacc.org/locations-and-hours/\">Find an ACC location.</a></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+          "ContentAction": [
+            {
+              "Name": "Illegal Animal Kept as a Pet",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Illegal Animal Kept as Pet"
+            }
+          ]
+        },
+        {
+          "Name": "Illegal Animal for Sale",
+          "Content": "<p>You can report people or shops selling wild or illegal animals. By law, wild or illegal animals cannot be sold in New York City.</p>",
+          "ContentAction": [
+            {
+              "Name": "Illegal Animal Sold",
+              "Agency": "Department of Health and Mental Hygiene",
+              "Problem": "Illegal Animal Sold"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -120,7 +120,7 @@ const CASES = [
   { d: "a car has been parked in front of my driveway all day", ok: ["KA-01062"] },
   { d: "an abandoned car with no plates on my block", ok: ["KA-02130"] },
   { d: "a truck is idling outside the school", ok: ["KA-02222"] },
-  { d: "a delivery truck is double parked in the bike lane", ok: ["KA-01260", "KA-01986"] },
+  { d: "a delivery truck is double parked in the bike lane", ok: ["KA-01986"] },
   { d: "a taxi driver was rude to me", ok: ["KA-01241"] },
   { d: "a car is stored in my neighbor's front yard", ok: ["KA-01991"] },
   // Safety (911 first)
@@ -151,7 +151,7 @@ const CASES = [
   { d: "the house next door has rats", ok: ["KA-01107", "KA-02278"] },
   { d: "garbage bags left on the curb for a week", ok: ["KA-01788", "KA-02356", "KA-01803", "KA-02097"] },
   { d: "loud party at the house next door", ok: ["KA-01591", "KA-01017"] },
-  { d: "cars racing down my residential street at night", ok: ["KA-01102", "KA-02305", "KA-03063"] },
+  { d: "cars racing down my residential street at night", ok: ["KA-01102", "KA-02305", "KA-03063", "KA-02046"] },
 ];
 
 for (const c of CASES) {

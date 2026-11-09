@@ -117,7 +117,7 @@ took 5 s or more. A one-month call fetches only its month. If the asked-for mont
 now"** when the portal was asked and did not answer in time, **"NYC Open Data is not responding
 right now"** when it returned an HTTP 5xx or could not be reached.
 
-**A fiscal-year call answers within about 12 s** (`DA_ANSWER_WAIT_MS`). Saved months answer at
+**A fiscal-year call answers within about 12 s** (`DA_ANSWER_WAIT_MS`). The wait counts from the start of the call, so the dataset metadata lookup is inside it (beta retest 8: the first call on an empty cache took 16.0 s). If the metadata is not in by then, a saved copy of it is used; with none saved, the answer says the months are loading, and the load starts in the background once the metadata arrives. Saved months answer at
 once. The months not saved are fetched one at a time, never in parallel (engineering standards §6
 forbids it for one portal), and the answer waits for them 12 s at most. A month still loading then
 is listed in `months_missing` as "still loading … ask again in a minute"; it keeps loading after the

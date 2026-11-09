@@ -44,14 +44,16 @@ export const HIGH_SEVERITY = new Set(["hurt", "gas", "carbon_monoxide", "fire", 
 /** Words that say a crime is not over, whatever past-time word is near: "still inside", a weapon. */
 const PRESENT_DANGER = /\b(right now|happening|still (here|inside|there|in (there|here)|in (the|my|our|his|her|their) \w+)|(is|are|'s|'re) (inside|in (the|my|our) (house|apartment|home|building|room))|guns?|knife|knives|weapons?|pistola)\b/;
 
-const PAST = /\b(yesterday|last (night|week|month|year|weekend)|days? ago|weeks? ago|months? ago|earlier (today|this week)|the other day)\b/;
+export const PAST = /\b(yesterday|last (night|week|month|year|weekend)|days? ago|weeks? ago|months? ago|earlier (today|this week)|the other day)\b/;
 
 export const DANGERS: DangerKind[] = [
   {
     id: "fire",
     label: "fire",
     when: /\b(on fire|fire\b(?!\s*(hydrant|escape|alarm box|extinguisher|department|code|safety|truck|house|station|inspection|exit|drill|pit|place|lane|zone|works?))|flames?|blaze|incendio|fuego|something('s| is) burning|(house|building|car|apartment|kitchen) is burning)/,
-    unless: /\b(fireplace|fireworks?|fired (me|him|her|them)|ceasefire|campfire)\b/,
+    // A building fire alarm that keeps going off for no reason is a noise complaint (stage 9 stress
+    // set); any smoke or flame said with it is still a danger (the smoke kind, or "fire" again).
+    unless: /\b(fireplace|fireworks?|fired (me|him|her|them)|ceasefire|campfire)\b|\bfire alarms?\b[^.]{0,40}\b(for no reason|false alarms?|keeps? going off|goes off all the time|always going off|every (day|night|morning|week)|constantly|randomly|chirp\w*|beep\w*)\b/,
     city: /^Fire Emergency$/,
     terms: ["fire", "emergency"],
   },
@@ -105,7 +107,7 @@ export const DANGERS: DangerKind[] = [
     // Before "crime", so an animal attacking people quotes this article, not Assault.
     id: "dangerous_animal",
     label: "a dangerous animal",
-    when: /\b(aggressive|vicious|ferocious|rabid|foaming at the mouth)\b[^.]{0,30}\b(dogs?|animals?|pit ?bulls?|raccoons?|coyotes?)\b|\b(dogs?|animals?|pit ?bulls?|raccoons?|coyotes?)\b[^.]{0,40}\b(aggressive|vicious|ferocious|rabid|foaming at the mouth|lunging at (people|kids|children|someone|me|us)|attacking (people|kids|children|someone|me|us)|chasing (people|kids|children|someone|me|us))\b/,
+    when: /\b(aggressive|vicious|ferocious|rabid|foaming at the mouth)\b[^.]{0,30}\b(dogs?|animals?|pit ?bulls?|raccoons?|coyotes?)\b|\b(dogs?|animals?|pit ?bulls?|raccoons?|coyotes?)\b[^.]{0,40}\b(aggressive|vicious|ferocious|rabid|foaming at the mouth|(lunging at|attacking|chasing|biting) (people|kids|children|someone|somebody|me|us|(a |the |my |our )?(child|kid|person|man|woman|boy|girl|baby|neighbor|jogger)))\b/,
     // The whole sentence is excused, so "a vicious dog bit my dog" is not a 911 case.
     unless: /[^.]*\b(bit|bitten|attacked|attacking)\b[^.]{0,20}\b(my|a|the|another|other|our|his|her|their) (dogs?|cats?|pets?)\b[^.]*/,
     city: /^Dangerous Animal$/,
@@ -115,7 +117,7 @@ export const DANGERS: DangerKind[] = [
     id: "crime",
     label: "a crime in progress",
     when: /\b(being (robbed|mugged|attacked|stabbed|shot|assaulted|beaten|followed)|getting (robbed|mugged|attacked|stabbed|shot|beaten|jumped)|break(ing)? (in|into)|broke into|(someone|somebody|he|she|they|a (man|guy|woman|person)|people|burglars?|thie(f|ves)) broke in\b|^broke in\b|broke in (last|yesterday|while|and|through|at)\b|breaking-in|burglar\w*|robbery|robbing|mugging|stabb\w*|shoot(ing|er)|shots?|gun ?(fire|shots?)|dragged into|being dragged|forced into a (car|van)|hitting (his|her|their|my|a) (wife|husband|girlfriend|boyfriend|partner|kids?|child|son|daughter|mother|mom|father|dad)|hitting (me|her|him|them)|(is |keeps )?beating (me|her|him|them|his|my)|threaten\w* (people|someone|somebody|me|us|him|her|them|to (kill|hurt|shoot|stab))|(has|with|pulled|waving|holding|carrying) (a |out a )?(gun|knife|weapon)|guns?|weapons?|knife|knives|assault\w*|attack(ing|ed)?|fight(ing)? (outside|in the street|right now|in the hallway)|domestic violence|beating (him|her|them|someone|somebody|me)|robando|asalt\w*|pistola)\b/,
-    unless: /\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun hill|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
+    unless: /\b(dogs?|cats?|animals?)\b[^.]{0,20}\b(attack(ed|ing|s)?|bit|bitten|bites|biting)\b[^.]{0,10}\b(my|a|the|our|another|other|his|her|their) (dogs?|cats?|pets?|puppy|kitten)\b|\b((toy|nail|glue|water|squirt|heat|caulk(ing)?|staple|spray) guns?|gun hill|gun (permit|license|laws?)|knife sharpening|gun (stores?|shops?|ranges?|shows?)|shot glass(es)?|shots? of (espresso|tequila|whiskey|vodka|liquor)|(flu|covid|vaccine|booster|allergy) shots?|(photo|camera|great|nice) shots?|shot (a |the )?(photo|picture|video)|(sparks?|water|flames?|smoke|steam)\w* (is |are )?shooting out|shooting out of|shoot(ing)? (a |the )?(videos?|photos?|pictures?|film|a film|movies?|scenes?|commercials?|hoops|pool|the breeze)|(video|photo|film|movie) shoot\w*|threaten\w* to (evict|sue|call|report|raise|tow|fine|cut))\b/,
     city: /^(Assault|Gunshot)$/,
     terms: ["dangerous", "situation", "location"],
   },

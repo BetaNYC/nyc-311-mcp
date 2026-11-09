@@ -1,0 +1,32 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-01058",
+      "Title": "Cable Complaint",
+      "Description": "Report a problem with a cable TV, phone, or internet provider.",
+      "Section": [
+        {
+          "Name": "Cable Complaint Intro",
+          "Content": "<div style=\"background:#eee;border:1px solid #ccc;padding:5px 10px; margin-bottom:15px;\"><p><em><strong>Need something else?</strong></em></p><ul><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-01572\">Internet Service or Online Business Complaint</a>&nbsp;to report an internet provider&nbsp;not providing services</li><li><a class=\"kalink\" target=\"_blank\" href=\"https://portal.311.nyc.gov/article/?kanumber=KA-03227\">Broadcast Television Rescan</a>&nbsp;for questions about rescanning local television channels</li></ul></div><p>You can report a problem with your cable provider if you and the cable company were unable to resolve the issue directly.</p><p>Reports are accepted about:</p><ul><li>AlticeUSA or&nbsp;Optimum</li><li>RCN</li><li>Charter Spectrum</li><li>Verizon FiOS</li></ul><p>You can report a problem with:</p><ul><li>Cable bills</li><li>Phone service and high speed internet</li><li>Converters, remote controls, and cable modems</li><li>Installation, reception, and service availability</li><li>Mischarges, overcharges, and refund requests</li></ul>",
+          "ContentAction": [
+            {
+              "Name": "Cable Complaint",
+              "Agency": "Office of Technology and Innovation",
+              "Problem": "Cable Complaint"
+            }
+          ]
+        },
+        {
+          "Name": "Status",
+          "Content": "<p><span style=\"color:#0D0D0D;\">If you contacted the Cable Consumer Service Department by mail or submitted a service request about a cable problem, you can check the status of your complaint.</span></p><p>Call <a href=\"tel:311\">311</a> or 212-NEW-YORK <a href=\"tel:2126399675\">(212-639-9675)</a> for help.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Missing Channels and Price Increases",
+          "Content": "<p><span style=\"color:#0D0D0D;\">Your cable or satellite provider may decide to stop offering certain channels because of contract disputes or other issues. The City can mediate and help companies resolve their disputes, but by federal law, they cannot require cable providers to carry specific channels or content. They also cannot order companies to reduce their rates or provide discounts.</span></p><p><span style=\"color:#0D0D0D;\">You have a right to suspend your cable service at any time. When you cancel, your provider must give you a rebate for any unused prepaid time.</span></p><p><span style=\"color:#0D0D0D;\">For more information on missing channels or price increases, contact your cable provider. If you encounter issues with canceling your service or billing, you can make a complaint with the City.</span></p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}

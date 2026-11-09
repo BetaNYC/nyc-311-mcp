@@ -640,6 +640,10 @@ export function restingWhy(last: string, until: number): string {
 export const STILL_LOADING =
   "still loading: NYC Open Data is slow to answer this month, so this answer did not wait for it. It keeps loading and is saved when done; ask again in a minute.";
 
+/** A fiscal-year call on an empty cache whose dataset metadata did not arrive within the wait. */
+export const FY_METADATA_SLOW =
+  "NYC Open Data is slow to answer right now, so no month of this fiscal year could be read within this answer's wait. The months are loading in the background and are saved as they arrive; ask again in a minute.";
+
 /** Why a fiscal-year month is missing from a one-month call's year to date. */
 export const ONE_MONTH_ONLY = "not fetched: a one-month call fetches only its own month; this one is not saved yet";
 
@@ -985,6 +989,10 @@ export async function directoryAssistanceReport(
   now: number = Date.now(),
   opts: { budgetMs?: number; requestTimeoutMs?: number; answerWaitMs?: number; retryPauseMs?: number; backgroundMs?: number } = {}
 ) {
+  // A fiscal-year call's answer wait counts from here, so the dataset metadata lookup is inside
+  // it (beta retest 8, 2026-11-09: the first call on an empty cache took 16.0 s, the metadata
+  // request adding about 4 s before the 12 s wait began).
+  const callStart = Date.now();
   const today = nycToday(now);
   // The dataset is published daily, through yesterday at best.
   const window = { start: DATA_START, end: addDays(today, -1) };
@@ -995,8 +1003,37 @@ export async function directoryAssistanceReport(
   const waited = request.timeoutMs ?? DA_REQUEST.timeoutMs;
   const plain = (trouble: Trouble, ym: string | null) => (trouble === "slow" ? openDataSlow(ym, waited) : openDataDown(ym));
   let mr: Awaited<ReturnType<SodaClient["metadataOrCached"]>>;
+  const answerWait = opts.answerWaitMs ?? DA_ANSWER_WAIT_MS;
+  const waitUntil = callStart + answerWait;
+  const metaP = soda.metadataOrCached(CALL_CENTER_DATASET, { deadline, ...request });
   try {
-    mr = await soda.metadataOrCached(CALL_CENTER_DATASET, { deadline, ...request });
+    if (periods.month) mr = await metaP;
+    else {
+      // A fiscal-year call waits for the metadata only within its answer wait. If it is not in
+      // by then, the answer says every month not saved is still loading, and the load starts
+      // in the background as soon as the metadata arrives.
+      let got: typeof mr | undefined;
+      metaP.then((m) => (got = m)).catch(() => undefined);
+      await Promise.race([metaP, new Promise((r) => setTimeout(r, Math.max(0, waitUntil - Date.now())).unref?.())]);
+      if (!got) {
+        const disk = await soda.readCache<SodaMetadata>(`meta/${CALL_CENTER_DATASET}`);
+        if (!disk) {
+          // Nothing saved at all (an empty cache): start the load once the metadata arrives,
+          // and answer now that it is loading.
+          const fyMonths = monthsBetween(periods.fiscal_year.start, periods.fiscal_year.end);
+          metaP
+            .then(async (m) => {
+              const todo: string[] = [];
+              for (const ym of fyMonths) if (!(await savedMonth(soda, m, ym, today)).fresh) todo.push(ym);
+              loadMonths(soda, m.meta, todo, request, soda.clock() + (opts.backgroundMs ?? DA_BACKGROUND_MS), opts.retryPauseMs ?? DA_RETRY_PAUSE_MS);
+            })
+            .catch(() => undefined);
+          throw new Error(FY_METADATA_SLOW);
+        }
+        // A saved copy of the metadata answers for now; the fresh one is used by the next call.
+        mr = { meta: disk.value, stale: false };
+      } else mr = got;
+    }
   } catch (err) {
     const trouble = sodaTrouble(err);
     if (trouble) throw new Error(plain(trouble, periods.month?.month ?? null));
@@ -1024,8 +1061,7 @@ export async function directoryAssistanceReport(
       }
     }
     const pause = opts.retryPauseMs ?? DA_RETRY_PAUSE_MS;
-    const wait = opts.answerWaitMs ?? DA_ANSWER_WAIT_MS;
-    const waitUntil = Date.now() + wait;
+    const wait = Math.max(0, waitUntil - Date.now());
     // Months an earlier call started and that are still loading: this call waits on them.
     const inherited = new Set(todo.filter((ym) => loading.get(soda)?.has(ym)));
     const started = loadMonths(soda, meta, todo, request, soda.clock() + (opts.backgroundMs ?? DA_BACKGROUND_MS), pause);

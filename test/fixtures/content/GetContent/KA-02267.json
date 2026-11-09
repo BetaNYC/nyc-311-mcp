@@ -1,0 +1,42 @@
+{
+  "KnowledgeArticle": [
+    {
+      "ArticlePublicNumber": "KA-02267",
+      "Title": "Noise from Helicopter",
+      "Description": "Report noise from a helicopter.",
+      "Section": [
+        {
+          "Name": "Noise from Helicopter Intro",
+          "Content": "<p>You can report noisy helicopters in New York City to the NYC Economic Development Corporation (EDC) and&nbsp;the Federal Aviation Administration (FAA).&nbsp;The EDC and FAA have different jurisdictions and authority of different helicopters.</p><p>File a complaint with the <strong>EDC</strong> if:</p><ul><li>The helicopter is used for sightseeing, OR</li><li>The flight originated from an NYC-controlled airport (East 34th Street Heliport or Downtown Manhattan Heliport, Pier 6)</li></ul><p>File a complaint with the <strong>FAA </strong>if:</p><ul><li>The helicopter isn&rsquo;t used for sightseeing, OR</li><li>The flight originated from outside of NYC or from the West 30th Street Heliport</li></ul><p><strong>Helicopter Type or Origin&nbsp;Unknown</strong></p><p>If you don&rsquo;t know what the helicopter is being used for or where the helicopter came from, you can report it to both EDC and FAA. They will research your request and try to determine if the helicopter is under their jurisdiction using the information you provide about where and when you saw it and what it looked like.</p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "EDC Complaints",
+          "Content": "<p>The New York City Economic Development Corporation (EDC) tracks tourist helicopters that originate from New York City for compliance with the NYC Helicopter Sightseeing Plan.</p><p>The EDC does not have oversight over NYPD, news, or film helicopters, or helicopters that originate from outside the City-owned heliports.&nbsp;</p><p>If you don&rsquo;t know what the helicopter is being used for or where it came from, you can report the problem to both EDC and FAA.</p><p><strong>What You Can Report</strong></p><p>You can report a noisy sightseeing helicopter.</p><p><strong>What You Need</strong></p><p>To help the City review the complaint and identify the origin or purpose of the flight, please include:</p><ul><li>Approximate location of the helicopter, such as cross streets, or adjacent streets if over a body of water</li><li>Approximate time you saw the helicopter</li><li>Model, make, or color</li><li>Photos</li></ul>",
+          "ContentAction": [
+            {
+              "Name": "Noise from Helicopter",
+              "Agency": "Economic Development Corporation",
+              "Problem": "Noise - Helicopter"
+            }
+          ]
+        },
+        {
+          "Name": "FAA Complaints",
+          "Content": "<p>The Federal Aviation Administration (FAA) takes complaints about noisy helicopters that don&rsquo;t fall under the City&rsquo;s jurisdiction.</p><p>File a complaint with FAA if:</p><ul><li>The helicopter isn&rsquo;t used for sightseeing, OR</li><li>The flight originated outside of NYC or from the West 30th Street Heliport</li></ul><p>If you don&rsquo;t know what the helicopter is being used for or where it came from, you can report the problem to both EDC and FAA.</p><p><a class=\"externallink\" target=\"_blank\" href=\"https://www.faa.gov/ancir\">Report a noisy helicopter to the FAA.</a></p>",
+          "ContentAction": []
+        },
+        {
+          "Name": "NYC Airspace",
+          "Content": "<p>Airspace is regulated by the Federal Aviation Administration (FAA), though much of the airspace over New York City is uncontrolled. This means that helicopters operate under visual flight rules and are not under the direct control of air traffic.</p><p>Helicopter flights over the City may, and often do, originate from various airports, heliports, or helipads within the tri-state area and may be destined to any of these various airports, heliports or helipads.</p><p>The purpose of a specific helicopter flight may&nbsp;not be immediately apparent from ground level, but may be classified as:</p><ul><li>Charter, tour, or sightseeing</li><li>Government</li><li>Filming</li><li>News gathering</li><li>Emergency flight</li></ul>",
+          "ContentAction": []
+        },
+        {
+          "Name": "Sightseeing Helicopter Rules",
+          "Content": "<p>The City developed the permitted tour flight routes from the Downtown Manhattan Heliport (DMH) by way of the NYC Helicopter Sightseeing Plan.</p><p>The New York City Economic Development Corporation (NYCEDC) developed the plan to&nbsp;address&nbsp;concerns from the local community and elected officials about the impact of helicopter sightseeing flights from the DMH on surrounding neighborhoods.</p><p>The NYCEDC tracks tourist helicopters that originate out of the DMH for compliance with the plan but doesn&#39;t address concerns from tour flights that come from locations outside of New York City. The City does not have the authority to regulate tour flights that originate outside of NYC.</p><p><strong>Hours of Operation</strong></p><p>Tourist helicopters departing from City heliports may operate Monday to Saturday, 9 AM to 7 PM.</p><p><strong>Approved Routes</strong></p><p>Tour or sightseeing flights are defined as Point A to Point A. These flights may originate from a number of airports, heliports, or helipads around the tri-state area for the purpose of viewing the city skyline.</p><p>Only one heliport in NYC, the Downtown Manhattan Heliport (DMH), is permitted to allow tour flights from its facilities. All sightseeing helicopters must depart and approach the DMH from the south, maximizing aircraft distances from Brooklyn Bridge Park.</p><p>Helicopters will then follow the center of the Hudson River north to either 79th Street, or Yankee Stadium, before returning south center-west of the Hudson River.</p><p>All flights will fly over the Hudson River at 1,500 feet or above to reduce noise, barring any Federal Aviation Administration restrictions.</p><p>Tour flights that originate outside of the DMH or outside of NYC are not required to follow the approved tour flight routes and may legally fly over land.</p>",
+          "ContentAction": []
+        }
+      ]
+    }
+  ]
+}
