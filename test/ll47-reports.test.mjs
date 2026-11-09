@@ -788,7 +788,14 @@ test("fiscal-year call, slow portal: answers within the wait from saved months, 
     },
   });
   const rows = () => requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json");
-  mock.timers.enable({ apis: ["setTimeout"] });
+  // Node 20.11+ takes { apis }; Node 18 takes the array (package.json engines: >=18).
+  let legacy = false;
+  try {
+    mock.timers.enable({ apis: ["setTimeout"] });
+  } catch {
+    mock.timers.enable(["setTimeout"]);
+    legacy = true;
+  }
   t.after(() => mock.timers.reset());
   let env;
   const first = directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW).then((e) => (env = e));
@@ -805,6 +812,9 @@ test("fiscal-year call, slow portal: answers within the wait from saved months, 
   assert.match(fy.note, /still loading/);
   assert.equal(env.data.months_from_cache, 2);
   assert.equal(most, 1, `${most} requests at once`);
+  // Node 18's mock timers never fire a timer set after the first tick, so the rest is
+  // checked there by the real-clock test below.
+  if (legacy) return t.diagnostic("Node 18 mock timers: background part checked by the real-clock test");
   // A second call while they load waits on the same requests: no new ones.
   let env2;
   const second = directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW).then((e) => (env2 = e));
@@ -812,7 +822,9 @@ test("fiscal-year call, slow portal: answers within the wait from saved months, 
   await second;
   assert.equal(env2.data.fiscal_year.complete, false);
   // The loads finish on their own (40 s each, one at a time) and are saved.
-  await advance(() => false, 150_000, 1_000);
+  const loaded = await advance(() => rows().length === 3 && active === 0, 400_000, 1_000);
+  t.diagnostic(`background loads done ${loaded} ms after the second call`);
+  await pause(50); // the last month's save is real file I/O
   assert.equal(active, 0);
   assert.equal(most, 1, `${most} requests at once`);
   const asked = rows().map((r) => /'(\d{4}-\d{2})-01/.exec(r.url.searchParams.get("$where"))[1]);
@@ -826,6 +838,47 @@ test("fiscal-year call, slow portal: answers within the wait from saved months, 
   let total = 0;
   for (const ym of FY27_TO_OCT) total += await monthSum(ym);
   assert.equal(done.data.fiscal_year.calls, total);
+});
+
+test("fiscal-year call, real clock and short waits: answers at the wait, then the months load one at a time and are saved", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-soda-fy-real-"));
+  await warmMonths(dir, ["2026-07", "2026-10"]);
+  let active = 0;
+  let most = 0;
+  const asked = [];
+  // A real clock that reads as the fixtures' date, so saved months stay fresh on any day.
+  const offset = Date.now() - NOW;
+  const real = new SodaClient({
+    logger: () => {},
+    cacheDir: dir,
+    minIntervalMs: 5,
+    now: () => Date.now() - offset,
+    fetch: async (url) => {
+      const u = new URL(url);
+      if (u.pathname === "/api/views/wewp-mm3p.json") return new Response(await readFile(path.join(SODA_FIX, "view.json")));
+      const m = /date >= '(\d{4}-\d{2})-01/.exec(u.searchParams.get("$where"));
+      asked.push(m[1]);
+      most = Math.max(most, ++active);
+      await pause(150);
+      active--;
+      if (u.searchParams.get("$offset") !== "0") return Response.json([]);
+      const body = await readFile(path.join(SODA_FIX, `${m[1]}.json`)).catch(() => null);
+      return body ? new Response(body) : Response.json([]);
+    },
+  });
+  const t0 = Date.now();
+  const env = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 60 });
+  const took = Date.now() - t0;
+  assert.ok(took < 140, `answered after ${took} ms, before any month could load`);
+  assert.deepEqual(env.data.fiscal_year.months_missing.map((m) => [m.month, m.why]), [["2026-08", STILL_LOADING], ["2026-09", STILL_LOADING], ["2026-11", STILL_LOADING]]);
+  for (let i = 0; i < 100 && !(asked.length === 3 && active === 0); i++) await pause(20);
+  await pause(100);
+  assert.equal(active, 0);
+  assert.equal(most, 1, "one request at a time");
+  assert.deepEqual(asked, ["2026-08", "2026-09", "2026-11"]);
+  const done = await directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), real, NOW, { answerWaitMs: 60 });
+  assert.equal(done.data.fiscal_year.complete, true);
+  assert.equal(asked.length, 3, "nothing asked again");
 });
 
 test("fiscal-year call with every month saved answers without waiting or asking", async () => {
