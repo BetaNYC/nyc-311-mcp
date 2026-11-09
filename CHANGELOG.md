@@ -32,6 +32,7 @@ Still a beta on the `beta` branch; not published to npm.
   3 or more above every other title with that word. "No heat in my apartment" and "illegal
   fireworks every night" are strong again; "construction" alone, or "construction site"
   for the Construction Site No Smoking Sign article, is still not.
+- **Exit on close.** The server now exits as soon as the app closes it, instead of staying alive while fiscal-year months load in the background. Cache files are written to a temp file and renamed, so nothing is left half-saved; an unfinished month loads again next time.
 - **Version.** The server reports `1.2.0-beta.5`.
 
 ## [1.2.0-beta.4] - 2026-11-09
