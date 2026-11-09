@@ -188,7 +188,9 @@ test("list_311_categories: the tree, and one category's articles", async () => {
   assert.equal(tree.categories.length, 19);
   const noise = await list311Categories({ category_id: "311-12" }, client);
   assert.equal(noise.count, 42);
-  assert.ok(noise.articles.some((a) => a.ka_number === "KA-01092" && a.portal_url.endsWith("KA-01092")));
+  // 20 articles a page since the beta test (2026-11-08); KA-01092 is on the second page.
+  const noise2 = await list311Categories({ category_id: "311-12", offset: 20 }, client);
+  assert.ok(noise2.articles.some((a) => a.ka_number === "KA-01092" && a.portal_url.endsWith("KA-01092")));
   const parent = await list311Categories({ category_id: "311-16" }, client);
   assert.ok(parent.category.subcategories.length > 0);
   await assert.rejects(list311Categories({ category_id: "311-99999" }, client), /no category/);

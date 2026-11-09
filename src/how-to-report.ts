@@ -561,7 +561,9 @@ export const HOW_SHAPE = {
   limit: z.number().int().min(1).max(5).optional(),
 };
 
-export const CATEGORIES_SHAPE = { category_id: z.string().regex(CATEGORY_ID).optional() };
+export const CATEGORIES_SHAPE = { category_id: z.string().regex(CATEGORY_ID).optional(), offset: z.number().int().min(0).optional() };
+/** Articles per page in list_311_categories (beta test 2026-11-08: one category was 11.5k characters). */
+export const ARTICLE_PAGE = 20;
 
 const oldest = (xs: Fetched<unknown>[]) => xs.map((x) => x.fetched_at).sort()[0] ?? null;
 
@@ -799,10 +801,18 @@ async function list311CategoriesInner(args: z.infer<z.ZodObject<typeof CATEGORIE
     return { id: c.id, name: c.name, description: c.description, portal_url: c.url, ...(children.length ? { subcategories: children.map(node) } : { has_articles: c.id !== "311-19" }) };
   };
   if (!args.category_id) {
+    // A summary (beta test 2026-11-08: the whole tree was 33k characters): each top category
+    // with its description, and its subcategories by id and name only.
+    // Subcategories as "id name" text, a level down written "id name (id name; ...)".
+    const brief = (c: Category): string => {
+      const children = kids(c.id);
+      return `${c.id} ${c.name}${children.length ? ` (${children.map(brief).join("; ")})` : ""}`;
+    };
     return redactAll({
       ...SAFETY_FIELDS,
-      categories: kids(null).map(node),
+      categories: kids(null).map((c) => ({ id: c.id, name: c.name, description: c.description, ...(kids(c.id).length ? { subcategories: kids(c.id).map(brief) } : {}) })),
       count: cats.value.length,
+      more: "This is a summary. Give a category_id: a category with subcategories lists them with their descriptions; one with none lists its articles, 20 at a time.",
       note: "Only categories with no subcategories hold articles. Give one as category_id here to list its articles, or to how_to_report to search only it. \"A to Z\" (311-19) returns no articles through the API.",
       source: { ...source, fetched_at: cats.fetched_at },
       ...(cats.stale ? { stale: true as const, warning: cats.warning } : {}),
@@ -815,11 +825,16 @@ async function list311CategoriesInner(args: z.infer<z.ZodObject<typeof CATEGORIE
     return redactAll({ ...SAFETY_FIELDS, category: node(c), note: "This category has subcategories; articles are in the ones with no subcategories.", source: { ...source, fetched_at: cats.fetched_at } });
   }
   const list = await client.articleList(c.id);
+  const offset = args.offset ?? 0;
+  const page = list.value.slice(offset, offset + ARTICLE_PAGE);
+  const next = offset + ARTICLE_PAGE < list.value.length ? offset + ARTICLE_PAGE : null;
   return redactAll({
     ...SAFETY_FIELDS,
     category: { id: c.id, name: c.name, description: c.description, portal_url: c.url },
-    articles: list.value.map((a) => ({ ka_number: a.ka_number, title: a.title, summary: a.description, portal_url: articleUrl(a.ka_number) })),
+    articles: page.map((a) => ({ ka_number: a.ka_number, title: a.title, summary: a.description, portal_url: articleUrl(a.ka_number) })),
     count: list.value.length,
+    showing: list.value.length ? `${Math.min(offset + 1, list.value.length)} to ${offset + page.length} of ${list.value.length}` : "none",
+    next_page: next === null ? null : { category_id: c.id, offset: next },
     source: { ...source, fetched_at: list.fetched_at },
     ...(list.stale || cats.stale ? { stale: true as const, warning: list.warning ?? cats.warning } : {}),
   });
@@ -864,7 +879,8 @@ export const REPORT_TOOLS = [
       type: "object",
       additionalProperties: false,
       properties: {
-        category_id: { type: "string", description: "A category id such as '311-12' (Noise). Leave out to list all categories." },
+        category_id: { type: "string", description: "A category id such as '311-12' (Noise). Leave out for a summary of all categories." },
+        offset: { type: "integer", minimum: 0, description: "Articles to skip (20 per page); next_page.offset." },
       },
     },
   },
