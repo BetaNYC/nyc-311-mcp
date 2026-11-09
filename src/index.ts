@@ -6,9 +6,10 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 import { TOOLS, callTool } from "./tools.js";
+import { PACKAGE_VERSION } from "./version.js";
 
 const server = new Server(
-  { name: "nyc-311-mcp", version: "1.0.0" },
+  { name: "nyc-311-mcp", version: PACKAGE_VERSION },
   { capabilities: { tools: {} } }
 );
 

@@ -5,7 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] — unreleased
+## [Unreleased]
+
+Groundwork for the district tools (epic #12, Phase 0 #13). No new tools yet, and
+nothing a client sees has changed: tool names, descriptions and schemas are the same.
+
+### Added
+
+- `src/boardstat-data.ts`: reads BoardStat's published files
+  (`https://www.beta.nyc/boardstat/data/`) and caches them on disk until BoardStat
+  publishes a newer build. One request at a time, timeouts, a package User-Agent.
+  ZIP code columns are never read. Not yet used by any tool.
+- `src/fiscal-year.ts`: NYC fiscal year (July 1 to June 30) and calendar-period
+  handling shared by future date tools.
+- `src/envelope.ts`: the answer shape every district tool will share
+  (`data_as_of`, `boardstat_url`, `caveats`, `source`). See `docs/district-tools.md`.
+- Dependencies: `hyparquet` and `hyparquet-compressors` (pure-JavaScript Parquet
+  reader and its ZSTD codec; about 0.85 MB installed).
+- Tests for all of the above, run with no network against small slices of a real
+  BoardStat build (`test/fixtures/boardstat/`).
+
+### Changed
+
+- CI tests Node 18 again (alongside 20 and 22), to back `engines.node >= 18`.
+- The server reports its real version (from `package.json`) instead of a hard-coded `1.0.0`.
+- Cleanup from PR #3 (#9): one `apiFetch` helper instead of `apiGet`/`apiPost`/`buildUrl`,
+  no `STATUS_PATHS` table, the unused calendar response types removed, and a shorter
+  `get_calendar` date fallback. A new test pins every request sent to the 311 API; it
+  passed before and after the change.
+
+### Tests
+
+- Every tool is now tested to reject an unknown parameter (#7), and a tool added later
+  without a test entry fails the suite.
+
+## [1.1.0] — 2026-07-21
 
 ### Fixed
 

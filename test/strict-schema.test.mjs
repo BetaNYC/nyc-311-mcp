@@ -47,3 +47,27 @@ test("get_status still rejects a missing required type", async () => {
   assert.equal(result.isError, true);
   assert.match(result.content[0].text, /type/);
 });
+
+// #7, for every tool rather than one: a valid call plus one invented parameter
+// must be refused. VALID_ARGS must name every tool, so a tool added later
+// without an entry fails here instead of going untested.
+const VALID_ARGS = {
+  get_calendar: { date: "2026-07-04" },
+  get_status: { type: "CodeBlue" },
+  get_service_request: { sr_number: "311-17323508" },
+  get_service_request_list: { sr_numbers: ["311-17323508"] },
+};
+
+test("VALID_ARGS covers every advertised tool", () => {
+  assert.deepEqual(Object.keys(VALID_ARGS).sort(), TOOLS.map((t) => t.name).sort());
+});
+
+for (const [name, args] of Object.entries(VALID_ARGS)) {
+  test(`${name} answers its valid call and rejects the same call plus an unknown parameter`, async () => {
+    const ok = await callTool(name, args);
+    assert.notEqual(ok.isError, true, ok.content[0].text);
+    const bad = await callTool(name, { ...args, council_district: "10" });
+    assert.equal(bad.isError, true, `${name} silently dropped council_district: ${bad.content[0].text}`);
+    assert.match(bad.content[0].text, /council_district/);
+  });
+}
