@@ -531,7 +531,7 @@ async function monthCalls(
   ym: string,
   today: string,
   deadline: number,
-  give: { up: boolean }
+  give: { up: boolean; why?: string }
 ): Promise<MonthResult> {
   const key = `${CALL_CENTER_DATASET}/${ym}`;
   const saved = await soda.readCache<CallGroup[]>(key);
@@ -544,14 +544,19 @@ async function monthCalls(
     if (fresh || meta.stale) return { ym, groups: saved.value, from: fresh ? "cache" : "old_cache", fetched_at: iso(saved.fetched_at_ms) };
   }
   if (meta.stale || give.up) {
-    return { ym, missing: meta.stale ? "NYC Open Data could not be reached and no saved copy exists" : "this call ran out of time before reaching it" };
+    return { ym, missing: meta.stale ? "NYC Open Data could not be reached and no saved copy exists" : give.why ?? "this call ran out of time before reaching it" };
   }
   try {
     const groups = (await soda.queryAll(CALL_CENTER_DATASET, monthQuery(ym), { deadline })).map(toGroup);
     await soda.writeCache(key, meta.meta.rowsUpdatedAt, groups);
     return { ym, groups, from: "query", fetched_at: iso(soda.clock()) };
   } catch (err) {
+    // Out of time, or the portal failing after its retries: the other months are not tried.
     if (err instanceof DeadlineError) give.up = true;
+    else if (/HTTP 5\d\d|Gave up on NYC Open Data/.test(err instanceof Error ? err.message : "")) {
+      give.up = true;
+      give.why = "not tried: NYC Open Data was failing on an earlier month in this call";
+    }
     if (saved) return { ym, groups: saved.value, from: "old_cache", fetched_at: iso(saved.fetched_at_ms) };
     return { ym, missing: err instanceof DeadlineError ? "this call ran out of time before reaching it" : `NYC Open Data failed: ${err instanceof Error ? err.message : String(err)}` };
   }
@@ -632,13 +637,22 @@ export async function directoryAssistanceReport(
   const months = monthsBetween(periods.fiscal_year.start, periods.fiscal_year.end);
   // The asked-for month first, so a short budget still answers it; then the rest, oldest first.
   const order = periods.month ? [periods.month.month, ...months.filter((m) => m !== periods.month!.month)] : months;
-  const give = { up: false };
+  const give: { up: boolean; why?: string } = { up: false };
   const results = new Map<string, MonthResult>();
-  for (const ym of order) results.set(ym, await monthCalls(soda, mr, ym, today, deadline, give));
-  const missing = [...results.values()].filter((r): r is { ym: string; missing: string } => "missing" in r);
-  if (periods.month && results.get(periods.month.month) && "missing" in results.get(periods.month.month)!) {
-    throw new Error(`No answer for ${periods.month.month}: ${(results.get(periods.month.month) as { missing: string }).missing}. Try again later.`);
+  for (const ym of order) {
+    const r = await monthCalls(soda, mr, ym, today, deadline, give);
+    results.set(ym, r);
+    // The asked-for month failed: stop, rather than spend the rest of the budget on the
+    // fiscal-year months against a portal that is failing (beta test 2026-11-08: 45 s of 503s).
+    if (periods.month && ym === periods.month.month && "missing" in r) {
+      throw new Error(
+        /HTTP 5\d\d|fetch failed|no answer within/.test(r.missing)
+          ? `NYC Open Data is having trouble right now: the 311 Call Center Inquiry dataset (wewp-mm3p) did not answer for ${ym}. Try again in a few minutes; the question itself is fine.`
+          : `No answer for ${ym}: ${r.missing}. Try again later.`
+      );
+    }
   }
+  const missing = [...results.values()].filter((r): r is { ym: string; missing: string } => "missing" in r);
   const section = (p: Period) => {
     const ms = monthsBetween(p.start, p.end);
     const gone = missing.filter((x) => ms.includes(x.ym));

@@ -535,3 +535,18 @@ test("cb_monthly_list counts inconsistent City records and says so in a caveat (
   assert.ok(env.caveats.some((c) => /^2 requests created before 2025-10 are marked Closed but have no close date/.test(c)));
   assert.ok(env.caveats.some((c) => /City records are inconsistent for 1 requests/.test(c)));
 });
+
+test("Open Data failing on the asked month: stop there, no fiscal-year months, a plain message (beta test 2026-11-08)", async () => {
+  const { soda, requests } = await fixtureSoda({
+    respond: async (u) => (u.pathname === "/resource/wewp-mm3p.json" ? new Response("Service Unavailable", { status: 503 }) : null),
+    cost: 1_000,
+  });
+  const t0 = soda.clock();
+  await assert.rejects(
+    directoryAssistanceReport(daArgs({ month: "2026-10" }), soda, NOW),
+    (e) => /NYC Open Data is having trouble right now/.test(e.message) && /Try again in a few minutes/.test(e.message) && !/Gave up on|Service Unavailable/.test(e.message)
+  );
+  const months = new Set(requests.filter((r) => r.url.pathname === "/resource/wewp-mm3p.json").map((r) => /date >= '(\d{4}-\d{2})/.exec(r.url.searchParams.get("$where"))[1]));
+  assert.deepEqual([...months], ["2026-10"], "only the asked month was tried");
+  assert.ok(soda.clock() - t0 < 45_000, `${soda.clock() - t0} ms`);
+});
