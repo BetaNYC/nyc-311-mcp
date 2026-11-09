@@ -19,7 +19,7 @@ import { assertNoZip, assertNoZipValues, redactZip } from "./envelope.js";
 import { articleUrl, contentClient, NotFoundError, CATEGORY_ID, PORTAL, type Article, type ArticleSummary, type Category, type ContentAction, type ContentClient, type Fetched } from "./content-311.js";
 import { BOROUGHS, boardstatData, DISTRICT_JSON, DISTRICT_SHAPE, problemTrend } from "./district-tools.js";
 import type { BoardStatData } from "./boardstat-data.js";
-import { ASSISTANT_INSTRUCTION, assessDanger, CRIME_POINTER, CRIME_WORDS, emergencyLead, GENERIC_911, normalize, SAFETY_LINE, SAFETY_LINE_SOURCE, type DangerAssessment } from "./emergency.js";
+import { ASSISTANT_INSTRUCTION, BUILT_IN_911, BUILT_IN_911_READ, assessDanger, CRIME_POINTER, CRIME_WORDS, emergencyLead, GENERIC_911, normalize, SAFETY_LINE, SAFETY_LINE_SOURCE, type DangerAssessment } from "./emergency.js";
 
 // ─── words ────────────────────────────────────────────────────────────────────
 
@@ -666,7 +666,14 @@ async function howToReportInner(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, cl
   }
   const q = parseQuery(args.description);
   const used: Fetched<unknown>[] = [];
-  const cats = await client.categories();
+  let cats: Fetched<Category[]>;
+  try {
+    cats = await client.categories();
+  } catch (err) {
+    // A danger is answered without 311's content: the City's own 911 line is built in.
+    if (q.danger.kinds.length) return offlineDanger(q, err);
+    throw err;
+  }
   used.push(cats);
   const limit = args.limit ?? 3;
 
@@ -779,6 +786,29 @@ async function howToReportInner(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, cl
     ...(stale.length ? { stale: true as const, warning: stale[0].warning } : {}),
   };
   return redactAll(out);
+}
+
+/** A danger when 311's content cannot be read: the City's built-in 911 line, and why it is built in. */
+function offlineDanger(q: Query, err: unknown) {
+  const emergency = emergencyLead(q.danger, BUILT_IN_911)!;
+  if (emergency.ka_number) emergency.source += ` (the City's words, built into this server as read ${BUILT_IN_911_READ}, because 311's content could not be reached just now)`;
+  return redactAll({
+    safety_line: SAFETY_LINE,
+    safety_line_source: SAFETY_LINE_SOURCE,
+    assistant_instruction: ASSISTANT_INSTRUCTION,
+    first_line: emergency.call_911,
+    emergency,
+    best_match: null,
+    alternatives: [],
+    no_match: null,
+    content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${err instanceof Error ? err.message : String(err)}`,
+    how_to_reach_311: REACH_311,
+    not_filed: NOT_FILED,
+    caveats: ["Danger detection here is keyword-based. Call 911 first if anyone may be in danger.", NOT_FILED],
+    source: { name: `The City's 911 lines from 311's articles, built into this server (read ${BUILT_IN_911_READ})`, url: PORTAL, fetched_at: null as string | null },
+    stale: undefined as true | undefined,
+    warning: undefined as string | undefined,
+  });
 }
 
 /** A part of a split description keeps the whole description's danger reading. */
