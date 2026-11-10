@@ -11,9 +11,9 @@ what is in testing right now.
 
 ## What a beta is
 
-- **It is unreleased.** A beta runs straight from a work-in-progress branch on GitHub.
-  It is not on npm, and anyone using the released version keeps the released version.
-  Nothing changes for them.
+- **It is unreleased.** A beta runs straight from the repository's `main` branch on
+  GitHub, ahead of the next npm release. Anyone using the released version from npm
+  keeps the released version. Nothing changes for them.
 - **It may change, or break, without notice.** Tools can be renamed, answers can change
   shape, and a fix can land between one day and the next.
 - **Its answers still need checking.** Compare anything important with the source the
@@ -39,8 +39,10 @@ addresses, home addresses, and anything else about a real person.
 
 ## Adding a beta to this page (for maintainers)
 
-1. Put the work on a branch and confirm it installs with
-   `npx -y github:BetaNYC/<repo>#<branch>` and answers an MCP `tools/list`.
+1. Merge the work to `main` and confirm it installs with
+   `npx -y github:BetaNYC/<repo>#main` and answers an MCP `tools/list`. Testers install
+   from `#main`. Do not make a separate, long-lived beta branch: nyc-311-mcp's `beta`
+   branch fell behind `main` and sent testers an old build.
 2. Add a row to the table above and a page next to this one, `docs/beta/<repo>.md`,
    following the nyc-311-mcp page: what is new, install, what to test, safety notes if
    any, feedback, switching back.
