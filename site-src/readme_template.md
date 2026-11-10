@@ -1,67 +1,41 @@
 # nyc-311-mcp
 
 An [MCP](https://modelcontextprotocol.io/) server that connects an AI assistant like Claude to
-New York City's 311 data. Ask it whether alternate side parking is on today, where a 311
-request stands, or, in the beta, how to report a problem and what your community district
-reports most. It answers from the City's own data and tells you where each answer came from.
+New York City's 311 data. Ask it how to report a problem, what your community district reports
+most, how fast agencies close requests, or whether alternate side parking is on today. It
+answers from the City's own data and tells you where each answer came from.
 
 Built by [BetaNYC](https://beta.nyc). Free and open source.
 
 **See every tool, with real questions and answers: [betanyc.github.io/nyc-311-mcp](https://betanyc.github.io/nyc-311-mcp/)**
 
-> **If this is an emergency, or if you think this is an emergency, call 911.** In the beta,
-> every answer from every tool ends with this text: "For informational purposes only. BetaNYC builds these
+> **If this is an emergency, or if you think this is an emergency, call 911.** Every answer
+> from every tool ends with this text: "For informational purposes only. BetaNYC builds these
 > answers from City data; they may contain errors. Check the City's 311 page before you
 > report. If this is an emergency, or if you think this is an emergency, call 911."
 
-## Two versions
+## What's new in 1.2.0
 
-|  | Released | Beta |
-|---|---|---|
-| Version | 1.1.0 | 1.2.0-beta.19 |
-| Tools | 4: the 311 calendar, status alerts, and request lookup | 21: the same 4, plus help reporting a problem, district numbers from BoardStat, and the Local Law 47 reports |
-| Install from | npm, `@betanyc/nyc-311-mcp` | GitHub, `github:BetaNYC/nyc-311-mcp#main` |
-| Use it for | Everyday use | Trying what's next and telling us what breaks |
+Version 1.1.0 had 4 tools. Version 1.2.0 has **21**.
 
-The released version comes first below. [The beta](#the-beta) follows.
+- **Help reporting a problem.** Describe it in your own words. It finds the City's 311 article
+  for it, the agency, and every way to report it, and it can write a short report for you to
+  paste in. It never files anything for you.
+- **Your community district or Council district.** Eleven tools that answer from
+  [BoardStat](https://www.beta.nyc/boardstat/), which BetaNYC builds every night from NYC Open
+  Data: top problems, trends, how fast agencies close requests, what's still open, and every
+  request at an address. Each answer links to the matching BoardStat page.
+- **The Local Law 47 reports.** Rebuilds of the monthly 311 reports that
+  [Local Law 47 of 2005](https://intro.nyc/0174-2004) (Gale A. Brewer) put in Charter § 1075.
+  They are BetaNYC rebuilds, not the City's official reports.
+- **Clearer answers from the original four.** Request status comes back in words, and the
+  status alerts say yes or no.
+- **A closing note on every answer**, the one quoted above.
 
----
+It went through 19 beta builds before this release. The full history is in
+[CHANGELOG.md](CHANGELOG.md).
 
-## The released version (1.1.0)
-
-### What it does
-
-Four tools, all on the [NYC 311 Public API](https://api-portal.nyc.gov/). They need a free
-API key.
-
-| Tool | What it answers |
-|---|---|
-| `get_calendar` | Alternate side parking, trash and recycling collection, and schools, for a day or a range of up to 90 days |
-| `get_status` | Whether Code Blue, a fire hydrant emergency, snow or ice, or an emergency management (OEM) alert is in effect right now |
-| `get_service_request` | One 311 request, by its 311 number |
-| `get_service_request_list` | Several 311 requests at once |
-
-Things to ask:
-
-- "Is alternate side parking suspended today?"
-- "Are schools open on July 4th?"
-- "Is there a Code Blue in effect right now?"
-- "What's the status of 311 request 311-17323508?"
-
-### Get a free API key
-
-1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and sign in or register.
-2. Subscribe to **NYC 311 Public Developers**. It's self-serve.
-3. Copy a key from your [profile page](https://api-portal.nyc.gov/profile). Each subscription
-   has a primary and a secondary key. Either one works.
-
-Keep the key to yourself. Never paste it into a GitHub issue.
-
-The portal lists two other products. **NYC 311 Public — High Demand** gives a higher rate
-limit. **NYC 311 Developer Partner** is for creating service requests, which this server never
-does. You don't need either.
-
-### Install
+## Install
 
 You need [Node.js](https://nodejs.org/) 18 or later.
 
@@ -80,7 +54,8 @@ and add this inside `mcpServers` in `claude_desktop_config.json`:
 }
 ```
 
-Save, quit Claude Desktop completely, and open it again.
+Save, quit Claude Desktop completely, and open it again. No API key? Leave out the `"env"`
+line and the comma before it.
 
 **Claude Code.** In a terminal:
 
@@ -89,81 +64,41 @@ claude mcp add --env NYC_311_API_KEY=your_key_here --transport stdio nyc-311 \
   -- npx -y @betanyc/nyc-311-mcp
 ```
 
-Add `--scope user` to use it in every project. Check it with `claude mcp get nyc-311`.
+Add `--scope user` to use it in every project. Check it with `claude mcp get nyc-311`. No API
+key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 
-**Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp` with `NYC_311_API_KEY` set, or install
-it globally with `npm install -g @betanyc/nyc-311-mcp` and run `nyc-311-mcp`.
-
----
-
-## The beta
-
-The beta is the next version, 1.2.0. It has **21 tools**: the released 4, plus 17 new ones.
-It isn't on npm yet. It runs straight from this repository's `main` branch, so it can change
-from one day to the next. People on the released version aren't affected.
-
-We're testing it now. If something is wrong or confusing, [tell us](#tell-us-what-you-find).
-
-### What's new
-
-- **Help reporting a problem.** Describe it in your own words. It finds the City's 311 article
-  for it, the agency, and every way to report it, and it can write a short report for you to
-  paste in. It never files anything for you.
-- **Your community district or Council district.** Eleven tools that answer from
-  [BoardStat](https://www.beta.nyc/boardstat/), which BetaNYC builds every night from NYC Open
-  Data: top problems, trends, how fast agencies close requests, what's still open, and every
-  request at an address. Each answer links to the matching BoardStat page.
-- **The Local Law 47 reports.** Rebuilds of the monthly 311 reports that
-  [Local Law 47 of 2005](https://intro.nyc/0174-2004) (Gale A. Brewer) put in Charter § 1075.
-  They are BetaNYC rebuilds, not the City's official reports.
-- **Clearer answers from the original four.** Request status comes back in words, and the
-  status alerts say yes or no.
-- **A closing note on every answer**, the one quoted at the top of this page.
-
-The district tools and the Local Law 47 reports need no API key.
-
-### Install the beta
-
-You need [Node.js](https://nodejs.org/) 18 or later and [git](https://git-scm.com/downloads).
-The first start downloads and builds the beta, so give it a minute.
-
-If you already use the released version, turn it off while you test, so you know which one is
-answering.
-
-**Claude Desktop.** Add this inside `mcpServers` in `claude_desktop_config.json`, then quit and
-reopen Claude Desktop:
-
-```json
-"nyc-311-beta": {
-  "command": "npx",
-  "args": ["-y", "github:BetaNYC/nyc-311-mcp#main"],
-  "env": { "NYC_311_API_KEY": "your_key_here" }
-}
-```
-
-No API key? Leave out the `"env"` line and the comma before it. The district tools and the
-reports still work.
-
-**Claude Code.**
-
-```bash
-claude mcp add --env NYC_311_API_KEY=your_key_here --transport stdio nyc-311-beta \
-  -- npx -y github:BetaNYC/nyc-311-mcp#main
-```
+**Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
+have one.
 
 To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 21,
-including `draft_311_report`. The step-by-step guide, with what to test and how to switch
-back, is [Test the nyc-311-mcp beta](docs/beta/nyc-311-mcp.md).
+including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
-**Getting the newest beta.** `npx` keeps a copy of what it downloaded. To pick up a newer
-build, quit your app, delete the `_npx` folder in npm's cache (`~/.npm/_npx` on a Mac or
-Linux, `%LOCALAPPDATA%\npm-cache\_npx` on Windows), and open your app again.
+**Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
+your app, delete the `_npx` folder in npm's cache (`~/.npm/_npx` on a Mac or Linux,
+`%LOCALAPPDATA%\npm-cache\_npx` on Windows), and open the app again.
 
 **Its data cache** is about 85 MB of public City data, in `~/Library/Caches/nyc-311-mcp` on a
 Mac, `%LOCALAPPDATA%\nyc-311-mcp\Cache` on Windows, and `~/.cache/nyc-311-mcp` on Linux. Set
 `NYC_311_MCP_CACHE_DIR` to put it somewhere else.
 
-### Every tool in the beta
+### Get a free API key
+
+Seven tools use the [NYC 311 Public API](https://api-portal.nyc.gov/) and need a free key: the
+calendar, status, the two request lookups, and the three reporting-help tools. The district
+tools and the Local Law 47 reports work without one.
+
+1. Go to [api-portal.nyc.gov](https://api-portal.nyc.gov/) and sign in or register.
+2. Subscribe to **NYC 311 Public Developers**. It's self-serve.
+3. Copy a key from your [profile page](https://api-portal.nyc.gov/profile). Each subscription
+   has a primary and a secondary key. Either one works.
+
+Keep the key to yourself. Never paste it into a GitHub issue.
+
+The portal lists two other products. **NYC 311 Public — High Demand** gives a higher rate
+limit. **NYC 311 Developer Partner** is for creating service requests, which this server never
+does. You don't need either.
+
+## Every tool
 
 You don't need to know the tool names. Ask in plain English and your assistant picks the
 tool. The [website](https://betanyc.github.io/nyc-311-mcp/tools.html) has the same list with a
@@ -171,7 +106,7 @@ replay of a real answer for each.
 
 {BETA_TOOLS}
 
-### How the district tools read districts and dates
+## How the district tools read districts and dates
 
 **Districts.** Give a community district or a Council district, not both.
 
@@ -195,7 +130,7 @@ With no dates, a tool uses the dates BoardStat's page opens with, about the last
 Every district answer includes `data_as_of`, a `boardstat_url`, plain-language `caveats`, and
 its `source`.
 
-### Before you rely on an answer
+## Before you rely on an answer
 
 - 311 counts are reports, not problems. They show who reports and how, and not only how many
   problems there are.
@@ -214,9 +149,9 @@ its `source`.
   whenever anything suggests danger.
 - We left ZIP codes out on purpose. ZIP codes are mail routes, not City districts.
 
-### Tell us what you find
+## Tell us what you find
 
-[Open a beta feedback issue](https://github.com/BetaNYC/nyc-311-mcp/issues/new?template=beta-feedback.yml).
+[Open an issue](https://github.com/BetaNYC/nyc-311-mcp/issues/new).
 Tell us which tool, what you asked, what you got, and what you expected. GitHub issues are
 public, so leave out names, phone numbers, home addresses, 311 request numbers, and your API
 key. A street corner or a district is enough.
@@ -276,15 +211,15 @@ asked. It isn't alternate side parking. Use `get_calendar` for that.
 
 One request by its 311 number (`sr_number`, as `311-XXXXXXXX`). You get the API's fields with
 ZIP codes removed: agency, problem, problem details, status code, when it was submitted, the
-address, and the agency's resolution text. In the beta, a `plain_language` block adds the
+address, and the agency's resolution text. Since 1.2.0, a `plain_language` block adds the
 status in words (the API sends a code, `614110003` means Closed) and the address to give
 `address_history`.
 
 #### `get_service_request_list`
 
 Several requests at once (`sr_numbers`, a list). Each comes back as in `get_service_request`.
-The City leaves out a number it can't find without saying so, so the beta lists those in
-`not_found`.
+The City leaves out a number it can't find without saying so, so since 1.2.0 they are listed
+in `not_found`.
 
 ### Run it from source
 
@@ -327,7 +262,7 @@ an official product of the City of New York.
 
 The site at [betanyc.github.io/nyc-311-mcp](https://betanyc.github.io/nyc-311-mcp/) is built by
 GitHub Pages from the `docs/` folder. `docs/index.html` and `docs/tools.html` are plain HTML.
-Their demos are real answers from the beta, shortened, and every line shown is copied word for
+Their demos are real answers, shortened, and every line shown is copied word for
 word from the tool's answer. The Markdown pages in `docs/` share `docs/_layouts/default.html`.
 
 ### Releases
@@ -336,6 +271,11 @@ Pushing a tag `vX.Y.Z` that matches the version in `package.json` runs
 `.github/workflows/release.yml`. It runs the tests, publishes `@betanyc/nyc-311-mcp` to npm
 with provenance, and creates a GitHub Release. Version history is in
 [CHANGELOG.md](CHANGELOG.md). Publishing needs the `NPM_TOKEN` repository secret.
+
+When the Release workflow succeeds, `.github/workflows/publish-mcp.yml` lists the new version
+in the official [MCP Registry](https://registry.modelcontextprotocol.io/) as
+`io.github.BetaNYC/nyc-311-mcp`, from `server.json`. Keep `server.json` at the same version
+as `package.json`; the Release workflow checks.
 
 ---
 

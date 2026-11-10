@@ -1,7 +1,8 @@
 {
   "name": "@betanyc/nyc-311-mcp",
-  "version": "1.2.0-beta.19",
-  "description": "MCP server for the NYC 311 Public API — city-services calendar, emergency/weather status alerts, and 311 service-request lookup",
+  "mcpName": "io.github.BetaNYC/nyc-311-mcp",
+  "version": "1.2.0",
+  "description": "MCP server for NYC 311: help reporting a problem, district numbers from BoardStat, the Local Law 47 reports, the 311 calendar and status alerts, and request lookup",
   "keywords": [
     "mcp",
     "model-context-protocol",

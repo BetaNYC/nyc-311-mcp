@@ -5,7 +5,7 @@ import spec
 tools = {t['name']: t for t in json.load(open(HERE / 'tools.json'))}
 def md(h):  # the group intros carry a few <a> links
     return re.sub(r'<a href="([^"]+)">([^<]+)</a>', r'[\2](\1)', h)
-STATUS = {"new": "New in the beta", "improved": "Improved in the beta", "same": "Same as released"}
+STATUS = {"new": "New in 1.2.0", "improved": "Improved in 1.2.0", "same": "Same as 1.1.0"}
 out = []
 for g in spec.GROUPS:
     out.append(f"#### {g['title']}\n\n{md(g['intro'])}\n")

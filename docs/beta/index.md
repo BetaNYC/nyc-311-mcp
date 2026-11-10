@@ -22,9 +22,13 @@ what is in testing right now.
 
 ## In testing now
 
-| MCP | What is new | Guide |
+Nothing right now.
+
+## Released
+
+| MCP | Released | Notes |
 |---|---|---|
-| `@betanyc/nyc-311-mcp` (next version, beta) | 17 new tools: district numbers from BoardStat, rebuilt Local Law 47 of 2005 reports, request lookup by address, and help reporting a problem to 311 | [Test the nyc-311-mcp beta](nyc-311-mcp.md) |
+| `@betanyc/nyc-311-mcp` | 1.2.0, November 9, 2026 | The beta's 21 tools. [Install guide](../install.md) · [what the beta was](nyc-311-mcp.md) |
 
 ## How to give feedback
 
