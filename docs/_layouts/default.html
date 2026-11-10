@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.title %}{{ page.title }} · {% endif %}NYC 311 MCP</title>
+<link rel="stylesheet" href="{{ '/assets/site.css' | relative_url }}">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><a class="brand" href="{{ '/' | relative_url }}">NYC 311 MCP</a><span class="tag">beta</span>
+<nav class="site-nav" aria-label="Site"><a href="{{ '/' | relative_url }}">Home</a> <a href="{{ '/tools.html' | relative_url }}">Tools</a> <a href="{{ '/beta/nyc-311-mcp.html' | relative_url }}"{% if page.url == '/beta/nyc-311-mcp.html' %} aria-current="page"{% endif %}>Try the beta</a> <a href="https://github.com/BetaNYC/nyc-311-mcp">GitHub</a></nav></header>
+<main id="main"><div class="wrap">
+{{ content }}
+</div></main>
+<footer class="site"><div class="wrap">
+<p>Built by <a href="https://beta.nyc">BetaNYC</a>, New York's civic technology and open data community. Free and open source under the MIT License. <a href="https://github.com/BetaNYC/nyc-311-mcp">Code on GitHub</a>.</p>
+<p>An independent, community-built project. Not affiliated with, endorsed by, or an official product of the City of New York.</p>
+<p>For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</p>
+<p><a href="https://beta.nyc/donate/">Support our work</a>.</p>
+</div></footer>
+</body>
+</html>

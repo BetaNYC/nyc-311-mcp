@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+
+- README rewritten: the released version (1.1.0) first, then the beta, with every beta tool
+  listed with what it does, things to ask, and its inputs. Fixed the Claude Code setup, which
+  pointed at `.claude/settings.json`; it now uses `claude mcp add`.
+- A website for GitHub Pages in `docs/`: a home page, a page for every tool with a replay of a
+  real question and answer, and the beta guide in the same layout. Built by `site-src/`, which
+  checks every demo line against a real answer.
+- The beta guide now installs from `main`. The old `beta` branch stopped at 1.2.0-beta.5.
+
 ## [1.2.0-beta.19] - 2026-11-09
 
 Still a beta on the `beta` branch; not published to npm.

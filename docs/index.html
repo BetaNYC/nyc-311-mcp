@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NYC 311 MCP: ask your AI assistant about NYC 311</title>
+<meta name="description" content="A free, open-source MCP server from BetaNYC that lets AI assistants answer questions about NYC 311.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/demo.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><a class="brand" href="index.html">NYC 311 MCP</a><span class="tag">beta</span>
+<nav class="site-nav" aria-label="Site"><a href="index.html" aria-current="page">Home</a> <a href="tools.html">Tools</a> <a href="beta/nyc-311-mcp.html">Try the beta</a> <a href="https://github.com/BetaNYC/nyc-311-mcp">GitHub</a></nav></header>
+<main id="main"><div class="wrap">
+<h1>Ask your AI assistant about NYC 311</h1>
+<p class="lede">nyc-311-mcp connects an AI assistant like Claude to New York City's 311 data. Ask it how to report a problem, what your community district complains about most, how long agencies take to close requests, or whether alternate side parking is on today. It answers from the City's own data and shows you where each answer came from.</p>
+<p>We built it at <a href="https://beta.nyc">BetaNYC</a>. It's free, it's open source, and it never files anything with 311 for you.</p>
+<p><a class="button" href="tools.html">See all 21 tools</a> <a class="button secondary" href="beta/nyc-311-mcp.html">Install the beta</a></p>
+
+<div class="safety"><p><strong>If this is an emergency, or if you think this is an emergency, call 911.</strong> In the beta, every answer from every tool ends with that line. The answers are for information only, BetaNYC builds them from City data, and they may contain errors. Check the City's 311 page before you report.</p></div>
+
+<h2>See it work</h2>
+<p>A neighbor asks about a pothole. The assistant finds the City's 311 article for it and counts how often people in the same district reported it.</p>
+<figure class="demo static" aria-label="Example: There&#x27;s a pothole on my block that keeps getting bigger. How do I report it? I&#x27;m in Brooklyn Community District 6.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="There&#x27;s a pothole on my block that keeps getting bigger. How do I report it? I&#x27;m in Brooklyn Community District 6.">There&#x27;s a pothole on my block that keeps getting bigger. How do I report it? I&#x27;m in Brooklyn Community District 6.</span></p>
+    <p class="call step">The assistant calls <span class="name">how_to_report</span>(description=&quot;there&#x27;s a pothole on my block that keeps getting bigger&quot;, borough=&quot;Brooklyn&quot;, community_district=306)</p>
+<pre class="answer"><span class="step">&quot;first_line&quot;: &quot;Best match: \&quot;Pothole or Cave-In on Street\&quot; (KA-01093), handled by the Department of Transportation, 311 problem type \&quot;Street Condition\&quot;. Confidence strong. Article text as of 2026-11-09.&quot;</span>
+<span class="step">&quot;portal_url&quot;: &quot;https://portal.311.nyc.gov/article/?kanumber=KA-01093&quot;</span>
+<span class="step">&quot;call_911&quot;: &quot;Call 911 to report an unprotected street opening that could cause an accident.&quot;</span>
+<span class="step gap">…</span>
+<span class="step">&quot;label&quot;: &quot;the last 365 days of data (2025-11-09 to 2026-11-08)&quot;</span>
+<span class="step">&quot;requests&quot;: 1448</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">It found the City&#x27;s pothole article, the agency, and the City&#x27;s own warning about open holes. It also counted 1,448 street-condition reports in Brooklyn 6 over the past year.</figcaption>
+  </div>
+</figure>
+<p>Some things shouldn't go to 311 at all. When a description sounds dangerous, the first line says to call 911.</p>
+<figure class="demo static" aria-label="Example: Smoke pouring out of the apartment next door">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Smoke pouring out of the apartment next door">Smoke pouring out of the apartment next door</span></p>
+    <p class="call step">The assistant calls <span class="name">how_to_report</span>(description=&quot;smoke pouring out of the apartment next door&quot;)</p>
+<pre class="answer"><span class="step">&quot;first_line&quot;: &quot;Call 911 to report smoke or fumes.&quot;</span>
+<span class="step">&quot;source&quot;: &quot;311 article KA-02220 (\&quot;Smoke or Fumes\&quot;), https://portal.311.nyc.gov/article/?kanumber=KA-02220&quot;</span>
+<span class="step">&quot;confidence&quot;: &quot;strong: the City&#x27;s own article for the danger detected; call 911 first&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">When a description sounds dangerous, the first line says to call 911, in the City&#x27;s own words when the City has an article for it.</figcaption>
+  </div>
+</figure>
+
+<h2>Two versions</h2>
+<table>
+<thead><tr><th></th><th>Released</th><th>Beta</th></tr></thead>
+<tbody>
+<tr><th>Version</th><td>1.1.0</td><td>1.2.0-beta.19</td></tr>
+<tr><th>Tools</th><td>4: the 311 calendar, status alerts, and request lookup</td><td>21: everything in the released version, plus help reporting a problem, district numbers from BoardStat, and the Local Law 47 reports</td></tr>
+<tr><th>Get it from</th><td>npm, as <code>@betanyc/nyc-311-mcp</code></td><td>GitHub, straight from the <code>main</code> branch</td></tr>
+<tr><th>Good for</th><td>Everyday use</td><td>Trying what's next and telling us what breaks</td></tr>
+</tbody>
+</table>
+<p>Install steps for both are in the <a href="https://github.com/BetaNYC/nyc-311-mcp#readme">README</a>. The beta has <a href="beta/nyc-311-mcp.html">its own guide</a>, with what to test and how to switch back.</p>
+
+<h2>What's in the beta</h2>
+<div class="cards"><div class="card"><h3>Help reporting a problem</h3><p class="count">3 tools</p><p><a href="tools.html#report">See them</a></p></div><div class="card"><h3>Your community district or Council district</h3><p class="count">11 tools</p><p><a href="tools.html#district">See them</a></p></div><div class="card"><h3>The Local Law 47 reports</h3><p class="count">3 tools</p><p><a href="tools.html#ll47">See them</a></p></div><div class="card"><h3>Today in the city</h3><p class="count">2 tools</p><p><a href="tools.html#today">See them</a></p></div><div class="card"><h3>Look up a 311 request</h3><p class="count">2 tools</p><p><a href="tools.html#lookup">See them</a></p></div></div>
+
+<h2>Before you rely on an answer</h2>
+<ul>
+<li>311 counts are reports, not problems. They show who reports and how, and not only how many problems there are.</li>
+<li>"Closed" means an agency closed the request. It doesn't mean the problem was fixed. Read the agency's resolution text.</li>
+<li>The district numbers come from BoardStat, built every night from NYC Open Data. They aren't official City statistics. Each answer links to the BoardStat page, so you can check.</li>
+<li>We left ZIP codes out on purpose. ZIP codes are mail routes, not City districts.</li>
+</ul>
+
+<h2>Tell us what you find</h2>
+<p>This is a beta. If an answer is wrong, confusing, or missing something, <a href="https://github.com/BetaNYC/nyc-311-mcp/issues/new?template=beta-feedback.yml">open a feedback issue</a>. GitHub issues are public, so leave out names, phone numbers, home addresses, and your API key. A street corner or a district is enough.</p>
+
+</div></main>
+<footer class="site"><div class="wrap">
+<p>Built by <a href="https://beta.nyc">BetaNYC</a>, New York's civic technology and open data community. Free and open source under the MIT License. <a href="https://github.com/BetaNYC/nyc-311-mcp">Code on GitHub</a>.</p>
+<p>An independent, community-built project. Not affiliated with, endorsed by, or an official product of the City of New York.</p>
+<p>For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</p>
+<p><a href="https://beta.nyc/donate/">Support our work</a>.</p>
+</div></footer>
+</body>
+</html>

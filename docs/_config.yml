@@ -1,0 +1,9 @@
+# GitHub Pages builds this folder with Jekyll. index.html and tools.html are
+# plain HTML (made by a script, see README "The website"); the Markdown pages
+# use _layouts/default.html so every page has the same header.
+title: NYC 311 MCP
+description: A free, open-source MCP server from BetaNYC for NYC 311 data.
+markdown: kramdown
+defaults:
+  - scope: { path: "" }
+    values: { layout: default }

@@ -4,3 +4,6 @@ dist/
 *.js.map
 .DS_Store
 __pycache__/
+
+# Real tool answers used to check the site demos; they can hold addresses.
+site-src/captures.json

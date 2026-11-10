@@ -1,0 +1,1093 @@
+[
+ {
+  "name": "get_calendar",
+  "description": "Get Alternate Side Parking, Garbage & Recycling, and Schools status for a date or date range (max 90 days). Dates are interpreted in America/New_York (Eastern Time); if no date is given, defaults to today in New York.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "date": {
+     "type": "string",
+     "description": "Single date, YYYY-MM-DD. Used for both from and to if no range is given."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Range start, YYYY-MM-DD"
+    },
+    "to_date": {
+     "type": "string",
+     "description": "Range end, YYYY-MM-DD"
+    }
+   }
+  }
+ },
+ {
+  "name": "get_status",
+  "description": "Whether a City status is in effect right now, from the 311 Public API: Code Blue (cold weather), Fire Hydrant emergency, an OEM emergency event, Snow or Ice on Sidewalk, or Snow or Ice on Street. Returns the API's answer plus plain_language: yes or no in words, what it checks, and when it was asked. Not alternate side parking: use get_calendar for that.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "type": {
+     "type": "string",
+     "enum": [
+      "CodeBlue",
+      "FireHydrant",
+      "OEM",
+      "SnowOnSidewalk",
+      "SnowOnStreet"
+     ],
+     "description": "Status type to look up"
+    }
+   },
+   "required": [
+    "type"
+   ]
+  }
+ },
+ {
+  "name": "get_service_request",
+  "description": "Look up one 311 service request by its 311 number (format 311-XXXXXXXX), from the City's 311 Public API. Returns agency, problem, status, submitted time, address (ZIP code removed) and the agency's resolution text, plus a plain_language block: the status in words and what it means. The 311 number is not NYC Open Data's unique_key, so it is not matched to BoardStat's rows by number; for other requests at the same address, pass plain_language.address_lookup to address_history.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "sr_number": {
+     "type": "string",
+     "description": "Service request number, e.g. '311-17323508'"
+    }
+   },
+   "required": [
+    "sr_number"
+   ]
+  }
+ },
+ {
+  "name": "get_service_request_list",
+  "description": "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error).",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "sr_numbers": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "minItems": 1,
+     "description": "Array of service request numbers, e.g. ['311-17323508', '311-17323514']"
+    }
+   },
+   "required": [
+    "sr_numbers"
+   ]
+  }
+ },
+ {
+  "name": "find_district",
+  "description": "Which community district and City Council district an address is in. Type it as usual ('350 5th Ave'); it is converted to the City's spelling ('350 5 AVENUE') and looked up among addresses in 311 requests since 2020. If not found, says so and suggests close City spellings. Not a geocoder. ZIP codes are ignored. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "address": {
+     "type": "string",
+     "description": "Street address, e.g. '350 5th Ave'. Anything after a comma is ignored."
+    },
+    "borough": {
+     "type": "string",
+     "enum": [
+      "Manhattan",
+      "Bronx",
+      "Brooklyn",
+      "Queens",
+      "Staten Island"
+     ],
+     "description": "Optional; picks one when the address exists in several boroughs."
+    }
+   },
+   "required": [
+    "address"
+   ]
+  }
+ },
+ {
+  "name": "district_summary",
+  "description": "Totals for a community or council district and period: requests, how many are not yet closed, median and average days to close, the top problems, and each top problem's share compared with the borough and the whole city. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 50,
+     "description": "Rows to list (default 10)."
+    }
+   }
+  }
+ },
+ {
+  "name": "top_problems",
+  "description": "The most-reported problems in a community or council district for a period, each with the count for the same days a year earlier and the median days to close. Optional agency and status filters. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "agency": {
+     "type": "string",
+     "description": "Agency code as 311 writes it, e.g. 'NYPD'."
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "closed",
+      "not_closed"
+     ],
+     "description": "'not_closed' = any status but Closed."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 100,
+     "description": "Rows to list (default 10)."
+    }
+   }
+  }
+ },
+ {
+  "name": "problem_trend",
+  "description": "Requests per month for one problem in one district, with the same days a year earlier. Optional description, agency and status filters. Months only partly covered are marked. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problem": {
+     "type": "string",
+     "description": "One BoardStat problem name, e.g. 'HEAT/HOT WATER', 'Noise - Residential', 'Rodent'."
+    },
+    "descriptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'."
+    },
+    "exclude_descriptions": {
+     "type": "boolean",
+     "description": "Leave out these descriptions instead of keeping only them."
+    },
+    "agency": {
+     "type": "string",
+     "description": "Agency code as 311 writes it, e.g. 'NYPD'."
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "closed",
+      "not_closed"
+     ],
+     "description": "'not_closed' = any status but Closed."
+    }
+   },
+   "required": [
+    "problem"
+   ]
+  }
+ },
+ {
+  "name": "agency_response",
+  "description": "For each agency in a district and period: requests, how many are closed and not yet closed, and the median and average days to close (closed requests only). Optional problem and description filters. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problems": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case."
+    },
+    "descriptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'."
+    },
+    "exclude_descriptions": {
+     "type": "boolean",
+     "description": "Leave out these descriptions instead of keeping only them."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 100,
+     "description": "Rows to list (default 25)."
+    }
+   }
+  }
+ },
+ {
+  "name": "still_open",
+  "description": "Requests in a district that are not yet closed, oldest first, with days open, plus a count and the oldest date for each agency. With no dates, covers every request since 2020. Optional problem, description and agency filters. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problems": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case."
+    },
+    "descriptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'."
+    },
+    "exclude_descriptions": {
+     "type": "boolean",
+     "description": "Leave out these descriptions instead of keeping only them."
+    },
+    "agency": {
+     "type": "string",
+     "description": "Agency code as 311 writes it, e.g. 'NYPD'."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 200,
+     "description": "Rows to list (default 25)."
+    }
+   }
+  }
+ },
+ {
+  "name": "top_addresses",
+  "description": "The addresses in a district with the most requests for a period, optionally for given problems or descriptions. Addresses are as the City spelled them. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problems": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case."
+    },
+    "descriptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'."
+    },
+    "exclude_descriptions": {
+     "type": "boolean",
+     "description": "Leave out these descriptions instead of keeping only them."
+    },
+    "agency": {
+     "type": "string",
+     "description": "Agency code as 311 writes it, e.g. 'NYPD'."
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "closed",
+      "not_closed"
+     ],
+     "description": "'not_closed' = any status but Closed."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 100,
+     "description": "Rows to list (default 15)."
+    }
+   }
+  }
+ },
+ {
+  "name": "address_history",
+  "description": "Every request at one address, newest first, with its status, days to close or days open, and the agency's resolution text, plus counts by problem. The address is converted to the City's spelling as in find_district. With no dates, covers every request since 2020. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "address": {
+     "type": "string",
+     "description": "Street address, e.g. '1000 5th Ave'."
+    },
+    "borough": {
+     "type": "string",
+     "enum": [
+      "Manhattan",
+      "Bronx",
+      "Brooklyn",
+      "Queens",
+      "Staten Island"
+     ],
+     "description": "Needed when the same address exists in several boroughs."
+    },
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Optional: the district (BoardStat id) to use when the address straddles a line. Default: the one with the most requests there."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problems": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case."
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "closed",
+      "not_closed"
+     ],
+     "description": "'not_closed' = any status but Closed."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 200,
+     "description": "Rows to list (default 50)."
+    },
+    "offset": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Rows to skip (default 0); for the next page, next_page.offset."
+    },
+    "data_as_of": {
+     "type": "string",
+     "description": "For the next page, next_page.data_as_of; a page from a newer build is refused."
+    }
+   },
+   "required": [
+    "address"
+   ]
+  }
+ },
+ {
+  "name": "find_requests",
+  "description": "List the requests in a community or council district, newest first, with any status, paged with limit and offset. Each has its status, days to close or days open, address and the agency's resolution text; by_status counts each status and says in plain words what it means. Filter by problems, descriptions, agency, status, or statuses (the City's own values). For one address use address_history; for only what is still open, still_open. From BoardStat (BetaNYC, NYC Open Data, 2020 on); not an official City report. 311 counts are reports, not problems; 'closed' is not 'fixed'.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problems": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case."
+    },
+    "descriptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'."
+    },
+    "exclude_descriptions": {
+     "type": "boolean",
+     "description": "Leave out these descriptions instead of keeping only them."
+    },
+    "agency": {
+     "type": "string",
+     "description": "Agency code as 311 writes it, e.g. 'NYPD'."
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "closed",
+      "not_closed"
+     ],
+     "description": "'not_closed' = any status but Closed."
+    },
+    "statuses": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "The City's status values to keep (seen: Closed, Open, In Progress, Pending, Assigned, Started, Unspecified); any case."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 200,
+     "description": "Rows to list (default 25)."
+    },
+    "offset": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Rows to skip (default 0); for the next page, next_page.offset."
+    },
+    "data_as_of": {
+     "type": "string",
+     "description": "For the next page, next_page.data_as_of; a page from a newer build is refused."
+    }
+   }
+  }
+ },
+ {
+  "name": "boardstat_link",
+  "description": "A link to BoardStat's district page with the given district, dates, problems, descriptions, agency and status already set, so a person can see and check the numbers. Problem and description names are checked against BoardStat's data.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "from_date": {
+     "type": "string",
+     "description": "Start, YYYY-MM-DD, inclusive."
+    },
+    "to_date": {
+     "type": "string",
+     "description": "End, YYYY-MM-DD, inclusive."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "The last N days of data, ending on the newest request's day (not today)."
+    },
+    "problems": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "BoardStat problem names, e.g. ['HEAT/HOT WATER']; any case."
+    },
+    "descriptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     },
+     "description": "311 descriptors, e.g. ['Blocked Bike Lane']; a missing one is '(none)'."
+    },
+    "exclude_descriptions": {
+     "type": "boolean",
+     "description": "Leave out these descriptions instead of keeping only them."
+    },
+    "agency": {
+     "type": "string",
+     "description": "Agency code as 311 writes it, e.g. 'NYPD'."
+    },
+    "status": {
+     "type": "string",
+     "enum": [
+      "closed",
+      "not_closed"
+     ],
+     "description": "'not_closed' = any status but Closed."
+    }
+   }
+  }
+ },
+ {
+  "name": "boardstat_status",
+  "description": "How fresh BoardStat's data is: when it was last built, the newest request in it, whether the nightly run is late, the boundary versions, and counts of known City data problems (such as requests closed before they were created).",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {}
+  }
+ },
+ {
+  "name": "ll47_service_request_report",
+  "description": "Rebuilds the monthly 311 service request report of former Charter \u00a7 1075(b) (Local Law 47 of 2005; repealed by Local Law 69 of 2023): for a month and the fiscal year to date, totals by category (the City's complaint type) and by agency, totals by status, and the average (and median) days to close for each category and agency. Citywide, one borough, one community district or one council district; or by_district for a table of every district. From BoardStat's nightly files. Citywide and borough answers give totals by problem only, unless read_every_district is true. A BetaNYC rebuild from NYC Open Data, not the City's official report. No ZIP codes, nothing before 2020.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "month": {
+     "type": "string",
+     "description": "Month, YYYY-MM; the answer also covers the fiscal year to date through it. Default: the newest complete month. Not with fiscal_year."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30, cut to the data if not over. Not with month."
+    },
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "borough": {
+     "type": "string",
+     "enum": [
+      "Manhattan",
+      "Bronx",
+      "Brooklyn",
+      "Queens",
+      "Staten Island"
+     ],
+     "description": "One borough. Give at most one of borough, community_district, council_district; none = citywide. With by_district, narrows the table."
+    },
+    "by_district": {
+     "type": "string",
+     "enum": [
+      "community_district",
+      "council_district",
+      "borough"
+     ],
+     "description": "A table with one row per district or borough of this kind: requests in the month and fiscal year, and the top problem."
+    },
+    "read_every_district": {
+     "type": "boolean",
+     "description": "Citywide or borough only: read every community district file to add agencies, statuses and days to close. A large download (about 860 MB citywide in November 2026), cached until the next build."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 1000,
+     "description": "How many categories and category-agency rows (with by_district: districts) to list (default 50)."
+    }
+   }
+  }
+ },
+ {
+  "name": "ll47_directory_assistance_report",
+  "description": "Rebuilds the monthly directory-assistance report of former Charter \u00a7 1075(c) (Local Law 47 of 2005; repealed by Local Law 69 of 2023), as far as the open data allows: calls to 311 agents for a month and the fiscal year to date, by topic, from NYC Open Data's 311 Call Center Inquiry dataset (wewp-mm3p). Marked limited: the dataset cannot tell directory-assistance calls from others, and its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Queries NYC Open Data (one query per month, cached; the month in progress is asked again after an hour). A month call fetches only that month; its fiscal year to date uses saved months. A fiscal_year call answers within about 12 s: saved months at once, others listed as still loading while they keep loading (an incomplete period shows each saved month's count and a partial sum, labeled, never a total); asking again a minute later finishes it. A BetaNYC rebuild from NYC Open Data, not the City's official report. No ZIP codes, nothing before 2020.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "month": {
+     "type": "string",
+     "description": "Month, YYYY-MM; the answer also covers the fiscal year to date through it. Default: the newest complete month. Not with fiscal_year."
+    },
+    "fiscal_year": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "NYC fiscal year: 2027 or 'FY2027' = 2026-07-01 to 2027-06-30, cut to the data if not over. Not with month."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 2000,
+     "description": "How many topics to list (default 50)."
+    }
+   }
+  }
+ },
+ {
+  "name": "cb_monthly_list",
+  "description": "The monthly list of Charter \u00a7 1075(d), current law, for one community district: every 311 request created in a month (default: the newest complete month), plus earlier requests still not closed and those unresolved at the month's end that have closed since; each with its number, date, category, description, agency, current status and address. Pages with limit and offset; format 'csv' returns the page as CSV text. From BoardStat's nightly files. A BetaNYC rebuild from NYC Open Data, not the City's official report. No ZIP codes, nothing before 2020.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions)."
+    },
+    "month": {
+     "type": "string",
+     "description": "Month, YYYY-MM. Default: the newest complete month (the law's 'immediately preceding month')."
+    },
+    "part": {
+     "type": "string",
+     "enum": [
+      "all",
+      "new_this_month",
+      "unresolved_from_prior_months",
+      "unresolved_at_month_end_now_closed"
+     ],
+     "description": "all (default); the month's new requests; earlier requests still not closed; or earlier requests unresolved at the month's end and closed since."
+    },
+    "data_as_of": {
+     "type": "string",
+     "description": "For the next page, next_page.data_as_of; a page from a newer build is refused."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 1000,
+     "description": "How many rows to list (default 100)."
+    },
+    "offset": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Rows to skip, for the next page (next_offset)."
+    },
+    "format": {
+     "type": "string",
+     "enum": [
+      "rows",
+      "csv"
+     ],
+     "description": "'rows' (default) or 'csv': the page as CSV text, columns as in 'columns'."
+    }
+   },
+   "required": [
+    "community_district"
+   ]
+  }
+ },
+ {
+  "name": "how_to_report",
+  "description": "Find how to report a problem to 311, from a plain description ('a pothole on my block', 'no heat in my apartment'). Returns the best 311 articles from the City's own 311 content (title, KA number, link on 311 Online), the agency and the 311 problem type each names (the problem type is NYC Open Data's complaint_type), what the article says to do and what happens next, and the ways to report (311 Online, the NYC311 app, phone 311 or 212-NEW-YORK, text 311-692), all from City text. Every answer starts with 'For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.'; a description that suggests danger, and every no-match answer, leads with a 911 line, in the City's words only when the City article is that danger. IMPORTANT: danger detection here is keyword-based and will miss some emergencies. If anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag it. Matching is by keyword, done by BetaNYC, and reads only a few 311 categories (listed in searched). Give community_district or council_district to add how often that problem type was reported there (BoardStat). Does not file anything.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "description": {
+     "type": "string",
+     "minLength": 3,
+     "maxLength": 500,
+     "description": "The problem in plain words. Not stored and not sent anywhere: only the 311 content is fetched."
+    },
+    "borough": {
+     "type": "string",
+     "enum": [
+      "Manhattan",
+      "Bronx",
+      "Brooklyn",
+      "Queens",
+      "Staten Island"
+     ],
+     "description": "Optional. 311's articles are citywide, so this does not change the match; it is noted for the report."
+    },
+    "community_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "306, BK06 or 'Brooklyn 6' (all forms: server instructions). Not with council_district."
+    },
+    "council_district": {
+     "type": [
+      "integer",
+      "string"
+     ],
+     "description": "Council district, 1 to 51. Not with community_district."
+    },
+    "last_days": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3660,
+     "description": "With a district: count reports over the last N days of data (default 365)."
+    },
+    "category_id": {
+     "type": "string",
+     "description": "Search only this 311 category (an id from list_311_categories, e.g. '311-12' for Noise)."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 5,
+     "description": "How many articles to return (default 3)."
+    }
+   },
+   "required": [
+    "description"
+   ]
+  }
+ },
+ {
+  "name": "list_311_categories",
+  "description": "Browse 311's own topic categories (the ones on 311 Online), or, given a category_id, the articles in it with their KA numbers and links. Use it when how_to_report's match looks wrong, then pass the category_id to how_to_report. Danger detection in these tools is keyword-based and will miss some emergencies: if anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "category_id": {
+     "type": "string",
+     "description": "A category id such as '311-12' (Noise). Leave out for a summary of all categories."
+    },
+    "offset": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Articles to skip (20 per page); next_page.offset."
+    }
+   }
+  }
+ },
+ {
+  "name": "draft_311_report",
+  "description": "Draft a 311 report for the person to submit themselves: a short ready-to-paste text (problem, where, when, what they saw), the 311 Online article link to report it on, questions to ask them for anything missing (marked [add: \u2026], never made up), Problem Detail options from the City's 2024 Service Level Agreements list (labeled old), what the City's article says about contact details and photos, and what happens next. Uses how_to_report's matching. Files nothing, sends nothing, and fills no form: the City does not publish each form's fields, so the form may ask for more. If the description suggests an emergency it does not draft and says to call 911. A description of two problems gets one draft each. Every answer and error starts with \"For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.\" Danger detection here is keyword-based and will miss some emergencies. If anything the person says suggests someone may be in danger or need urgent medical help, tell them to call 911 first, even if this tool did not flag it.",
+  "inputSchema": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "description": {
+     "type": "string",
+     "minLength": 3,
+     "maxLength": 500,
+     "description": "The problem in the person's words. Goes into the draft; not stored or sent anywhere."
+    },
+    "location": {
+     "type": "string",
+     "minLength": 2,
+     "maxLength": 200,
+     "description": "Where: a street address, two cross streets ('Broadway and W 96 St'), or a landmark. A ZIP code is left out."
+    },
+    "borough": {
+     "type": "string",
+     "enum": [
+      "Manhattan",
+      "Bronx",
+      "Brooklyn",
+      "Queens",
+      "Staten Island"
+     ]
+    },
+    "when": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 100,
+     "description": "When they saw it, in their words ('Nov 6 around 8 pm')."
+    },
+    "ongoing": {
+     "type": "string",
+     "enum": [
+      "still happening",
+      "stopped",
+      "keeps happening"
+     ],
+     "description": "Whether it is still happening, has stopped, or keeps happening."
+    },
+    "details": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 1000,
+     "description": "Anything else they said about it."
+    },
+    "include_contact": {
+     "type": "object",
+     "additionalProperties": false,
+     "description": "Only if the person asked for their contact details to be in the draft. Otherwise leave out; the form asks for them.",
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "phone": {
+       "type": "string"
+      },
+      "email": {
+       "type": "string"
+      }
+     }
+    }
+   },
+   "required": [
+    "description"
+   ]
+  }
+ }
+]

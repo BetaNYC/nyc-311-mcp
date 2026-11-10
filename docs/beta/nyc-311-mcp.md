@@ -13,10 +13,11 @@ trying it.
 ## The short version
 
 - The beta has **21 tools**. The released version has 4.
-- It runs straight from a GitHub branch named `beta`. Nothing is
+- It runs straight from this repository's `main` branch on GitHub. Nothing is
   published to npm, and people on the released version are not affected.
-- It may change from one day to the next. Quit and reopen your AI app to pick up the
-  newest build.
+- It may change from one day to the next. To pick up the newest build, quit your AI app,
+  delete the `_npx` folder in npm's cache (`~/.npm/_npx` on a Mac or Linux,
+  `%LOCALAPPDATA%\npm-cache\_npx` on Windows), and open the app again.
 - **The reporting tools never file anything with 311.** They help you write a report
   that you submit yourself.
 - **In an emergency, call 911.** Do not rely on an AI assistant to notice danger:
@@ -34,7 +35,8 @@ trying it.
 | **Status, improved** (1): `get_status` | Whether Code Blue, a hydrant, snow or ice, or an OEM emergency is in effect now, in words. | Yes |
 
 Full details are in the branch's
-[README](https://github.com/BetaNYC/nyc-311-mcp/blob/beta/README.md).
+[README](https://github.com/BetaNYC/nyc-311-mcp#readme), and every tool is on
+[the website](https://betanyc.github.io/nyc-311-mcp/tools.html) with a real question and answer.
 
 ## Before you start
 
@@ -55,7 +57,7 @@ You need:
 The first start downloads and builds the beta, so it can take a minute. Later starts
 are faster.
 
-**The beta installs from GitHub, not npm.** `npx` asks git to fetch the `beta` branch.
+**The beta installs from GitHub, not npm.** `npx` asks git to fetch the `main` branch.
 That works over HTTPS with no GitHub account. If your computer has GitHub SSH keys set up,
 git may use SSH instead, which also works. If the install stops with
 `Permission denied (publickey)`, git tried SSH without a key: tell us in a feedback issue,
@@ -79,7 +81,7 @@ the next time a tool needs it. Nothing in it is personal: it holds public City d
 The beta runs with this command (you do not need to type it yourself; your app runs it):
 
 ```bash
-npx -y github:BetaNYC/nyc-311-mcp#beta
+npx -y github:BetaNYC/nyc-311-mcp#main
 ```
 
 If you already use the released nyc-311-mcp, turn it off while you test, so you know
@@ -101,7 +103,7 @@ Following the Model Context Protocol's guide,
      "mcpServers": {
        "nyc-311-beta": {
          "command": "npx",
-         "args": ["-y", "github:BetaNYC/nyc-311-mcp#beta"],
+         "args": ["-y", "github:BetaNYC/nyc-311-mcp#main"],
          "env": {
            "NYC_311_API_KEY": "your_key_here"
          }
@@ -123,7 +125,7 @@ Following the Model Context Protocol's guide,
        },
        "nyc-311-beta": {
          "command": "npx",
-         "args": ["-y", "github:BetaNYC/nyc-311-mcp#beta"],
+         "args": ["-y", "github:BetaNYC/nyc-311-mcp#main"],
          "env": {
            "NYC_311_API_KEY": "your_key_here"
          }
@@ -153,7 +155,7 @@ a terminal:
 
 ```bash
 claude mcp add --env NYC_311_API_KEY=your_key_here --transport stdio nyc-311-beta \
-  -- npx -y github:BetaNYC/nyc-311-mcp#beta
+  -- npx -y github:BetaNYC/nyc-311-mcp#main
 ```
 
 No API key? Leave out `--env NYC_311_API_KEY=your_key_here`. By default the server is
@@ -269,8 +271,6 @@ Built by [BetaNYC](https://beta.nyc). An independent, community-built project, n
 affiliated with, endorsed by, or an official product of the City of New York.
 
 <!--
-Maintainers: the `beta` branch is not a release. It is updated only by fast-forwarding
-it to the branch under test (the epic #12 stack is merged to main; beta fixes go on a
-branch from main), e.g. `git push origin origin/<branch>:refs/heads/beta`. No force
-pushes, so testers' installs never jump backward or to unrelated history.
+Maintainers: the beta installs from `main` (`github:BetaNYC/nyc-311-mcp#main`). The old
+`beta` branch stopped at 1.2.0-beta.5 and is no longer updated; see issue #27.
 -->
