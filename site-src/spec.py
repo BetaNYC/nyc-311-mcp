@@ -43,7 +43,7 @@ GROUPS = [
     {
         "id": "today",
         "title": "Today in the city",
-        "intro": "The City's own 311 calendar and status alerts. These were in the released version, too.",
+        "intro": "The City's own 311 calendar and status alerts. These were in 1.1.0, too.",
         "tools": ["get_calendar", "get_status"],
     },
     {

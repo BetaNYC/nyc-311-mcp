@@ -7,9 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-09
+
+The first release with all 21 tools. It is 1.2.0-beta.19 with release metadata and the docs
+for a release; the tools did not change. Everything below, from 1.2.0-beta.1 on, is in it.
+
+### Added
+
+- 17 new tools since 1.1.0: help reporting a problem (`how_to_report`, `draft_311_report`,
+  `list_311_categories`), eleven district tools that read BoardStat, and three rebuilt Local
+  Law 47 of 2005 reports. `get_status`, `get_service_request` and `get_service_request_list`
+  now answer in plain language.
+- Every answer from every tool ends with "For informational purposes only. BetaNYC builds
+  these answers from City data; they may contain errors. Check the City's 311 page before you
+  report. If this is an emergency, or if you think this is an emergency, call 911."
+- Listing in the official MCP Registry as `io.github.BetaNYC/nyc-311-mcp`: `mcpName` in
+  `package.json`, `server.json`, `.github/workflows/publish-mcp.yml` (runs after a successful
+  Release), and a step in `release.yml` that checks `server.json` matches `package.json`.
+- `glama.json`, so BetaNYC can claim the Glama listing.
+
 ### Documentation
 
-- README rewritten: the released version (1.1.0) first, then the beta, with every beta tool
+- README, website and install guide describe 1.2.0 on npm. The beta guide says the beta has
+  ended; the old `beta` branch is retired (#27).
+- Before the release (#29): README rewritten: the released version (1.1.0) first, then the beta, with every beta tool
   listed with what it does, things to ask, and its inputs. Fixed the Claude Code setup, which
   pointed at `.claude/settings.json`; it now uses `claude mcp add`.
 - A website for GitHub Pages in `docs/`: a home page, a page for every tool with a replay of a
