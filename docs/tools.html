@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Every tool in the NYC 311 MCP beta</title>
+<meta name="description" content="What each of the 21 tools in the nyc-311-mcp beta does, with things to ask and real answers.">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/demo.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site"><a class="brand" href="index.html">NYC 311 MCP</a><span class="tag">beta</span>
+<nav class="site-nav" aria-label="Site"><a href="index.html">Home</a> <a href="tools.html" aria-current="page">Tools</a> <a href="beta/nyc-311-mcp.html">Try the beta</a> <a href="https://github.com/BetaNYC/nyc-311-mcp">GitHub</a></nav></header>
+<main id="main"><div class="wrap">
+<h1>Every tool in the beta</h1>
+<p class="lede">The beta has 21 tools. You don't need to know their names. Ask your question in plain English and your AI assistant picks the tool. Below is what each one does, a few things to try, and a replay of a real question and answer.</p>
+<div class="safety"><p><strong>If this is an emergency, or if you think this is an emergency, call 911.</strong> Every answer from every tool ends with that line. Danger detection is a best effort and it will miss some emergencies.</p></div>
+<p>The demos are real answers from the beta, captured November 9, 2026, with BoardStat data as of November 9, 2026, with 311 requests through November 8. We shortened them to fit, and left out home addresses. Your numbers will be newer.</p>
+<ol class="toc"><li><a href="#report">Help reporting a problem</a> (3)</li><li><a href="#district">Your community district or Council district</a> (11)</li><li><a href="#ll47">The Local Law 47 reports</a> (3)</li><li><a href="#today">Today in the city</a> (2)</li><li><a href="#lookup">Look up a 311 request</a> (2)</li></ol>
+<h2 id="report">Help reporting a problem</h2>
+<p>Tell it what's wrong in your own words. It finds the City's own 311 article for that problem, the agency that handles it, and every way to report it. It can also write a short report for you to paste in. It never files anything. You do that yourself.</p>
+<section class="tool" id="how_to_report">
+<h3><code>how_to_report</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Describe the problem the way you&#x27;d tell a neighbor. It searches the City&#x27;s 311 articles and gives back the best match: the article title and link on 311 Online, the agency, the 311 problem type, what the City says happens next, and every way to report it. Give it your district and it also tells you how often people there reported the same thing. If your description sounds dangerous, the first line tells you to call 911. It catches a lot, but it will miss some emergencies, so don&#x27;t count on it for that.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“There&#x27;s a pothole on my block that keeps getting bigger. How do I report it?”</li><li>“My upstairs neighbor plays loud music every night.”</li><li>“No heat in my apartment.”</li><li>“Overflowing trash can and a broken bench in the park.”</li></ul>
+<figure class="demo static" aria-label="Example: There&#x27;s a pothole on my block that keeps getting bigger. How do I report it? I&#x27;m in Brooklyn Community District 6.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="There&#x27;s a pothole on my block that keeps getting bigger. How do I report it? I&#x27;m in Brooklyn Community District 6.">There&#x27;s a pothole on my block that keeps getting bigger. How do I report it? I&#x27;m in Brooklyn Community District 6.</span></p>
+    <p class="call step">The assistant calls <span class="name">how_to_report</span>(description=&quot;there&#x27;s a pothole on my block that keeps getting bigger&quot;, borough=&quot;Brooklyn&quot;, community_district=306)</p>
+<pre class="answer"><span class="step">&quot;first_line&quot;: &quot;Best match: \&quot;Pothole or Cave-In on Street\&quot; (KA-01093), handled by the Department of Transportation, 311 problem type \&quot;Street Condition\&quot;. Confidence strong. Article text as of 2026-11-09.&quot;</span>
+<span class="step">&quot;portal_url&quot;: &quot;https://portal.311.nyc.gov/article/?kanumber=KA-01093&quot;</span>
+<span class="step">&quot;call_911&quot;: &quot;Call 911 to report an unprotected street opening that could cause an accident.&quot;</span>
+<span class="step gap">…</span>
+<span class="step">&quot;label&quot;: &quot;the last 365 days of data (2025-11-09 to 2026-11-08)&quot;</span>
+<span class="step">&quot;requests&quot;: 1448</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">It found the City&#x27;s pothole article, the agency, and the City&#x27;s own warning about open holes. It also counted 1,448 street-condition reports in Brooklyn 6 over the past year.</figcaption>
+  </div>
+</figure>
+<figure class="demo static" aria-label="Example: Smoke pouring out of the apartment next door">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Smoke pouring out of the apartment next door">Smoke pouring out of the apartment next door</span></p>
+    <p class="call step">The assistant calls <span class="name">how_to_report</span>(description=&quot;smoke pouring out of the apartment next door&quot;)</p>
+<pre class="answer"><span class="step">&quot;first_line&quot;: &quot;Call 911 to report smoke or fumes.&quot;</span>
+<span class="step">&quot;source&quot;: &quot;311 article KA-02220 (\&quot;Smoke or Fumes\&quot;), https://portal.311.nyc.gov/article/?kanumber=KA-02220&quot;</span>
+<span class="step">&quot;confidence&quot;: &quot;strong: the City&#x27;s own article for the danger detected; call 911 first&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">When a description sounds dangerous, the first line says to call 911, in the City&#x27;s own words when the City has an article for it.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="draft_311_report">
+<h3><code>draft_311_report</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Writes a short report you can paste into 311 Online: the problem, where, when, and what you saw. It doesn&#x27;t fill in anything you didn&#x27;t tell it. If something is missing, it marks the gap and asks you. It links the right 311 page, lists the City&#x27;s Problem Detail options (from a 2024 City list, so they may be out of date), and says what happens after you report. It won&#x27;t write a draft when it sees danger. It tells you to call 911 instead. It doesn&#x27;t send anything or fill in any form.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Help me write a 311 report about a pothole at 7th Avenue and 9th Street in Brooklyn. It&#x27;s been there since last week.”</li><li>“Draft a 311 report about a broken streetlight on my corner.”</li></ul>
+<figure class="demo static" aria-label="Example: Help me write a 311 report about a pothole at 7th Avenue and 9th Street in Brooklyn. It&#x27;s been there since last week.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Help me write a 311 report about a pothole at 7th Avenue and 9th Street in Brooklyn. It&#x27;s been there since last week.">Help me write a 311 report about a pothole at 7th Avenue and 9th Street in Brooklyn. It&#x27;s been there since last week.</span></p>
+    <p class="call step">The assistant calls <span class="name">draft_311_report</span>(description=&quot;pothole&quot;, location=&quot;7th Avenue and 9th Street&quot;, borough=&quot;Brooklyn&quot;, when=&quot;since last week&quot;)</p>
+<pre class="answer"><span class="step">&quot;first_line&quot;: &quot;Draft ready for \&quot;Pothole or Cave-In on Street\&quot; (KA-01093). The City does not publish each form&#x27;s exact fields, so the form may ask for things this draft doesn&#x27;t cover.&quot;</span>
+<span class="step">&quot;paste_text&quot;: &quot;Problem: Pothole or Cave-In on Street (311 problem type: Street Condition)\nWhere: 7th Avenue and 9th Street, Brooklyn\nWhen: since last week\nWhat I saw: pothole&quot;</span>
+<span class="step gap">…</span>
+<span class="step">&quot;not_sent&quot;: &quot;This draft is not sent anywhere and the server files nothing. The person reports the problem themselves, on 311 Online, in the NYC311 app, by phone or by text.&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">A draft to paste in yourself, the page to paste it on, and a reminder that nothing was sent.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="list_311_categories">
+<h3><code>list_311_categories</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Browse 311&#x27;s own topics, the same ones on 311 Online, when a match looks wrong or you just want to see what 311 covers. Pick a topic to list its articles, 20 at a time.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“What kinds of things can I report to 311?”</li><li>“Show me 311&#x27;s noise articles.”</li></ul>
+<figure class="demo static" aria-label="Example: What kinds of things can I report to 311?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="What kinds of things can I report to 311?">What kinds of things can I report to 311?</span></p>
+    <p class="call step">The assistant calls <span class="name">list_311_categories</span>()</p>
+<pre class="answer"><span class="step">&quot;name&quot;: &quot;Benefits &amp; Support&quot;</span>
+<span class="step">&quot;description&quot;: &quot;Affordable housing, homelessness, SNAP (food stamps), cash assistance, child care, volunteering, donating.&quot;</span>
+<span class="step">&quot;name&quot;: &quot;Businesses &amp; Consumers&quot;</span>
+<span class="step gap">…</span>
+<span class="step">&quot;count&quot;: 115</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">311&#x27;s 115 categories, with the City&#x27;s own descriptions.</figcaption>
+  </div>
+</figure>
+</section>
+<h2 id="district">Your community district or Council district</h2>
+<p>These read the files <a href="https://www.beta.nyc/boardstat/">BoardStat</a> builds every night from NYC Open Data, with 311 requests from 2020 on. Every answer links to the BoardStat page with the same district, dates and problems, so you can check the numbers yourself. No API key needed.</p>
+<section class="tool" id="find_district">
+<h3><code>find_district</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Type an address the way you normally would. It tells you the community district and the Council district, and how many 311 requests have been made there since 2020.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“What community board and Council district is 250 Broadway in?”</li></ul>
+<figure class="demo static" aria-label="Example: What community board and Council district is 250 Broadway in?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="What community board and Council district is 250 Broadway in?">What community board and Council district is 250 Broadway in?</span></p>
+    <p class="call step">The assistant calls <span class="name">find_district</span>(address=&quot;250 Broadway&quot;, borough=&quot;Manhattan&quot;)</p>
+<pre class="answer"><span class="step">&quot;message&quot;: &quot;Found as 250 BROADWAY.&quot;</span>
+<span class="step">&quot;label&quot;: &quot;Manhattan CD 1&quot;</span>
+<span class="step">&quot;label&quot;: &quot;Council District 1&quot;</span>
+<span class="step">&quot;requests_at_this_address&quot;: 148</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">250 Broadway is in Manhattan Community District 1 and Council District 1.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="district_summary">
+<h3><code>district_summary</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>The big picture for one district: how many requests, how many aren&#x27;t closed, how long they take to close, and the top problems. For each top problem, it compares the district&#x27;s share with the borough&#x27;s and the city&#x27;s.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Give me a summary of 311 in Brooklyn Community Board 6.”</li><li>“What does 311 look like in Council District 7 this fiscal year?”</li></ul>
+<figure class="demo static" aria-label="Example: Give me a summary of 311 in Brooklyn Community Board 6.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Give me a summary of 311 in Brooklyn Community Board 6.">Give me a summary of 311 in Brooklyn Community Board 6.</span></p>
+    <p class="call step">The assistant calls <span class="name">district_summary</span>(community_district=306, limit=5)</p>
+<pre class="answer"><span class="step">&quot;label&quot;: &quot;2025-11-01 to 2026-11-08&quot;</span>
+<span class="step">&quot;requests&quot;: 59922</span>
+<span class="step">&quot;not_closed&quot;: 3580</span>
+<span class="step">&quot;median_days_to_close&quot;: 0.2</span>
+<span class="step gap">…</span>
+<span class="step">&quot;problem&quot;: &quot;Illegal Parking&quot;</span>
+<span class="step">&quot;district_share&quot;: 0.2836</span>
+<span class="step">&quot;borough_share&quot;: 0.2011</span>
+<span class="step">&quot;city_share&quot;: 0.1588</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">59,922 requests in a year. Illegal parking is 28% of Brooklyn 6&#x27;s requests, compared with 20% in Brooklyn and 16% citywide.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="top_problems">
+<h3><code>top_problems</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>The most-reported problems in a district for any period, next to the same days a year earlier.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“What were the top 311 complaints in Brooklyn 6 in the last 30 days?”</li><li>“Top problems in Council District 39 last fiscal year?”</li></ul>
+<figure class="demo static" aria-label="Example: What were the top 311 complaints in Brooklyn 6 in the last 30 days?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="What were the top 311 complaints in Brooklyn 6 in the last 30 days?">What were the top 311 complaints in Brooklyn 6 in the last 30 days?</span></p>
+    <p class="call step">The assistant calls <span class="name">top_problems</span>(community_district=306, last_days=30, limit=5)</p>
+<pre class="answer"><span class="step">&quot;label&quot;: &quot;the last 30 days of data (2026-10-10 to 2026-11-08)&quot;</span>
+<span class="step">&quot;problem&quot;: &quot;Illegal Parking&quot;</span>
+<span class="step">&quot;requests&quot;: 2313</span>
+<span class="step">&quot;same_days_a_year_earlier&quot;: 1297</span>
+<span class="step">&quot;change_pct&quot;: 78.3</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">Illegal parking reports were up 78.3% from the same 30 days a year earlier.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="problem_trend">
+<h3><code>problem_trend</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>One problem, month by month, in one district, with the same days a year earlier next to each month.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“How has residential noise in Brooklyn 6 changed month to month this year?”</li></ul>
+<figure class="demo static" aria-label="Example: How has residential noise in Brooklyn 6 changed month to month this year?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="How has residential noise in Brooklyn 6 changed month to month this year?">How has residential noise in Brooklyn 6 changed month to month this year?</span></p>
+    <p class="call step">The assistant calls <span class="name">problem_trend</span>(community_district=306, problem=&quot;Noise - Residential&quot;, last_days=365)</p>
+<pre class="answer"><span class="step">&quot;problem&quot;: &quot;Noise - Residential&quot;</span>
+<span class="step">&quot;requests&quot;: 2676</span>
+<span class="step">&quot;month&quot;: &quot;2025-12&quot;</span>
+<span class="step">&quot;requests&quot;: 184</span>
+<span class="step">&quot;same_days_a_year_earlier&quot;: 152</span>
+<span class="step gap">…</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">2,676 residential noise reports in a year, with every month next to the year before.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="agency_response">
+<h3><code>agency_response</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>For each agency: how many requests, how many are closed, and the median and average days to close. Remember that closed doesn&#x27;t mean fixed.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“How fast do agencies close requests in Council District 39?”</li><li>“Which agency is slowest in Bronx 1 this fiscal year?”</li></ul>
+<figure class="demo static" aria-label="Example: How fast do agencies close requests in Council District 39?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="How fast do agencies close requests in Council District 39?">How fast do agencies close requests in Council District 39?</span></p>
+    <p class="call step">The assistant calls <span class="name">agency_response</span>(council_district=39, last_days=90, limit=5)</p>
+<pre class="answer"><span class="step">&quot;agency_name&quot;: &quot;Department of Housing Preservation and Development&quot;</span>
+<span class="step">&quot;requests&quot;: 2067</span>
+<span class="step">&quot;not_closed&quot;: 467</span>
+<span class="step">&quot;median_days_to_close&quot;: 6</span>
+<span class="step">&quot;average_days_to_close&quot;: 10.3</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">Over the last 90 days, HPD took a median of 6 days to close a request in Council District 39.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="still_open">
+<h3><code>still_open</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Requests that aren&#x27;t closed yet, oldest first, with how many days each has been open and a count by agency. The City doesn&#x27;t define its statuses, so we explain each one and label the explanation as ours.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“What 311 requests in Brooklyn 6 are still open?”</li><li>“Which agency has the most open requests in Queens 1?”</li></ul>
+<figure class="demo static" aria-label="Example: What 311 requests in Brooklyn 6 are still open?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="What 311 requests in Brooklyn 6 are still open?">What 311 requests in Brooklyn 6 are still open?</span></p>
+    <p class="call step">The assistant calls <span class="name">still_open</span>(community_district=306, limit=5)</p>
+<pre class="answer"><span class="step">&quot;not_closed&quot;: 9372</span>
+<span class="step">&quot;agency_name&quot;: &quot;Department of Parks and Recreation&quot;</span>
+<span class="step">&quot;not_closed&quot;: 2238</span>
+<span class="step gap">…</span>
+<span class="step">&quot;problem&quot;: &quot;New Tree Request&quot;</span>
+<span class="step">&quot;status&quot;: &quot;In Progress&quot;</span>
+<span class="step">&quot;days_open&quot;: 2503.4</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">9,372 requests aren&#x27;t closed. The oldest, a request for a new tree, has been open for over 2,500 days.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="top_addresses">
+<h3><code>top_addresses</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>The addresses with the most requests in a district, with each one&#x27;s most common problem. You can narrow it to one problem.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Which addresses in Brooklyn 6 get the most 311 requests?”</li><li>“Where are the most heat complaints in Bronx 5?”</li></ul>
+<figure class="demo static" aria-label="Example: Which addresses in Brooklyn 6 get the most 311 requests?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Which addresses in Brooklyn 6 get the most 311 requests?">Which addresses in Brooklyn 6 get the most 311 requests?</span></p>
+    <p class="call step">The assistant calls <span class="name">top_addresses</span>(community_district=306, last_days=90, limit=5)</p>
+<pre class="answer"><span class="step">&quot;label&quot;: &quot;the last 90 days of data (2026-08-11 to 2026-11-08)&quot;</span>
+<span class="step">&quot;requests&quot;: 15637</span>
+<span class="step gap">…</span>
+<span class="step">&quot;requests&quot;: 921</span>
+<span class="step">&quot;most_common_problem&quot;: &quot;Illegal Parking&quot;</span>
+<span class="step gap">…</span>
+<span class="step">&quot;address_count&quot;: 5521</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">The busiest address had 921 requests in 90 days, mostly illegal parking. (We left the addresses out of this page.)</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="address_history">
+<h3><code>address_history</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Every request at one address since 2020, newest first, with the status explained and the agency&#x27;s own resolution text. It&#x27;s the closest thing to looking up a request when you don&#x27;t have its number.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“What&#x27;s been reported at 1 Centre Street?”</li><li>“Any open requests at City Hall?”</li></ul>
+<figure class="demo static" aria-label="Example: What&#x27;s been reported at 1 Centre Street?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="What&#x27;s been reported at 1 Centre Street?">What&#x27;s been reported at 1 Centre Street?</span></p>
+    <p class="call step">The assistant calls <span class="name">address_history</span>(address=&quot;1 Centre Street&quot;, borough=&quot;Manhattan&quot;, limit=5)</p>
+<pre class="answer"><span class="step">&quot;requests&quot;: 358</span>
+<span class="step">&quot;not_closed&quot;: 9</span>
+<span class="step gap">…</span>
+<span class="step">&quot;problem&quot;: &quot;Graffiti&quot;</span>
+<span class="step">&quot;status&quot;: &quot;Closed&quot;</span>
+<span class="step">&quot;resolution&quot;: &quot;The City has removed the graffiti from this property.&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">358 requests at the Municipal Building since 2020, with what the agency said about each one.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="find_requests">
+<h3><code>find_requests</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Every request in a district, newest first, a page at a time. Filter by problem, agency, or status, including the City&#x27;s own statuses like Pending.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Show me the newest street-condition requests in Brooklyn 6.”</li><li>“List DOT requests in Manhattan 3 that are Pending.”</li></ul>
+<figure class="demo static" aria-label="Example: Show me the newest street-condition requests in Brooklyn 6.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Show me the newest street-condition requests in Brooklyn 6.">Show me the newest street-condition requests in Brooklyn 6.</span></p>
+    <p class="call step">The assistant calls <span class="name">find_requests</span>(community_district=306, problems=[&quot;Street Condition&quot;], limit=5)</p>
+<pre class="answer"><span class="step">&quot;requests&quot;: 1464</span>
+<span class="step">&quot;status&quot;: &quot;Closed&quot;</span>
+<span class="step">&quot;requests&quot;: 1373</span>
+<span class="step gap">…</span>
+<span class="step">&quot;description&quot;: &quot;Cave-in&quot;</span>
+<span class="step">&quot;agency&quot;: &quot;DOT&quot;</span>
+<span class="step">&quot;status&quot;: &quot;In Progress&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">1,464 street-condition requests in a year, by status, newest first.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="boardstat_link">
+<h3><code>boardstat_link</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Makes a BoardStat link with your district, dates, problem, agency, and status already set, so you can open the map and charts yourself.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Give me a BoardStat link for residential noise in Brooklyn 6, last 90 days.”</li></ul>
+<figure class="demo static" aria-label="Example: Give me a BoardStat link for residential noise in Brooklyn 6, last 90 days.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Give me a BoardStat link for residential noise in Brooklyn 6, last 90 days.">Give me a BoardStat link for residential noise in Brooklyn 6, last 90 days.</span></p>
+    <p class="call step">The assistant calls <span class="name">boardstat_link</span>(community_district=306, problems=[&quot;Noise - Residential&quot;], last_days=90)</p>
+<pre class="answer"><span class="step">&quot;boardstat_url&quot;: &quot;https://www.beta.nyc/boardstat/district.html?geo=cd&amp;id=306&amp;start=2026-08-11&amp;end=2026-11-08&amp;type=Noise+-+Residential&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">One link, ready to open or share.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="boardstat_status">
+<h3><code>boardstat_status</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>How fresh BoardStat&#x27;s data is, and whether last night&#x27;s build ran late. Ask this when a number looks off.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“How fresh is BoardStat&#x27;s data?”</li></ul>
+<figure class="demo static" aria-label="Example: How fresh is BoardStat&#x27;s data?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="How fresh is BoardStat&#x27;s data?">How fresh is BoardStat&#x27;s data?</span></p>
+    <p class="call step">The assistant calls <span class="name">boardstat_status</span>()</p>
+<pre class="answer"><span class="step">&quot;built_at&quot;: &quot;2026-11-10T00:37:17Z&quot;</span>
+<span class="step">&quot;nightly_run_late&quot;: false</span>
+<span class="step">&quot;newest_request&quot;: &quot;2026-11-08 02:06:22&quot;</span>
+<span class="step">&quot;total&quot;: 23080603</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">Over 23 million requests, and whether last night&#x27;s build ran late. If it had, the tool would say so.</figcaption>
+  </div>
+</figure>
+</section>
+<h2 id="ll47">The Local Law 47 reports</h2>
+<p>In 2005, <a href="https://intro.nyc/0174-2004">Local Law 47</a> (Gale A. Brewer) required monthly 311 reports from the City, written into Charter § 1075. Two of those reports were repealed in 2023. We rebuilt all three from NYC Open Data. They are BetaNYC rebuilds, not the City's official reports, and every answer says so. No API key needed.</p>
+<section class="tool" id="ll47_service_request_report">
+<h3><code>ll47_service_request_report</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Rebuilds the monthly report on requests for service, formerly Charter § 1075(b): totals by category, agency, and status, and the average and median days to close, for a month and for the fiscal year to date. Citywide, by borough, or for one district.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Rebuild the Local Law 47 monthly 311 report for Brooklyn 6.”</li><li>“Run the § 1075(b) report for Queens for October.”</li></ul>
+<figure class="demo static" aria-label="Example: Rebuild the Local Law 47 monthly 311 report for Brooklyn 6.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Rebuild the Local Law 47 monthly 311 report for Brooklyn 6.">Rebuild the Local Law 47 monthly 311 report for Brooklyn 6.</span></p>
+    <p class="call step">The assistant calls <span class="name">ll47_service_request_report</span>(community_district=306, limit=5)</p>
+<pre class="answer"><span class="step">&quot;label&quot;: &quot;2026-10 (2026-10-01 to 2026-10-31)&quot;</span>
+<span class="step">&quot;requests&quot;: 6108</span>
+<span class="step">&quot;closed&quot;: 5227</span>
+<span class="step gap">…</span>
+<span class="step">&quot;status&quot;: &quot;repealed&quot;</span>
+<span class="step">&quot;note&quot;: &quot;This is a BetaNYC rebuild from NYC Open Data, not the City&#x27;s official report. Only the City can meet § 1075.&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">October&#x27;s report for Brooklyn 6, with the law it rebuilds and a plain note that the law was repealed.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="cb_monthly_list">
+<h3><code>cb_monthly_list</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>The list that Charter § 1075(d), still law, says community boards should get: one district&#x27;s requests for a month, every older request still unresolved, and the ones closed since. Comes in pages, or as a CSV.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Give Brooklyn Community Board 6 its monthly list of 311 requests for October.”</li><li>“Same list for Staten Island 1, as a CSV.”</li></ul>
+<figure class="demo static" aria-label="Example: Give Brooklyn Community Board 6 its monthly list of 311 requests for October.">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Give Brooklyn Community Board 6 its monthly list of 311 requests for October.">Give Brooklyn Community Board 6 its monthly list of 311 requests for October.</span></p>
+    <p class="call step">The assistant calls <span class="name">cb_monthly_list</span>(community_district=306, limit=5)</p>
+<pre class="answer"><span class="step">&quot;new_this_month&quot;: 6108</span>
+<span class="step">&quot;unresolved_from_prior_months&quot;: 8167</span>
+<span class="step">&quot;unresolved_at_month_end_now_closed&quot;: 29</span>
+<span class="step">&quot;rows&quot;: 14304</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">6,108 new requests in October, and 8,167 older ones still unresolved.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="ll47_directory_assistance_report">
+<h3><code>ll47_directory_assistance_report</code></h3>
+<div class="badges"><span class="badge new">New in the beta</span><span class="badge nokey">No key needed</span></div>
+<p>Calls answered by 311 agents, by topic, for a month and the fiscal year to date, formerly Charter § 1075(c). This one is limited, and the answer says so: the open data can&#x27;t separate out directory-assistance calls, and its agency column is blank. NYC Open Data can be slow here, so the first full-year answer may take a few tries.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“How many calls did 311 agents answer in October, by topic?”</li></ul>
+<figure class="demo static" aria-label="Example: How many calls did 311 agents answer in fiscal year 2026, by topic?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="How many calls did 311 agents answer in fiscal year 2026, by topic?">How many calls did 311 agents answer in fiscal year 2026, by topic?</span></p>
+    <p class="call step">The assistant calls <span class="name">ll47_directory_assistance_report</span>(fiscal_year=2026, limit=5)</p>
+<pre class="answer"><span class="step">&quot;limited&quot;: true</span>
+<span class="step">&quot;note&quot;: &quot;Some months are still loading from NYC Open Data, so the full total is not ready yet. The others keep loading and are saved when done. Ask again in a minute.&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">When NYC Open Data is slow, it says what&#x27;s missing and keeps loading. It doesn&#x27;t guess.</figcaption>
+  </div>
+</figure>
+</section>
+<h2 id="today">Today in the city</h2>
+<p>The City's own 311 calendar and status alerts. These were in the released version, too.</p>
+<section class="tool" id="get_calendar">
+<h3><code>get_calendar</code></h3>
+<div class="badges"><span class="badge">Same as released</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Alternate side parking, trash and recycling collection, and schools, for a day or up to 90 days.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Is alternate side parking in effect today?”</li><li>“Is trash pickup on schedule the week of Thanksgiving?”</li></ul>
+<figure class="demo static" aria-label="Example: Is alternate side parking in effect today?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Is alternate side parking in effect today?">Is alternate side parking in effect today?</span></p>
+    <p class="call step">The assistant calls <span class="name">get_calendar</span>()</p>
+<pre class="answer"><span class="step">&quot;details&quot;: &quot;Alternate side parking and meters are in effect.&quot;</span>
+<span class="step">&quot;details&quot;: &quot;Trash, recycling, and compost collections are on schedule.&quot;</span>
+<span class="step">&quot;details&quot;: &quot;Public schools are open.&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">The City&#x27;s calendar for today.</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="get_status">
+<h3><code>get_status</code></h3>
+<div class="badges"><span class="badge">Improved in the beta</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Whether Code Blue, a fire hydrant emergency, snow or ice, or an emergency management alert is in effect right now. The answer now says it in words.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Is there a Code Blue tonight?”</li><li>“Is there a snow emergency on the streets?”</li></ul>
+<figure class="demo static" aria-label="Example: Is there a Code Blue tonight?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="Is there a Code Blue tonight?">Is there a Code Blue tonight?</span></p>
+    <p class="call step">The assistant calls <span class="name">get_status</span>(type=&quot;CodeBlue&quot;)</p>
+<pre class="answer"><span class="step">&quot;answer&quot;: &quot;No: the City&#x27;s 311 API says Code Blue is not in effect right now. That is as of when it was asked; it can change later today, so ask again for a later answer.&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">A yes or no, and when it was true.</figcaption>
+  </div>
+</figure>
+</section>
+<h2 id="lookup">Look up a 311 request</h2>
+<p>Have a 311 number, like 311-12345678? These tell you where it stands, in words. The City sends a status code, and we translate it.</p>
+<section class="tool" id="get_service_request">
+<h3><code>get_service_request</code></h3>
+<div class="badges"><span class="badge">Improved in the beta</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Look up a request by its 311 number. You get the agency, the problem, the status in words, and the agency&#x27;s own note about what it did. ZIP codes are removed.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“What happened with 311 request 311-17323508?”</li></ul>
+<figure class="demo static" aria-label="Example: What happened with 311 request 311-17323508?">
+  <div class="demo-bar"><span>A real question and answer, November 9, 2026. Answer shortened.</span><button type="button" class="replay">Replay</button></div>
+  <div class="demo-body">
+    <p class="msg-user"><span class="typed" data-text="What happened with 311 request 311-17323508?">What happened with 311 request 311-17323508?</span></p>
+    <p class="call step">The assistant calls <span class="name">get_service_request</span>(sr_number=&quot;311-17323508&quot;)</p>
+<pre class="answer"><span class="step">&quot;Agency&quot;: &quot;Department of Sanitation&quot;</span>
+<span class="step">&quot;Problem&quot;: &quot;Snow or Ice&quot;</span>
+<span class="step">&quot;ResolutionAction&quot;: &quot;The Department of Sanitation investigated this complaint and issued a Notice of Violation.&quot;</span>
+<span class="step">&quot;status&quot;: &quot;Closed&quot;</span>
+<span class="step closing">For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</span></pre>
+    <figcaption class="caption step">The City sends status code 614110003. The tool says Closed. (We left the address out of this page.)</figcaption>
+  </div>
+</figure>
+</section>
+<section class="tool" id="get_service_request_list">
+<h3><code>get_service_request_list</code></h3>
+<div class="badges"><span class="badge">Improved in the beta</span><span class="badge key">Needs a free 311 API key</span></div>
+<p>Several 311 numbers at once. Any number the City can&#x27;t find is listed, so nothing quietly goes missing.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Check these three 311 numbers for me: …”</li></ul>
+</section>
+<h2>Want to try it?</h2>
+<p><a class="button" href="beta/nyc-311-mcp.html">Install the beta</a></p>
+
+</div></main>
+<footer class="site"><div class="wrap">
+<p>Built by <a href="https://beta.nyc">BetaNYC</a>, New York's civic technology and open data community. Free and open source under the MIT License. <a href="https://github.com/BetaNYC/nyc-311-mcp">Code on GitHub</a>.</p>
+<p>An independent, community-built project. Not affiliated with, endorsed by, or an official product of the City of New York.</p>
+<p>For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City&#x27;s 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911.</p>
+<p><a href="https://beta.nyc/donate/">Support our work</a>.</p>
+</div></footer>
+</body>
+</html>
