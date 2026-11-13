@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.3.0] - Unreleased
+## [1.3.0] - 2026-11-13
 
 Adds three shared BetaNYC tools (every BetaNYC MCP server is getting them; nyc-311-mcp is
 the first), a "What's changed" page on the
