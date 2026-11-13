@@ -75,6 +75,10 @@ jobs:
       - name: WHATS-CHANGED.md has no Unreleased entry
         run: python3 scripts/whats_changed.py check WHATS-CHANGED.md --release
 
+      # DATA-SOURCES.json: besides the usual checks, fails while contact_email is the placeholder.
+      - name: DATA-SOURCES.json is ready for release
+        run: python3 scripts/whats_changed.py about-data check DATA-SOURCES.json --release
+
       - name: Publish to npm
         run: npm publish --provenance --access public
         env:

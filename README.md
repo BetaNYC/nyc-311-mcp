@@ -263,7 +263,7 @@ Have a 311 number, like 311-12345678? These tell you where it stands, in words. 
 
 #### About this server
 
-Ask what changed in the server lately, who built it, or where its data comes from. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page; another reads the server's list of data sources, which is also published as a [data catalog](https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/data.json). No API key needed.
+Ask what changed in the server lately, who built it, or where its data comes from. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page; another reads the server's list of data sources, which is also published as a [data catalog](data.json). No API key needed.
 
 - **`whats_changed`** (New in 1.3.0; no key needed). What changed in this server, newest first: new tools, data fixes, and corrections when an answer was wrong. You can ask for corrections only, or for changes since a date.
   - Try asking:
@@ -439,20 +439,20 @@ where to report an error. The `about_data` tool answers from it, and says how cu
 source is on your computer from what the server last downloaded. A test fails if a tool is
 not listed under a source. `data.json`, a [DCAT-US 3.0](https://resources.data.gov/resources/dcat-us3/)
 catalog, is made from the same file, at the repo root (it ships in the npm package). A copy on
-the website (`docs/data.json`) is added once BetaNYC names its monitored contact address, so the
-placeholder address below is never published there. There is no `croissant.json`, because this repo publishes no
+the website ([docs/data.json](https://betanyc.github.io/nyc-311-mcp/data.json)) is made the same
+way, and CI fails unless the two match. There is no `croissant.json`, because this repo publishes no
 data files of its own; BoardStat publishes the district files. After changing `DATA-SOURCES.json`:
 
 ```bash
 python3 scripts/whats_changed.py about-data check DATA-SOURCES.json
 python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json
+python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json
 ```
 
 CI fails while `data.json` is stale, and validates it against the DCAT-US 3.0 schema
 (`scripts/tests/catalog_validate.py` and `scripts/mcp_shared/`, copies of BetaNYC's shared
-files). `DATA-SOURCES.json` still has the placeholder contact address,
-`contact-not-yet-named@example.invalid`, because BetaNYC has not yet named the monitored address
-for data questions.
+files). Questions about the data go to BetaNYC at lab@beta.nyc, the contact address in
+`DATA-SOURCES.json` and `data.json`.
 
 This is an independent, community-built project. It is not affiliated with, endorsed by, or
 an official product of the City of New York.
@@ -505,15 +505,10 @@ The title stays exactly the same: only `Unreleased` becomes the date. That commi
 the entry's other lines; until it has a date, an Unreleased entry's body counts as
 unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
 
-**Not yet in the release gate:** `python3 scripts/whats_changed.py about-data check
-DATA-SOURCES.json --release`, which fails while the contact address is the placeholder. It goes
-into `release.yml`, before `npm publish`, once BetaNYC names its monitored contact address and
-it replaces the placeholder in `DATA-SOURCES.json` (nyc-council-mcp does the same). The same day, add the website copy of the catalog:
-`python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json`,
-and its `--check` to CI.
-
 Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
-`check --release` before `npm publish` and stops while an Unreleased entry is left.
+`check --release` before `npm publish` and stops while an Unreleased entry is left. It also
+runs `python3 scripts/whats_changed.py about-data check DATA-SOURCES.json --release`, which
+stops a release while the contact address in `DATA-SOURCES.json` is a placeholder.
 
 When the Release workflow succeeds, `.github/workflows/publish-mcp.yml` lists the new version
 in the official [MCP Registry](https://registry.modelcontextprotocol.io/) as
