@@ -59,11 +59,11 @@ GROUPS = [
         "id": "about",
         "title": "About this server",
         "intro": (
-            "Ask what changed in the server lately, or who built it. Every BetaNYC MCP server is "
-            "getting these two tools; nyc-311-mcp is the first. They read the same list as the <a href=\"https://betanyc.github.io/nyc-311-mcp/whats-changed.html\">What's "
-            "changed</a> page. No API key needed."
+            "Ask what changed in the server lately, who built it, or where its data comes from. Every "
+            "BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the <a href=\"https://betanyc.github.io/nyc-311-mcp/whats-changed.html\">What's "
+            "changed</a> page; another reads the server's list of data sources, which is also published as a <a href=\"https://betanyc.github.io/nyc-311-mcp/data.json\">data catalog</a>. No API key needed."
         ),
-        "tools": ["whats_changed", "about_betanyc"],
+        "tools": ["whats_changed", "about_betanyc", "about_data"],
     },
 ]
 
@@ -500,5 +500,15 @@ TOOLS = {
             "BetaNYC's events, newsletter, and ways to get involved."
         ),
         "asks": ["Who made this 311 tool?", "Where do I report a bug in the 311 server?"],
+    },
+    "about_data": {
+        "status": "new13", "key": False,
+        "what": (
+            "Tells you where each answer's data comes from. It names the publisher and says whether the "
+            "numbers are an official record or BetaNYC's own, what BetaNYC changed, and how current the data "
+            "is on your computer. It also gives what the data leaves out, the credit line to use, where to "
+            "check a number with the City, and where to report a mistake."
+        ),
+        "asks": ["Where do the 311 district numbers come from?", "Are these 311 numbers official?", "How current is the 311 data?"],
     },
 }

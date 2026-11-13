@@ -38,6 +38,7 @@
 // addresses. The text is reduced to plain text here; how-to-report.ts redacts ZIP
 // codes from everything it returns.
 
+import { readFileSync } from "node:fs";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { defaultCacheDir, stderrLogger, type Logger } from "./boardstat-data.js";
@@ -166,6 +167,19 @@ export class ContentClient {
       const raw = JSON.parse(await readFile(this.file(key), "utf8"));
       if (!raw || typeof raw.fetched_at !== "string" || Number.isNaN(Date.parse(raw.fetched_at)) || !("value" in raw)) return null;
       return raw;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * When the saved copy of one key was fetched from the 311 API (ISO 8601), without the
+   * network; null when nothing is saved. about_data reports the category list's time.
+   */
+  savedAt(key: string): string | null {
+    try {
+      const raw = JSON.parse(readFileSync(this.file(key), "utf8"));
+      return raw && typeof raw.fetched_at === "string" && !Number.isNaN(Date.parse(raw.fetched_at)) ? raw.fetched_at : null;
     } catch {
       return null;
     }

@@ -5,6 +5,7 @@
  */
 
 import { SAFETY_LINE } from "./emergency.js";
+import { BETANYC_INSTRUCTIONS } from "./betanyc-tools.js";
 
 export const ABOUT_BOARDSTAT =
   "BoardStat: the district tools read files that BoardStat (BetaNYC) builds every night from NYC Open Data, with 311 requests from 2020 on, so the numbers match the BoardStat page each answer links to. It is not an official City report. 311 counts are reports, not problems, and 'closed' does not mean fixed.";
@@ -24,6 +25,9 @@ export const SERVER_INSTRUCTIONS = [
   DISTRICT_IDS,
   DATE_OPTIONS,
   LL47_REBUILD,
+  // The shared module's text: call about_data for sources, freshness, checking and citing;
+  // about_betanyc for who built this; whats_changed for fixes and corrections.
+  BETANYC_INSTRUCTIONS,
   // Noel's closing text (beta round 18), once here; every tool response also ends with it.
   SAFETY_LINE,
 ].join("\n\n");

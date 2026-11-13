@@ -36,7 +36,9 @@
   },
   "files": [
     "dist",
-    "WHATS-CHANGED.md"
+    "WHATS-CHANGED.md",
+    "DATA-SOURCES.json",
+    "data.json"
   ],
   "scripts": {
     "build": "tsc",

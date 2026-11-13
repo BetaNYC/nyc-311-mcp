@@ -32,12 +32,12 @@ export const SLA_DATASET = "cs9t-e3x8";
 export const SLA_URL = `https://data.cityofnewyork.us/d/${SLA_DATASET}`;
 /** The dataset changes about once a year (it says "Annually"; it last changed 2024-03-05). */
 export const SLA_TTL_MS = 30 * 24 * 60 * 60 * 1000;
-const SLA_KEY = `sla/${SLA_DATASET}`;
+export const SLA_KEY = `sla/${SLA_DATASET}`;
 const SLA_DEADLINE_MS = 20_000;
 
 /** Columns, from the dataset's own metadata (/api/views/cs9t-e3x8.json, read 2026-11-07). */
 export type SlaRow = { agency: string; problem: string; problem_details?: string; additional_details?: string; sla_days: string };
-type SlaCache = { rows: SlaRow[]; rows_updated: string };
+export type SlaCache = { rows: SlaRow[]; rows_updated: string };
 export type SlaTable = SlaCache & { fetched_at: string; stale?: true; warning?: string };
 
 /**

@@ -24,7 +24,7 @@
 // ZIP codes never leave this module: every Parquet read drops any column whose
 // name contains "zip" (Noel's decision, 2026-11-07, epic #12).
 
-import { createWriteStream } from "node:fs";
+import { createWriteStream, readFileSync } from "node:fs";
 import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { randomBytes } from "node:crypto";
 import { homedir } from "node:os";
@@ -245,6 +245,22 @@ export class BoardStatData {
     await writeFile(tmp, JSON.stringify(state));
     await rename(tmp, this.statePath);
     this.state = state;
+  }
+
+  /**
+   * The build this server answers from, without the network: the manifest in memory, else
+   * the one saved in the cache folder. Null when no build has been loaded on this machine.
+   * Used by about_data to say how current the district data is (a real artifact, never a
+   * typed date). Synchronous, because about_data's freshness hooks are.
+   */
+  knownManifest(): BoardStatManifest | null {
+    if (this.state) return this.state.manifest;
+    try {
+      const raw = JSON.parse(readFileSync(this.statePath, "utf8"));
+      return validateManifest(raw.manifest);
+    } catch {
+      return null;
+    }
   }
 
   /**

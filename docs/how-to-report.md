@@ -109,10 +109,10 @@ it."
 
 **Emergencies (safety first; `src/emergency.ts`, shared with #18).** Every answer carries
 `safety_line`: "For informational purposes only. BetaNYC builds these answers from City data; they may contain errors. Check the City's 311 page before you report. If this is an emergency, or if you think this is an emergency, call 911." (Noel's words, beta round 18). It is
-the last line of the text of every response from 21 of the server's 23 tools, success or
+the last line of the text of every response from 21 of the server's 24 tools, success or
 error, and the first field (`safety_line`) of every structured answer, whatever was or was not
-detected. The two shared BetaNYC tools (`whats_changed`, `about_betanyc`) are the exception:
-they do not answer from City data, so their text ends with the line's 911 sentence only, and
+detected. The three shared BetaNYC tools (`whats_changed`, `about_betanyc`, `about_data`) are the exception:
+they give no figures from City data, so their text ends with the line's 911 sentence only, and
 their structured answer follows their own output schema. That sentence is what the server relies on; danger spotting is a best effort and will
 miss some wording. A description that suggests danger
 still leads `first_line` with its own 911 line. A recurring condition ("every morning") quiets

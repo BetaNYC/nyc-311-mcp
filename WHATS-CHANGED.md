@@ -7,12 +7,12 @@ This page lists the changes to nyc-311-mcp that a reader would notice: new tools
 
 To report a bug in this server or ask for a new feature, [open an issue on GitHub](https://github.com/BetaNYC/nyc-311-mcp/issues).
 
-## Unreleased: A What's changed page, and two tools that explain the server
+## Unreleased: A What's changed page, and three tools that explain the server
 
 - **Tags:** Site, MCP
-- **What changed:** The website has a new page that lists every change a reader would notice. Two new tools let your AI assistant answer "what's new in this server?" and "who built this?" with links to BetaNYC and to the place to report a bug in this server or ask for a new feature.
+- **What changed:** The website has a new page that lists every change a reader would notice. Three new tools let your AI assistant answer "what's new in this server?", "who built this?" and "where does this data come from?", with links to BetaNYC and to the place to report a bug in this server or ask for a new feature. The third names each source and its publisher, says whether the numbers are an official record or BetaNYC's own, how current the data is, and where to check a number with the City. The same list of sources is published as a data catalog.
 - **MCP version:** [nyc-311-mcp 1.3.0](CHANGELOG.md)
-- **More detail:** [What's changed on the website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) · [Release notes](CHANGELOG.md)
+- **More detail:** [What's changed on the website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) · [Where the data comes from](DATA-SOURCES.json) · [Data catalog](https://betanyc.github.io/nyc-311-mcp/data.json) · [Release notes](CHANGELOG.md)
 
 ## 2026-11-09: Version 1.2.0 adds 17 tools, from reporting help to district numbers
 

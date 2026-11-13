@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.0] - Unreleased
 
-Adds the two tools every BetaNYC MCP server carries, and a "What's changed" page on the
-website. Tracking: BetaNYC/betanyc-ai-workspace#1645 (epic #1637).
+Adds the three tools every BetaNYC MCP server carries, a "What's changed" page on the
+website, and a list of data sources with a DCAT-US 3.0 catalog made from it. Tracking:
+BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
 
 ### Added
 
@@ -20,10 +21,32 @@ website. Tracking: BetaNYC/betanyc-ai-workspace#1645 (epic #1637).
 - `about_betanyc`: who built the server, the repository, where to report a problem, and
   BetaNYC's links.
 - `src/betanyc-tools.ts`, copied unchanged from the workspace's
-  `scripts/mcp_shared/betanyc-tools.ts` (v1.1.0). Never edit the copy; change the canonical
+  `scripts/mcp_shared/betanyc-tools.ts` (now v1.3.2, with `scripts/whats_changed.py`). Never edit the copy; change the canonical
   file and copy it again. The two new tools do not answer from City data, so their text ends
   with the safety line's 911 sentence only, not the City-data part; their
   `structuredContent` is the shared module's, unchanged.
+- `about_data`: where each kind of data comes from, from `DATA-SOURCES.json` (10 sources): the
+  publisher, whether the figures are an official record or BetaNYC's, what BetaNYC changed,
+  coverage and gaps, terms and credit line, where to check a figure and where to report an
+  error, the tools that use it, and corrections that touched it. `topic` takes a source id or
+  a tool name. How current each source is comes from what this server last saved (BoardStat's
+  manifest, the NYC Open Data and 311 content caches), read by freshness hooks in
+  `src/tools.ts` without the network; a source nothing has been fetched for says so. Its text
+  ends with the safety line's 911 sentence, like the other two shared tools.
+- `DATA-SOURCES.json`, and `data.json` (DCAT-US 3.0) made from it by
+  `scripts/whats_changed.py about-data catalog`, at the repo root and at `docs/data.json`. Both
+  ship in the npm package (`files`). No `croissant.json`: this repo publishes no data files
+  (BoardStat does).
+- The server instructions tell AI apps to call `about_data` for questions about sources,
+  freshness, officialness and checking, and `about_betanyc` for who built the server.
+- `test/about-data.test.mjs`: every tool must be listed under a source
+  (`assertEveryToolExplained`), and `about_data` is checked for several topics, in process and
+  over stdio against its output schema.
+- CI: an `about-data` job runs `about-data check --tools-file` with the server's real tool
+  list, `about-data catalog --check` for both `data.json` files, and the pinned validators
+  (the `DATA-SOURCES.json` JSON Schema and the vendored DCAT-US 3.0 schema). The Release
+  workflow runs `about-data check --release`, which fails while the contact address is the
+  placeholder, so 1.3.0 cannot publish until BetaNYC names a monitored address.
 - `WHATS-CHANGED.md`, the reader-facing record of changes, backfilled to 1.0.0, and shipped
   in the npm package (`files`).
 - `docs/whats-changed.html`, built from it by `scripts/whats_changed.py` (copied unchanged
@@ -36,9 +59,9 @@ website. Tracking: BetaNYC/betanyc-ai-workspace#1645 (epic #1637).
 
 ### Changed
 
-- 23 tools instead of 21: README, website, install guide and the safety-line test.
-- The tool size budget is 41,000 characters (was 35,200), for the two new tools' output
-  schemas.
+- 24 tools instead of 21: README, website, install guide and the safety-line test.
+- The tool size budget is 47,000 characters (was 35,200), for the three new tools' output
+  schemas; the shared tools, copied unchanged, may be up to 5,500 characters each.
 
 ## [1.2.0] - 2026-11-09
 

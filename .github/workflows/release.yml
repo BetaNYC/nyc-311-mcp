@@ -75,6 +75,12 @@ jobs:
       - name: WHATS-CHANGED.md has no Unreleased entry
         run: python3 scripts/whats_changed.py check WHATS-CHANGED.md --release
 
+      # DATA-SOURCES.json: fails while server.contact_email is still the placeholder
+      # (contact-not-yet-named@example.invalid), so no catalog with it can be published.
+      # BetaNYC names a monitored address first (about-data standard § 1).
+      - name: DATA-SOURCES.json is ready to release
+        run: python3 scripts/whats_changed.py about-data check DATA-SOURCES.json --release
+
       - name: Publish to npm
         run: npm publish --provenance --access public
         env:

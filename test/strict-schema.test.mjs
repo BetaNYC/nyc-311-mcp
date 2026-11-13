@@ -103,6 +103,7 @@ const VALID_ARGS = {
   get_service_request_list: { sr_numbers: ["311-17323508"] },
   whats_changed: { tag: "MCP", limit: 2 },
   about_betanyc: {},
+  about_data: { topic: "get_calendar" },
 };
 
 test("VALID_ARGS covers every advertised tool", () => {

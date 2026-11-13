@@ -16,9 +16,12 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 
 ## What's new in 1.3.0
 
-Version 1.3.0 has **23** tools. Two are new: `whats_changed` tells you what changed in the
-server, and `about_betanyc` says who built it and where to report a bug in this server or ask for a new feature.
-Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. Every change a reader would notice, including corrections, is listed
+Version 1.3.0 has **24** tools. Three are new: `whats_changed` tells you what changed in the
+server, `about_betanyc` says who built it and where to report a bug in this server or ask for a new feature,
+and `about_data` says where each answer's data comes from, whether it is official, how current it is, and
+where to check it. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. The
+data sources are listed in [DATA-SOURCES.json](DATA-SOURCES.json) and published as a
+[DCAT-US 3.0 catalog](https://betanyc.github.io/nyc-311-mcp/data.json). Every change a reader would notice, including corrections, is listed
 in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
 [website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
 
@@ -78,7 +81,7 @@ key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 **Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
 have one.
 
-To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23
+To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 24
 (21 on version 1.2.0), including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
 **Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
@@ -260,7 +263,7 @@ Have a 311 number, like 311-12345678? These tell you where it stands, in words. 
 
 #### About this server
 
-Ask what changed in the server lately, or who built it. Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. They read the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page. No API key needed.
+Ask what changed in the server lately, who built it, or where its data comes from. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page; another reads the server's list of data sources, which is also published as a [data catalog](https://betanyc.github.io/nyc-311-mcp/data.json). No API key needed.
 
 - **`whats_changed`** (New in 1.3.0; no key needed). What changed in this server, newest first: new tools, data fixes, and corrections when an answer was wrong. You can ask for corrections only, or for changes since a date.
   - Try asking:
@@ -273,6 +276,13 @@ Ask what changed in the server lately, or who built it. Every BetaNYC MCP server
     - “Who made this 311 tool?”
     - “Where do I report a bug in the 311 server?”
   - Inputs: none
+
+- **`about_data`** (New in 1.3.0; no key needed). Tells you where each answer's data comes from. It names the publisher and says whether the numbers are an official record or BetaNYC's own, what BetaNYC changed, and how current the data is on your computer. It also gives what the data leaves out, the credit line to use, where to check a number with the City, and where to report a mistake.
+  - Try asking:
+    - “Where do the 311 district numbers come from?”
+    - “Are these 311 numbers official?”
+    - “How current is the 311 data?”
+  - Inputs: `topic`
 
 ## How the district tools read districts and dates
 
@@ -423,6 +433,26 @@ npm test
 
 Rate limits on the 311 API depend on your subscription, not on this server.
 
+[DATA-SOURCES.json](DATA-SOURCES.json) lists every source, source by source: who publishes it,
+what BetaNYC changed, what it covers, its terms and credit line, where to check a number and
+where to report an error. The `about_data` tool answers from it, and says how current each
+source is on your computer from what the server last downloaded. A test fails if a tool is
+not listed under a source. `data.json`, a [DCAT-US 3.0](https://resources.data.gov/resources/dcat-us3/)
+catalog, is made from the same file, at the repo root (it ships in the npm package) and at
+`docs/data.json` for the website. There is no `croissant.json`, because this repo publishes no
+data files of its own; BoardStat publishes the district files. After changing `DATA-SOURCES.json`:
+
+```bash
+python3 scripts/whats_changed.py about-data check DATA-SOURCES.json
+python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json
+python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json
+```
+
+CI fails while either `data.json` is stale, and validates both against the DCAT-US 3.0 schema
+(`scripts/tests/catalog_validate.py` and `scripts/mcp_shared/`, copies of BetaNYC's shared
+files). The Release workflow refuses to publish while `DATA-SOURCES.json` still has the
+placeholder contact address, `contact-not-yet-named@example.invalid`.
+
 This is an independent, community-built project. It is not affiliated with, endorsed by, or
 an official product of the City of New York.
 
@@ -447,8 +477,8 @@ A release that adds or changes a tool also adds a `WHATS-CHANGED.md` entry tagge
 same pull request as the version bump, headed `## Unreleased: Title`. The release commit
 changes that heading to `## YYYY-MM-DD: Title` (the release date in New York, same title), and
 the tag goes on that commit; the Release workflow refuses to publish while an Unreleased entry
-is left. `src/betanyc-tools.ts` (the `whats_changed` and
-`about_betanyc` tools) is a copy too.
+is left. `src/betanyc-tools.ts` (the `whats_changed`,
+`about_betanyc` and `about_data` tools) is a copy too.
 
 ### Releases
 

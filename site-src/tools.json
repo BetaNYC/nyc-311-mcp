@@ -1426,5 +1426,19 @@
    "readOnlyHint": true,
    "openWorldHint": false
   }
+ },
+ {
+  "name": "about_data",
+  "description": "Where this server's data comes from and how far to trust it. For each kind of data: who publishes it and a link, whether it is an official record or BetaNYC's curation, how it was gathered, what BetaNYC changed (for example cleaned, address-matched, merged or counted), how current it is on this server, what it covers and what is missing, the terms of use and the credit line to print, where to check a figure at the official source, where to report an error (to the publisher, or in this server), which tools use it, and corrections that touched it. Call it whenever someone asks where an answer comes from, how current or accurate it is, or how to check or cite it. topic narrows it to one kind of data, or to the data behind one tool (give the tool's name). For who built this server, use about_betanyc. Topics on this server: calendar-and-status, service-request-lookup, 311-articles, built-in-911-lines, service-requests-by-district, ll47-service-request-reports, community-district-boundaries, council-district-boundaries, call-center-inquiries, service-level-agreements.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "topic": {
+     "type": "string",
+     "description": "One kind of data (a source id), or a tool name for the data behind that tool. Any case. Default: all."
+    }
+   },
+   "additionalProperties": false
+  }
  }
 ]
