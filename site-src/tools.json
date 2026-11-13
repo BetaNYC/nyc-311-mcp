@@ -1089,5 +1089,342 @@
     "description"
    ]
   }
+ },
+ {
+  "name": "whats_changed",
+  "title": "What's changed",
+  "description": "What has changed in this server, its data and its website, newest first, from the project's WHATS-CHANGED.md: new tools and pages, new data, data fixes, and corrections when BetaNYC published something wrong. Each correction says what to re-check if you used the old numbers. Call this before relying on a figure you got from this server earlier, or when a user asks whether something was fixed. Filter with since (YYYY-MM-DD; also keeps older entries that have an update on or after that date) and tag (Site, Data, MCP or Correction).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "since": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+     "description": "Only changes on or after this date, YYYY-MM-DD"
+    },
+    "tag": {
+     "type": "string",
+     "description": "Only changes with this tag: Site, Data, MCP or Correction (any case; answers use these spellings). Correction lists every correction."
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 50,
+     "description": "Most entries to return (default 10, max 50)"
+    }
+   },
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "type": "object",
+   "properties": {
+    "server": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "version": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "name",
+      "version"
+     ]
+    },
+    "source": {
+     "type": "string",
+     "description": "Where to read the full history"
+    },
+    "history_begins": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "filters": {
+     "type": "object",
+     "properties": {
+      "since": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "tag": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "limit": {
+       "type": "integer"
+      }
+     },
+     "required": [
+      "since",
+      "tag",
+      "limit"
+     ]
+    },
+    "total_matching": {
+     "type": "integer"
+    },
+    "returned": {
+     "type": "integer"
+    },
+    "entries": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "date": {
+        "type": "string",
+        "description": "YYYY-MM-DD, the day the change went live"
+       },
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "type": "string",
+        "description": "Link to this entry"
+       },
+       "tags": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "enum": [
+          "Site",
+          "Data",
+          "MCP",
+          "Correction"
+         ]
+        }
+       },
+       "summary": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "if_you_used_the_old_numbers": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "description": "For corrections: what to re-check and how"
+       },
+       "who_it_affects": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "mcp_version": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "more_detail": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "updates": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "date": {
+           "type": "string"
+          },
+          "text": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "date",
+          "text"
+         ]
+        }
+       },
+       "links": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "properties": {
+          "text": {
+           "type": "string"
+          },
+          "url": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "text",
+          "url"
+         ]
+        }
+       }
+      },
+      "required": [
+       "date",
+       "title",
+       "url",
+       "tags",
+       "summary",
+       "if_you_used_the_old_numbers",
+       "who_it_affects",
+       "mcp_version",
+       "more_detail",
+       "updates",
+       "links"
+      ]
+     }
+    },
+    "note": {
+     "type": [
+      "string",
+      "null"
+     ]
+    }
+   },
+   "required": [
+    "server",
+    "source",
+    "history_begins",
+    "filters",
+    "total_matching",
+    "returned",
+    "entries",
+    "note"
+   ]
+  },
+  "annotations": {
+   "title": "What's changed",
+   "readOnlyHint": true,
+   "openWorldHint": false
+  }
+ },
+ {
+  "name": "about_betanyc",
+  "title": "About BetaNYC and this server",
+  "description": "Who built this server and how to reach them: BetaNYC, a project of the Fund for the City of New York. Returns what BetaNYC is, links to its events, newsletter and donation page, where to report a bug or ask for a feature (this server's GitHub issues), and this server's name and version.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {},
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "type": "object",
+   "properties": {
+    "server": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "version": {
+       "type": "string"
+      },
+      "repository": {
+       "type": "string"
+      },
+      "shared_module_version": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "name",
+      "version",
+      "repository",
+      "shared_module_version"
+     ]
+    },
+    "built_by": {
+     "type": "string"
+    },
+    "about": {
+     "type": "string"
+    },
+    "history": {
+     "type": "string"
+    },
+    "support": {
+     "type": "string"
+    },
+    "links": {
+     "type": "object",
+     "properties": {
+      "website": {
+       "type": "string"
+      },
+      "about": {
+       "type": "string"
+      },
+      "history": {
+       "type": "string"
+      },
+      "events": {
+       "type": "string"
+      },
+      "newsletter": {
+       "type": "string"
+      },
+      "get_involved": {
+       "type": "string"
+      },
+      "donate": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "website",
+      "about",
+      "history",
+      "events",
+      "newsletter",
+      "get_involved",
+      "donate"
+     ]
+    },
+    "bugs_and_requests": {
+     "type": "object",
+     "properties": {
+      "issues": {
+       "type": "string"
+      },
+      "new_issue": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "issues",
+      "new_issue"
+     ]
+    },
+    "whats_changed": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "server",
+    "built_by",
+    "about",
+    "history",
+    "support",
+    "links",
+    "bugs_and_requests",
+    "whats_changed"
+   ]
+  },
+  "annotations": {
+   "title": "About BetaNYC and this server",
+   "readOnlyHint": true,
+   "openWorldHint": false
+  }
  }
 ]

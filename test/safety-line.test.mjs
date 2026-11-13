@@ -1,7 +1,9 @@
 // Every response from every tool carries one fixed text, Noel's (beta round 18): a disclaimer, then
 // "If this is an emergency, or if you think this is an emergency, call 911." It is the LAST line of the text, like
-// the end of a doctor's office phone message, on success and on error, for all 21 tools, whatever
-// was or was not detected; and the first field (safety_line) of every structured answer. Danger
+// the end of a doctor's office phone message, on success and on error, for all 23 tools, whatever
+// was or was not detected; and the first field (safety_line) of every structured answer, except
+// the two shared BetaNYC tools (whats_changed, about_betanyc), whose structuredContent follows
+// their declared outputSchema. Danger
 // spotting is a best effort; a detected danger still leads how_to_report's and draft_311_report's
 // first_line with its own 911 line at the top.
 import { test } from "node:test";
@@ -57,10 +59,18 @@ const CALLS = [
   ["draft_311_report", { description: "I smell gas in my kitchen" }],
   ["how_to_report", { description: "x" }],
   ["draft_311_report", {}],
+  ["whats_changed", {}],
+  ["whats_changed", { limit: 0 }],
+  ["about_betanyc", {}],
   ["no_such_tool", {}],
 ];
 
-test("every response from all 21 tools ends with the safety line, success or error", async (t) => {
+// The two shared BetaNYC tools answer in readable text plus structuredContent (their
+// outputSchema), not JSON text. The safety line still ends their text; it is not added to
+// structuredContent, which stays exactly as the shared module builds it.
+const SHARED = new Set(["whats_changed", "about_betanyc"]);
+
+test("every response from all 23 tools ends with the safety line, success or error", async (t) => {
   const SODA_FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "soda", "wewp-mm3p");
   setContentClient(await stressClient());
   setBoardStatData((await fixtureData()).data);
@@ -89,13 +99,18 @@ test("every response from all 21 tools ends with the safety line, success or err
   });
   const covered = new Set(CALLS.map(([n]) => n));
   for (const tool of TOOLS) assert.ok(covered.has(tool.name), `no call for ${tool.name}`);
-  assert.equal(TOOLS.length, 21);
+  assert.equal(TOOLS.length, 23);
   for (const [name, args] of CALLS) {
     const r = await callTool(name, args);
     const text = r.content[0].text;
     assert.ok(text.endsWith(`\n\n${SAFETY_LINE}`), `${name}: ...${text.slice(-160)}`);
     assert.ok(!text.startsWith(SAFETY_LINE), `${name}: no longer the first line`);
     if (r.isError) assert.equal(text.split(SAFETY_LINE).length, 2, `${name}: once in an error`);
+    if (SHARED.has(name)) {
+      assert.equal(text.split(SAFETY_LINE).length, 2, `${name}: once, as the last line`);
+      if (!r.isError) assert.ok(r.structuredContent && !("safety_line" in r.structuredContent), name);
+      continue;
+    }
     if (!r.isError) {
       const out = JSON.parse(text.slice(0, -SAFETY_LINE.length));
       // The sentence is the structured field and the last line, nowhere else.

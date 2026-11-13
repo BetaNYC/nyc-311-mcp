@@ -68,13 +68,13 @@ def page(title, current, main, desc):
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site"><a class="brand" href="index.html">NYC 311 MCP</a><span class="tag">1.2</span>
+<header class="site"><a class="brand" href="index.html">NYC 311 MCP</a><span class="tag">1.3</span>
 <nav class="site-nav" aria-label="Site">{links}</nav></header>
 <main id="main"><div class="wrap">
 {main}
 </div></main>
 <footer class="site"><div class="wrap">
-<p>Built by <a href="https://beta.nyc">BetaNYC</a>, New York's civic technology and open data community. Free and open source under the MIT License. <a href="{REPO}">Code on GitHub</a>.</p>
+<p>Built by <a href="https://beta.nyc">BetaNYC</a>, New York's civic technology and open data community. Free and open source under the MIT License. <a href="{REPO}">Code on GitHub</a>. <a href="whats-changed.html">What's changed</a>.</p>
 <p>An independent, community-built project. Not affiliated with, endorsed by, or an official product of the City of New York.</p>
 <p>{e(SAFETY)}</p>
 <p><a href="https://beta.nyc/donate/">Support our work</a>.</p>
@@ -84,7 +84,8 @@ def page(title, current, main, desc):
 """
 
 
-BADGE = {"new": '<span class="badge new">New in 1.2.0</span>',
+BADGE = {"new13": '<span class="badge new">New in 1.3.0</span>',
+         "new": '<span class="badge new">New in 1.2.0</span>',
          "improved": '<span class="badge">Improved in 1.2.0</span>',
          "same": '<span class="badge">Same as 1.1.0</span>'}
 
@@ -115,9 +116,9 @@ for g in spec.GROUPS:
     for name in g["tools"]:
         blocks.append(tool_block(name, len(blocks)))
 count = sum(len(g["tools"]) for g in spec.GROUPS)
-assert count == 21 and set(spec.TOOLS) == {t for g in spec.GROUPS for t in g["tools"]}, count
+assert count == 23 and set(spec.TOOLS) == {t for g in spec.GROUPS for t in g["tools"]}, count
 tools_main = f"""<h1>Every tool</h1>
-<p class="lede">nyc-311-mcp has 21 tools. You don't need to know their names. Ask your question in plain English and your AI assistant picks the tool. Below is what each one does, a few things to try, and a replay of a real question and answer.</p>
+<p class="lede">nyc-311-mcp has 23 tools. You don't need to know their names. Ask your question in plain English and your AI assistant picks the tool. Below is what each one does, a few things to try, and a replay of a real question and answer.</p>
 <div class="safety"><p><strong>If this is an emergency, or if you think this is an emergency, call 911.</strong> Every answer from every tool ends with that line. Danger detection is a best effort and it will miss some emergencies.</p></div>
 <p>The demos are real answers, captured {e(spec.CAPTURED)}, with BoardStat data as of {e(spec.BOARDSTAT_AS_OF)}. We shortened them to fit, and left out home addresses. Your numbers will be newer.</p>
 <ol class="toc">{''.join(toc)}</ol>
@@ -126,7 +127,7 @@ tools_main = f"""<h1>Every tool</h1>
 <p><a class="button" href="install.html">Install it</a></p>
 """
 (OUT / "tools.html").write_text(page("Every tool in the NYC 311 MCP", "tools.html", tools_main,
-    "What each of the 21 tools in nyc-311-mcp does, with things to ask and real answers."))
+    "What each of the 23 tools in nyc-311-mcp does, with things to ask and real answers."))
 
 # ---- index.html
 pot = demo("how_to_report", spec.TOOLS["how_to_report"]["demo"], 0)
@@ -138,7 +139,7 @@ cards = "".join(
 index_main = f"""<h1>Ask your AI assistant about NYC 311</h1>
 <p class="lede">nyc-311-mcp connects an AI assistant like Claude to New York City's 311 data. Ask it how to report a problem, what your community district complains about most, how long agencies take to close requests, or whether alternate side parking is on today. It answers from the City's own data and shows you where each answer came from.</p>
 <p>We built it at <a href="https://beta.nyc">BetaNYC</a>. It's free, it's open source, and it never files anything with 311 for you.</p>
-<p><a class="button" href="tools.html">See all 21 tools</a> <a class="button secondary" href="install.html">Install it</a></p>
+<p><a class="button" href="tools.html">See all 23 tools</a> <a class="button secondary" href="install.html">Install it</a></p>
 
 <div class="safety"><p><strong>If this is an emergency, or if you think this is an emergency, call 911.</strong> Every answer from every tool ends with that line. The answers are for information only, BetaNYC builds them from City data, and they may contain errors. Check the City's 311 page before you report.</p></div>
 
@@ -148,8 +149,8 @@ index_main = f"""<h1>Ask your AI assistant about NYC 311</h1>
 <p>Some things shouldn't go to 311 at all. When a description sounds dangerous, the first line says to call 911.</p>
 {smoke}
 
-<h2>Version 1.2.0</h2>
-<p>Version 1.1.0 had 4 tools: the 311 calendar, status alerts, and request lookup. Version 1.2.0 has 21. It adds help reporting a problem, district numbers from BoardStat, and the Local Law 47 reports. It's on npm as <code>@betanyc/nyc-311-mcp</code>.</p>
+<h2>Version 1.3.0</h2>
+<p>Version 1.1.0 had 4 tools: the 311 calendar, status alerts, and request lookup. Version 1.2.0 had 21. It added help reporting a problem, district numbers from BoardStat, and the Local Law 47 reports. Version 1.3.0 has 23. One new tool tells you what changed in the server, and the other says who built it. Every change is listed on the <a href="whats-changed.html">What's changed</a> page. It's on npm as <code>@betanyc/nyc-311-mcp</code>.</p>
 <p>Install it in Claude Desktop, Claude Code, or any MCP app: <a href="install.html">install guide</a>.</p>
 
 <h2>What it can do</h2>

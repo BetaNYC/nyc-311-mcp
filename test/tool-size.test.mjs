@@ -9,7 +9,10 @@ import { SERVER_INSTRUCTIONS } from "../dist/instructions.js";
 // instructions, about 8,000 tokens); the budget is that plus about 10%. If a new tool
 // needs more, raise it on purpose, and put any text several tools share in the
 // instructions rather than repeating it.
-const BUDGET_CHARS = 35_200;
+// Raised on purpose 2026-11-12 for 1.3.0: whats_changed and about_betanyc, the shared
+// BetaNYC tools, carry output schemas and come from a copied file we do not trim. Measured
+// 37,322 characters with them; the budget is that plus about 10%.
+const BUDGET_CHARS = 41_000;
 
 test("tool definitions plus server instructions stay within the size budget", () => {
   const size = JSON.stringify(TOOLS).length + SERVER_INSTRUCTIONS.length;

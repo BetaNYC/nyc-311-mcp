@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-12
+
+Adds the two tools every BetaNYC MCP server carries, and a "What's changed" page on the
+website. Tracking: BetaNYC/betanyc-ai-workspace#1645 (epic #1637).
+
+### Added
+
+- `whats_changed`: what changed in this server, newest first, from `WHATS-CHANGED.md`
+  (filters: `since`, `tag`, `limit`). Answers with readable text and `structuredContent`
+  matching a declared `outputSchema`.
+- `about_betanyc`: who built the server, the repository, where to report a problem, and
+  BetaNYC's links.
+- `src/betanyc-tools.ts`, copied unchanged from the workspace's
+  `scripts/mcp_shared/betanyc-tools.ts` (v1.0.0). Never edit the copy; change the canonical
+  file and copy it again. Like every other tool, the two new tools end their text with the
+  safety line; their `structuredContent` is the shared module's, unchanged.
+- `WHATS-CHANGED.md`, the reader-facing record of changes, backfilled to 1.0.0, and shipped
+  in the npm package (`files`).
+- `docs/whats-changed.html`, built from it by `scripts/whats_changed.py` (copied unchanged
+  from the workspace), with a `whats-changed` layout that supplies the page's one `<h1>`.
+  Every page links to it in the footer.
+- CI: a `whats-changed` job runs `whats_changed.py check --base-ref` (append-only, and a
+  version bump needs an entry) and `render --check` on the page.
+
+### Changed
+
+- 23 tools instead of 21: README, website, install guide and the safety-line test.
+- The tool size budget is 41,000 characters (was 35,200), for the two new tools' output
+  schemas.
+
 ## [1.2.0] - 2026-11-09
 
 The first release with all 21 tools. It is 1.2.0-beta.19 with release metadata and the docs

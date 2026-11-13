@@ -14,9 +14,17 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 > answers from City data; they may contain errors. Check the City's 311 page before you
 > report. If this is an emergency, or if you think this is an emergency, call 911."
 
-## What's new in 1.2.0
+## What's new in 1.3.0
 
-Version 1.1.0 had 4 tools. Version 1.2.0 has **21**.
+Version 1.3.0 has **23** tools. Two are new, and every BetaNYC MCP server has them:
+`whats_changed` tells you what changed in the server, and `about_betanyc` says who built it and
+where to report a problem. Every change a reader would notice, including corrections, is listed
+in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
+[website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
+
+## What was new in 1.2.0
+
+Version 1.1.0 had 4 tools. Version 1.2.0 had **21**.
 
 - **Help reporting a problem.** Describe it in your own words. It finds the City's 311 article
   for it, the agency, and every way to report it, and it can write a short report for you to
@@ -70,7 +78,7 @@ key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 **Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
 have one.
 
-To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 21,
+To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23,
 including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
 **Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
@@ -264,6 +272,20 @@ The site at [betanyc.github.io/nyc-311-mcp](https://betanyc.github.io/nyc-311-mc
 GitHub Pages from the `docs/` folder. `docs/index.html` and `docs/tools.html` are plain HTML.
 Their demos are real answers, shortened, and every line shown is copied word for
 word from the tool's answer. The Markdown pages in `docs/` share `docs/_layouts/default.html`.
+
+`docs/whats-changed.html` is built from [WHATS-CHANGED.md](WHATS-CHANGED.md) by
+`scripts/whats_changed.py`, a copy of BetaNYC's shared script (never edit the copy). After
+changing `WHATS-CHANGED.md`, rebuild the page and commit it; CI fails while it is stale:
+
+```bash
+python3 scripts/whats_changed.py check WHATS-CHANGED.md
+python3 scripts/whats_changed.py render WHATS-CHANGED.md --format jekyll --layout whats-changed \
+  --out docs/whats-changed.html --repo-url https://github.com/BetaNYC/nyc-311-mcp
+```
+
+A release that adds or changes a tool also adds a `WHATS-CHANGED.md` entry tagged MCP, in the
+same pull request as the version bump. `src/betanyc-tools.ts` (the `whats_changed` and
+`about_betanyc` tools) is a copy too.
 
 ### Releases
 
