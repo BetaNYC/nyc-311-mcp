@@ -228,7 +228,7 @@
                 "type": "boolean"
               },
               "steps": {
-                "description": "What BetaNYC did: cleaned, filtered, reshaped, address-matched, merged, counted, curated (defined in the standard). Only reshaped (format or structure, values unchanged) keeps \"Official record: yes\"; every other step makes the figures BetaNYC's.",
+                "description": "What BetaNYC did: cleaned, filtered (left records out), reshaped (format or structure, values unchanged), fields-removed (whole fields left out, such as ZIP codes; every value kept is as published), address-matched, merged, counted, curated (defined in the standard). Only reshaped and fields-removed keep \"Official record: yes\"; every other step makes the figures BetaNYC's.",
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -236,6 +236,7 @@
                     "cleaned",
                     "filtered",
                     "reshaped",
+                    "fields-removed",
                     "address-matched",
                     "merged",
                     "counted",
@@ -269,12 +270,13 @@
             "additionalProperties": false,
             "properties": {
               "kind": {
-                "description": "live: fetched when asked. file: read a field from a JSON file the build writes. hook: the server reports it (e.g. from its index).",
+                "description": "live: fetched when asked. file: read a field from a JSON file the data build writes. hook: the server reports it (an index, or a download saved on this machine; it may say not fetched yet). copied: text copied into the server's code on a date kept in code beside it, reported by a hook under key.",
                 "type": "string",
                 "enum": [
                   "live",
                   "file",
-                  "hook"
+                  "hook",
+                  "copied"
                 ]
               },
               "path": {
@@ -296,7 +298,7 @@
                 "pattern": "^(?=[\\s\\S]*[^ \\t\\u00a0\\ufeff])[^\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f-\\u009f\\u2028\\u2029]*$"
               },
               "key": {
-                "description": "kind hook: the key in the server's freshness hooks.",
+                "description": "kind hook or copied: the key in the server's freshness hooks.",
                 "type": [
                   "string",
                   "null"
@@ -424,7 +426,7 @@
             "additionalProperties": false,
             "properties": {
               "upstream_url": {
-                "description": "The publisher's page or form for reporting a data error.",
+                "description": "The publisher's page or form for reporting a data error. A BetaNYC URL (its repo issues or beta.nyc) is worded as reporting to BetaNYC.",
                 "type": "string",
                 "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
               },

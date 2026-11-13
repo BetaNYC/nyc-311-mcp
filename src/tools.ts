@@ -20,7 +20,7 @@ import { contentClient } from "./content-311.js";
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
-import { createBetanycTools } from "./betanyc-tools.js";
+import { createBetanycTools, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
 
 /**
@@ -34,21 +34,33 @@ import { PACKAGE_VERSION } from "./version.js";
  * what the server itself last fetched and saved (never a date typed into DATA-SOURCES.json).
  * Each returns null when nothing has been fetched yet, and never touches the network.
  */
-export const FRESHNESS_HOOKS: Record<string, () => string | null> = {
+export const FRESHNESS_HOOKS: Record<string, () => FreshnessValue> = {
   // BoardStat's build time, from the manifest in memory or in the cache folder.
-  boardstat_build: () => boardstatData().knownManifest()?.generated_at ?? null,
+  boardstat_build: () => boardstatData().knownManifest()?.generated_at ?? FRESHNESS_NOT_FETCHED,
   // The City's boundary datasets, as recorded in the manifest of the build in use.
-  community_district_boundaries: () => boardstatData().knownManifest()?.sources?.community_districts?.rowsUpdatedAt_iso ?? null,
-  council_district_boundaries: () => boardstatData().knownManifest()?.sources?.council_districts?.rowsUpdatedAt_iso ?? null,
+  community_district_boundaries: () => boundaryUpdated("community_districts"),
+  council_district_boundaries: () => boundaryUpdated("council_districts"),
   // NYC Open Data's own update time for the 311 Call Center Inquiry dataset, last read.
-  call_center_dataset: () => sodaClient().readCacheSync<SodaMetadata>(`meta/${CALL_CENTER_DATASET}`)?.value.rowsUpdatedAt_iso ?? null,
+  call_center_dataset: () => {
+    const saved = sodaClient().readCacheSync<SodaMetadata>(`meta/${CALL_CENTER_DATASET}`);
+    return saved ? saved.value.rowsUpdatedAt_iso ?? null : FRESHNESS_NOT_FETCHED;
+  },
   // The day the City last updated the Service Level Agreements rows the server saved.
-  sla_dataset: () => sodaClient().readCacheSync<SlaCache>(SLA_KEY)?.value.rows_updated ?? null,
+  sla_dataset: () => {
+    const saved = sodaClient().readCacheSync<SlaCache>(SLA_KEY);
+    return saved ? saved.value.rows_updated ?? null : FRESHNESS_NOT_FETCHED;
+  },
   // When the 311 category list was last fetched from the 311 Public API.
-  articles_saved: () => contentClient().savedAt("categories"),
-  // The day the City's "Call 911" lines were copied into this server (emergency.ts).
+  articles_saved: () => contentClient().savedAt("categories") ?? FRESHNESS_NOT_FETCHED,
+  // Freshness kind "copied": the day the City's "Call 911" lines were copied into emergency.ts.
   built_in_911: () => BUILT_IN_911_READ,
 };
+
+/** A boundary dataset's update time from the build's manifest; not fetched when there is no build. */
+function boundaryUpdated(key: "community_districts" | "council_districts"): FreshnessValue {
+  const m = boardstatData().knownManifest();
+  return m ? m.sources?.[key]?.rowsUpdatedAt_iso ?? null : FRESHNESS_NOT_FETCHED;
+}
 
 const betanyc = createBetanycTools({
   serverName: "nyc-311-mcp",

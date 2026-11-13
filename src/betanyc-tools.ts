@@ -1,5 +1,5 @@
-// betanyc-shared: betanyc-tools.ts v1.3.3
-// betanyc-shared-sha256: 1099e678e42046265788216d3d1efaddfa4d0ceb2a63a5b2d1c440fde4b0d6f9
+// betanyc-shared: betanyc-tools.ts v1.3.4
+// betanyc-shared-sha256: 6a4b296036c0aa6d54e43a7e92dde8b6b6a7a8b7a1ab3586dea00315e2e01c3f
 // Canonical copy: betanyc-ai-workspace scripts/mcp_shared/betanyc-tools.ts. Do not edit a copy
 // in a server repo; change the canonical file, re-stamp it, and copy it again.
 // Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -23,7 +23,7 @@
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
-export const SHARED_MODULE_VERSION = "1.3.3";
+export const SHARED_MODULE_VERSION = "1.3.4";
 
 // --------------------------------------------------------------------------- types
 
@@ -120,6 +120,12 @@ export interface ToolDefinition {
   annotations: ToolAnnotations;
 }
 
+/** Return this from a freshness hook when the server downloads its data on demand and has not
+ * fetched it yet on this machine. */
+export const FRESHNESS_NOT_FETCHED: { readonly notFetched: true } = Object.freeze({ notFetched: true as const });
+export type FreshnessValue = string | null | undefined | { readonly notFetched: true };
+export type FreshnessHook = () => FreshnessValue | Promise<FreshnessValue>;
+
 export interface BetanycServerConfig {
   /** The server's name, as in `new Server({ name })`, e.g. "nyc-charter-laws-rules". */
   serverName: string;
@@ -141,9 +147,13 @@ export interface BetanycServerConfig {
   dataSourcesText?: string;
   /** Folder that freshness `file` paths are relative to (default: the folder holding DATA-SOURCES.json). */
   dataRoot?: string | URL;
-  /** Freshness hooks, by the `key` a source's `freshness: { kind: "hook" }` names. Each returns
-   * a date or time read from something real (an index, a fetched file's header), or null. */
-  freshness?: Record<string, () => string | null | undefined>;
+  /** Freshness hooks, by the `key` a source's `freshness` (kind "hook" or "copied") names. Each
+   * returns, or resolves to, a date or date-time read from something real (an index, a saved
+   * download, a constant written beside copied text); FRESHNESS_NOT_FETCHED when nothing has
+   * been downloaded on this machine yet; or null when the data is there but has no readable date.
+   * An async hook needs `callAsync` (or handleAboutDataAsync); the sync `call` reports it as
+   * unavailable. */
+  freshness?: Record<string, FreshnessHook>;
   /** Where the generated catalogs are published, when they are. about_data links to them. */
   catalogUrls?: { dataJson?: string; croissantJson?: string };
 }
@@ -1039,15 +1049,16 @@ const DS_MAX_DEPTH = 64;
 const DS_NOT_ENDPOINT_RE = /^https?:\/\/(?:www\.)?(?:npmjs\.com|github\.com)(?:[/?#]|$)/i;
 /** BetaNYC's monitored contact address is not decided yet; see whats_changed.py. */
 export const DS_CONTACT_PLACEHOLDER = "contact-not-yet-named@example.invalid";
-export const DS_STEPS = ["cleaned", "filtered", "reshaped", "address-matched", "merged", "counted", "curated"] as const;
+export const DS_STEPS = ["cleaned", "filtered", "reshaped", "fields-removed", "address-matched", "merged", "counted", "curated"] as const;
 /** ISO 19115 maintenance frequency codes, as DCAT-US 3.0 lists them for accrualPeriodicity. */
 export const DS_FREQUENCIES = [
   "continual", "daily", "weekly", "fortnightly", "monthly", "quarterly", "biannually",
   "annually", "asNeeded", "irregular", "notPlanned", "unknown",
 ] as const;
-const DS_FRESHNESS = ["live", "file", "hook"] as const;
+const DS_FRESHNESS = ["live", "file", "hook", "copied"] as const;
 const DS_DATA_TYPES = ["Boolean", "Date", "Time", "DateTime", "Float", "Integer", "Text"] as const;
-/** The three tools every BetaNYC server shares. They are about BetaNYC, not data, so need no source. */
+/** The three tools BetaNYC is adding to each of its servers (the What's changed and about-data
+ * standards require them). They are about BetaNYC, not data, so need no source. */
 export const SHARED_TOOL_NAMES: readonly string[] = ["whats_changed", "about_betanyc", "about_data"];
 
 type Spec =
@@ -1350,7 +1361,7 @@ export function parseDataSources(input: string): DataSourcesParse {
     }
     const fr = s.freshness;
     if (fr && fr.kind !== null) {
-      const want = ({ live: [], file: ["path", "field"], hook: ["key"] } as Record<string, string[]>)[fr.kind];
+      const want = ({ live: [], file: ["path", "field"], hook: ["key"], copied: ["key"] } as Record<string, string[]>)[fr.kind];
       const have = ["path", "field", "key"].filter((k) => fr[k] !== null);
       if (have.join(",") !== want.join(",")) err("freshness-fields", `${p}.freshness`);
     }
@@ -1542,7 +1553,7 @@ export const ABOUT_DATA_TOOL: ToolDefinition = {
             as_of: { type: "string", description: "How current this data is on this server" },
             as_of_status: {
               type: "string",
-              enum: ["live", "read", "unavailable", "unreadable"],
+              enum: ["live", "read", "copied", "not-fetched", "unavailable", "unreadable"],
               description: "read: a checked date from this server. unavailable: none given. unreadable: given, but not a usable date",
             },
             update_frequency: NULLABLE_STRING,
@@ -1572,9 +1583,14 @@ export const ABOUT_DATA_TOOL: ToolDefinition = {
               properties: {
                 in_the_data: { type: "string", description: "The publisher's page for data errors" },
                 in_the_data_email: NULLABLE_STRING,
+                in_the_data_handled_by: {
+                  type: "string",
+                  enum: ["publisher", "betanyc"],
+                  description: "Who fixes errors in the data: the publisher, or BetaNYC when the route is BetaNYC's own",
+                },
                 in_this_server: { type: "string", description: "This server's GitHub issues" },
               },
-              required: ["in_the_data", "in_the_data_email", "in_this_server"],
+              required: ["in_the_data", "in_the_data_email", "in_the_data_handled_by", "in_this_server"],
             },
             tools: { type: "array", items: { type: "string" } },
             caveats: { type: "array", items: { type: "string" } },
@@ -1665,33 +1681,71 @@ export function isUsableAsOf(v: unknown, now: Date): v is string {
   return Number.isFinite(t) && t <= now.getTime() + AS_OF_SKEW_MS;
 }
 
-type AsOf = { as_of: string; as_of_status: "live" | "read" | "unavailable" | "unreadable" };
+type AsOfStatus = "live" | "read" | "copied" | "not-fetched" | "unavailable" | "unreadable";
+type AsOf = { as_of: string; as_of_status: AsOfStatus };
+type HookOutcome = { kind: "none" } | { kind: "threw" } | { kind: "async" } | { kind: "value"; value: unknown };
 
-function checkedAsOf(v: unknown, where: string, now: Date): AsOf {
-  if (v === null || v === undefined || (typeof v === "string" && !trim(v))) {
-    return { as_of: `not available on this server (${where} gave no date)`, as_of_status: "unavailable" };
-  }
-  return isUsableAsOf(v, now)
-    ? { as_of: v, as_of_status: "read" }
-    : { as_of: `unknown: ${where} did not give a usable date`, as_of_status: "unreadable" };
+function hookFor(config: BetanycServerConfig, key: string): FreshnessHook | undefined {
+  const hooks = config.freshness;
+  const h = hooks && Object.hasOwn(hooks, key) ? hooks[key] : undefined;
+  return typeof h === "function" ? h : undefined;
 }
 
-/** How current one source is on this running server. Read from a build artifact or a hook,
- * never typed into DATA-SOURCES.json, and checked before it is repeated (isUsableAsOf). */
-function asOf(s: DataSource, config: BetanycServerConfig, now: Date): AsOf {
+const isThenable = (v: unknown): v is PromiseLike<unknown> =>
+  v !== null && typeof v === "object" && typeof (v as { then?: unknown }).then === "function";
+
+function syncOutcome(config: BetanycServerConfig, key: string): HookOutcome {
+  const h = hookFor(config, key);
+  if (!h) return { kind: "none" };
+  try {
+    const v = h();
+    if (isThenable(v)) {
+      Promise.resolve(v).catch(() => undefined); // never an unhandled rejection
+      return { kind: "async" };
+    }
+    return { kind: "value", value: v };
+  } catch {
+    return { kind: "threw" };
+  }
+}
+
+async function asyncOutcome(config: BetanycServerConfig, key: string): Promise<HookOutcome> {
+  const h = hookFor(config, key);
+  if (!h) return { kind: "none" };
+  try {
+    return { kind: "value", value: await h() };
+  } catch {
+    return { kind: "threw" };
+  }
+}
+
+function fromValue(v: unknown, where: string, now: Date, copied: boolean): AsOf {
+  if (v !== null && typeof v === "object" && (v as { notFetched?: unknown }).notFetched === true) {
+    return { as_of: "not fetched yet on this server (it downloads this data when first asked)", as_of_status: "not-fetched" };
+  }
+  if (v === null || v === undefined || (typeof v === "string" && !trim(v))) {
+    return { as_of: `unavailable: ${where} has no readable date for it`, as_of_status: "unavailable" };
+  }
+  if (!isUsableAsOf(v, now)) return { as_of: `unknown: ${where} did not give a usable date`, as_of_status: "unreadable" };
+  return copied
+    ? { as_of: `copied from the source on ${v} and built into this server`, as_of_status: "copied" }
+    : { as_of: v, as_of_status: "read" };
+}
+
+/** How current one source is on this running server. Read from a build artifact, a hook, or a
+ * date kept in code beside copied text; never typed into DATA-SOURCES.json; checked before it is
+ * repeated (isUsableAsOf). */
+function asOf(s: DataSource, config: BetanycServerConfig, now: Date, outcome: (key: string) => HookOutcome): AsOf {
   const fr = s.freshness!;
   if (fr.kind === "live") return { as_of: "live: fetched from the source when you ask", as_of_status: "live" };
-  if (fr.kind === "hook") {
-    const hooks = config.freshness;
-    const hook = hooks && Object.hasOwn(hooks, fr.key!) ? hooks[fr.key!] : undefined;
-    if (typeof hook !== "function") return { as_of: "not reported by this server", as_of_status: "unavailable" };
-    let v: unknown;
-    try {
-      v = hook();
-    } catch {
-      return { as_of: "unknown: the server could not read it", as_of_status: "unreadable" };
+  if (fr.kind === "hook" || fr.kind === "copied") {
+    const o = outcome(fr.key!);
+    if (o.kind === "none") return { as_of: "not reported by this server", as_of_status: "unavailable" };
+    if (o.kind === "threw") return { as_of: "unknown: the server could not read it", as_of_status: "unreadable" };
+    if (o.kind === "async") {
+      return { as_of: "unavailable: this server reads it asynchronously; its about_data must be called with callAsync", as_of_status: "unavailable" };
     }
-    return checkedAsOf(v, "the server", now);
+    return fromValue(o.value, "the server", now, fr.kind === "copied");
   }
   const root = dataRoot(config);
   if (!root) return { as_of: "unknown: no data folder is configured", as_of_status: "unavailable" };
@@ -1706,16 +1760,24 @@ function asOf(s: DataSource, config: BetanycServerConfig, now: Date): AsOf {
   }
   const v = data !== null && typeof data === "object" && !Array.isArray(data) && Object.hasOwn(data, fr.field!)
     ? (data as Record<string, unknown>)[fr.field!] : undefined;
-  return checkedAsOf(v, fr.path!, now);
+  return fromValue(v, fr.path!, now, false);
 }
 
 function dsFileUrl(config: BetanycServerConfig): string {
   return `${repoBase(config.repoUrl)}/blob/HEAD/${DATA_SOURCES_FILE}`;
 }
 
+const BETANYC_ROUTE_RE = /^https?:\/\/(?:(?:www\.)?beta\.nyc(?:[/?#:]|$)|github\.com\/betanyc\/)/i;
+
+/** True when an error-report URL is BetaNYC's own (a BetaNYC repo, its issues, or beta.nyc), so
+ * the route is worded as reporting to BetaNYC. Same as route_is_betanyc() in whats_changed.py. */
+export function routeIsBetanyc(url: string): boolean {
+  return BETANYC_ROUTE_RE.test(url ?? "");
+}
+
 /** Steps that change only format or structure, never a value (see DS_FORMAT_ONLY_STEPS in
  * whats_changed.py). Every other step changes values and makes the figures BetaNYC's. */
-export const DS_FORMAT_ONLY_STEPS: readonly string[] = ["reshaped"];
+export const DS_FORMAT_ONLY_STEPS: readonly string[] = ["reshaped", "fields-removed"];
 
 /** True when BetaNYC changed any value: any step but a format-only one. */
 export function valuesChanged(changed: boolean, steps: readonly string[]): boolean {
@@ -1726,13 +1788,36 @@ export function valuesChanged(changed: boolean, steps: readonly string[]): boole
 export function officialWording(official: boolean, changed: boolean, publisher: string, steps: readonly string[] = []): string {
   if (!official) return `Not an official record: curated by BetaNYC from material published by ${publisher}.`;
   if (valuesChanged(changed, steps)) return `Official source: yes. These figures are BetaNYC's, derived from it, not an official ${publisher} report.`;
-  if (changed) return "Official record: yes, reshaped by BetaNYC (values unchanged).";
+  if (changed) {
+    const removed = steps.includes("fields-removed");
+    if (removed && steps.includes("reshaped")) return "Official record: yes, reshaped by BetaNYC with some fields left out (values unchanged).";
+    if (removed) return "Official record: yes, with some fields left out by BetaNYC (values unchanged).";
+    return "Official record: yes, reshaped by BetaNYC (values unchanged).";
+  }
   return `Official record: yes, passed on as ${publisher} publishes it.`;
 }
 
 /** The about_data handler. Reads DATA-SOURCES.json (and WHATS-CHANGED.md for corrections) on
  * every call, so a rebuilt data file shows at once. Only a bad argument is an error. */
 export function handleAboutData(config: BetanycServerConfig, args: unknown, now: Date = new Date()): ToolResult {
+  return aboutData(config, args, now, (key) => syncOutcome(config, key));
+}
+
+/** handleAboutData for servers with async freshness hooks: awaits every hook first. */
+export async function handleAboutDataAsync(config: BetanycServerConfig, args: unknown, now: Date = new Date()): Promise<ToolResult> {
+  const keys = new Set<string>();
+  const loaded = loadDataSources(config);
+  if (loaded.kind === "ok") {
+    for (const s of loaded.parsed.doc?.sources ?? []) {
+      if (s.valid && (s.freshness?.kind === "hook" || s.freshness?.kind === "copied")) keys.add(s.freshness.key!);
+    }
+  }
+  const outcomes = new Map<string, HookOutcome>();
+  await Promise.all([...keys].map(async (k) => outcomes.set(k, await asyncOutcome(config, k))));
+  return aboutData(config, args, now, (key) => outcomes.get(key) ?? { kind: "none" });
+}
+
+function aboutData(config: BetanycServerConfig, args: unknown, now: Date, outcome: (key: string) => HookOutcome): ToolResult {
   let topic: string | null = null;
   try {
     const a = checkArgs("about_data", args, ["topic"]);
@@ -1792,7 +1877,7 @@ export function handleAboutData(config: BetanycServerConfig, args: unknown, now:
   let unresolved = 0;
 
   const out = picked.map((s) => {
-    const fresh = asOf(s, config, now);
+    const fresh = asOf(s, config, now, outcome);
     const corrections = s.corrections.map((anchor) => {
       const e = wcEntries.get(anchor);
       if (!e) unresolved++;
@@ -1817,6 +1902,7 @@ export function handleAboutData(config: BetanycServerConfig, args: unknown, now:
       report_errors: {
         in_the_data: s.report_errors!.upstream_url!,
         in_the_data_email: s.report_errors!.upstream_email,
+        in_the_data_handled_by: (routeIsBetanyc(s.report_errors!.upstream_url!) ? "betanyc" : "publisher") as "betanyc" | "publisher",
         in_this_server: issues,
       },
       tools: s.tools,
@@ -1861,7 +1947,9 @@ export function handleAboutData(config: BetanycServerConfig, args: unknown, now:
     if (t.credit_line) lines.push(`Credit line: ${t.credit_line}`);
     lines.push(`Check a figure at the source: ${s.verify_at}`);
     lines.push(
-      `Report an error in the data to ${s.publisher}: ${s.report_errors.in_the_data}` +
+      (s.report_errors.in_the_data_handled_by === "betanyc"
+        ? `Report an error in this data to BetaNYC: ${s.report_errors.in_the_data}`
+        : `Report an error in the data to ${s.publisher}: ${s.report_errors.in_the_data}`) +
         (s.report_errors.in_the_data_email ? ` (${s.report_errors.in_the_data_email})` : "") +
         `. Report a bug in this server or ask for a new feature: ${s.report_errors.in_this_server}`,
     );
@@ -1894,6 +1982,8 @@ export function createBetanycTools(config: BetanycServerConfig): {
   instructions: string;
   handles: (name: string) => boolean;
   call: (name: string, args: unknown) => ToolResult;
+  /** Like call, but awaits async freshness hooks. Use it when any hook is async. */
+  callAsync: (name: string, args: unknown) => Promise<ToolResult>;
 } {
   const problems: string[] = [];
   if (!config.serverName?.trim()) problems.push("serverName is empty");
@@ -1935,6 +2025,11 @@ export function createBetanycTools(config: BetanycServerConfig): {
       name === "whats_changed" ? handleWhatsChanged(config, args)
         : name === "about_betanyc" ? handleAboutBetanyc(config, args)
           : name === "about_data" ? handleAboutData(config, args)
+            : errorResult(`Unknown tool: ${name}`),
+    callAsync: async (name, args) =>
+      name === "about_data" ? handleAboutDataAsync(config, args)
+        : name === "whats_changed" ? handleWhatsChanged(config, args)
+          : name === "about_betanyc" ? handleAboutBetanyc(config, args)
             : errorResult(`Unknown tool: ${name}`),
   };
 }

@@ -58,7 +58,7 @@
       "identifier": "https://portal.311.nyc.gov/",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (lists this dataset; report errors in the data to City of New York (NYC311): https://github.com/BetaNYC/nyc-311-mcp/issues)",
+        "fn": "BetaNYC (lists this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -347,7 +347,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-request-lookup",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in the data to City of New York (NYC311): https://api-portal.nyc.gov/; errors in this server: https://github.com/BetaNYC/nyc-311-mcp/issues)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -398,9 +398,9 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official City of New York (NYC311) report.",
+        "Official record: yes, reshaped by BetaNYC with some fields left out (values unchanged).",
         "Read-only requests to the City's 311 Public API at the moment you ask, with the operator's own NYC_311_API_KEY.",
-        "Changed by BetaNYC: The ZIP code is left out of every address, by BetaNYC's decision, so the address is not exactly the City's. ('filtered' here means a field is left out, not records; the standard has no word for that yet.) A plain_language block explains the status in words. The other fields are passed on as the API sends them."
+        "Reshaped by BetaNYC, some fields left out (values unchanged): The ZIP code is left out of every address, by BetaNYC's decision. A plain_language block explains the status in words. Every value kept is as the API sends it."
       ],
       "page": [
         {
@@ -416,7 +416,7 @@
       "wasGeneratedBy": [
         {
           "@type": "Activity",
-          "label": "filtered"
+          "label": "fields-removed"
         },
         {
           "@type": "Activity",
@@ -557,7 +557,7 @@
           "identifier": "https://portal.311.nyc.gov/",
           "contactPoint": {
             "@type": "Kind",
-            "fn": "BetaNYC (lists this dataset; report errors in the data to City of New York (NYC311): https://github.com/BetaNYC/nyc-311-mcp/issues)",
+            "fn": "BetaNYC (lists this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues)",
             "hasEmail": "mailto:contact-not-yet-named@example.invalid"
           },
           "publisher": {
@@ -612,7 +612,7 @@
         "Credit: Call 911 lines: NYC311 articles, City of New York. Danger check: BetaNYC.",
         "Terms of use: https://www.nyc.gov/main/terms-of-use"
       ],
-      "scopeNote": "Known gap: Danger detection is by keyword and will miss some emergencies. Caveat: The danger keywords and the choice of 911 lines are BetaNYC's work: report a wrong or missed match in this server's issues. The City has no error route for this list. Caveat: If anything someone says suggests a person may be in danger or need urgent medical help, tell them to call 911 first, even if no danger was flagged. Caveat: How current it is here is the day the City's lines were copied into this server."
+      "scopeNote": "Known gap: Danger detection is by keyword and will miss some emergencies. Caveat: The danger keywords and the choice of 911 lines are BetaNYC's work: report a wrong or missed match in this server's issues. The City has no error route for this list. Caveat: If anything someone says suggests a person may be in danger or need urgent medical help, tell them to call 911 first, even if no danger was flagged."
     },
     {
       "@id": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-requests-by-district",

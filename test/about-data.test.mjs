@@ -134,7 +134,12 @@ test("about_data reads the Socrata and 311 content caches, and the built-in 911 
   assert.equal(s["call-center-inquiries"].as_of, CITY_META_ISO);
   assert.equal(s["service-level-agreements"].as_of, SLA_DAY);
   assert.equal(s["311-articles"].as_of, ARTICLES_AT);
-  assert.equal(s["built-in-911-lines"].as_of, BUILT_IN_911_READ);
+  assert.equal(s["built-in-911-lines"].as_of, `copied from the source on ${BUILT_IN_911_READ} and built into this server`);
+  assert.equal(s["built-in-911-lines"].as_of_status, "copied");
+  assert.equal(s["built-in-911-lines"].report_errors.in_the_data, "https://github.com/BetaNYC/nyc-311-mcp/issues");
+  // ZIP codes left out, every other value as the API sends it: still the official record.
+  assert.equal(s["service-request-lookup"].figures_official, true);
+  assert.deepEqual(s["service-request-lookup"].changed_by_betanyc.steps, ["fields-removed", "reshaped"]);
   assert.equal(s["built-in-911-lines"].official, false, "BetaNYC's curation");
   assert.equal(s["ll47-service-request-reports"].figures_official, false);
 });
@@ -143,11 +148,11 @@ test("on a machine that has fetched nothing yet, cached sources say so instead o
   useCache(t, await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-about-data-empty-")));
   const s = bySource(await callTool("about_data", {}));
   for (const id of ["service-requests-by-district", "community-district-boundaries", "call-center-inquiries", "service-level-agreements", "311-articles"]) {
-    assert.equal(s[id].as_of_status, "unavailable", `${id}: ${s[id].as_of}`);
+    assert.equal(s[id].as_of_status, "not-fetched", `${id}: ${s[id].as_of}`);
     assert.doesNotMatch(s[id].as_of, /\d{4}-\d{2}-\d{2}/, id);
   }
   assert.equal(s["calendar-and-status"].as_of_status, "live");
-  assert.equal(s["built-in-911-lines"].as_of, BUILT_IN_911_READ, "shipped with the code, so always known");
+  assert.equal(s["built-in-911-lines"].as_of_status, "copied", "shipped with the code, so always known");
 });
 
 test("about_data rejects a bad topic by listing the topics", async () => {

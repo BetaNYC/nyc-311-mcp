@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# betanyc-shared: whats_changed.py v1.3.3
-# betanyc-shared-sha256: 78b8358a83ac595de8925079625130e8939e5d2e6052b5bda77ae2106127b7ba
+# betanyc-shared: whats_changed.py v1.3.4
+# betanyc-shared-sha256: c148adabbdbb9bda3408c6e2d1f14310287683e87e93f5cf4e6859e6392427b7
 # Canonical copy: betanyc-ai-workspace scripts/whats_changed.py. Do not edit a copy in
 # another repo; change the canonical file, re-stamp it, and copy it again.
 # Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -1116,17 +1116,18 @@ DS_NOT_ENDPOINT_RE = re.compile(r"^https?://(?:www\.)?(?:npmjs\.com|github\.com)
 # file uses this value, and `about-data check --release` / `catalog --release` refuse it.
 DS_CONTACT_PLACEHOLDER = "contact-not-yet-named@example.invalid"
 # What BetaNYC did to the data. Plain verbs a reader understands; the standard defines each.
-DS_STEPS = ("cleaned", "filtered", "reshaped", "address-matched", "merged", "counted", "curated")
-# Steps that change only format or structure, never a value. Every other step changes values:
-# cleaned (fixes or drops records), filtered (drops records), address-matched (adds values),
-# merged (adds another source's values), counted (new figures), curated (hand-collected).
-# Only these keep "Official record: yes"; any other step makes the figures BetaNYC's.
-DS_FORMAT_ONLY_STEPS = ("reshaped",)
+DS_STEPS = ("cleaned", "filtered", "reshaped", "fields-removed", "address-matched", "merged", "counted", "curated")
+# Steps that never change a value the publisher released: reshaped (format or structure) and
+# fields-removed (whole fields left out, such as ZIP codes; every value kept is as published).
+# Every other step changes values: cleaned (fixes or drops records), filtered (drops records, so
+# totals change), address-matched (adds values), merged (adds another source's values), counted
+# (new figures), curated (hand-collected). Only these keep "Official record: yes".
+DS_FORMAT_ONLY_STEPS = ("reshaped", "fields-removed")
 # ISO 19115 maintenance frequency codes, as listed in DCAT-US 3.0 definitions/Dataset.json
 # (accrualPeriodicity, first enum), GSA/dcat-us@4996591.
 DS_FREQUENCIES = ("continual", "daily", "weekly", "fortnightly", "monthly", "quarterly", "biannually",
                   "annually", "asNeeded", "irregular", "notPlanned", "unknown")
-DS_FRESHNESS = ("live", "file", "hook")
+DS_FRESHNESS = ("live", "file", "hook", "copied")
 # Croissant 1.1 atomic data types (croissant-spec-1.1.md, "DataType"), written without the sc: prefix.
 DS_DATA_TYPES = ("Boolean", "Date", "Time", "DateTime", "Float", "Integer", "Text")
 SHARED_TOOLS = ("whats_changed", "about_betanyc", "about_data")
@@ -1261,7 +1262,7 @@ DS_HINTS = {
     "duplicate-id": "ids must be unique",
     "reserved-id": "'all' is reserved for the topic filter",
     "changes-mismatch": "changed true needs steps and detail; changed false needs no steps",
-    "freshness-fields": "live takes no other field; file needs path and field; hook needs key",
+    "freshness-fields": "live takes no other field; file needs path and field; hook and copied need key",
     "date-order": "coverage start is after its end",
     "terms-missing": "give at least one of license_name, license_url or terms_url (write 'None stated by the publisher' if there is none)",
     "source-conflict": "sources sharing a source_url share one upstream Dataset: source_name, publisher, verify_at, update_frequency, terms and report_errors must all agree",
@@ -1449,7 +1450,7 @@ def parse_data_sources(text: str) -> dict:
                 errors.append({"code": "changes-mismatch", "path": f"{p}.changes"})
         fr = s["freshness"]
         if fr and fr["kind"] is not None:
-            want = {"live": (), "file": ("path", "field"), "hook": ("key",)}[fr["kind"]]
+            want = {"live": (), "file": ("path", "field"), "hook": ("key",), "copied": ("key",)}[fr["kind"]]
             have = tuple(k for k in ("path", "field", "key") if fr[k] is not None)
             if have != want:
                 errors.append({"code": "freshness-fields", "path": f"{p}.freshness"})
@@ -1608,6 +1609,23 @@ def _ds_rights(t: dict, *, credit: bool) -> list[str]:
     return rights
 
 
+BETANYC_ROUTE_RE = re.compile(r"^https?://(?:(?:www\.)?beta\.nyc(?:[/?#:]|$)|github\.com/betanyc/)", re.I)
+
+
+def route_is_betanyc(url: str) -> bool:
+    """True when an error-report URL is BetaNYC's own (a BetaNYC repo, its issues, or beta.nyc),
+    so the route is worded as reporting to BetaNYC, not to the publisher. Same as routeIsBetanyc()."""
+    return bool(BETANYC_ROUTE_RE.match(url or ""))
+
+
+def error_route(s: dict) -> str:
+    """"report errors in the data to <publisher>: <url>", or to BetaNYC when the route is BetaNYC's."""
+    url = s["report_errors"]["upstream_url"]
+    if route_is_betanyc(url):
+        return f"report errors in this data to {BETANYC_NAME}: {url}"
+    return f"report errors in the data to {s['publisher']['name']}: {url}"
+
+
 def values_changed(s: dict) -> bool:
     """True when BetaNYC changed any value: any step but `reshaped` (DS_FORMAT_ONLY_STEPS)."""
     ch = s["changes"]
@@ -1623,6 +1641,11 @@ def official_wording(s: dict) -> str:
         return (f"Official source: yes. These figures are {BETANYC_NAME}'s, derived from it, "
                 f"not an official {pub} report.")
     if s["changes"]["changed"]:
+        steps = s["changes"]["steps"]
+        if "fields-removed" in steps and "reshaped" in steps:
+            return f"Official record: yes, reshaped by {BETANYC_NAME} with some fields left out (values unchanged)."
+        if "fields-removed" in steps:
+            return f"Official record: yes, with some fields left out by {BETANYC_NAME} (values unchanged)."
         return f"Official record: yes, reshaped by {BETANYC_NAME} (values unchanged)."
     return f"Official record: yes, passed on as {pub} publishes it."
 
@@ -1658,8 +1681,7 @@ def build_dcat(doc: dict) -> dict:
                               "hasEmail": "mailto:" + s["report_errors"]["upstream_email"]}
             else:
                 up_contact = {**contact,
-                              "fn": f"{BETANYC_NAME} (lists this dataset; report errors in the data to "
-                                    f"{s['publisher']['name']}: {s['report_errors']['upstream_url']})"}
+                              "fn": f"{BETANYC_NAME} (lists this dataset; {error_route(s)})"}
             pub = {"@type": "Organization", "name": s["publisher"]["name"]}
             if s["publisher"]["url"]:
                 pub["@id"] = s["publisher"]["url"]
@@ -1690,12 +1712,16 @@ def build_dcat(doc: dict) -> dict:
         if values_changed(s):
             provenance.append(f"Changed by {BETANYC_NAME}: {s['changes']['detail']}")
         elif s["changes"]["changed"]:
-            provenance.append(f"Reshaped by {BETANYC_NAME} (values unchanged): {s['changes']['detail']}")
+            steps = s["changes"]["steps"]
+            label = (f"Reshaped by {BETANYC_NAME}, some fields left out" if "reshaped" in steps and "fields-removed" in steps
+                     else f"Fields left out by {BETANYC_NAME}" if "fields-removed" in steps
+                     else f"Reshaped by {BETANYC_NAME}")
+            provenance.append(f"{label} (values unchanged): {s['changes']['detail']}")
         if s["official"] and not values_changed(s):
             # Passed on unchanged: errors in the figures are the publisher's to fix.
             served_contact = {**contact, "fn": (
-                f"{BETANYC_NAME} (serves this dataset; report errors in the data to {s['publisher']['name']}: "
-                f"{s['report_errors']['upstream_url']}; errors in this server: {server['repository']}/issues)")}
+                f"{BETANYC_NAME} (serves this dataset; {error_route(s)}; "
+                f"errors in this server: {server['repository']}/issues)")}
         else:
             served_contact = contact
         ds = {

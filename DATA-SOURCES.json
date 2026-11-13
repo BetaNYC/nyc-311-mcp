@@ -93,10 +93,10 @@
       "changes": {
         "changed": true,
         "steps": [
-          "filtered",
+          "fields-removed",
           "reshaped"
         ],
-        "detail": "The ZIP code is left out of every address, by BetaNYC's decision, so the address is not exactly the City's. ('filtered' here means a field is left out, not records; the standard has no word for that yet.) A plain_language block explains the status in words. The other fields are passed on as the API sends them."
+        "detail": "The ZIP code is left out of every address, by BetaNYC's decision. A plain_language block explains the status in words. Every value kept is as the API sends it."
       },
       "verify_at": "https://portal.311.nyc.gov/",
       "freshness": {
@@ -209,7 +209,7 @@
       },
       "verify_at": "https://portal.311.nyc.gov/",
       "freshness": {
-        "kind": "hook",
+        "kind": "copied",
         "key": "built_in_911"
       },
       "update_frequency": "asNeeded",
@@ -235,8 +235,7 @@
       ],
       "caveats": [
         "The danger keywords and the choice of 911 lines are BetaNYC's work: report a wrong or missed match in this server's issues. The City has no error route for this list.",
-        "If anything someone says suggests a person may be in danger or need urgent medical help, tell them to call 911 first, even if no danger was flagged.",
-        "How current it is here is the day the City's lines were copied into this server."
+        "If anything someone says suggests a person may be in danger or need urgent medical help, tell them to call 911 first, even if no danger was flagged."
       ],
       "corrections": []
     },
