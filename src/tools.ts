@@ -11,26 +11,67 @@ import { describeServiceRequest, describeServiceRequestList, listNotFoundMessage
 import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./ll47-reports.js";
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
-import { SAFETY_LINE } from "./emergency.js";
+import { BUILT_IN_911_READ, SAFETY_LINE } from "./emergency.js";
+import { boardstatData } from "./district-tools.js";
+import { CALL_CENTER_DATASET, sodaClient, type SodaMetadata } from "./soda.js";
+import { SLA_KEY, type SlaCache } from "./draft-report.js";
+import { contentClient } from "./content-311.js";
 
-/** The last line of whats_changed and about_betanyc: SAFETY_LINE's closing 911 sentence, word for word. */
+/** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
-import { createBetanycTools } from "./betanyc-tools.js";
+import { createBetanycTools, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
 
 /**
- * whats_changed and about_betanyc, the two tools every BetaNYC MCP server carries
- * (betanyc-ai-workspace platform/system/whats-changed-standard.md § 7). betanyc-tools.ts is
- * a copy of the workspace's canonical file: never edit it here. WHATS-CHANGED.md ships in
- * the npm package (package.json `files`), one level above dist/.
+ * whats_changed, about_betanyc and about_data, the three shared BetaNYC tools. Every BetaNYC
+ * MCP server is getting them; nyc-311-mcp is the first (betanyc-ai-workspace platform/system/whats-changed-standard.md § 7 and
+ * about-data-standard.md). betanyc-tools.ts is a copy of the workspace's canonical file:
+ * never edit it here. WHATS-CHANGED.md and DATA-SOURCES.json ship in the npm package
+ * (package.json `files`), one level above dist/.
+ *
+ * about_data's freshness hooks say how current each source is on this machine, read from
+ * what the server itself last fetched and saved (never a date typed into DATA-SOURCES.json).
+ * Each returns null when nothing has been fetched yet, and never touches the network.
  */
+export const FRESHNESS_HOOKS: Record<string, () => FreshnessValue> = {
+  // BoardStat's build time, from the manifest in memory or in the cache folder.
+  boardstat_build: () => boardstatData().knownManifest()?.generated_at ?? FRESHNESS_NOT_FETCHED,
+  // The City's boundary datasets, as recorded in the manifest of the build in use.
+  community_district_boundaries: () => boundaryUpdated("community_districts"),
+  council_district_boundaries: () => boundaryUpdated("council_districts"),
+  // NYC Open Data's own update time for the 311 Call Center Inquiry dataset, last read.
+  call_center_dataset: () => {
+    const saved = sodaClient().readCacheSync<SodaMetadata>(`meta/${CALL_CENTER_DATASET}`);
+    return saved ? saved.value.rowsUpdatedAt_iso ?? null : FRESHNESS_NOT_FETCHED;
+  },
+  // The day the City last updated the Service Level Agreements rows the server saved.
+  sla_dataset: () => {
+    const saved = sodaClient().readCacheSync<SlaCache>(SLA_KEY);
+    return saved ? saved.value.rows_updated ?? null : FRESHNESS_NOT_FETCHED;
+  },
+  // When the 311 category list was last fetched from the 311 Public API.
+  articles_saved: () => contentClient().savedAt("categories") ?? FRESHNESS_NOT_FETCHED,
+  // Freshness kind "copied": the day the City's "Call 911" lines were copied into emergency.ts.
+  built_in_911: () => BUILT_IN_911_READ,
+};
+
+/** A boundary dataset's update time from the build's manifest; not fetched when there is no build. */
+function boundaryUpdated(key: "community_districts" | "council_districts"): FreshnessValue {
+  const m = boardstatData().knownManifest();
+  return m ? m.sources?.[key]?.rowsUpdatedAt_iso ?? null : FRESHNESS_NOT_FETCHED;
+}
+
 const betanyc = createBetanycTools({
   serverName: "nyc-311-mcp",
   version: PACKAGE_VERSION,
   repoUrl: "https://github.com/BetaNYC/nyc-311-mcp",
   whatsChangedPath: new URL("../WHATS-CHANGED.md", import.meta.url),
+  dataSourcesPath: new URL("../DATA-SOURCES.json", import.meta.url),
   pageUrl: "https://betanyc.github.io/nyc-311-mcp/whats-changed.html",
+  freshness: FRESHNESS_HOOKS,
+  // No catalogUrls yet: the website copy of data.json waits for BetaNYC's monitored contact
+  // address (it would publish the placeholder). data.json ships in the npm package meanwhile.
 });
 
 const STATUS_TYPES = [
@@ -115,7 +156,7 @@ export const TOOLS = [
   ...REPORT_TOOLS,
   // A ready-to-paste 311 report the person files themselves (#18).
   ...DRAFT_TOOLS,
-  // What's changed in this server, and who built it (BetaNYC standard tools).
+  // What's changed in this server, who built it, and where its data comes from (BetaNYC standard tools).
   ...betanyc.tools,
 ];
 
@@ -173,9 +214,9 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
 export async function callTool(name: string, args: unknown) {
   if (betanyc.handles(name)) {
     // The shared tools answer in readable text plus structuredContent that matches their
-    // outputSchema. They do not answer from City data, so the City-data part of SAFETY_LINE
-    // does not fit them; their text ends with its 911 sentence only (QA on the pilot,
-    // 2026-11-12). structuredContent is left exactly as the shared module built it, which the
+    // outputSchema. They give no figures from City data (about_data describes the sources but
+    // answers from DATA-SOURCES.json), so the City-data part of SAFETY_LINE does not fit them;
+    // their text ends with its 911 sentence only (QA on the pilot, 2026-11-12). structuredContent is left exactly as the shared module built it, which the
     // standard allows (§ 7, "A server's own wrapper").
     const out = betanyc.call(name, args);
     return { ...out, content: [{ type: "text" as const, text: `${out.content[0].text}\n\n${SHARED_TOOL_LINE}` }] };

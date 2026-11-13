@@ -20,6 +20,7 @@
 // ZIP codes: this dataset has no ZIP column, and no query here may name one
 // (assertNoZipSoql), by decision (#12).
 
+import { readFileSync } from "node:fs";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { defaultCacheDir, stderrLogger, type Logger } from "./boardstat-data.js";
@@ -262,6 +263,18 @@ export class SodaClient {
   async readCache<T>(key: string): Promise<{ version: number; fetched_at_ms: number; value: T } | null> {
     try {
       const raw = JSON.parse(await readFile(this.cacheFile(key), "utf8"));
+      const at = Date.parse(raw?.fetched_at);
+      if (!raw || typeof raw.version !== "number" || Number.isNaN(at) || !("value" in raw)) return null;
+      return { version: raw.version, fetched_at_ms: at, value: raw.value as T };
+    } catch {
+      return null;
+    }
+  }
+
+  /** readCache without the event loop, for about_data's freshness hooks. Null if none. */
+  readCacheSync<T>(key: string): { version: number; fetched_at_ms: number; value: T } | null {
+    try {
+      const raw = JSON.parse(readFileSync(this.cacheFile(key), "utf8"));
       const at = Date.parse(raw?.fetched_at);
       if (!raw || typeof raw.version !== "number" || Number.isNaN(at) || !("value" in raw)) return null;
       return { version: raw.version, fetched_at_ms: at, value: raw.value as T };

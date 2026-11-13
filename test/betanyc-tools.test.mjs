@@ -1,4 +1,4 @@
-// whats_changed and about_betanyc, the two tools every BetaNYC MCP server carries
+// whats_changed, about_betanyc and about_data, the three tools BetaNYC is adding to each of its MCP servers
 // (betanyc-ai-workspace platform/system/whats-changed-standard.md § 7). They read this repo's
 // WHATS-CHANGED.md and never touch the network.
 import { test } from "node:test";
@@ -20,8 +20,8 @@ const unreleased = (whatsChanged.match(/^## Unreleased: /gm) ?? []).length;
 
 const textOf = (r) => r.content[0].text;
 
-test("both shared tools are advertised, read-only, with an output schema", () => {
-  for (const name of ["whats_changed", "about_betanyc"]) {
+test("the three shared tools are advertised, read-only, with an output schema", () => {
+  for (const name of ["whats_changed", "about_betanyc", "about_data"]) {
     const t = TOOLS.find((x) => x.name === name);
     assert.ok(t, name);
     assert.equal(t.outputSchema.type, "object", name);
@@ -109,7 +109,7 @@ test("over stdio, the SDK client accepts both answers against their output schem
   await client.connect(transport);
   try {
     const { tools } = await client.listTools();
-    assert.equal(tools.length, 23);
+    assert.equal(tools.length, 24);
     const wc = await client.callTool({ name: "whats_changed", arguments: { limit: 3 } });
     assert.equal(wc.structuredContent.returned, 3);
     const about = await client.callTool({ name: "about_betanyc", arguments: {} });

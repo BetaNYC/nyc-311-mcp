@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Every tool in the NYC 311 MCP</title>
-<meta name="description" content="What each of the 23 tools in nyc-311-mcp does, with things to ask and real answers.">
+<meta name="description" content="What each of the 24 tools in nyc-311-mcp does, with things to ask and real answers.">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/demo.js" defer></script>
 </head>
@@ -14,10 +14,10 @@
 <nav class="site-nav" aria-label="Site"><a href="index.html">Home</a> <a href="tools.html" aria-current="page">Tools</a> <a href="install.html">Install</a> <a href="https://github.com/BetaNYC/nyc-311-mcp">GitHub</a></nav></header>
 <main id="main"><div class="wrap">
 <h1>Every tool</h1>
-<p class="lede">nyc-311-mcp has 23 tools. You don't need to know their names. Ask your question in plain English and your AI assistant picks the tool. Below is what each one does, a few things to try, and a replay of a real question and answer.</p>
+<p class="lede">nyc-311-mcp has 24 tools. You don't need to know their names. Ask your question in plain English and your AI assistant picks the tool. Below is what each one does, a few things to try, and a replay of a real question and answer.</p>
 <div class="safety"><p><strong>If this is an emergency, or if you think this is an emergency, call 911.</strong> Every answer from every tool ends with that line. Danger detection is a best effort and it will miss some emergencies.</p></div>
 <p>The demos are real answers, captured November 9, 2026, with BoardStat data as of November 9, 2026, with 311 requests through November 8. We shortened them to fit, and left out home addresses. Your numbers will be newer.</p>
-<ol class="toc"><li><a href="#report">Help reporting a problem</a> (3)</li><li><a href="#district">Your community district or Council district</a> (11)</li><li><a href="#ll47">The Local Law 47 reports</a> (3)</li><li><a href="#today">Today in the city</a> (2)</li><li><a href="#lookup">Look up a 311 request</a> (2)</li><li><a href="#about">About this server</a> (2)</li></ol>
+<ol class="toc"><li><a href="#report">Help reporting a problem</a> (3)</li><li><a href="#district">Your community district or Council district</a> (11)</li><li><a href="#ll47">The Local Law 47 reports</a> (3)</li><li><a href="#today">Today in the city</a> (2)</li><li><a href="#lookup">Look up a 311 request</a> (2)</li><li><a href="#about">About this server</a> (3)</li></ol>
 <h2 id="report">Help reporting a problem</h2>
 <p>Tell it what's wrong in your own words. It finds the City's own 311 article for that problem, the agency that handles it, and every way to report it. It can also write a short report for you to paste in. It never files anything. You do that yourself.</p>
 <section class="tool" id="how_to_report">
@@ -443,7 +443,7 @@
 <p><strong>Try asking:</strong></p><ul class="asks"><li>“Check these three 311 numbers for me: …”</li></ul>
 </section>
 <h2 id="about">About this server</h2>
-<p>Ask what changed in the server lately, or who built it. Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. They read the same list as the <a href="https://betanyc.github.io/nyc-311-mcp/whats-changed.html">What's changed</a> page. No API key needed.</p>
+<p>Ask what changed in the server lately, who built it, or where its data comes from. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the <a href="https://betanyc.github.io/nyc-311-mcp/whats-changed.html">What's changed</a> page; another reads the server's list of data sources, which is also published as a <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/data.json">data catalog</a>. No API key needed.</p>
 <section class="tool" id="whats_changed">
 <h3><code>whats_changed</code></h3>
 <div class="badges"><span class="badge new">New in 1.3.0</span><span class="badge nokey">No key needed</span></div>
@@ -455,6 +455,12 @@
 <div class="badges"><span class="badge new">New in 1.3.0</span><span class="badge nokey">No key needed</span></div>
 <p>Who built this server, where to report a bug in this server or ask for a new feature, and links to BetaNYC&#x27;s events, newsletter, and ways to get involved.</p>
 <p><strong>Try asking:</strong></p><ul class="asks"><li>“Who made this 311 tool?”</li><li>“Where do I report a bug in the 311 server?”</li></ul>
+</section>
+<section class="tool" id="about_data">
+<h3><code>about_data</code></h3>
+<div class="badges"><span class="badge new">New in 1.3.0</span><span class="badge nokey">No key needed</span></div>
+<p>Tells you where each answer&#x27;s data comes from. It names the publisher and says whether the numbers are an official record or BetaNYC&#x27;s own, what BetaNYC changed, and how current the data is on your computer. It also gives what the data leaves out, the credit line to use, where to check a number with the City, and where to report a mistake.</p>
+<p><strong>Try asking:</strong></p><ul class="asks"><li>“Where do the 311 district numbers come from?”</li><li>“Are these 311 numbers official?”</li><li>“How current is the 311 data?”</li></ul>
 </section>
 <h2>Want to try it?</h2>
 <p><a class="button" href="install.html">Install it</a></p>

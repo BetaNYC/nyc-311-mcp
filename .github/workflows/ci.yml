@@ -46,7 +46,9 @@ on:
       - "WHATS-CHANGED.md"
       - "CHANGELOG.md"
       - "docs/**"
-      - "scripts/whats_changed.py"
+      - "scripts/**"
+      - "DATA-SOURCES.json"
+      - "data.json"
   push:
     branches: [main]
     paths:
@@ -58,7 +60,9 @@ on:
       - "WHATS-CHANGED.md"
       - "CHANGELOG.md"
       - "docs/**"
-      - "scripts/whats_changed.py"
+      - "scripts/**"
+      - "DATA-SOURCES.json"
+      - "data.json"
   # Manual trigger — lets us fire a run on any branch. Needed because a
   # path-scoped pull_request/push event does not fire on the very PR that
   # introduces the workflow, so this gate never executed on its own PR (#2).
@@ -126,3 +130,50 @@ jobs:
           python3 scripts/whats_changed.py render WHATS-CHANGED.md --format jekyll
           --layout whats-changed --out docs/whats-changed.html
           --repo-url https://github.com/BetaNYC/nyc-311-mcp --check
+
+  # The about-data standard (betanyc-ai-workspace platform/system/about-data-standard.md § 7).
+  # DATA-SOURCES.json says where every tool's data comes from; data.json (DCAT-US 3.0) is made
+  # from it, at the repo root (in the npm package). The website copy, docs/data.json, is added once
+  # BetaNYC names its monitored contact address, so the placeholder is never published. This
+  # repo publishes no data files of its own (BoardStat does), so there is no croissant.json, and
+  # `catalog --check` fails if one appears. scripts/tests/catalog_validate.py, the vendored
+  # DCAT-US 3.0 schema under scripts/mcp_shared/vendor/ and scripts/mcp_shared/data-sources.schema.json
+  # are copies of the workspace's files: never edit them here. The validators are pinned and run
+  # outside the project; none is a runtime dependency. `about-data check --release` (fails on the
+  # placeholder contact address) joins release.yml once BetaNYC names its monitored address.
+  about-data:
+    name: About data (DATA-SOURCES.json, data.json)
+    runs-on: ubuntu-latest
+    env:
+      DCAT_VALIDATORS: --with jsonschema==4.26.0 --with referencing==0.37.0 --with rfc3987==1.3.8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: "npm"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build, and list the server's tools
+        run: |
+          npm ci
+          npm run build
+          node --input-type=module -e 'const m = await import("./dist/tools.js"); console.log(JSON.stringify(m.TOOLS.map((t) => t.name)))' > "$RUNNER_TEMP/tools.json"
+
+      - name: DATA-SOURCES.json passes check, and every tool is explained
+        run: python3 scripts/whats_changed.py about-data check DATA-SOURCES.json --tools-file "$RUNNER_TEMP/tools.json"
+
+      - name: data.json is current
+        run: python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --check
+
+      - name: DATA-SOURCES.json passes its JSON Schema; data.json is valid DCAT-US 3.0
+        run: |
+          uv run --no-project $DCAT_VALIDATORS python scripts/tests/catalog_validate.py data-sources DATA-SOURCES.json
+          uv run --no-project $DCAT_VALIDATORS python scripts/tests/catalog_validate.py dcat data.json

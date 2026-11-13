@@ -16,9 +16,12 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 
 ## What's new in 1.3.0
 
-Version 1.3.0 has **23** tools. Two are new: `whats_changed` tells you what changed in the
-server, and `about_betanyc` says who built it and where to report a bug in this server or ask for a new feature.
-Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. Every change a reader would notice, including corrections, is listed
+Version 1.3.0 has **24** tools. Three are new: `whats_changed` tells you what changed in the
+server, `about_betanyc` says who built it and where to report a bug in this server or ask for a new feature,
+and `about_data` says where each answer's data comes from, whether it is official, how current it is, and
+where to check it. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. The
+data sources are listed in [DATA-SOURCES.json](DATA-SOURCES.json) and published as a
+[DCAT-US 3.0 catalog](data.json). Every change a reader would notice, including corrections, is listed
 in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
 [website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
 
@@ -78,7 +81,7 @@ key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 **Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
 have one.
 
-To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23
+To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 24
 (21 on version 1.2.0), including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
 **Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
@@ -263,6 +266,27 @@ npm test
 
 Rate limits on the 311 API depend on your subscription, not on this server.
 
+[DATA-SOURCES.json](DATA-SOURCES.json) lists every source, source by source: who publishes it,
+what BetaNYC changed, what it covers, its terms and credit line, where to check a number and
+where to report an error. The `about_data` tool answers from it, and says how current each
+source is on your computer from what the server last downloaded. A test fails if a tool is
+not listed under a source. `data.json`, a [DCAT-US 3.0](https://resources.data.gov/resources/dcat-us3/)
+catalog, is made from the same file, at the repo root (it ships in the npm package). A copy on
+the website (`docs/data.json`) is added once BetaNYC names its monitored contact address, so the
+placeholder address below is never published there. There is no `croissant.json`, because this repo publishes no
+data files of its own; BoardStat publishes the district files. After changing `DATA-SOURCES.json`:
+
+```bash
+python3 scripts/whats_changed.py about-data check DATA-SOURCES.json
+python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json
+```
+
+CI fails while `data.json` is stale, and validates it against the DCAT-US 3.0 schema
+(`scripts/tests/catalog_validate.py` and `scripts/mcp_shared/`, copies of BetaNYC's shared
+files). `DATA-SOURCES.json` still has the placeholder contact address,
+`contact-not-yet-named@example.invalid`, because BetaNYC has not yet named the monitored address
+for data questions.
+
 This is an independent, community-built project. It is not affiliated with, endorsed by, or
 an official product of the City of New York.
 
@@ -287,8 +311,8 @@ A release that adds or changes a tool also adds a `WHATS-CHANGED.md` entry tagge
 same pull request as the version bump, headed `## Unreleased: Title`. The release commit
 changes that heading to `## YYYY-MM-DD: Title` (the release date in New York, same title), and
 the tag goes on that commit; the Release workflow refuses to publish while an Unreleased entry
-is left. `src/betanyc-tools.ts` (the `whats_changed` and
-`about_betanyc` tools) is a copy too.
+is left. `src/betanyc-tools.ts` (the `whats_changed`,
+`about_betanyc` and `about_data` tools) is a copy too.
 
 ### Releases
 
@@ -313,6 +337,13 @@ one commit that:
 The title stays exactly the same: only `Unreleased` becomes the date. That commit may reword
 the entry's other lines; until it has a date, an Unreleased entry's body counts as
 unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
+
+**Not yet in the release gate:** `python3 scripts/whats_changed.py about-data check
+DATA-SOURCES.json --release`, which fails while the contact address is the placeholder. It goes
+into `release.yml`, before `npm publish`, once BetaNYC names its monitored contact address and
+it replaces the placeholder in `DATA-SOURCES.json` (nyc-council-mcp does the same). The same day, add the website copy of the catalog:
+`python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json`,
+and its `--check` to CI.
 
 Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
 `check --release` before `npm publish` and stops while an Unreleased entry is left.
