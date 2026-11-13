@@ -470,8 +470,9 @@ one commit that:
 4. rebuilds `docs/whats-changed.html` (the command under "The website") and runs
    `python3 scripts/whats_changed.py check WHATS-CHANGED.md --release`.
 
-That commit may also reword the entry's text. Until it has a date, an Unreleased entry counts
-as unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
+The title stays exactly the same: only `Unreleased` becomes the date. That commit may reword
+the entry's other lines; until it has a date, an Unreleased entry's body counts as
+unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
 
 Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
 `check --release` before `npm publish` and stops while an Unreleased entry is left.
