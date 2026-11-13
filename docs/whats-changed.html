@@ -113,7 +113,7 @@ title: "What's changed"
       Array.prototype.forEach.call(entries, function (el) {
         var tags = (el.getAttribute("data-tags") || "").split(" ");
         var ok = tags.some(function (t) { return on[t]; });
-        if (corrBox.checked && tags.indexOf("Correction") < 0) ok = false;
+        if (corrBox && corrBox.checked && tags.indexOf("Correction") < 0) ok = false;
         el.hidden = !ok;
         if (ok) shown++;
       });
@@ -126,7 +126,7 @@ title: "What's changed"
       var el = id && document.getElementById(id);
       if (el && root.contains(el) && el.closest(".wc-entry[hidden]")) {
         Array.prototype.forEach.call(tagBoxes, function (b) { b.checked = true; });
-        corrBox.checked = false;
+        if (corrBox) corrBox.checked = false;
         apply();
         el.scrollIntoView();
       }
