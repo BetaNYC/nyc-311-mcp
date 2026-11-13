@@ -1,5 +1,5 @@
-// betanyc-shared: betanyc-tools.ts v1.1.0
-// betanyc-shared-sha256: 27bc112bc903026624e50dfa12c4b66d84f63066c894d5f376509b1689685412
+// betanyc-shared: betanyc-tools.ts v1.1.1
+// betanyc-shared-sha256: 500c9d622b2d6ed06d49934a00432fa67401fb6de5cc84ec97ded6633b67706b
 // Canonical copy: betanyc-ai-workspace scripts/mcp_shared/betanyc-tools.ts. Do not edit a copy
 // in a server repo; change the canonical file, re-stamp it, and copy it again.
 // Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -19,7 +19,7 @@
 
 import { readFileSync } from "node:fs";
 
-export const SHARED_MODULE_VERSION = "1.1.0";
+export const SHARED_MODULE_VERSION = "1.1.1";
 
 // --------------------------------------------------------------------------- types
 
@@ -319,6 +319,8 @@ export function parseWhatsChanged(input: string, today?: string): ParsedFile {
       const m = H1_RE.exec(line);
       if (m) {
         title = trim(m[1]);
+        // The page title reaches Jekyll and Quarto front matter, and layouts print it.
+        if (TITLE_MARKUP_RE.test(title)) err("title-markup", lineno);
         continue;
       }
       err("no-h1", lineno);

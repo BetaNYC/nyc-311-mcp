@@ -11,8 +11,8 @@ To report a problem with this server or ask for a feature, [open an issue on Git
 
 - **Tags:** Site, MCP
 - **What changed:** The website has a new page that lists every change a reader would notice. Two new tools let your AI assistant answer "what's new in this server?" and "who built this?" with links to BetaNYC and to the place to report a problem with this server.
-- **MCP version:** [nyc-311-mcp 1.3.0](CHANGELOG.md#130---2026-11-12)
-- **More detail:** [What's changed on the website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) · [Release notes](CHANGELOG.md#130---2026-11-12)
+- **MCP version:** [nyc-311-mcp 1.3.0](CHANGELOG.md)
+- **More detail:** [What's changed on the website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) · [Release notes](CHANGELOG.md)
 
 ## 2026-11-09: Version 1.2.0 adds 17 tools, from reporting help to district numbers
 

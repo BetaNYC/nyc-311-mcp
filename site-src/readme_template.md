@@ -297,6 +297,22 @@ Pushing a tag `vX.Y.Z` that matches the version in `package.json` runs
 with provenance, and creates a GitHub Release. Version history is in
 [CHANGELOG.md](CHANGELOG.md). Publishing needs the `NPM_TOKEN` repository secret.
 
+**Release day.** A version bump merges with its `WHATS-CHANGED.md` entry headed
+`## Unreleased: Title` and its `CHANGELOG.md` heading undated (`## [X.Y.Z] - Unreleased`), the
+entry's MCP version linking to `CHANGELOG.md` with no anchor. On the day the tag goes on, make
+one commit that:
+
+1. changes `## Unreleased: Title` to `## YYYY-MM-DD: Title` (same title, today's date in New
+   York; `check` rejects a future date);
+2. gives the `CHANGELOG.md` heading the same date (`## [X.Y.Z] - YYYY-MM-DD`);
+3. adds the dated anchor to the MCP version link, computed with the script, never by hand:
+   `python3 -c "import sys; sys.path.insert(0,'scripts'); import whats_changed as w; print(w.github_slug('[X.Y.Z] - YYYY-MM-DD'))"`;
+4. rebuilds `docs/whats-changed.html` (the command under "The website") and runs
+   `python3 scripts/whats_changed.py check WHATS-CHANGED.md --release`.
+
+Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
+`check --release` before `npm publish` and stops while an Unreleased entry is left.
+
 When the Release workflow succeeds, `.github/workflows/publish-mcp.yml` lists the new version
 in the official [MCP Registry](https://registry.modelcontextprotocol.io/) as
 `io.github.BetaNYC/nyc-311-mcp`, from `server.json`. Keep `server.json` at the same version

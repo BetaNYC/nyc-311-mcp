@@ -12,6 +12,11 @@
 # publish rights on @betanyc/nyc-311-mcp). id-token: write enables npm
 # provenance attestation; contents: write lets the workflow create the
 # GitHub Release.
+#
+# Before tagging: one commit dates the WHATS-CHANGED.md "## Unreleased:" entry and the
+# CHANGELOG.md heading with the same New York date, adds the dated anchor to the entry's MCP
+# version link, and rebuilds docs/whats-changed.html. Tag that commit. Full steps: README,
+# "Releases". The "WHATS-CHANGED.md has no Unreleased entry" step below enforces the dating.
 
 name: Release
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# betanyc-shared: whats_changed.py v1.1.0
-# betanyc-shared-sha256: fb8fb55c9eec144c38ab236e4690cb5d0d48c2efb9498ca507ac38f9c2fba86f
+# betanyc-shared: whats_changed.py v1.1.1
+# betanyc-shared-sha256: 1734c0187f171cb47d2cf905e8c7aff656c12c2f2a47f1ebf734e58ca9e8ae79
 # Canonical copy: betanyc-ai-workspace scripts/whats_changed.py. Do not edit a copy in
 # another repo; change the canonical file, re-stamp it, and copy it again.
 # Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -218,6 +218,9 @@ def parse(text: str, today: str | None = None) -> dict:
             m = H1_RE.match(line)
             if m:
                 title = m.group(1).strip(TRIM)
+                if TITLE_MARKUP_RE.search(title):
+                    # The page title reaches Jekyll and Quarto front matter, and layouts print it.
+                    err("title-markup", lineno)
                 continue
             err("no-h1", lineno)
             title = ""
@@ -908,10 +911,16 @@ def render_page(parsed: dict, link_map: LinkMap, site_name: str, home_url: str, 
     ])
 
 
+def _yaml_title(parsed: dict) -> str:
+    """The page title as a YAML double-quoted string. JSON string syntax is valid YAML, so quotes,
+    backslashes and control characters are escaped; the parser already rejects markup in it."""
+    return json.dumps(parsed["title"] or "What's changed", ensure_ascii=False)
+
+
 def render_quarto(parsed: dict, link_map: LinkMap) -> str:
-    title = (parsed["title"] or "What's changed").replace('"', '\\"')
+    title = _yaml_title(parsed)
     body = render_fragment(parsed, link_map, with_h1=False)
-    return f'---\ntitle: "{title}"\n---\n\n```{{=html}}\n{body}\n```\n'
+    return f'---\ntitle: {title}\n---\n\n```{{=html}}\n{body}\n```\n'
 
 
 def liquid_safe(body: str) -> str:
@@ -923,9 +932,9 @@ def liquid_safe(body: str) -> str:
 
 
 def render_jekyll(parsed: dict, link_map: LinkMap, layout: str) -> str:
-    title = (parsed["title"] or "What's changed").replace('"', '\\"')
+    title = _yaml_title(parsed)
     body = render_fragment(parsed, link_map, with_h1=False)
-    return f'---\nlayout: {layout}\ntitle: "{title}"\n---\n{liquid_safe(body)}\n'
+    return f'---\nlayout: {layout}\ntitle: {title}\n---\n{liquid_safe(body)}\n'
 
 
 def active_notices(parsed: dict, page: str, today: str, days: int = NOTICE_DAYS) -> list[dict]:
@@ -1002,7 +1011,7 @@ def _load(path: Path, today: str | None) -> tuple[str, dict] | None:
 
 
 HINTS = {
-    "title-markup": "write the title in plain words: no * ` [ ] < > & _ ~ # or backslash (write 'and' for &)",
+    "title-markup": "write the title (the # page title or an entry title) in plain words: no * ` [ ] < > & _ ~ # or backslash (write 'and' for &)",
     "unsafe-link": "links may only be http, https, mailto, a repo path or a #anchor",
     "template-placeholder": "replace the starter file's placeholder text and example entries",
     "unterminated-comment": "close the <!-- comment; everything after it is hidden on GitHub",
