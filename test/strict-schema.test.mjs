@@ -101,6 +101,8 @@ const VALID_ARGS = {
   get_status: { type: "CodeBlue" },
   get_service_request: { sr_number: "311-17323508" },
   get_service_request_list: { sr_numbers: ["311-17323508"] },
+  whats_changed: { tag: "MCP", limit: 2 },
+  about_betanyc: {},
 };
 
 test("VALID_ARGS covers every advertised tool", () => {

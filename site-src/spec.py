@@ -55,6 +55,16 @@ GROUPS = [
         ),
         "tools": ["get_service_request", "get_service_request_list"],
     },
+    {
+        "id": "about",
+        "title": "About this server",
+        "intro": (
+            "Ask what changed in the server lately, or who built it. Every BetaNYC MCP server is "
+            "getting these two tools; nyc-311-mcp is the first. They read the same list as the <a href=\"https://betanyc.github.io/nyc-311-mcp/whats-changed.html\">What's "
+            "changed</a> page. No API key needed."
+        ),
+        "tools": ["whats_changed", "about_betanyc"],
+    },
 ]
 
 TOOLS = {
@@ -474,5 +484,21 @@ TOOLS = {
         "status": "improved", "key": True,
         "what": "Several 311 numbers at once. Any number the City can't find is listed, so nothing quietly goes missing.",
         "asks": ["Check these three 311 numbers for me: …"],
+    },
+    "whats_changed": {
+        "status": "new13", "key": False,
+        "what": (
+            "What changed in this server, newest first: new tools, data fixes, and corrections "
+            "when an answer was wrong. You can ask for corrections only, or for changes since a date."
+        ),
+        "asks": ["What's new in the 311 server?", "Has the 311 server ever corrected a wrong answer?"],
+    },
+    "about_betanyc": {
+        "status": "new13", "key": False,
+        "what": (
+            "Who built this server, where to report a bug in this server or ask for a new feature, and links to "
+            "BetaNYC's events, newsletter, and ways to get involved."
+        ),
+        "asks": ["Who made this 311 tool?", "Where do I report a bug in the 311 server?"],
     },
 }

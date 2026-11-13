@@ -12,7 +12,26 @@ import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./l
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
 import { SAFETY_LINE } from "./emergency.js";
+
+/** The last line of whats_changed and about_betanyc: SAFETY_LINE's closing 911 sentence, word for word. */
+export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
+import { createBetanycTools } from "./betanyc-tools.js";
+import { PACKAGE_VERSION } from "./version.js";
+
+/**
+ * whats_changed and about_betanyc, the two tools every BetaNYC MCP server carries
+ * (betanyc-ai-workspace platform/system/whats-changed-standard.md § 7). betanyc-tools.ts is
+ * a copy of the workspace's canonical file: never edit it here. WHATS-CHANGED.md ships in
+ * the npm package (package.json `files`), one level above dist/.
+ */
+const betanyc = createBetanycTools({
+  serverName: "nyc-311-mcp",
+  version: PACKAGE_VERSION,
+  repoUrl: "https://github.com/BetaNYC/nyc-311-mcp",
+  whatsChangedPath: new URL("../WHATS-CHANGED.md", import.meta.url),
+  pageUrl: "https://betanyc.github.io/nyc-311-mcp/whats-changed.html",
+});
 
 const STATUS_TYPES = [
   "CodeBlue",
@@ -96,6 +115,8 @@ export const TOOLS = [
   ...REPORT_TOOLS,
   // A ready-to-paste 311 report the person files themselves (#18).
   ...DRAFT_TOOLS,
+  // What's changed in this server, and who built it (BetaNYC standard tools).
+  ...betanyc.tools,
 ];
 
 const ARG_SHAPES = {
@@ -150,6 +171,15 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
  * line at the top. An error message carries it once, at the end.
  */
 export async function callTool(name: string, args: unknown) {
+  if (betanyc.handles(name)) {
+    // The shared tools answer in readable text plus structuredContent that matches their
+    // outputSchema. They do not answer from City data, so the City-data part of SAFETY_LINE
+    // does not fit them; their text ends with its 911 sentence only (QA on the pilot,
+    // 2026-11-12). structuredContent is left exactly as the shared module built it, which the
+    // standard allows (§ 7, "A server's own wrapper").
+    const out = betanyc.call(name, args);
+    return { ...out, content: [{ type: "text" as const, text: `${out.content[0].text}\n\n${SHARED_TOOL_LINE}` }] };
+  }
   const out = await runToolRaw(name, args);
   const text = out.content[0].text;
   if (out.isError) return { content: [{ type: "text", text: `${withoutSafetyLine(text)}\n\n${SAFETY_LINE}` }], isError: true };

@@ -1,0 +1,140 @@
+---
+layout: whats-changed
+title: "What's changed"
+---
+{% raw %}<div class="whats-changed" data-whats-changed>
+<style>
+.whats-changed{color:#414141;font-size:1.0625rem;line-height:1.76;max-width:750px;overflow-wrap:anywhere}
+.whats-changed a{color:#2359a8;text-decoration:underline}
+.whats-changed a:focus-visible,.whats-changed input:focus-visible{outline:3px solid #2359a8;outline-offset:2px}
+.whats-changed fieldset{border:1px solid #949494;border-radius:4px;margin:1.5rem 0 .5rem;padding:.25rem 1rem .5rem}
+.whats-changed legend{font-weight:700;padding:0 .25rem}
+.whats-changed .wc-option{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;margin-right:1.25rem;cursor:pointer}
+.whats-changed .wc-option input{width:1.25rem;height:1.25rem;margin:0;accent-color:#2359a8}
+.whats-changed .wc-status{font-style:italic}
+.whats-changed .wc-entry{border-top:1px solid #949494;padding:1.5rem 0 .5rem}
+.whats-changed .wc-entry[hidden]{display:none}
+.whats-changed .wc-entry h2{font-size:1.5rem;line-height:1.35;margin:0 0 .25rem}
+.whats-changed .wc-meta{margin:0 0 .75rem}
+.whats-changed .wc-tag{display:inline-block;border:1px solid #414141;border-radius:4px;padding:0 .5rem;margin:0 .375rem .25rem 0;line-height:1.6}
+.whats-changed .wc-tag-correction{border:2px solid #2359a8;color:#2359a8;font-weight:700}
+.whats-changed .wc-old-numbers{background:#EEF4FF;border-left:4px solid #2359a8;padding:.75rem 1rem;margin:1rem 0}
+.whats-changed .wc-old-numbers p{margin:0}
+.whats-changed .wc-permalink a{display:inline-block;min-height:44px;line-height:44px}
+.whats-changed .wc-visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width:600px){.whats-changed .wc-entry h2{font-size:1.25rem}}
+</style>
+<div class="wc-intro">
+<p>This page lists the changes to nyc-311-mcp that a reader would notice: new tools, new data, changes to the website, and corrections when the server gave a wrong answer. Newest first. Routine data refreshes are not listed.</p>
+<ul><li><strong>History begins:</strong> 2026-06-21, the first release. Corrections made before this date may be missing.</li><li><strong>Data refresh:</strong> The district tools read files that BoardStat rebuilds every night from NYC Open Data. The calendar, status alerts and request lookups ask the City&#x27;s 311 Public API each time.</li></ul>
+<p>To report a bug in this server or ask for a new feature, <a href="https://github.com/BetaNYC/nyc-311-mcp/issues">open an issue on GitHub</a>.</p>
+</div>
+<div class="wc-filters" hidden>
+<fieldset>
+<legend>Show changes to</legend>
+<label class="wc-option"><input type="checkbox" name="wc-tag" value="Site" checked> Site</label>
+<label class="wc-option"><input type="checkbox" name="wc-tag" value="Data" checked> Data</label>
+<label class="wc-option"><input type="checkbox" name="wc-tag" value="MCP" checked> MCP</label>
+<label class="wc-option"><input type="checkbox" name="wc-corrections" value="Correction"> Corrections only</label>
+</fieldset>
+</div>
+<p class="wc-status" role="status" aria-live="polite" aria-atomic="true">Showing all 6 changes.</p>
+<article class="wc-entry" id="unreleased-a-whats-changed-page-and-two-tools-that-explain-the-server" data-tags="Site MCP" aria-labelledby="unreleased-a-whats-changed-page-and-two-tools-that-explain-the-server-title">
+<h2 id="unreleased-a-whats-changed-page-and-two-tools-that-explain-the-server-title">A What&#x27;s changed page, and two tools that explain the server</h2>
+<p class="wc-meta">Not released yet</p>
+<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span><span class="wc-tag">Site</span><span class="wc-visually-hidden">, </span><span class="wc-tag">MCP</span></p>
+<p>The website has a new page that lists every change a reader would notice. Two new tools let your AI assistant answer &quot;what&#x27;s new in this server?&quot; and &quot;who built this?&quot; with links to BetaNYC and to the place to report a bug in this server or ask for a new feature.</p>
+<p><strong>MCP version:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md">nyc-311-mcp 1.3.0</a></p>
+<p><strong>More detail:</strong> <a href="https://betanyc.github.io/nyc-311-mcp/whats-changed.html">What&#x27;s changed on the website</a> · <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md">Release notes</a></p>
+<p class="wc-permalink"><a href="#unreleased-a-whats-changed-page-and-two-tools-that-explain-the-server">Link to this change<span class="wc-visually-hidden">: A What&#x27;s changed page, and two tools that explain the server</span></a></p>
+</article>
+<article class="wc-entry" id="2026-11-09-version-120-adds-17-tools-from-reporting-help-to-district-numbers" data-tags="MCP Data" aria-labelledby="2026-11-09-version-120-adds-17-tools-from-reporting-help-to-district-numbers-title">
+<h2 id="2026-11-09-version-120-adds-17-tools-from-reporting-help-to-district-numbers-title">Version 1.2.0 adds 17 tools, from reporting help to district numbers</h2>
+<p class="wc-meta"><time datetime="2026-11-09">November 9, 2026</time></p>
+<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span><span class="wc-tag">MCP</span><span class="wc-visually-hidden">, </span><span class="wc-tag">Data</span></p>
+<p>The server went from 4 tools to 21. New tools find the right way to report a problem to 311 and draft a report you file yourself, give 311 numbers for a community district or Council district from BoardStat, and rebuild the three monthly 311 reports that Local Law 47 of 2005 required. Every answer now ends with a reminder to call 911 in an emergency.</p>
+<p><strong>MCP version:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md#120---2026-11-09">nyc-311-mcp 1.2.0</a></p>
+<p><strong>More detail:</strong> <a href="https://betanyc.github.io/nyc-311-mcp/tools.html">Every tool, with real questions and answers</a> · <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md#120---2026-11-09">Release notes</a> · <a href="https://github.com/BetaNYC/nyc-311-mcp/releases/tag/v1.2.0">The release on GitHub</a></p>
+<p class="wc-permalink"><a href="#2026-11-09-version-120-adds-17-tools-from-reporting-help-to-district-numbers">Link to this change<span class="wc-visually-hidden">: Version 1.2.0 adds 17 tools, from reporting help to district numbers</span></a></p>
+</article>
+<article class="wc-entry" id="2026-11-09-a-website-for-the-server-with-a-page-for-every-tool" data-tags="Site" aria-labelledby="2026-11-09-a-website-for-the-server-with-a-page-for-every-tool-title">
+<h2 id="2026-11-09-a-website-for-the-server-with-a-page-for-every-tool-title">A website for the server, with a page for every tool</h2>
+<p class="wc-meta"><time datetime="2026-11-09">November 9, 2026</time></p>
+<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span><span class="wc-tag">Site</span></p>
+<p>The website went live with a home page, an install guide, and a page that shows what each tool does, with a real question and answer for most of them.</p>
+<p><strong>More detail:</strong> <a href="https://betanyc.github.io/nyc-311-mcp/">The website</a> · <a href="https://github.com/BetaNYC/nyc-311-mcp/pull/29">Pull request</a></p>
+<p class="wc-permalink"><a href="#2026-11-09-a-website-for-the-server-with-a-page-for-every-tool">Link to this change<span class="wc-visually-hidden">: A website for the server, with a page for every tool</span></a></p>
+</article>
+<article class="wc-entry" id="2026-07-21-tools-ignored-settings-they-did-not-have-without-saying-so" data-tags="MCP Correction" aria-labelledby="2026-07-21-tools-ignored-settings-they-did-not-have-without-saying-so-title">
+<h2 id="2026-07-21-tools-ignored-settings-they-did-not-have-without-saying-so-title">Tools ignored settings they did not have, without saying so</h2>
+<p class="wc-meta"><time datetime="2026-07-21">July 21, 2026</time></p>
+<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span><span class="wc-tag">MCP</span><span class="wc-visually-hidden">, </span><span class="wc-tag wc-tag-correction">Correction</span></p>
+<p>From June 21 to July 21, 2026, when an AI assistant passed a setting a tool does not have, the tool dropped it without saying so. The answer looked right but could answer a different question. Version 1.1.0 refuses the call and names the settings the tool does accept.</p>
+<div class="wc-old-numbers"><p><strong>If you used the old numbers:</strong> We know of no wrong answer this caused in nyc-311-mcp. If you asked a question then that named something the tool could not filter on, ask it again with the current version.</p></div>
+<p><strong>MCP version:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md#110--2026-07-21">nyc-311-mcp 1.1.0</a></p>
+<p><strong>More detail:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/issues/7">The issue</a> · <a href="https://github.com/BetaNYC/nyc-311-mcp/pull/8">The fix</a></p>
+<p class="wc-permalink"><a href="#2026-07-21-tools-ignored-settings-they-did-not-have-without-saying-so">Link to this change<span class="wc-visually-hidden">: Tools ignored settings they did not have, without saying so</span></a></p>
+</article>
+<article class="wc-entry" id="2026-07-06-asking-for-todays-calendar-in-the-evening-gave-the-next-days" data-tags="MCP Correction" aria-labelledby="2026-07-06-asking-for-todays-calendar-in-the-evening-gave-the-next-days-title">
+<h2 id="2026-07-06-asking-for-todays-calendar-in-the-evening-gave-the-next-days-title">Asking for today&#x27;s calendar in the evening gave the next day&#x27;s</h2>
+<p class="wc-meta"><time datetime="2026-07-06">July 6, 2026</time></p>
+<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span><span class="wc-tag">MCP</span><span class="wc-visually-hidden">, </span><span class="wc-tag wc-tag-correction">Correction</span></p>
+<p>From June 21 to July 6, 2026, asking for the 311 calendar (alternate side parking, trash collection and schools) without a date after about 8 p.m. New York time returned the next day&#x27;s calendar. Version 1.0.1 uses the date in New York. It also explains errors from the City&#x27;s 311 API more clearly.</p>
+<div class="wc-old-numbers"><p><strong>If you used the old numbers:</strong> If you asked for today&#x27;s calendar on an evening in that period without giving a date, the answer was for the next day. Answers that named a date were not affected.</p></div>
+<p><strong>MCP version:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md#101--2026-07-06">nyc-311-mcp 1.0.1</a></p>
+<p><strong>More detail:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/pull/4">The fix</a></p>
+<p class="wc-permalink"><a href="#2026-07-06-asking-for-todays-calendar-in-the-evening-gave-the-next-days">Link to this change<span class="wc-visually-hidden">: Asking for today&#x27;s calendar in the evening gave the next day&#x27;s</span></a></p>
+</article>
+<article class="wc-entry" id="2026-06-21-first-release-with-the-311-calendar-status-alerts-and-request-lookup" data-tags="MCP" aria-labelledby="2026-06-21-first-release-with-the-311-calendar-status-alerts-and-request-lookup-title">
+<h2 id="2026-06-21-first-release-with-the-311-calendar-status-alerts-and-request-lookup-title">First release, with the 311 calendar, status alerts and request lookup</h2>
+<p class="wc-meta"><time datetime="2026-06-21">June 21, 2026</time></p>
+<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span><span class="wc-tag">MCP</span></p>
+<p>The first version, published on npm, had four tools: the City&#x27;s 311 calendar for alternate side parking, collections and schools; emergency and weather status alerts; and lookup of one or several 311 requests by number. It reached npm on the evening of June 21 in New York; CHANGELOG.md lists it as 2026-06-22, the date in UTC.</p>
+<p><strong>MCP version:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md#100--2026-06-22">nyc-311-mcp 1.0.0</a></p>
+<p><strong>More detail:</strong> <a href="https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/CHANGELOG.md#100--2026-06-22">Release notes</a> · <a href="https://www.npmjs.com/package/@betanyc/nyc-311-mcp">The package on npm</a></p>
+<p class="wc-permalink"><a href="#2026-06-21-first-release-with-the-311-calendar-status-alerts-and-request-lookup">Link to this change<span class="wc-visually-hidden">: First release, with the 311 calendar, status alerts and request lookup</span></a></p>
+</article>
+<script>
+(function () {
+  var roots = document.querySelectorAll("[data-whats-changed]");
+  Array.prototype.forEach.call(roots, function (root) {
+    var box = root.querySelector(".wc-filters");
+    var status = root.querySelector(".wc-status");
+    var entries = root.querySelectorAll(".wc-entry");
+    if (!box || !status || !entries.length) return;
+    var tagBoxes = box.querySelectorAll("input[name='wc-tag']");
+    var corrBox = box.querySelector("input[name='wc-corrections']");
+    var total = entries.length;
+    var noun = total === 1 ? "change" : "changes";
+    function apply() {
+      var on = {};
+      Array.prototype.forEach.call(tagBoxes, function (b) { on[b.value] = b.checked; });
+      var shown = 0;
+      Array.prototype.forEach.call(entries, function (el) {
+        var tags = (el.getAttribute("data-tags") || "").split(" ");
+        var ok = tags.some(function (t) { return on[t]; });
+        if (corrBox && corrBox.checked && tags.indexOf("Correction") < 0) ok = false;
+        el.hidden = !ok;
+        if (ok) shown++;
+      });
+      status.textContent = shown === total
+        ? "Showing all " + total + " " + noun + "."
+        : "Showing " + shown + " of " + total + " " + noun + ".";
+    }
+    function reveal() {
+      var id = decodeURIComponent(location.hash.slice(1));
+      var el = id && document.getElementById(id);
+      if (el && root.contains(el) && el.closest(".wc-entry[hidden]")) {
+        Array.prototype.forEach.call(tagBoxes, function (b) { b.checked = true; });
+        if (corrBox) corrBox.checked = false;
+        apply();
+        el.scrollIntoView();
+      }
+    }
+    box.addEventListener("change", apply);
+    window.addEventListener("hashchange", reveal);
+    box.hidden = false;
+  });
+})();
+</script>
+</div>{% endraw %}

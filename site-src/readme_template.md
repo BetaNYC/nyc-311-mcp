@@ -14,9 +14,17 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 > answers from City data; they may contain errors. Check the City's 311 page before you
 > report. If this is an emergency, or if you think this is an emergency, call 911."
 
-## What's new in 1.2.0
+## What's new in 1.3.0
 
-Version 1.1.0 had 4 tools. Version 1.2.0 has **21**.
+Version 1.3.0 has **23** tools. Two are new: `whats_changed` tells you what changed in the
+server, and `about_betanyc` says who built it and where to report a bug in this server or ask for a new feature.
+Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. Every change a reader would notice, including corrections, is listed
+in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
+[website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
+
+## What was new in 1.2.0
+
+Version 1.1.0 had 4 tools. Version 1.2.0 had **21**.
 
 - **Help reporting a problem.** Describe it in your own words. It finds the City's 311 article
   for it, the agency, and every way to report it, and it can write a short report for you to
@@ -70,8 +78,8 @@ key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 **Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
 have one.
 
-To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 21,
-including `draft_311_report`. The [install guide](docs/install.md) has more detail.
+To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23
+(21 on version 1.2.0), including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
 **Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
 your app, delete the `_npx` folder in npm's cache (`~/.npm/_npx` on a Mac or Linux,
@@ -265,12 +273,49 @@ GitHub Pages from the `docs/` folder. `docs/index.html` and `docs/tools.html` ar
 Their demos are real answers, shortened, and every line shown is copied word for
 word from the tool's answer. The Markdown pages in `docs/` share `docs/_layouts/default.html`.
 
+`docs/whats-changed.html` is built from [WHATS-CHANGED.md](WHATS-CHANGED.md) by
+`scripts/whats_changed.py`, a copy of BetaNYC's shared script (never edit the copy). After
+changing `WHATS-CHANGED.md`, rebuild the page and commit it; CI fails while it is stale:
+
+```bash
+python3 scripts/whats_changed.py check WHATS-CHANGED.md
+python3 scripts/whats_changed.py render WHATS-CHANGED.md --format jekyll --layout whats-changed \
+  --out docs/whats-changed.html --repo-url https://github.com/BetaNYC/nyc-311-mcp
+```
+
+A release that adds or changes a tool also adds a `WHATS-CHANGED.md` entry tagged MCP, in the
+same pull request as the version bump, headed `## Unreleased: Title`. The release commit
+changes that heading to `## YYYY-MM-DD: Title` (the release date in New York, same title), and
+the tag goes on that commit; the Release workflow refuses to publish while an Unreleased entry
+is left. `src/betanyc-tools.ts` (the `whats_changed` and
+`about_betanyc` tools) is a copy too.
+
 ### Releases
 
 Pushing a tag `vX.Y.Z` that matches the version in `package.json` runs
 `.github/workflows/release.yml`. It runs the tests, publishes `@betanyc/nyc-311-mcp` to npm
 with provenance, and creates a GitHub Release. Version history is in
 [CHANGELOG.md](CHANGELOG.md). Publishing needs the `NPM_TOKEN` repository secret.
+
+**Release day.** A version bump merges with its `WHATS-CHANGED.md` entry headed
+`## Unreleased: Title` and its `CHANGELOG.md` heading undated (`## [X.Y.Z] - Unreleased`), the
+entry's MCP version linking to `CHANGELOG.md` with no anchor. On the day the tag goes on, make
+one commit that:
+
+1. changes `## Unreleased: Title` to `## YYYY-MM-DD: Title` (same title, today's date in New
+   York; `check` rejects a future date);
+2. gives the `CHANGELOG.md` heading the same date (`## [X.Y.Z] - YYYY-MM-DD`);
+3. adds the dated anchor to the MCP version link, computed with the script, never by hand:
+   `python3 -c "import sys; sys.path.insert(0,'scripts'); import whats_changed as w; print(w.github_slug('[X.Y.Z] - YYYY-MM-DD'))"`;
+4. rebuilds `docs/whats-changed.html` (the command under "The website") and runs
+   `python3 scripts/whats_changed.py check WHATS-CHANGED.md --release`.
+
+The title stays exactly the same: only `Unreleased` becomes the date. That commit may reword
+the entry's other lines; until it has a date, an Unreleased entry's body counts as
+unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
+
+Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
+`check --release` before `npm publish` and stops while an Unreleased entry is left.
 
 When the Release workflow succeeds, `.github/workflows/publish-mcp.yml` lists the new version
 in the official [MCP Registry](https://registry.modelcontextprotocol.io/) as

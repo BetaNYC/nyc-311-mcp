@@ -1,7 +1,9 @@
 // Every response from every tool carries one fixed text, Noel's (beta round 18): a disclaimer, then
 // "If this is an emergency, or if you think this is an emergency, call 911." It is the LAST line of the text, like
-// the end of a doctor's office phone message, on success and on error, for all 21 tools, whatever
-// was or was not detected; and the first field (safety_line) of every structured answer. Danger
+// the end of a doctor's office phone message, on success and on error, for 21 of the 23 tools, whatever
+// was or was not detected; and the first field (safety_line) of every structured answer. The two
+// shared BetaNYC tools (whats_changed, about_betanyc) do not answer from City data: their text
+// ends with the line's 911 sentence only, and their structuredContent follows their outputSchema. Danger
 // spotting is a best effort; a detected danger still leads how_to_report's and draft_311_report's
 // first_line with its own 911 line at the top.
 import { test } from "node:test";
@@ -12,6 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { callTool, TOOLS } from "../dist/tools.js";
 import { SAFETY_LINE } from "../dist/emergency.js";
+import { SHARED_TOOL_LINE } from "../dist/tools.js";
 import { setContentClient } from "../dist/content-311.js";
 import { setSodaClient, SodaClient } from "../dist/soda.js";
 import { setBoardStatData } from "../dist/district-tools.js";
@@ -57,10 +60,22 @@ const CALLS = [
   ["draft_311_report", { description: "I smell gas in my kitchen" }],
   ["how_to_report", { description: "x" }],
   ["draft_311_report", {}],
+  ["whats_changed", {}],
+  ["whats_changed", { limit: 0 }],
+  ["about_betanyc", {}],
   ["no_such_tool", {}],
 ];
 
-test("every response from all 21 tools ends with the safety line, success or error", async (t) => {
+// The two shared BetaNYC tools answer in readable text plus structuredContent (their
+// outputSchema), not JSON text, and not from City data. Their text ends with the 911 sentence
+// of the safety line only; nothing is added to structuredContent.
+const SHARED = new Set(["whats_changed", "about_betanyc"]);
+
+test("the shared tools' closing line is the safety line's own 911 sentence", () => {
+  assert.ok(SAFETY_LINE.endsWith(` ${SHARED_TOOL_LINE}`));
+});
+
+test("every response from all 23 tools ends with the safety line (the shared two: its 911 sentence), success or error", async (t) => {
   const SODA_FIX = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "soda", "wewp-mm3p");
   setContentClient(await stressClient());
   setBoardStatData((await fixtureData()).data);
@@ -89,10 +104,17 @@ test("every response from all 21 tools ends with the safety line, success or err
   });
   const covered = new Set(CALLS.map(([n]) => n));
   for (const tool of TOOLS) assert.ok(covered.has(tool.name), `no call for ${tool.name}`);
-  assert.equal(TOOLS.length, 21);
+  assert.equal(TOOLS.length, 23);
   for (const [name, args] of CALLS) {
     const r = await callTool(name, args);
     const text = r.content[0].text;
+    if (SHARED.has(name)) {
+      assert.ok(text.endsWith(`\n\n${SHARED_TOOL_LINE}`), `${name}: ...${text.slice(-160)}`);
+      assert.ok(!text.includes("City data"), `${name}: no City-data line`);
+      assert.equal(text.split(SHARED_TOOL_LINE).length, 2, `${name}: once, as the last line`);
+      if (!r.isError) assert.ok(r.structuredContent && !("safety_line" in r.structuredContent), name);
+      continue;
+    }
     assert.ok(text.endsWith(`\n\n${SAFETY_LINE}`), `${name}: ...${text.slice(-160)}`);
     assert.ok(!text.startsWith(SAFETY_LINE), `${name}: no longer the first line`);
     if (r.isError) assert.equal(text.split(SAFETY_LINE).length, 2, `${name}: once in an error`);
