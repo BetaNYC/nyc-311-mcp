@@ -1,5 +1,5 @@
-// betanyc-shared: betanyc-tools.ts v1.3.4
-// betanyc-shared-sha256: 6a4b296036c0aa6d54e43a7e92dde8b6b6a7a8b7a1ab3586dea00315e2e01c3f
+// betanyc-shared: betanyc-tools.ts v1.3.5
+// betanyc-shared-sha256: 0154ff3a3e3d17f275ce57ab951e58483a1c0311324682470f45339ba318fe55
 // Canonical copy: betanyc-ai-workspace scripts/mcp_shared/betanyc-tools.ts. Do not edit a copy
 // in a server repo; change the canonical file, re-stamp it, and copy it again.
 // Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -23,7 +23,7 @@
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 
-export const SHARED_MODULE_VERSION = "1.3.4";
+export const SHARED_MODULE_VERSION = "1.3.5";
 
 // --------------------------------------------------------------------------- types
 
@@ -156,6 +156,8 @@ export interface BetanycServerConfig {
   freshness?: Record<string, FreshnessHook>;
   /** Where the generated catalogs are published, when they are. about_data links to them. */
   catalogUrls?: { dataJson?: string; croissantJson?: string };
+  /** callAsync's wait per freshness hook, in milliseconds (default ABOUT_DATA_HOOK_TIMEOUT_MS, 3000). */
+  hookTimeoutMs?: number;
 }
 
 // --------------------------------------------------------------------------- parsing
@@ -1211,6 +1213,12 @@ function dsKey(k: string): string {
   return [...k].map((c) => (DS_KEY_CHAR_RE.test(c) ? c : "?")).slice(0, 64).join("");
 }
 
+/** The path part of a URL (after the host, before ? or #). */
+function urlPath(url: string): string {
+  const m = /^https?:\/\/[^/?#]*([^?#]*)/.exec(url);
+  return m ? m[1] : "";
+}
+
 /** Characters (code points), the unit Python's len() counts. */
 function charCount(s: string): number {
   let n = s.length;
@@ -1292,7 +1300,7 @@ function walk(spec: Spec, value: unknown, path: string, errors: DataSourcesError
   else if (DS_SURROGATE_RE.test(value)) code = "lone-surrogate";
   else if (DS_PLACEHOLDER_RE.test(value)) code = "placeholder";
   else if (k === "enum" && !(spec as { values: readonly string[] }).values.includes(value)) code = "bad-enum";
-  else if (k === "url" && !DS_URL_RE.test(value)) code = "bad-url";
+  else if (k === "url" && (!DS_URL_RE.test(value) || DOT_SEGMENT_RE.test(urlPath(value)))) code = "bad-url";
   else if (k === "repo" && !DS_REPO_RE.test(value)) code = "bad-repo";
   else if (k === "email" && !DS_EMAIL_RE.test(value)) code = "bad-email";
   else if (k === "date" && !dsIsDate(value)) code = "bad-date";
@@ -1586,11 +1594,15 @@ export const ABOUT_DATA_TOOL: ToolDefinition = {
                 in_the_data_handled_by: {
                   type: "string",
                   enum: ["publisher", "betanyc"],
-                  description: "Who fixes errors in the data: the publisher, or BetaNYC when the route is BetaNYC's own",
+                  description: "Who fixes errors at in_the_data: the publisher, or BetaNYC when the route is BetaNYC's own",
+                },
+                in_these_figures: {
+                  type: ["string", "null"],
+                  description: "When BetaNYC changed the values or curated them: where to report an error in BetaNYC's figures (this server's issues). Null for data passed on as published",
                 },
                 in_this_server: { type: "string", description: "This server's GitHub issues" },
               },
-              required: ["in_the_data", "in_the_data_email", "in_the_data_handled_by", "in_this_server"],
+              required: ["in_the_data", "in_the_data_email", "in_the_data_handled_by", "in_these_figures", "in_this_server"],
             },
             tools: { type: "array", items: { type: "string" } },
             caveats: { type: "array", items: { type: "string" } },
@@ -1616,9 +1628,21 @@ export const ABOUT_DATA_TOOL: ToolDefinition = {
         required: ["data_json", "croissant_json"],
       },
       who_built_this: { type: "string", description: "Call about_betanyc for who built this server" },
+      left_out: {
+        type: "array",
+        description: "Sources in the file that this server cannot show, and why",
+        items: {
+          type: "object",
+          properties: {
+            topic: NULLABLE_STRING,
+            reason: { type: "string", enum: ["newer-feature", "errors"] },
+          },
+          required: ["topic", "reason"],
+        },
+      },
       note: NULLABLE_STRING,
     },
-    required: ["server", "source_file", "topic", "topics", "sources", "catalog", "who_built_this", "note"],
+    required: ["server", "source_file", "topic", "topics", "sources", "catalog", "who_built_this", "left_out", "note"],
   },
   annotations: { title: "Where this server's data comes from", readOnlyHint: true, openWorldHint: false },
 };
@@ -1683,7 +1707,7 @@ export function isUsableAsOf(v: unknown, now: Date): v is string {
 
 type AsOfStatus = "live" | "read" | "copied" | "not-fetched" | "unavailable" | "unreadable";
 type AsOf = { as_of: string; as_of_status: AsOfStatus };
-type HookOutcome = { kind: "none" } | { kind: "threw" } | { kind: "async" } | { kind: "value"; value: unknown };
+type HookOutcome = { kind: "none" } | { kind: "threw" } | { kind: "async" } | { kind: "timeout" } | { kind: "value"; value: unknown };
 
 function hookFor(config: BetanycServerConfig, key: string): FreshnessHook | undefined {
   const hooks = config.freshness;
@@ -1742,6 +1766,7 @@ function asOf(s: DataSource, config: BetanycServerConfig, now: Date, outcome: (k
     const o = outcome(fr.key!);
     if (o.kind === "none") return { as_of: "not reported by this server", as_of_status: "unavailable" };
     if (o.kind === "threw") return { as_of: "unknown: the server could not read it", as_of_status: "unreadable" };
+    if (o.kind === "timeout") return { as_of: "unavailable: the server did not report it in time", as_of_status: "unavailable" };
     if (o.kind === "async") {
       return { as_of: "unavailable: this server reads it asynchronously; its about_data must be called with callAsync", as_of_status: "unavailable" };
     }
@@ -1767,12 +1792,22 @@ function dsFileUrl(config: BetanycServerConfig): string {
   return `${repoBase(config.repoUrl)}/blob/HEAD/${DATA_SOURCES_FILE}`;
 }
 
-const BETANYC_ROUTE_RE = /^https?:\/\/(?:(?:www\.)?beta\.nyc(?:[/?#:]|$)|github\.com\/betanyc\/)/i;
+const ROUTE_URL_RE = /^https?:\/\/([A-Za-z0-9.-]+)(?::[0-9]{1,5})?([/?#].*)?$/;
+/** A "." or ".." path segment, literal or percent-encoded. Such URLs are bad-url in check, and
+ * never count as BetaNYC's: github.com/BetaNYC/x/../../evil resolves somewhere else. */
+const DOT_SEGMENT_RE = /(?:^|\/)(?:\.|%2e){1,2}(?:\/|$)/i;
 
 /** True when an error-report URL is BetaNYC's own (a BetaNYC repo, its issues, or beta.nyc), so
  * the route is worded as reporting to BetaNYC. Same as route_is_betanyc() in whats_changed.py. */
 export function routeIsBetanyc(url: string): boolean {
-  return BETANYC_ROUTE_RE.test(url ?? "");
+  const m = ROUTE_URL_RE.exec(url ?? "");
+  if (!m) return false;
+  const host = m[1].toLowerCase();
+  const path = (m[2] ?? "").split(/[?#]/)[0];
+  if (DOT_SEGMENT_RE.test(path)) return false;
+  if (host === "beta.nyc" || host.endsWith(".beta.nyc")) return true;
+  if (host === "github.com" || host === "www.github.com") return path.split("/")[1]?.toLowerCase() === "betanyc";
+  return false;
 }
 
 /** Steps that change only format or structure, never a value (see DS_FORMAT_ONLY_STEPS in
@@ -1797,6 +1832,33 @@ export function officialWording(official: boolean, changed: boolean, publisher: 
   return `Official record: yes, passed on as ${publisher} publishes it.`;
 }
 
+/** Error codes a newer module's file gives an older reader: a value (a step, a freshness kind)
+ * or a field it does not know yet. */
+const NEWER_FEATURE_CODES = ["bad-enum", "unknown-key"];
+
+/** The invalid sources, in file order, each with why: "newer-feature" when every error in it is
+ * an unknown value or field (the file was written for a newer module), else "errors". */
+function leftOutSources(parsed: DataSourcesParse): { topic: string | null; reason: "newer-feature" | "errors" }[] {
+  const byIndex = new Map<number, string[]>();
+  for (const e of parsed.errors) {
+    const m = /^sources\[(\d+)\](\.|$)/.exec(e.path);
+    if (!m) continue;
+    const i = Number(m[1]);
+    if (e.path === `sources[${i}]` && e.code === "wrong-type") {
+      byIndex.set(i, ["not-an-object"]); // dropped from the doc; never shown
+      continue;
+    }
+    if (byIndex.get(i)?.[0] === "not-an-object") continue;
+    byIndex.set(i, [...(byIndex.get(i) ?? []), e.code]);
+  }
+  const invalid = (parsed.doc?.sources ?? []).filter((s) => !s.valid);
+  const indices = [...byIndex.entries()].filter(([, c]) => c[0] !== "not-an-object").sort((a, b) => a[0] - b[0]);
+  return invalid.map((s, k) => {
+    const codes = indices[k]?.[1] ?? [];
+    return { topic: s.id, reason: codes.length && codes.every((c) => NEWER_FEATURE_CODES.includes(c)) ? "newer-feature" : "errors" };
+  });
+}
+
 /** The about_data handler. Reads DATA-SOURCES.json (and WHATS-CHANGED.md for corrections) on
  * every call, so a rebuilt data file shows at once. Only a bad argument is an error. */
 export function handleAboutData(config: BetanycServerConfig, args: unknown, now: Date = new Date()): ToolResult {
@@ -1804,16 +1866,29 @@ export function handleAboutData(config: BetanycServerConfig, args: unknown, now:
 }
 
 /** handleAboutData for servers with async freshness hooks: awaits every hook first. */
+/** How long callAsync waits for one freshness hook before reporting it as unavailable. */
+export const ABOUT_DATA_HOOK_TIMEOUT_MS = 3000;
+
+/** handleAboutData for servers with async freshness hooks. Runs only the hooks of the sources in
+ * this answer, each raced against hookTimeoutMs (default ABOUT_DATA_HOOK_TIMEOUT_MS), so a hook
+ * that never settles cannot hang the tool. */
 export async function handleAboutDataAsync(config: BetanycServerConfig, args: unknown, now: Date = new Date()): Promise<ToolResult> {
   const keys = new Set<string>();
-  const loaded = loadDataSources(config);
-  if (loaded.kind === "ok") {
-    for (const s of loaded.parsed.doc?.sources ?? []) {
-      if (s.valid && (s.freshness?.kind === "hook" || s.freshness?.kind === "copied")) keys.add(s.freshness.key!);
-    }
-  }
+  aboutData(config, args, now, (key) => {
+    keys.add(key);
+    return { kind: "none" };
+  });
+  const ms = config.hookTimeoutMs ?? ABOUT_DATA_HOOK_TIMEOUT_MS;
   const outcomes = new Map<string, HookOutcome>();
-  await Promise.all([...keys].map(async (k) => outcomes.set(k, await asyncOutcome(config, k))));
+  await Promise.all([...keys].map(async (k) => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const timeout = new Promise<HookOutcome>((res) => {
+      timer = setTimeout(() => res({ kind: "timeout" }), ms);
+      (timer as { unref?: () => void }).unref?.();
+    });
+    outcomes.set(k, await Promise.race([asyncOutcome(config, k), timeout]));
+    clearTimeout(timer);
+  }));
   return aboutData(config, args, now, (key) => outcomes.get(key) ?? { kind: "none" });
 }
 
@@ -1852,11 +1927,12 @@ function aboutData(config: BetanycServerConfig, args: unknown, now: Date, outcom
         ? `${config.serverName} ${config.version} could not read its ${DATA_SOURCES_FILE} (${loaded.message}).`
         : `${config.serverName} ${config.version} has a ${DATA_SOURCES_FILE} that cannot be read (${parsed!.errors.map((e) => e.code).join(", ")}).`;
     const note = `${why} Each tool's own answer may name its source. Report a bug in this server or ask for a new feature: ${issues}. ${who}`;
-    return textResult(note, { ...base, topic, topics: [], sources: [], catalog, note });
+    return textResult(note, { ...base, topic, topics: [], sources: [], catalog, left_out: [], note });
   }
 
   const doc = parsed.doc;
   const usable = doc.sources.filter((s) => s.valid);
+  const leftOut = leftOutSources(parsed);
   const topics = usable.map((s) => s.id!);
   let picked = usable;
   if (topic !== null) {
@@ -1903,6 +1979,7 @@ function aboutData(config: BetanycServerConfig, args: unknown, now: Date, outcom
         in_the_data: s.report_errors!.upstream_url!,
         in_the_data_email: s.report_errors!.upstream_email,
         in_the_data_handled_by: (routeIsBetanyc(s.report_errors!.upstream_url!) ? "betanyc" : "publisher") as "betanyc" | "publisher",
+        in_these_figures: !s.official || valuesChanged(s.changes!.changed!, s.changes!.steps) ? issues : null,
         in_this_server: issues,
       },
       tools: s.tools,
@@ -1913,7 +1990,12 @@ function aboutData(config: BetanycServerConfig, args: unknown, now: Date, outcom
 
   const notes: string[] = [];
   const bad = doc.sources.length - usable.length;
-  if (bad) notes.push(`${plural(bad, "source")} in ${DATA_SOURCES_FILE} ${bad === 1 ? "has" : "have"} errors and ${bad === 1 ? "is" : "are"} left out. Full file: ${base.source_file}`);
+  const newer = leftOut.filter((l) => l.reason === "newer-feature");
+  if (newer.length) {
+    notes.push(`${plural(newer.length, "source")} (${newer.map((l) => l.topic ?? "unnamed").join(", ")}) ${newer.length === 1 ? "uses" : "use"} a feature newer than this server's shared module (${SHARED_MODULE_VERSION}), so ${newer.length === 1 ? "it is" : "they are"} not shown; the server needs a newer copy of betanyc-tools.ts. Full file: ${base.source_file}`);
+  }
+  const other = bad - newer.length;
+  if (other > 0) notes.push(`${plural(other, "source")} in ${DATA_SOURCES_FILE} ${other === 1 ? "has" : "have"} errors and ${other === 1 ? "is" : "are"} left out. Full file: ${base.source_file}`);
   if (!usable.length && !bad) notes.push(`${DATA_SOURCES_FILE} lists no sources yet.`);
   if (unresolved) notes.push(`${plural(unresolved, "correction")} could not be found in WHATS-CHANGED.md; the links still point where the entry should be.`);
   const note = notes.length ? notes.join(" ") : null;
@@ -1946,12 +2028,15 @@ function aboutData(config: BetanycServerConfig, args: unknown, now: Date, outcom
     if (termBits.length) lines.push(`Terms of use: ${termBits.join(", ")}`);
     if (t.credit_line) lines.push(`Credit line: ${t.credit_line}`);
     lines.push(`Check a figure at the source: ${s.verify_at}`);
+    const re = s.report_errors;
+    const email = re.in_the_data_email ? ` (${re.in_the_data_email})` : "";
     lines.push(
-      (s.report_errors.in_the_data_handled_by === "betanyc"
-        ? `Report an error in this data to BetaNYC: ${s.report_errors.in_the_data}`
-        : `Report an error in the data to ${s.publisher}: ${s.report_errors.in_the_data}`) +
-        (s.report_errors.in_the_data_email ? ` (${s.report_errors.in_the_data_email})` : "") +
-        `. Report a bug in this server or ask for a new feature: ${s.report_errors.in_this_server}`,
+      (re.in_the_data_handled_by === "betanyc"
+        ? `Report an error in this data to BetaNYC: ${re.in_the_data}`
+        : re.in_these_figures
+          ? `Report an error in these figures to BetaNYC: ${re.in_these_figures}; an error in the original records to ${s.publisher}: ${re.in_the_data}${email}`
+          : `Report an error in the data to ${s.publisher}: ${re.in_the_data}${email}`) +
+        `. Report a bug in this server or ask for a new feature: ${re.in_this_server}`,
     );
     if (s.tools.length) lines.push(`Tools that use it: ${s.tools.join(", ")}`);
     for (const c of s.corrections) lines.push(`Correction: ${c.date ? `${c.date}: ` : ""}${c.title ?? "(entry not found)"} ${c.url}`);
@@ -1960,7 +2045,7 @@ function aboutData(config: BetanycServerConfig, args: unknown, now: Date, outcom
   const tail = [catalog.data_json ? `Catalog (DCAT-US 3.0): ${catalog.data_json}` : "", catalog.croissant_json ? `Croissant: ${catalog.croissant_json}` : "", who]
     .filter(Boolean).join("\n");
   const text = [head.join("\n"), ...blocks, tail, note ?? ""].filter(Boolean).join("\n\n");
-  return textResult(text, { ...base, topic, topics, sources: out, catalog, note });
+  return textResult(text, { ...base, topic, topics, sources: out, catalog, left_out: leftOut, note });
 }
 
 export const BETANYC_TOOLS: readonly ToolDefinition[] = [WHATS_CHANGED_TOOL, ABOUT_BETANYC_TOOL, ABOUT_DATA_TOOL];

@@ -442,7 +442,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#311-articles",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to City of New York (NYC311): https://api-portal.nyc.gov/)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -534,7 +534,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#built-in-911-lines",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -622,7 +622,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-requests-by-district",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -728,7 +728,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#ll47-service-request-reports",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -992,7 +992,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#call-center-inquiries",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -1090,7 +1090,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-level-agreements",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC",
+        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {

@@ -17,16 +17,17 @@ import { SERVER_INSTRUCTIONS } from "../dist/instructions.js";
 // 42,694 characters; the budget is that plus about 10%.
 const BUDGET_CHARS = 47_000;
 // The shared tools come from betanyc-tools.ts, copied unchanged, so they are not trimmed
-// here; about_data's output schema alone is about 4,800 characters. They get their own cap.
+// here; they get their own cap. about_data measured 4,760 characters at shared module 1.3.2 and
+// 5,538 at 1.3.5 (its output schema gained the error-route fields); the cap is that plus ~15%.
 const SHARED = new Set(["whats_changed", "about_betanyc", "about_data"]);
-const SHARED_MAX = 5_500;
+const SHARED_MAX = 6_500;
 
 test("tool definitions plus server instructions stay within the size budget", () => {
   const size = JSON.stringify(TOOLS).length + SERVER_INSTRUCTIONS.length;
   assert.ok(size <= BUDGET_CHARS, `tools/list JSON + instructions is ${size} characters, over the ${BUDGET_CHARS} budget`);
 });
 
-test("no single tool definition is over 3,000 characters (the copied shared tools: 5,500)", () => {
+test("no single tool definition is over 3,000 characters (the copied shared tools: 6,500)", () => {
   for (const t of TOOLS) {
     const n = JSON.stringify(t).length;
     const max = SHARED.has(t.name) ? SHARED_MAX : 3000;

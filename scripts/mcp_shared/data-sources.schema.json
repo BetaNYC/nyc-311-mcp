@@ -64,7 +64,10 @@
             "string",
             "null"
           ],
-          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+          "not": {
+            "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+          }
         },
         "documentation_url": {
           "description": "Where the tools are documented (default: the repo README).",
@@ -72,14 +75,20 @@
             "string",
             "null"
           ],
-          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+          "not": {
+            "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+          }
         },
         "endpoint_urls": {
           "description": "Hosted service endpoints only (e.g. an HTTP MCP URL); each becomes a DCAT DataService endpointURL. Leave empty for a stdio server run with npx; never an npm or GitHub page.",
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+            "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+            "not": {
+              "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+            }
           }
         },
         "whats_changed_url": {
@@ -88,7 +97,10 @@
             "string",
             "null"
           ],
-          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+          "not": {
+            "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+          }
         },
         "license": {
           "description": "The license of the code.",
@@ -103,7 +115,10 @@
             },
             "url": {
               "type": "string",
-              "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+              "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+              "not": {
+                "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+              }
             }
           },
           "required": [
@@ -117,7 +132,10 @@
             "string",
             "null"
           ],
-          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+          "not": {
+            "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+          }
         },
         "contact_email": {
           "description": "BetaNYC's monitored address for questions about this server (the DCAT contactPoint), plain, without mailto:. Until Noel names it, every file uses contact-not-yet-named@example.invalid, which about-data check --release refuses.",
@@ -195,7 +213,10 @@
                   "string",
                   "null"
                 ],
-                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+                "not": {
+                  "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+                }
               }
             },
             "required": [
@@ -205,7 +226,10 @@
           "source_url": {
             "description": "The source's own page or API.",
             "type": "string",
-            "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+            "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+            "not": {
+              "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+            }
           },
           "official": {
             "description": "true when the data is an official record as its publisher released it; false for BetaNYC's curation (hand-checked facts no official source publishes in one place).",
@@ -262,7 +286,10 @@
           "verify_at": {
             "description": "Where a reader can check a figure at the official source.",
             "type": "string",
-            "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+            "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+            "not": {
+              "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+            }
           },
           "freshness": {
             "description": "How about_data learns how current this data is on a running server. Never a date typed here.",
@@ -398,14 +425,20 @@
                   "string",
                   "null"
                 ],
-                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+                "not": {
+                  "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+                }
               },
               "terms_url": {
                 "type": [
                   "string",
                   "null"
                 ],
-                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+                "not": {
+                  "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+                }
               },
               "credit_line": {
                 "description": "The credit line a reuser should print.",
@@ -428,7 +461,10 @@
               "upstream_url": {
                 "description": "The publisher's page or form for reporting a data error. A BetaNYC URL (its repo issues or beta.nyc) is worded as reporting to BetaNYC.",
                 "type": "string",
-                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+                "not": {
+                  "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+                }
               },
               "upstream_email": {
                 "description": "The publisher's address for data errors, when it publishes one.",
@@ -512,7 +548,10 @@
         "url": {
           "description": "The page about the published data.",
           "type": "string",
-          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+          "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+          "not": {
+            "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+          }
         },
         "license": {
           "description": "The license BetaNYC publishes the files under.",
@@ -527,7 +566,10 @@
             },
             "url": {
               "type": "string",
-              "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+              "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+              "not": {
+                "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+              }
             }
           },
           "required": [
@@ -589,7 +631,10 @@
               },
               "content_url": {
                 "type": "string",
-                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+                "pattern": "^https?://[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+(?::[0-9]{1,5})?(?:[/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$",
+                "not": {
+                  "pattern": "^https?://[^/?#]*(?:/[^?#]*)?/(?:\\.|%2[eE]){1,2}(?:/|[?#]|$)"
+                }
               },
               "encoding_format": {
                 "description": "Media type, e.g. text/csv.",

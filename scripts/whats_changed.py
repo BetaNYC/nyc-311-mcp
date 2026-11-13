@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# betanyc-shared: whats_changed.py v1.3.4
-# betanyc-shared-sha256: c148adabbdbb9bda3408c6e2d1f14310287683e87e93f5cf4e6859e6392427b7
+# betanyc-shared: whats_changed.py v1.3.5
+# betanyc-shared-sha256: 125a173f47d916e0b1c61d2d34935429d399e1ffd7107b0321f8be657e91ba2f
 # Canonical copy: betanyc-ai-workspace scripts/whats_changed.py. Do not edit a copy in
 # another repo; change the canonical file, re-stamp it, and copy it again.
 # Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -1352,7 +1352,7 @@ def _ds_walk(spec, value, path: str, errors: list[dict]):
         code = "placeholder"
     elif kind == "enum" and value not in extra:
         code = "bad-enum"
-    elif kind == "url" and not DS_URL_RE.fullmatch(value):
+    elif kind == "url" and (not DS_URL_RE.fullmatch(value) or DOT_SEGMENT_RE.search(_url_path(value))):
         code = "bad-url"
     elif kind == "repo" and not DS_REPO_RE.fullmatch(value):
         code = "bad-repo"
@@ -1609,17 +1609,50 @@ def _ds_rights(t: dict, *, credit: bool) -> list[str]:
     return rights
 
 
-BETANYC_ROUTE_RE = re.compile(r"^https?://(?:(?:www\.)?beta\.nyc(?:[/?#:]|$)|github\.com/betanyc/)", re.I)
+ROUTE_URL_RE = re.compile(r"^https?://([A-Za-z0-9.-]+)(?::[0-9]{1,5})?([/?#].*)?$")
+# A "." or ".." path segment, literal or percent-encoded: bad-url in check, and never BetaNYC's.
+DOT_SEGMENT_RE = re.compile(r"(?:^|/)(?:\.|%2e){1,2}(?:/|$)", re.I)
+
+
+def _url_path(url: str) -> str:
+    m = re.match(r"^https?://[^/?#]*([^?#]*)", url)
+    return m.group(1) if m else ""
 
 
 def route_is_betanyc(url: str) -> bool:
-    """True when an error-report URL is BetaNYC's own (a BetaNYC repo, its issues, or beta.nyc),
-    so the route is worded as reporting to BetaNYC, not to the publisher. Same as routeIsBetanyc()."""
-    return bool(BETANYC_ROUTE_RE.match(url or ""))
+    """True when an error-report URL is BetaNYC's own: beta.nyc or any subdomain, or a
+    github.com/BetaNYC (or www.github.com) repo, with no dot segments. Same as routeIsBetanyc()."""
+    m = ROUTE_URL_RE.fullmatch(url or "")
+    if not m:
+        return False
+    host = m.group(1).lower()
+    path = re.split(r"[?#]", m.group(2) or "")[0]
+    if DOT_SEGMENT_RE.search(path):
+        return False
+    if host == "beta.nyc" or host.endswith(".beta.nyc"):
+        return True
+    if host in ("github.com", "www.github.com"):
+        parts = path.split("/")
+        return len(parts) > 1 and parts[1].lower() == "betanyc"
+    return False
 
 
-def error_route(s: dict) -> str:
-    """"report errors in the data to <publisher>: <url>", or to BetaNYC when the route is BetaNYC's."""
+def error_route(s: dict, issues: str) -> str:
+    """Where to report an error, worded by who fixes it. BetaNYC's own route: to BetaNYC. Figures
+    BetaNYC changed or curated: to BetaNYC first (`issues`), the original records to the
+    publisher. Data passed on as published (or only reshaped, or fields left out): the publisher."""
+    url = s["report_errors"]["upstream_url"]
+    pub = s["publisher"]["name"]
+    if route_is_betanyc(url):
+        return f"report errors in this data to {BETANYC_NAME}: {url}"
+    if not s["official"] or values_changed(s):
+        return (f"report errors in these figures to {BETANYC_NAME}: {issues}; "
+                f"errors in the original records to {pub}: {url}")
+    return f"report errors in the data to {pub}: {url}"
+
+
+def upstream_route(s: dict) -> str:
+    """The route on the upstream Dataset, which is the publisher's own records."""
     url = s["report_errors"]["upstream_url"]
     if route_is_betanyc(url):
         return f"report errors in this data to {BETANYC_NAME}: {url}"
@@ -1681,7 +1714,7 @@ def build_dcat(doc: dict) -> dict:
                               "hasEmail": "mailto:" + s["report_errors"]["upstream_email"]}
             else:
                 up_contact = {**contact,
-                              "fn": f"{BETANYC_NAME} (lists this dataset; {error_route(s)})"}
+                              "fn": f"{BETANYC_NAME} (lists this dataset; {upstream_route(s)})"}
             pub = {"@type": "Organization", "name": s["publisher"]["name"]}
             if s["publisher"]["url"]:
                 pub["@id"] = s["publisher"]["url"]
@@ -1717,13 +1750,13 @@ def build_dcat(doc: dict) -> dict:
                      else f"Fields left out by {BETANYC_NAME}" if "fields-removed" in steps
                      else f"Reshaped by {BETANYC_NAME}")
             provenance.append(f"{label} (values unchanged): {s['changes']['detail']}")
-        if s["official"] and not values_changed(s):
-            # Passed on unchanged: errors in the figures are the publisher's to fix.
+        issues = f"{server['repository']}/issues"
+        if s["official"] and not values_changed(s) and not route_is_betanyc(s["report_errors"]["upstream_url"]):
+            # Passed on as published: errors in the figures are the publisher's to fix.
             served_contact = {**contact, "fn": (
-                f"{BETANYC_NAME} (serves this dataset; {error_route(s)}; "
-                f"errors in this server: {server['repository']}/issues)")}
+                f"{BETANYC_NAME} (serves this dataset; {error_route(s, issues)}; errors in this server: {issues})")}
         else:
-            served_contact = contact
+            served_contact = {**contact, "fn": f"{BETANYC_NAME} (serves this dataset; {error_route(s, issues)})"}
         ds = {
             "@id": ds_id,
             "@type": "Dataset",

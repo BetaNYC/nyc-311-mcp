@@ -22,7 +22,7 @@ BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
 - `about_betanyc`: who built the server, the repository, where to report a problem, and
   BetaNYC's links.
 - `src/betanyc-tools.ts`, copied unchanged from the workspace's
-  `scripts/mcp_shared/betanyc-tools.ts` (now v1.3.4, with `scripts/whats_changed.py` and the validator kit). Never edit the copy; change the canonical
+  `scripts/mcp_shared/betanyc-tools.ts` (now v1.3.5, with `scripts/whats_changed.py` and the validator kit). Never edit the copy; change the canonical
   file and copy it again. The two new tools do not answer from City data, so their text ends
   with the safety line's 911 sentence only, not the City-data part; their
   `structuredContent` is the shared module's, unchanged.
