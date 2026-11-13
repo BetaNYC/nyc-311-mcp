@@ -33,8 +33,8 @@
       "what": "The City's calendar for alternate side parking, garbage and recycling collection and schools, and whether a City status (Code Blue, a fire hydrant emergency, an OEM emergency event, snow or ice on sidewalks or streets) is in effect.",
       "source_name": "NYC 311 Public API",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
       "official": true,
@@ -59,7 +59,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Source: NYC 311 Public API, City of New York."
+        "credit_line": "Source: NYC 311 Public API, NYC Office of Technology and Innovation."
       },
       "report_errors": {
         "upstream_url": "https://api-portal.nyc.gov/",
@@ -84,8 +84,8 @@
       "what": "One or several 311 service requests by their 311 numbers: agency, problem, status, when it was submitted, address and the agency's resolution text.",
       "source_name": "NYC 311 Public API",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
       "official": true,
@@ -93,9 +93,10 @@
       "changes": {
         "changed": true,
         "steps": [
+          "filtered",
           "reshaped"
         ],
-        "detail": "The ZIP code is removed from every address, by BetaNYC's decision. A plain_language block explains the status in words. The other fields are passed on as the API sends them."
+        "detail": "The ZIP code is left out of every address, by BetaNYC's decision, so the address is not exactly the City's. ('filtered' here means a field is left out, not records; the standard has no word for that yet.) A plain_language block explains the status in words. The other fields are passed on as the API sends them."
       },
       "verify_at": "https://portal.311.nyc.gov/",
       "freshness": {
@@ -114,7 +115,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Source: NYC 311 Public API, City of New York."
+        "credit_line": "Source: NYC 311 Public API, NYC Office of Technology and Innovation."
       },
       "report_errors": {
         "upstream_url": "https://api-portal.nyc.gov/",
@@ -138,8 +139,8 @@
       "what": "The knowledge-base articles 311 Online shows (KA numbers), their categories, and the agency and 311 problem type each reportable action goes to.",
       "source_name": "NYC 311 Public API",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
       "official": true,
@@ -170,7 +171,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Source: NYC 311 Public API, City of New York."
+        "credit_line": "Source: NYC 311 Public API, NYC Office of Technology and Innovation."
       },
       "report_errors": {
         "upstream_url": "https://api-portal.nyc.gov/",
@@ -193,8 +194,8 @@
       "what": "A keyword check for descriptions that suggest danger, and the City's own one-line 'Call 911' summaries from twelve 311 articles (fire, gas leak, medical emergency and others), built into the server.",
       "source_name": "311 Online articles",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://portal.311.nyc.gov/",
       "official": false,
@@ -223,7 +224,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Call 911 lines: NYC 311 articles, City of New York. Danger check: BetaNYC."
+        "credit_line": "Call 911 lines: NYC 311 articles, NYC Office of Technology and Innovation. Danger check: BetaNYC."
       },
       "report_errors": {
         "upstream_url": "https://portal.311.nyc.gov/"
@@ -244,12 +245,12 @@
       "what": "Every 311 service request since 2020-01-01, placed in its community district and City Council district, with counts by problem type, agency, month and address. BoardStat is BetaNYC's own product, built from the City's data.",
       "source_name": "311 Service Requests from 2020 to Present",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
       "official": true,
-      "how_gathered": "BoardStat (BetaNYC) pulls the City's dataset from NYC Open Data every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
+      "how_gathered": "BoardStat (BetaNYC) pulls OTI's dataset from NYC Open Data, the City's open data portal, every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
       "changes": {
         "changed": true,
         "steps": [
@@ -311,8 +312,8 @@
       "what": "BetaNYC's rebuild of the monthly 311 service request reports that Local Law 47 of 2005 required for each community district: requests by agency and problem type, and the list of requests for a month.",
       "source_name": "311 Service Requests from 2020 to Present",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
       "official": true,
@@ -365,12 +366,12 @@
       "what": "The City's community district boundaries (59 districts and 12 Joint Interest Areas), which BoardStat uses to place each 311 request.",
       "source_name": "Community Districts",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Department of City Planning (DCP)",
+        "url": "https://www.nyc.gov/site/planning/index.page"
       },
       "source_url": "https://data.cityofnewyork.us/d/5crt-au7u",
       "official": true,
-      "how_gathered": "BoardStat downloads the current release from NYC Open Data when it builds, and records its version and update time in its manifest.",
+      "how_gathered": "BoardStat downloads DCP's current release from NYC Open Data, the City's open data portal, when it builds, and records its version and update time in its manifest.",
       "changes": {
         "changed": false,
         "steps": []
@@ -380,7 +381,7 @@
         "kind": "hook",
         "key": "community_district_boundaries"
       },
-      "update_frequency": "unknown",
+      "update_frequency": "quarterly",
       "coverage": {
         "start": null,
         "end": null,
@@ -392,7 +393,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/opendata/get-started/FAQs",
-        "credit_line": "Source: NYC Open Data, Community Districts (5crt-au7u), City of New York."
+        "credit_line": "Source: NYC Department of City Planning, Community Districts (5crt-au7u), via NYC Open Data."
       },
       "report_errors": {
         "upstream_url": "https://www.nyc.gov/opendata/contact-us"
@@ -424,12 +425,12 @@
       "what": "The City's 51 City Council district boundaries, which BoardStat uses to place each 311 request.",
       "source_name": "City Council Districts",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Department of City Planning (DCP)",
+        "url": "https://www.nyc.gov/site/planning/index.page"
       },
       "source_url": "https://data.cityofnewyork.us/d/872g-cjhh",
       "official": true,
-      "how_gathered": "BoardStat downloads the current release from NYC Open Data when it builds, and records its version and update time in its manifest.",
+      "how_gathered": "BoardStat downloads DCP's current release from NYC Open Data, the City's open data portal, when it builds, and records its version and update time in its manifest.",
       "changes": {
         "changed": false,
         "steps": []
@@ -439,7 +440,7 @@
         "kind": "hook",
         "key": "council_district_boundaries"
       },
-      "update_frequency": "unknown",
+      "update_frequency": "quarterly",
       "coverage": {
         "start": null,
         "end": null,
@@ -451,7 +452,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/opendata/get-started/FAQs",
-        "credit_line": "Source: NYC Open Data, City Council Districts (872g-cjhh), City of New York."
+        "credit_line": "Source: NYC Department of City Planning, City Council Districts (872g-cjhh), via NYC Open Data."
       },
       "report_errors": {
         "upstream_url": "https://www.nyc.gov/opendata/contact-us"
@@ -481,12 +482,12 @@
       "what": "Agent-handled calls to the City's 311 line by date, time and topic, counted for BetaNYC's rebuild of the monthly directory assistance report of former Charter § 1075(c).",
       "source_name": "311 Call Center Inquiry",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/wewp-mm3p",
       "official": true,
-      "how_gathered": "Read-only queries to NYC Open Data, one per month, saved on this machine; the month in progress is asked again after an hour.",
+      "how_gathered": "Read-only queries to NYC Open Data, the City's open data portal, where OTI publishes the dataset: one query per month, saved on this machine; the month in progress is asked again after an hour.",
       "changes": {
         "changed": true,
         "steps": [
@@ -514,7 +515,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/opendata/get-started/FAQs",
-        "credit_line": "Source: NYC Open Data, 311 Call Center Inquiry (wewp-mm3p), City of New York."
+        "credit_line": "Source: NYC Office of Technology and Innovation, 311 Call Center Inquiry (wewp-mm3p), via NYC Open Data."
       },
       "report_errors": {
         "upstream_url": "https://www.nyc.gov/opendata/contact-us"
@@ -533,12 +534,12 @@
       "what": "The time each City agency has committed to respond to a 311 problem type, and the Problem Detail options for each, used in draft reports.",
       "source_name": "311 Service Level Agreements",
       "publisher": {
-        "name": "City of New York",
-        "url": "https://www.nyc.gov/"
+        "name": "NYC Office of Technology and Innovation (OTI)",
+        "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/cs9t-e3x8",
       "official": true,
-      "how_gathered": "All rows read from NYC Open Data once and saved on this machine for 30 days; after that the dataset is checked and read again only if it changed.",
+      "how_gathered": "All rows read from NYC Open Data, the City's open data portal, where OTI publishes the dataset, once and saved on this machine for 30 days; after that the dataset is checked and read again only if it changed.",
       "changes": {
         "changed": true,
         "steps": [
@@ -564,7 +565,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/opendata/get-started/FAQs",
-        "credit_line": "Source: NYC Open Data, 311 Service Level Agreements (cs9t-e3x8), City of New York."
+        "credit_line": "Source: NYC Office of Technology and Innovation, 311 Service Level Agreements (cs9t-e3x8), via NYC Open Data."
       },
       "report_errors": {
         "upstream_url": "https://www.nyc.gov/opendata/contact-us"

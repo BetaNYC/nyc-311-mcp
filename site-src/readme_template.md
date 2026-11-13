@@ -283,8 +283,9 @@ python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat doc
 
 CI fails while either `data.json` is stale, and validates both against the DCAT-US 3.0 schema
 (`scripts/tests/catalog_validate.py` and `scripts/mcp_shared/`, copies of BetaNYC's shared
-files). The Release workflow refuses to publish while `DATA-SOURCES.json` still has the
-placeholder contact address, `contact-not-yet-named@example.invalid`.
+files). `DATA-SOURCES.json` still has the placeholder contact address,
+`contact-not-yet-named@example.invalid`, because BetaNYC has not yet named the monitored address
+for data questions.
 
 This is an independent, community-built project. It is not affiliated with, endorsed by, or
 an official product of the City of New York.
@@ -336,6 +337,11 @@ one commit that:
 The title stays exactly the same: only `Unreleased` becomes the date. That commit may reword
 the entry's other lines; until it has a date, an Unreleased entry's body counts as
 unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
+
+**Not yet in the release gate:** `python3 scripts/whats_changed.py about-data check
+DATA-SOURCES.json --release`, which fails while the contact address is the placeholder. It goes
+into `release.yml`, before `npm publish`, once BetaNYC names its monitored contact address and
+it replaces the placeholder in `DATA-SOURCES.json` (nyc-council-mcp does the same).
 
 Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
 `check --release` before `npm publish` and stops while an Unreleased entry is left.

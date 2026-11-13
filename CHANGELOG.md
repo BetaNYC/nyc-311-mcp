@@ -44,9 +44,10 @@ BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
   over stdio against its output schema.
 - CI: an `about-data` job runs `about-data check --tools-file` with the server's real tool
   list, `about-data catalog --check` for both `data.json` files, and the pinned validators
-  (the `DATA-SOURCES.json` JSON Schema and the vendored DCAT-US 3.0 schema). The Release
-  workflow runs `about-data check --release`, which fails while the contact address is the
-  placeholder, so 1.3.0 cannot publish until BetaNYC names a monitored address.
+  (the `DATA-SOURCES.json` JSON Schema and the vendored DCAT-US 3.0 schema). The release
+  gate `about-data check --release` is not wired into the Release workflow yet: it fails
+  while the contact address is the placeholder, and goes in once BetaNYC names a monitored
+  address.
 - `WHATS-CHANGED.md`, the reader-facing record of changes, backfilled to 1.0.0, and shipped
   in the npm package (`files`).
 - `docs/whats-changed.html`, built from it by `scripts/whats_changed.py` (copied unchanged

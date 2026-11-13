@@ -82,14 +82,14 @@ test("the server instructions send AI apps to about_data, before the closing saf
   assert.match(about.description, /Topics on this server: calendar-and-status, service-request-lookup, /);
 });
 
-test("about_data for the district tools: BoardStat's build time, the City as publisher, figures not official", async (t) => {
+test("about_data for the district tools: BoardStat's build time, the owning agency as publisher, figures not official", async (t) => {
   useCache(t, await seededCache());
   const r = await callTool("about_data", { topic: "district_summary" });
   assert.notEqual(r.isError, true, r.content[0].text);
   const s = bySource(r);
   const d = s["service-requests-by-district"];
   assert.ok(d, Object.keys(s).join(", "));
-  assert.equal(d.publisher, "City of New York");
+  assert.equal(d.publisher, "NYC Office of Technology and Innovation (OTI)");
   assert.equal(d.source_url, "https://data.cityofnewyork.us/d/erm2-nwe9");
   assert.equal(d.official, true);
   assert.equal(d.figures_official, false, "BetaNYC placed and counted them");
@@ -104,7 +104,8 @@ test("about_data for the district tools: BoardStat's build time, the City as pub
   assert.equal(s["community-district-boundaries"].as_of, MANIFEST.sources.community_districts.rowsUpdatedAt_iso);
   assert.equal(s["council-district-boundaries"].as_of, MANIFEST.sources.council_districts.rowsUpdatedAt_iso);
   const text = r.content[0].text;
-  assert.match(text, /not an official City of New York report/);
+  assert.match(text, /not an official NYC Office of Technology and Innovation \(OTI\) report/);
+  assert.equal(s["community-district-boundaries"].publisher, "NYC Department of City Planning (DCP)");
   assert.match(text, /Call about_betanyc for who built nyc-311-mcp/);
   assert.ok(text.endsWith(`\n\n${SHARED_TOOL_LINE}`));
 });
@@ -122,7 +123,7 @@ test("about_data for the calendar: live, passed on unchanged, with its correctio
   for (const x of c.corrections) assert.ok(x.url.startsWith("https://betanyc.github.io/nyc-311-mcp/whats-changed.html#2026-07-"), x.url);
   assert.equal(r.structuredContent.note, null);
   assert.equal(r.structuredContent.catalog.data_json, "https://betanyc.github.io/nyc-311-mcp/data.json");
-  assert.match(r.content[0].text, /Official record: yes, passed on as City of New York publishes it\./);
+  assert.match(r.content[0].text, /Official record: yes, passed on as NYC Office of Technology and Innovation \(OTI\) publishes it\./);
 });
 
 test("about_data reads the Socrata and 311 content caches, and the built-in 911 date", async (t) => {

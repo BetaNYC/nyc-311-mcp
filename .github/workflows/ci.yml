@@ -138,7 +138,8 @@ jobs:
   # `catalog --check` fails if one appears. scripts/tests/catalog_validate.py, the vendored
   # DCAT-US 3.0 schema under scripts/mcp_shared/vendor/ and scripts/mcp_shared/data-sources.schema.json
   # are copies of the workspace's files: never edit them here. The validators are pinned and run
-  # outside the project; none is a runtime dependency.
+  # outside the project; none is a runtime dependency. `about-data check --release` (fails on the
+  # placeholder contact address) joins release.yml once BetaNYC names its monitored address.
   about-data:
     name: About data (DATA-SOURCES.json, data.json)
     runs-on: ubuntu-latest
