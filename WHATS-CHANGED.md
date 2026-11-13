@@ -5,12 +5,12 @@ This page lists the changes to nyc-311-mcp that a reader would notice: new tools
 - **History begins:** 2026-06-21, the first release. Corrections made before this date may be missing.
 - **Data refresh:** The district tools read files that BoardStat rebuilds every night from NYC Open Data. The calendar, status alerts and request lookups ask the City's 311 Public API each time.
 
-To report a problem with this server or ask for a feature, [open an issue on GitHub](https://github.com/BetaNYC/nyc-311-mcp/issues).
+To report a bug in this server or ask for a new feature, [open an issue on GitHub](https://github.com/BetaNYC/nyc-311-mcp/issues).
 
 ## Unreleased: A What's changed page, and two tools that explain the server
 
 - **Tags:** Site, MCP
-- **What changed:** The website has a new page that lists every change a reader would notice. Two new tools let your AI assistant answer "what's new in this server?" and "who built this?" with links to BetaNYC and to the place to report a problem with this server.
+- **What changed:** The website has a new page that lists every change a reader would notice. Two new tools let your AI assistant answer "what's new in this server?" and "who built this?" with links to BetaNYC and to the place to report a bug in this server or ask for a new feature.
 - **MCP version:** [nyc-311-mcp 1.3.0](CHANGELOG.md)
 - **More detail:** [What's changed on the website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) · [Release notes](CHANGELOG.md)
 

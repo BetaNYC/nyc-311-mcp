@@ -1312,7 +1312,7 @@
  {
   "name": "about_betanyc",
   "title": "About BetaNYC and this server",
-  "description": "Who built this server and how to reach them: BetaNYC, a project of the Fund for the City of New York. Returns what BetaNYC is, links to its events, newsletter and donation page, where to report a bug or ask for a feature (this server's GitHub issues), and this server's name and version.",
+  "description": "Who built this server and how to reach them: BetaNYC, a project of the Fund for the City of New York. Returns what BetaNYC is, links to its events, newsletter and donation page, where to report a bug in this server or ask for a new feature (this server's GitHub issues), and this server's name and version.",
   "inputSchema": {
    "type": "object",
    "properties": {},

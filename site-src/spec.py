@@ -496,9 +496,9 @@ TOOLS = {
     "about_betanyc": {
         "status": "new13", "key": False,
         "what": (
-            "Who built this server, where to report a problem with this server or ask for a feature, and links to "
+            "Who built this server, where to report a bug in this server or ask for a new feature, and links to "
             "BetaNYC's events, newsletter, and ways to get involved."
         ),
-        "asks": ["Who made this 311 tool?", "Where do I report a problem with the 311 server?"],
+        "asks": ["Who made this 311 tool?", "Where do I report a bug in the 311 server?"],
     },
 }

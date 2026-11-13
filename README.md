@@ -17,7 +17,7 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 ## What's new in 1.3.0
 
 Version 1.3.0 has **23** tools. Two are new: `whats_changed` tells you what changed in the
-server, and `about_betanyc` says who built it and where to report a problem with this server.
+server, and `about_betanyc` says who built it and where to report a bug in this server or ask for a new feature.
 Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. Every change a reader would notice, including corrections, is listed
 in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
 [website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
@@ -268,10 +268,10 @@ Ask what changed in the server lately, or who built it. Every BetaNYC MCP server
     - “Has the 311 server ever corrected a wrong answer?”
   - Inputs: `since`, `tag`, `limit`
 
-- **`about_betanyc`** (New in 1.3.0; no key needed). Who built this server, where to report a problem with this server or ask for a feature, and links to BetaNYC's events, newsletter, and ways to get involved.
+- **`about_betanyc`** (New in 1.3.0; no key needed). Who built this server, where to report a bug in this server or ask for a new feature, and links to BetaNYC's events, newsletter, and ways to get involved.
   - Try asking:
     - “Who made this 311 tool?”
-    - “Where do I report a problem with the 311 server?”
+    - “Where do I report a bug in the 311 server?”
   - Inputs: none
 
 ## How the district tools read districts and dates
@@ -469,6 +469,9 @@ one commit that:
    `python3 -c "import sys; sys.path.insert(0,'scripts'); import whats_changed as w; print(w.github_slug('[X.Y.Z] - YYYY-MM-DD'))"`;
 4. rebuilds `docs/whats-changed.html` (the command under "The website") and runs
    `python3 scripts/whats_changed.py check WHATS-CHANGED.md --release`.
+
+That commit may also reword the entry's text. Until it has a date, an Unreleased entry counts
+as unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for it.
 
 Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
 `check --release` before `npm publish` and stops while an Unreleased entry is left.
