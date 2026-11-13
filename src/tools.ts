@@ -24,8 +24,8 @@ import { createBetanycTools } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
 
 /**
- * whats_changed, about_betanyc and about_data, the three tools every BetaNYC MCP server
- * carries (betanyc-ai-workspace platform/system/whats-changed-standard.md § 7 and
+ * whats_changed, about_betanyc and about_data, the three shared BetaNYC tools. Every BetaNYC
+ * MCP server is getting them; nyc-311-mcp is the first (betanyc-ai-workspace platform/system/whats-changed-standard.md § 7 and
  * about-data-standard.md). betanyc-tools.ts is a copy of the workspace's canonical file:
  * never edit it here. WHATS-CHANGED.md and DATA-SOURCES.json ship in the npm package
  * (package.json `files`), one level above dist/.
@@ -58,7 +58,8 @@ const betanyc = createBetanycTools({
   dataSourcesPath: new URL("../DATA-SOURCES.json", import.meta.url),
   pageUrl: "https://betanyc.github.io/nyc-311-mcp/whats-changed.html",
   freshness: FRESHNESS_HOOKS,
-  catalogUrls: { dataJson: "https://betanyc.github.io/nyc-311-mcp/data.json" },
+  // No catalogUrls yet: the website copy of data.json waits for BetaNYC's monitored contact
+  // address (it would publish the placeholder). data.json ships in the npm package meanwhile.
 });
 
 const STATUS_TYPES = [

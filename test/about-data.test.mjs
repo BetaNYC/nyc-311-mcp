@@ -6,7 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -119,11 +119,12 @@ test("about_data for the calendar: live, passed on unchanged, with its correctio
   assert.equal(c.as_of_status, "live");
   assert.equal(c.figures_official, true);
   assert.equal(c.report_errors.in_the_data_email, "api-support@platform.nyc.gov");
+  assert.equal(c.publisher, "City of New York (NYC311)");
   assert.deepEqual(c.corrections.map((x) => x.date), ["2026-07-06", "2026-07-21"]);
   for (const x of c.corrections) assert.ok(x.url.startsWith("https://betanyc.github.io/nyc-311-mcp/whats-changed.html#2026-07-"), x.url);
   assert.equal(r.structuredContent.note, null);
-  assert.equal(r.structuredContent.catalog.data_json, "https://betanyc.github.io/nyc-311-mcp/data.json");
-  assert.match(r.content[0].text, /Official record: yes, passed on as NYC Office of Technology and Innovation \(OTI\) publishes it\./);
+  assert.equal(r.structuredContent.catalog.data_json, null, "no public catalog URL until the contact address is named");
+  assert.match(r.content[0].text, /Official record: yes, passed on as City of New York \(NYC311\) publishes it\./);
 });
 
 test("about_data reads the Socrata and 311 content caches, and the built-in 911 date", async (t) => {
@@ -177,10 +178,13 @@ test("over stdio, the SDK client accepts about_data for two topics against its o
   }
 });
 
-test("DATA-SOURCES.json and data.json ship in the npm package; the site's data.json is the same file", () => {
+test("DATA-SOURCES.json and data.json ship in the npm package; the website gets no copy while the contact is a placeholder", () => {
   const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8" });
   const files = JSON.parse(out)[0].files.map((f) => f.path);
   for (const f of ["DATA-SOURCES.json", "data.json", "WHATS-CHANGED.md"]) assert.ok(files.includes(f), `${f}: ${files.join(", ")}`);
   assert.ok(!files.includes("croissant.json"), "this repo publishes no data files of its own");
-  assert.equal(readFileSync(new URL("../docs/data.json", import.meta.url), "utf8"), readFileSync(new URL("../data.json", import.meta.url), "utf8"));
+  // GitHub Pages serves docs/ from main, so a docs/data.json would publish the placeholder.
+  if (DS_TEXT.includes("contact-not-yet-named@example.invalid")) {
+    assert.equal(existsSync(new URL("../docs/data.json", import.meta.url)), false, "docs/data.json would publish the placeholder contact");
+  }
 });

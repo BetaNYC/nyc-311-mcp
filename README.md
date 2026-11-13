@@ -21,7 +21,7 @@ server, `about_betanyc` says who built it and where to report a bug in this serv
 and `about_data` says where each answer's data comes from, whether it is official, how current it is, and
 where to check it. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. The
 data sources are listed in [DATA-SOURCES.json](DATA-SOURCES.json) and published as a
-[DCAT-US 3.0 catalog](https://betanyc.github.io/nyc-311-mcp/data.json). Every change a reader would notice, including corrections, is listed
+[DCAT-US 3.0 catalog](data.json). Every change a reader would notice, including corrections, is listed
 in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
 [website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
 
@@ -263,7 +263,7 @@ Have a 311 number, like 311-12345678? These tell you where it stands, in words. 
 
 #### About this server
 
-Ask what changed in the server lately, who built it, or where its data comes from. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page; another reads the server's list of data sources, which is also published as a [data catalog](https://betanyc.github.io/nyc-311-mcp/data.json). No API key needed.
+Ask what changed in the server lately, who built it, or where its data comes from. Every BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page; another reads the server's list of data sources, which is also published as a [data catalog](https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/data.json). No API key needed.
 
 - **`whats_changed`** (New in 1.3.0; no key needed). What changed in this server, newest first: new tools, data fixes, and corrections when an answer was wrong. You can ask for corrections only, or for changes since a date.
   - Try asking:
@@ -438,17 +438,17 @@ what BetaNYC changed, what it covers, its terms and credit line, where to check 
 where to report an error. The `about_data` tool answers from it, and says how current each
 source is on your computer from what the server last downloaded. A test fails if a tool is
 not listed under a source. `data.json`, a [DCAT-US 3.0](https://resources.data.gov/resources/dcat-us3/)
-catalog, is made from the same file, at the repo root (it ships in the npm package) and at
-`docs/data.json` for the website. There is no `croissant.json`, because this repo publishes no
+catalog, is made from the same file, at the repo root (it ships in the npm package). A copy on
+the website (`docs/data.json`) is added once BetaNYC names its monitored contact address, so the
+placeholder address below is never published there. There is no `croissant.json`, because this repo publishes no
 data files of its own; BoardStat publishes the district files. After changing `DATA-SOURCES.json`:
 
 ```bash
 python3 scripts/whats_changed.py about-data check DATA-SOURCES.json
 python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json
-python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json
 ```
 
-CI fails while either `data.json` is stale, and validates both against the DCAT-US 3.0 schema
+CI fails while `data.json` is stale, and validates it against the DCAT-US 3.0 schema
 (`scripts/tests/catalog_validate.py` and `scripts/mcp_shared/`, copies of BetaNYC's shared
 files). `DATA-SOURCES.json` still has the placeholder contact address,
 `contact-not-yet-named@example.invalid`, because BetaNYC has not yet named the monitored address
@@ -508,7 +508,9 @@ unpublished, so the append-only check needs no `Whats-changed-edit:` trailer for
 **Not yet in the release gate:** `python3 scripts/whats_changed.py about-data check
 DATA-SOURCES.json --release`, which fails while the contact address is the placeholder. It goes
 into `release.yml`, before `npm publish`, once BetaNYC names its monitored contact address and
-it replaces the placeholder in `DATA-SOURCES.json` (nyc-council-mcp does the same).
+it replaces the placeholder in `DATA-SOURCES.json` (nyc-council-mcp does the same). The same day, add the website copy of the catalog:
+`python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json`,
+and its `--check` to CI.
 
 Then tag that commit `vX.Y.Z` and push the tag. The Release workflow runs the same
 `check --release` before `npm publish` and stops while an Unreleased entry is left.

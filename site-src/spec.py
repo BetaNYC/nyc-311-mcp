@@ -61,7 +61,7 @@ GROUPS = [
         "intro": (
             "Ask what changed in the server lately, who built it, or where its data comes from. Every "
             "BetaNYC MCP server is getting these three tools; nyc-311-mcp is the first. One reads the same list as the <a href=\"https://betanyc.github.io/nyc-311-mcp/whats-changed.html\">What's "
-            "changed</a> page; another reads the server's list of data sources, which is also published as a <a href=\"https://betanyc.github.io/nyc-311-mcp/data.json\">data catalog</a>. No API key needed."
+            "changed</a> page; another reads the server's list of data sources, which is also published as a <a href=\"https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/data.json\">data catalog</a>. No API key needed."
         ),
         "tools": ["whats_changed", "about_betanyc", "about_data"],
     },

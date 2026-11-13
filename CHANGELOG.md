@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.0] - Unreleased
 
-Adds the three tools every BetaNYC MCP server carries, a "What's changed" page on the
+Adds three shared BetaNYC tools (every BetaNYC MCP server is getting them; nyc-311-mcp is
+the first), a "What's changed" page on the
 website, and a list of data sources with a DCAT-US 3.0 catalog made from it. Tracking:
 BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
 
@@ -34,8 +35,9 @@ BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
   `src/tools.ts` without the network; a source nothing has been fetched for says so. Its text
   ends with the safety line's 911 sentence, like the other two shared tools.
 - `DATA-SOURCES.json`, and `data.json` (DCAT-US 3.0) made from it by
-  `scripts/whats_changed.py about-data catalog`, at the repo root and at `docs/data.json`. Both
-  ship in the npm package (`files`). No `croissant.json`: this repo publishes no data files
+  `scripts/whats_changed.py about-data catalog`, at the repo root. Both ship in the npm package
+  (`files`). The website copy (`docs/data.json`) is added once BetaNYC names its monitored
+  contact address, so the placeholder address is never published there. No `croissant.json`: this repo publishes no data files
   (BoardStat does).
 - The server instructions tell AI apps to call `about_data` for questions about sources,
   freshness, officialness and checking, and `about_betanyc` for who built the server.
@@ -43,7 +45,7 @@ BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
   (`assertEveryToolExplained`), and `about_data` is checked for several topics, in process and
   over stdio against its output schema.
 - CI: an `about-data` job runs `about-data check --tools-file` with the server's real tool
-  list, `about-data catalog --check` for both `data.json` files, and the pinned validators
+  list, `about-data catalog --check` for `data.json`, and the pinned validators
   (the `DATA-SOURCES.json` JSON Schema and the vendored DCAT-US 3.0 schema). The release
   gate `about-data check --release` is not wired into the Release workflow yet: it fails
   while the contact address is the placeholder, and goes in once BetaNYC names a monitored

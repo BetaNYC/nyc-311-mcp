@@ -20,17 +20,17 @@
       "@id": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
       "@type": "Dataset",
       "title": "NYC 311 Public API",
-      "description": "NYC 311 Public API, published by NYC Office of Technology and Innovation (OTI).",
+      "description": "NYC 311 Public API, published by City of New York (NYC311).",
       "identifier": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "NYC Office of Technology and Innovation (OTI)",
+        "fn": "City of New York (NYC311)",
         "hasEmail": "mailto:api-support@platform.nyc.gov"
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Office of Technology and Innovation (OTI)",
-        "@id": "https://www.nyc.gov/content/oti/pages/"
+        "name": "City of New York (NYC311)",
+        "@id": "https://portal.311.nyc.gov/about-nyc-311/"
       },
       "landingPage": {
         "@type": "Document",
@@ -54,17 +54,17 @@
       "@id": "https://portal.311.nyc.gov/",
       "@type": "Dataset",
       "title": "311 Online articles",
-      "description": "311 Online articles, published by NYC Office of Technology and Innovation (OTI).",
+      "description": "311 Online articles, published by City of New York (NYC311).",
       "identifier": "https://portal.311.nyc.gov/",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (lists this dataset; report errors in the data to NYC Office of Technology and Innovation (OTI): https://portal.311.nyc.gov/)",
+        "fn": "BetaNYC (lists this dataset; report errors in the data to City of New York (NYC311): https://github.com/BetaNYC/nyc-311-mcp/issues)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Office of Technology and Innovation (OTI)",
-        "@id": "https://www.nyc.gov/content/oti/pages/"
+        "name": "City of New York (NYC311)",
+        "@id": "https://portal.311.nyc.gov/about-nyc-311/"
       },
       "landingPage": {
         "@type": "Document",
@@ -114,8 +114,8 @@
       ],
       "accrualPeriodicity": "daily",
       "rights": [
-        "License: None stated by the publisher",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ]
     },
     {
@@ -148,8 +148,8 @@
       ],
       "accrualPeriodicity": "quarterly",
       "rights": [
-        "License: None stated by the publisher",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ]
     },
     {
@@ -182,8 +182,8 @@
       ],
       "accrualPeriodicity": "quarterly",
       "rights": [
-        "License: None stated by the publisher",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ]
     },
     {
@@ -216,8 +216,8 @@
       ],
       "accrualPeriodicity": "daily",
       "rights": [
-        "License: None stated by the publisher",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ]
     },
     {
@@ -250,8 +250,8 @@
       ],
       "accrualPeriodicity": "annually",
       "rights": [
-        "License: None stated by the publisher",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ]
     },
     {
@@ -262,7 +262,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#calendar-and-status",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in the data to NYC Office of Technology and Innovation (OTI): https://api-portal.nyc.gov/; errors in this server: https://github.com/BetaNYC/nyc-311-mcp/issues)",
+        "fn": "BetaNYC (serves this dataset; report errors in the data to City of New York (NYC311): https://api-portal.nyc.gov/; errors in this server: https://github.com/BetaNYC/nyc-311-mcp/issues)",
         "hasEmail": "mailto:contact-not-yet-named@example.invalid"
       },
       "publisher": {
@@ -281,17 +281,17 @@
           "@id": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
           "@type": "Dataset",
           "title": "NYC 311 Public API",
-          "description": "NYC 311 Public API, published by NYC Office of Technology and Innovation (OTI).",
+          "description": "NYC 311 Public API, published by City of New York (NYC311).",
           "identifier": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
           "contactPoint": {
             "@type": "Kind",
-            "fn": "NYC Office of Technology and Innovation (OTI)",
+            "fn": "City of New York (NYC311)",
             "hasEmail": "mailto:api-support@platform.nyc.gov"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation (OTI)",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "City of New York (NYC311)",
+            "@id": "https://portal.311.nyc.gov/about-nyc-311/"
           },
           "landingPage": {
             "@type": "Document",
@@ -313,7 +313,7 @@
         }
       ],
       "provenance": [
-        "Official record: yes, passed on as NYC Office of Technology and Innovation (OTI) publishes it.",
+        "Official record: yes, passed on as City of New York (NYC311) publishes it.",
         "Read-only requests to the City's 311 Public API at the moment you ask, with the operator's own NYC_311_API_KEY."
       ],
       "page": [
@@ -330,7 +330,7 @@
       "accrualPeriodicity": "continual",
       "rights": [
         "License: None stated by the publisher",
-        "Credit: Source: NYC 311 Public API, NYC Office of Technology and Innovation.",
+        "Credit: Source: NYC 311 Public API, City of New York (NYC311).",
         "Terms of use: https://www.nyc.gov/main/terms-of-use"
       ],
       "scopeNote": "Known gap: A calendar request covers at most 90 days. Caveat: get_status adds a plain-language yes or no beside the API's own answer; the answer itself is passed on unchanged. Caveat: Dates are New York dates; with no date given, the calendar is for today in New York.",
@@ -366,17 +366,17 @@
           "@id": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
           "@type": "Dataset",
           "title": "NYC 311 Public API",
-          "description": "NYC 311 Public API, published by NYC Office of Technology and Innovation (OTI).",
+          "description": "NYC 311 Public API, published by City of New York (NYC311).",
           "identifier": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
           "contactPoint": {
             "@type": "Kind",
-            "fn": "NYC Office of Technology and Innovation (OTI)",
+            "fn": "City of New York (NYC311)",
             "hasEmail": "mailto:api-support@platform.nyc.gov"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation (OTI)",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "City of New York (NYC311)",
+            "@id": "https://portal.311.nyc.gov/about-nyc-311/"
           },
           "landingPage": {
             "@type": "Document",
@@ -398,7 +398,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) report.",
+        "Official source: yes. These figures are BetaNYC's, derived from it, not an official City of New York (NYC311) report.",
         "Read-only requests to the City's 311 Public API at the moment you ask, with the operator's own NYC_311_API_KEY.",
         "Changed by BetaNYC: The ZIP code is left out of every address, by BetaNYC's decision, so the address is not exactly the City's. ('filtered' here means a field is left out, not records; the standard has no word for that yet.) A plain_language block explains the status in words. The other fields are passed on as the API sends them."
       ],
@@ -426,7 +426,7 @@
       "accrualPeriodicity": "continual",
       "rights": [
         "License: None stated by the publisher",
-        "Credit: Source: NYC 311 Public API, NYC Office of Technology and Innovation.",
+        "Credit: Source: NYC 311 Public API, City of New York (NYC311).",
         "Terms of use: https://www.nyc.gov/main/terms-of-use"
       ],
       "scopeNote": "Known gap: ZIP codes are left out by decision. Known gap: A 311 number is not NYC Open Data's unique_key, so a looked-up request is not matched to BoardStat's rows by number. Caveat: Numbers the API does not find are listed as not found; the API itself leaves them out without an error. Caveat: 'Closed' does not mean fixed.",
@@ -461,17 +461,17 @@
           "@id": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
           "@type": "Dataset",
           "title": "NYC 311 Public API",
-          "description": "NYC 311 Public API, published by NYC Office of Technology and Innovation (OTI).",
+          "description": "NYC 311 Public API, published by City of New York (NYC311).",
           "identifier": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
           "contactPoint": {
             "@type": "Kind",
-            "fn": "NYC Office of Technology and Innovation (OTI)",
+            "fn": "City of New York (NYC311)",
             "hasEmail": "mailto:api-support@platform.nyc.gov"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation (OTI)",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "City of New York (NYC311)",
+            "@id": "https://portal.311.nyc.gov/about-nyc-311/"
           },
           "landingPage": {
             "@type": "Document",
@@ -493,7 +493,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) report.",
+        "Official source: yes. These figures are BetaNYC's, derived from it, not an official City of New York (NYC311) report.",
         "Read-only requests to the 311 Public API's content operations (GetCategory, GetContentList, GetContent). Each result is saved on this machine for 7 days (1 day for an article that says something holds right now), and an older saved copy answers, marked stale, when the API cannot be reached.",
         "Changed by BetaNYC: BetaNYC's keyword matching picks which articles answer a description, reading only a few categories. Article HTML is reduced to plain text, and ZIP codes are removed from it. The words are the City's."
       ],
@@ -521,7 +521,7 @@
       "accrualPeriodicity": "continual",
       "rights": [
         "License: None stated by the publisher",
-        "Credit: Source: NYC 311 Public API, NYC Office of Technology and Innovation.",
+        "Credit: Source: NYC 311 Public API, City of New York (NYC311).",
         "Terms of use: https://www.nyc.gov/main/terms-of-use"
       ],
       "scopeNote": "Known gap: Matching reads only a few 311 categories; each answer lists the ones it searched. Known gap: The City publishes no list of the fields each 311 form asks for, so a draft report may be missing some. Caveat: How current it is here is when the category list was last fetched; each answer gives the time its own articles were fetched. Caveat: Matching is by keyword, done by BetaNYC, and can pick the wrong article. Check the article on 311 Online before you report."
@@ -553,17 +553,17 @@
           "@id": "https://portal.311.nyc.gov/",
           "@type": "Dataset",
           "title": "311 Online articles",
-          "description": "311 Online articles, published by NYC Office of Technology and Innovation (OTI).",
+          "description": "311 Online articles, published by City of New York (NYC311).",
           "identifier": "https://portal.311.nyc.gov/",
           "contactPoint": {
             "@type": "Kind",
-            "fn": "BetaNYC (lists this dataset; report errors in the data to NYC Office of Technology and Innovation (OTI): https://portal.311.nyc.gov/)",
+            "fn": "BetaNYC (lists this dataset; report errors in the data to City of New York (NYC311): https://github.com/BetaNYC/nyc-311-mcp/issues)",
             "hasEmail": "mailto:contact-not-yet-named@example.invalid"
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation (OTI)",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "City of New York (NYC311)",
+            "@id": "https://portal.311.nyc.gov/about-nyc-311/"
           },
           "landingPage": {
             "@type": "Document",
@@ -585,7 +585,7 @@
         }
       ],
       "provenance": [
-        "Not an official record: curated by BetaNYC from material published by NYC Office of Technology and Innovation (OTI).",
+        "Not an official record: curated by BetaNYC from material published by City of New York (NYC311).",
         "BetaNYC copied the City's 'Call 911' summaries word for word from the 311 Public API and wrote the danger keywords itself. The live article is used whenever it can be read; the built-in copy answers when 311's content cannot be reached.",
         "Changed by BetaNYC: BetaNYC chose which dangers to check for and which City articles answer them, and wrote the keyword lists. The 911 lines are the City's words, unchanged."
       ],
@@ -609,10 +609,10 @@
       "accrualPeriodicity": "asNeeded",
       "rights": [
         "License: None stated by the publisher",
-        "Credit: Call 911 lines: NYC 311 articles, NYC Office of Technology and Innovation. Danger check: BetaNYC.",
+        "Credit: Call 911 lines: NYC311 articles, City of New York. Danger check: BetaNYC.",
         "Terms of use: https://www.nyc.gov/main/terms-of-use"
       ],
-      "scopeNote": "Known gap: Danger detection is by keyword and will miss some emergencies. Caveat: If anything someone says suggests a person may be in danger or need urgent medical help, tell them to call 911 first, even if no danger was flagged. Caveat: How current it is here is the day the City's lines were copied into this server."
+      "scopeNote": "Known gap: Danger detection is by keyword and will miss some emergencies. Caveat: The danger keywords and the choice of 911 lines are BetaNYC's work: report a wrong or missed match in this server's issues. The City has no error route for this list. Caveat: If anything someone says suggests a person may be in danger or need urgent medical help, tell them to call 911 first, even if no danger was flagged. Caveat: How current it is here is the day the City's lines were copied into this server."
     },
     {
       "@id": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-requests-by-district",
@@ -667,8 +667,8 @@
           ],
           "accrualPeriodicity": "daily",
           "rights": [
-            "License: None stated by the publisher",
-            "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+            "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+            "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
           ]
         }
       ],
@@ -714,11 +714,11 @@
       ],
       "accrualPeriodicity": "daily",
       "rights": [
-        "License: None stated by the publisher",
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "Credit: BoardStat by BetaNYC (https://www.beta.nyc/boardstat/), built from NYC Open Data. Data available under the Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
-      "scopeNote": "Known gap: Requests without usable coordinates are counted but not placed in any district. Known gap: The City publishes 311 data a few days late, so the newest request is a few days before the build. Known gap: ZIP codes are left out by decision. Caveat: Not an official City report. The numbers match the BoardStat page each answer links to. Caveat: 311 counts are reports, not problems: they show who reports and how, not only how many problems there are. 'Closed' does not mean fixed. Caveat: BoardStat's files are under the Open Database License (ODbL) 1.0; the City's records in them stay under NYC Open Data's terms."
+      "scopeNote": "Known gap: Requests without usable coordinates are counted but not placed in any district. Known gap: The City publishes 311 data a few days late, so the newest request is a few days before the build. Known gap: ZIP codes are left out by decision. Caveat: Report a wrong district, a wrong grouped problem name or a wrong count to BetaNYC first, in this server's issues: those are BetaNYC's work. Only an error in a request's own City record (its type, agency, dates or address as the City published them) goes to NYC Open Data. Caveat: Not an official City report. The numbers match the BoardStat page each answer links to. Caveat: 311 counts are reports, not problems: they show who reports and how, not only how many problems there are. 'Closed' does not mean fixed. Caveat: BoardStat's files are under the Open Database License (ODbL) 1.0; the City's records in them stay under NYC Open Data's terms."
     },
     {
       "@id": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#ll47-service-request-reports",
@@ -773,8 +773,8 @@
           ],
           "accrualPeriodicity": "daily",
           "rights": [
-            "License: None stated by the publisher",
-            "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+            "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+            "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
           ]
         }
       ],
@@ -816,11 +816,11 @@
       ],
       "accrualPeriodicity": "daily",
       "rights": [
-        "License: None stated by the publisher",
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "Credit: BoardStat by BetaNYC (https://www.beta.nyc/boardstat/), built from NYC Open Data. Data available under the Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
-      "scopeNote": "Known gap: Nothing before 2020-01-01 is included; the law counted from April 1, 2004. Known gap: ZIP codes are left out by decision. Caveat: A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075. Caveat: 311 counts are reports, not problems: they show who reports and how, not only how many problems there are. 'Closed' does not mean fixed."
+      "scopeNote": "Known gap: Nothing before 2020-01-01 is included; the law counted from April 1, 2004. Known gap: ZIP codes are left out by decision. Caveat: Report a wrong district, a wrong grouped problem name or a wrong count to BetaNYC first, in this server's issues: those are BetaNYC's work. Only an error in a request's own City record (its type, agency, dates or address as the City published them) goes to NYC Open Data. Caveat: A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075. Caveat: 311 counts are reports, not problems: they show who reports and how, not only how many problems there are. 'Closed' does not mean fixed."
     },
     {
       "@id": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#community-district-boundaries",
@@ -875,8 +875,8 @@
           ],
           "accrualPeriodicity": "quarterly",
           "rights": [
-            "License: None stated by the publisher",
-            "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+            "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+            "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
           ]
         }
       ],
@@ -897,9 +897,9 @@
       },
       "accrualPeriodicity": "quarterly",
       "rights": [
-        "License: None stated by the publisher",
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "Credit: Source: NYC Department of City Planning, Community Districts (5crt-au7u), via NYC Open Data.",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: Only the current boundaries are used, for every year. Caveat: A request on a shared edge goes to the lowest district id."
     },
@@ -956,8 +956,8 @@
           ],
           "accrualPeriodicity": "quarterly",
           "rights": [
-            "License: None stated by the publisher",
-            "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+            "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+            "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
           ]
         }
       ],
@@ -978,9 +978,9 @@
       },
       "accrualPeriodicity": "quarterly",
       "rights": [
-        "License: None stated by the publisher",
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "Credit: Source: NYC Department of City Planning, City Council Districts (872g-cjhh), via NYC Open Data.",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: Only the current boundaries are used, for every year, so a request from before the 2023 redistricting is placed in today's district lines. Caveat: The City's own council_district field keeps older lines on older records; BoardStat does not use it to place requests."
     },
@@ -1037,8 +1037,8 @@
           ],
           "accrualPeriodicity": "daily",
           "rights": [
-            "License: None stated by the publisher",
-            "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+            "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+            "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
           ]
         }
       ],
@@ -1076,9 +1076,9 @@
       ],
       "accrualPeriodicity": "daily",
       "rights": [
-        "License: None stated by the publisher",
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "Credit: Source: NYC Office of Technology and Innovation, 311 Call Center Inquiry (wewp-mm3p), via NYC Open Data.",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: The dataset cannot tell directory-assistance calls from others, so the report counts all agent-handled calls by topic. Known gap: Its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Known gap: The dataset's own description says that since March 2020 it does not fully represent the agent-handled calls to 311; the actual calls handled are higher. Caveat: A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075."
     },
@@ -1135,8 +1135,8 @@
           ],
           "accrualPeriodicity": "annually",
           "rights": [
-            "License: None stated by the publisher",
-            "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+            "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+            "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
           ]
         }
       ],
@@ -1168,9 +1168,9 @@
       ],
       "accrualPeriodicity": "annually",
       "rights": [
-        "License: None stated by the publisher",
+        "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "Credit: Source: NYC Office of Technology and Innovation, 311 Service Level Agreements (cs9t-e3x8), via NYC Open Data.",
-        "Terms of use: https://www.nyc.gov/opendata/get-started/FAQs"
+        "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: The dataset says it updates annually but has not changed in a long time; every answer labels its options old and gives the date the City last updated it. Caveat: Options and response times may be out of date."
     }

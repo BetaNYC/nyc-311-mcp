@@ -133,7 +133,8 @@ jobs:
 
   # The about-data standard (betanyc-ai-workspace platform/system/about-data-standard.md § 7).
   # DATA-SOURCES.json says where every tool's data comes from; data.json (DCAT-US 3.0) is made
-  # from it, at the repo root (in the npm package) and at docs/data.json (the website). This
+  # from it, at the repo root (in the npm package). The website copy, docs/data.json, is added once
+  # BetaNYC names its monitored contact address, so the placeholder is never published. This
   # repo publishes no data files of its own (BoardStat does), so there is no croissant.json, and
   # `catalog --check` fails if one appears. scripts/tests/catalog_validate.py, the vendored
   # DCAT-US 3.0 schema under scripts/mcp_shared/vendor/ and scripts/mcp_shared/data-sources.schema.json
@@ -169,12 +170,10 @@ jobs:
       - name: DATA-SOURCES.json passes check, and every tool is explained
         run: python3 scripts/whats_changed.py about-data check DATA-SOURCES.json --tools-file "$RUNNER_TEMP/tools.json"
 
-      - name: data.json is current, at the repo root and on the website
-        run: |
-          python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --check
-          python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --dcat docs/data.json --check
+      - name: data.json is current
+        run: python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --check
 
       - name: DATA-SOURCES.json passes its JSON Schema; data.json is valid DCAT-US 3.0
         run: |
           uv run --no-project $DCAT_VALIDATORS python scripts/tests/catalog_validate.py data-sources DATA-SOURCES.json
-          uv run --no-project $DCAT_VALIDATORS python scripts/tests/catalog_validate.py dcat data.json docs/data.json
+          uv run --no-project $DCAT_VALIDATORS python scripts/tests/catalog_validate.py dcat data.json
