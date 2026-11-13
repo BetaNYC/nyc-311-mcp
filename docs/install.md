@@ -5,7 +5,7 @@ title: Install nyc-311-mcp
 # Install nyc-311-mcp
 
 nyc-311-mcp connects an AI assistant to New York City's 311 data. Version 1.3.0 has 23
-tools. This page covers Claude Desktop and Claude Code. Any app that runs MCP servers works
+tools (1.2.0 has 21). This page covers Claude Desktop and Claude Code. Any app that runs MCP servers works
 the same way: it runs `npx -y @betanyc/nyc-311-mcp`.
 
 **If this is an emergency, or if you think this is an emergency, call 911.** Don't rely on
@@ -56,8 +56,8 @@ Following the Model Context Protocol's guide,
    comma after the entry before it. No API key? Leave out the whole `"env"` part and the
    comma before it.
 3. Save the file, **quit Claude Desktop completely**, and open it again.
-4. To check it worked, ask Claude "Which nyc-311 tools do you have?" You should see 23,
-   including `draft_311_report`.
+4. To check it worked, ask Claude "Which nyc-311 tools do you have?" You should see 23
+   (21 on version 1.2.0), including `draft_311_report`.
 
 If it doesn't show up, the same guide's
 [Troubleshooting](https://modelcontextprotocol.io/docs/develop/connect-local-servers#troubleshooting)

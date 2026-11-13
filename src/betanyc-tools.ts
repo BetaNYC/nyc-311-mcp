@@ -1,5 +1,5 @@
-// betanyc-shared: betanyc-tools.ts v1.0.0
-// betanyc-shared-sha256: 0ed5f2253a0db269f4c983fd6eecbc9ae0c492ddf1cd83a5182618391c8a12c8
+// betanyc-shared: betanyc-tools.ts v1.1.0
+// betanyc-shared-sha256: 27bc112bc903026624e50dfa12c4b66d84f63066c894d5f376509b1689685412
 // Canonical copy: betanyc-ai-workspace scripts/mcp_shared/betanyc-tools.ts. Do not edit a copy
 // in a server repo; change the canonical file, re-stamp it, and copy it again.
 // Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -19,7 +19,7 @@
 
 import { readFileSync } from "node:fs";
 
-export const SHARED_MODULE_VERSION = "1.0.0";
+export const SHARED_MODULE_VERSION = "1.1.0";
 
 // --------------------------------------------------------------------------- types
 
@@ -39,7 +39,10 @@ export interface EntryUpdate {
 
 /** One entry, as parsed. Same keys and values as `whats_changed.py json`. */
 export interface Entry {
-  date: string;
+  /** YYYY-MM-DD, or null for the one "## Unreleased: Title" entry waiting for its release date. */
+  date: string | null;
+  /** True for the "## Unreleased:" entry. The whats_changed tool never returns it. */
+  unreleased: boolean;
   title: string;
   anchor: string;
   tags: Tag[];
@@ -132,6 +135,8 @@ const H1_RE = /^# (.+?)[ \t]*$/s; // s: "." matches U+2028/2029, as Python's "."
 const H2_RE = /^## (.*?)[ \t]*$/s;
 const DEEPER_RE = /^#{3,} /;
 const ENTRY_HEADING_RE = /^([0-9]{4}-[0-9]{2}-[0-9]{2}): ([^ \t].*)$/s;
+// A version bump merges before its tag, so the newest entry may wait for its release date.
+const UNRELEASED_HEADING_RE = /^Unreleased: ([^ \t].*)$/s;
 const FIELD_RE = /^- \*\*(.+?):\*\*(?: (.*))?$/s;
 const UPDATE_LABEL_RE = /^Update ([^ \t]+)$/;
 const CONT_RE = /^ {2,}[^ \t]/;
@@ -144,7 +149,7 @@ const FENCE_RE = /^(```|~~~)/;
 const HISTORY_RE = /^([0-9]{4}-[0-9]{2}-[0-9]{2})(?![0-9-])/;
 const SCHEME_RE = /^([A-Za-z][A-Za-z0-9+.-]*):/;
 const SAFE_SCHEMES = ["http", "https", "mailto"];
-const CONTROL_RE = /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u2028\u2029]/;
+const CONTROL_RE = /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f\u2028\u2029]/; // C0, DEL, C1, line/para separators
 const PLACEHOLDER_RE = /SITE OR SERVER NAME|HOW OFTEN THE DATA UPDATES|BetaNYC\/REPO(?![A-Za-z0-9_-])/;
 const EXAMPLE_TITLE_RE = /^example:/i;
 /** The one whitespace set both parsers trim (space, tab, no-break space, BOM). */
@@ -338,19 +343,25 @@ export function parseWhatsChanged(input: string, today?: string): ParsedFile {
       lastField = null;
       h2Lines.push(lineno);
       const m = ENTRY_HEADING_RE.exec(h2[1]);
-      if (!m) {
+      const um = m ? null : UNRELEASED_HEADING_RE.exec(h2[1]);
+      if (!m && !um) {
         err("bad-heading", lineno);
         current = null;
         skipping = true;
         continue;
       }
       skipping = false;
-      const date = m[1];
-      const etitle = trim(m[2]);
+      const date: string | null = m ? m[1] : null;
+      const etitle = trim(m ? m[2] : um![1]);
+      if (date === null) {
+        if (entries.some((e) => e.unreleased)) err("duplicate-unreleased", lineno);
+        else if (entries.length) err("unreleased-not-first", lineno);
+      }
       current = {
         date,
+        unreleased: date === null,
         title: etitle,
-        anchor: githubSlug(`${date}: ${etitle}`),
+        anchor: githubSlug(`${date ?? "Unreleased"}: ${etitle}`),
         tags: [],
         summary: null,
         if_you_used_the_old_numbers: null,
@@ -367,7 +378,9 @@ export function parseWhatsChanged(input: string, today?: string): ParsedFile {
         _fieldLines: {},
         _updateLines: [],
       };
-      if (!isRealDate(date)) err("bad-date", lineno);
+      if (date === null) {
+        // waits for its release date; `check --release` fails while it is here
+      } else if (!isRealDate(date)) err("bad-date", lineno);
       else if (date > day) err("future-date", lineno);
       if (TITLE_MARKUP_RE.test(etitle)) err("title-markup", lineno);
       if (EXAMPLE_TITLE_RE.test(etitle)) err("template-placeholder", lineno);
@@ -404,7 +417,7 @@ export function parseWhatsChanged(input: string, today?: string): ParsedFile {
       const um = UPDATE_LABEL_RE.exec(label);
       if (um) {
         const udate = um[1];
-        if (!isRealDate(udate) || udate < current.date || udate > day) err("bad-update-date", lineno);
+        if (!isRealDate(udate) || udate < (current.date ?? "") || udate > day) err("bad-update-date", lineno);
         if (!value) err("empty-field", lineno);
         current.updates.push({ date: udate, text: value });
         current._updateLines.push(lineno);
@@ -488,8 +501,8 @@ export function parseWhatsChanged(input: string, today?: string): ParsedFile {
     if (e.mcp_version && !SEMVER_RE.test(e.mcp_version)) err("bad-mcp-version", ln);
     if (seenAnchors.has(e.anchor)) err("duplicate-anchor", ln);
     seenAnchors.add(e.anchor);
-    if (prevDate && isRealDate(e.date) && isRealDate(prevDate) && e.date > prevDate) err("out-of-order", ln);
-    if (isRealDate(e.date)) prevDate = e.date;
+    if (e.date !== null && prevDate && isRealDate(e.date) && isRealDate(prevDate) && e.date > prevDate) err("out-of-order", ln);
+    if (e.date !== null && isRealDate(e.date)) prevDate = e.date;
     for (const key of ["summary", "if_you_used_the_old_numbers", "who_it_affects", "mcp_version", "more_detail"] as const) {
       const v = e[key];
       if (v && hasUnsafeLink(v)) err("unsafe-link", _fieldLines[key] ?? ln);
@@ -513,7 +526,7 @@ export function parseWhatsChanged(input: string, today?: string): ParsedFile {
       err("bad-history-begins", preambleLines.history_begins);
     } else {
       hbDate = hm[1];
-      const dated = out.map((e) => e.date).filter(isRealDate).sort();
+      const dated = out.map((e) => e.date).filter((d): d is string => d !== null && isRealDate(d)).sort();
       if (dated.length && hbDate > dated[0]) err("history-after-entry", preambleLines.history_begins);
     }
   }
@@ -550,12 +563,13 @@ export interface Query {
   limit?: number;
 }
 
-/** Valid entries newest first (the file's order); an entry with any error is never returned.
+/** Valid, released entries newest first (the file's order); an entry with any error, and the
+ * "Unreleased" entry, are never returned.
  * `since` keeps an entry dated on or after it, or one
  * with an Update dated on or after it, so a later update to an old correction still shows. */
 export function queryEntries(parsed: ParsedFile, q: Query = {}): { matching: Entry[]; returned: Entry[] } {
   const matching = parsed.entries.filter((e) => {
-    if (!e.valid) return false;
+    if (!e.valid || e.unreleased || e.date === null) return false;
     if (q.tag && !e.tags.includes(q.tag)) return false;
     if (q.since && !(e.date >= q.since || e.updates.some((u) => u.date >= q.since!))) return false;
     return true;
@@ -861,7 +875,7 @@ export function handleWhatsChanged(config: BetanycServerConfig, args: unknown, t
   const parsed = parseWhatsChanged(loaded.text, today);
   const { matching, returned } = queryEntries(parsed, q);
   const notes: string[] = [];
-  if (!parsed.entries.some((e) => e.valid)) notes.push("The change history has no entries to show yet.");
+  if (!parsed.entries.some((e) => e.valid && !e.unreleased)) notes.push("The change history has no entries to show yet.");
   else if (!matching.length) notes.push("No change matches those filters.");
   if (matching.length > returned.length) {
     notes.push(`Showing ${returned.length} of ${matching.length}; raise limit (max ${MAX_LIMIT}) or narrow since to see more.`);
@@ -869,6 +883,8 @@ export function handleWhatsChanged(config: BetanycServerConfig, args: unknown, t
   const unreadable = parsed.errors.filter((e) => e.code === "bad-heading").length +
     parsed.entries.filter((e) => !e.valid).length;
   if (unreadable) notes.push(`${plural(unreadable, "entry")} in the file ${unreadable === 1 ? "has" : "have"} errors and ${unreadable === 1 ? "is" : "are"} left out. Full file: ${source}`);
+  const waiting = parsed.entries.filter((e) => e.unreleased && e.valid).length;
+  if (waiting) notes.push(`${plural(waiting, "change")} not released yet ${waiting === 1 ? "is" : "are"} left out until ${waiting === 1 ? "its" : "their"} release date is set.`);
   const hidden = parsed.errors.find((e) => ["unterminated-comment", "unterminated-fence", "file-too-large"].includes(e.code));
   if (hidden) notes.push(`The file has a problem at line ${hidden.line} (${hidden.code}), so entries after it may be missing. Full file: ${source}`);
   const note = notes.length ? notes.join(" ") : null;

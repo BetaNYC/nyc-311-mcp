@@ -149,8 +149,8 @@ index_main = f"""<h1>Ask your AI assistant about NYC 311</h1>
 <p>Some things shouldn't go to 311 at all. When a description sounds dangerous, the first line says to call 911.</p>
 {smoke}
 
-<h2>Version 1.3.0</h2>
-<p>Version 1.1.0 had 4 tools: the 311 calendar, status alerts, and request lookup. Version 1.2.0 had 21. It added help reporting a problem, district numbers from BoardStat, and the Local Law 47 reports. Version 1.3.0 has 23. One new tool tells you what changed in the server, and the other says who built it. Every change is listed on the <a href="whats-changed.html">What's changed</a> page. It's on npm as <code>@betanyc/nyc-311-mcp</code>.</p>
+<h2>Versions</h2>
+<p>Version 1.1.0 had 4 tools: the 311 calendar, status alerts, and request lookup. Version 1.2.0 had 21. It added help reporting a problem, district numbers from BoardStat, and the Local Law 47 reports. Version 1.3.0 adds two tools: one tells you what changed in the server, and the other says who built it. The package is <code>@betanyc/nyc-311-mcp</code> on npm, and the <a href="whats-changed.html">What's changed</a> page says when each version was released.</p>
 <p>Install it in Claude Desktop, Claude Code, or any MCP app: <a href="install.html">install guide</a>.</p>
 
 <h2>What it can do</h2>

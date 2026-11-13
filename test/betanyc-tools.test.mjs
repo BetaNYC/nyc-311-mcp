@@ -7,15 +7,16 @@ import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { callTool, TOOLS } from "../dist/tools.js";
-import { SAFETY_LINE } from "../dist/emergency.js";
+import { callTool, TOOLS, SHARED_TOOL_LINE } from "../dist/tools.js";
 import { SHARED_MODULE_VERSION } from "../dist/betanyc-tools.js";
 
 const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url)));
 const whatsChanged = readFileSync(new URL("../WHATS-CHANGED.md", import.meta.url), "utf8");
 const PAGE = "https://betanyc.github.io/nyc-311-mcp/whats-changed.html";
 const REPO = "https://github.com/BetaNYC/nyc-311-mcp";
+// Dated entries only: the tool leaves out an "## Unreleased:" entry (the version waiting for its tag).
 const entryCount = (whatsChanged.match(/^## [0-9]{4}-[0-9]{2}-[0-9]{2}: /gm) ?? []).length;
+const unreleased = (whatsChanged.match(/^## Unreleased: /gm) ?? []).length;
 
 const textOf = (r) => r.content[0].text;
 
@@ -35,22 +36,25 @@ test("whats_changed answers from this repo's WHATS-CHANGED.md, with every entry 
   const s = r.structuredContent;
   assert.deepEqual(s.server, { name: "nyc-311-mcp", version: pkg.version });
   assert.equal(s.source, PAGE);
-  assert.equal(s.history_begins, "2026-06-22");
+  assert.equal(s.history_begins, "2026-06-21");
   assert.equal(s.total_matching, entryCount);
   assert.equal(s.returned, entryCount);
-  assert.equal(s.note, null, "no entry was left out for an error");
+  if (unreleased) assert.match(s.note, /not released yet/, "the note says an unreleased entry is left out");
+  else assert.equal(s.note, null, "no entry was left out for an error");
+  assert.doesNotMatch(s.note ?? "", /error/, "no entry was left out for an error");
   for (const e of s.entries) {
     assert.ok(e.url.startsWith(`${PAGE}#${e.date}-`), e.url);
     for (const l of e.links) assert.match(l.url, /^https:\/\//, `${e.title}: ${l.url}`);
   }
-  assert.ok(textOf(r).endsWith(`\n\n${SAFETY_LINE}`));
+  assert.ok(textOf(r).endsWith(`\n\n${SHARED_TOOL_LINE}`));
 });
 
-test("the release in package.json has its own MCP entry (release protocol)", async () => {
+test("the version in package.json has its own MCP entry, dated or Unreleased (release protocol)", async () => {
+  assert.ok(unreleased <= 1);
+  assert.match(whatsChanged, new RegExp(`- \\*\\*MCP version:\\*\\* \\[nyc-311-mcp ${pkg.version.replace(/\./g, "\\.")}\\]`));
   const r = await callTool("whats_changed", { tag: "mcp", limit: 50 });
-  const versions = r.structuredContent.entries.map((e) => e.mcp_version ?? "");
-  assert.ok(versions.some((v) => v.includes(`nyc-311-mcp ${pkg.version}`)), versions.join(" | "));
   assert.equal(r.structuredContent.filters.tag, "MCP", "any case is accepted; answers use the canonical spelling");
+  assert.ok(r.structuredContent.returned >= 4);
 });
 
 test("whats_changed filters: Correction entries carry advice for people who used the old answers", async () => {
@@ -74,7 +78,7 @@ test("whats_changed rejects bad arguments by name", async () => {
     const r = await callTool("whats_changed", args);
     assert.equal(r.isError, true, JSON.stringify(args));
     assert.match(textOf(r), re);
-    assert.ok(textOf(r).endsWith(`\n\n${SAFETY_LINE}`));
+    assert.ok(textOf(r).endsWith(`\n\n${SHARED_TOOL_LINE}`));
   }
 });
 
@@ -91,7 +95,7 @@ test("about_betanyc names the server, its version, and where to report a problem
   assert.equal(s.built_by, "BetaNYC, a project of the Fund for the City of New York");
   assert.deepEqual(s.bugs_and_requests, { issues: `${REPO}/issues`, new_issue: `${REPO}/issues/new` });
   assert.equal(s.whats_changed, PAGE);
-  assert.ok(textOf(r).endsWith(`\n\n${SAFETY_LINE}`));
+  assert.ok(textOf(r).endsWith(`\n\n${SHARED_TOOL_LINE}`));
   const bad = await callTool("about_betanyc", { verbose: true });
   assert.equal(bad.isError, true);
   assert.match(textOf(bad), /takes no parameters/);

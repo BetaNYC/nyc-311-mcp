@@ -59,8 +59,8 @@ GROUPS = [
         "id": "about",
         "title": "About this server",
         "intro": (
-            "Ask what changed in the server lately, or who built it. Every BetaNYC MCP server has "
-            "these two tools. They read the same list as the <a href=\"https://betanyc.github.io/nyc-311-mcp/whats-changed.html\">What's "
+            "Ask what changed in the server lately, or who built it. Every BetaNYC MCP server is "
+            "getting these two tools; nyc-311-mcp is the first. They read the same list as the <a href=\"https://betanyc.github.io/nyc-311-mcp/whats-changed.html\">What's "
             "changed</a> page. No API key needed."
         ),
         "tools": ["whats_changed", "about_betanyc"],
@@ -496,9 +496,9 @@ TOOLS = {
     "about_betanyc": {
         "status": "new13", "key": False,
         "what": (
-            "Who built this server, where to report a problem or ask for a feature, and links to "
+            "Who built this server, where to report a problem with this server or ask for a feature, and links to "
             "BetaNYC's events, newsletter, and ways to get involved."
         ),
-        "asks": ["Who made this 311 tool?", "Where do I report a bug in the 311 server?"],
+        "asks": ["Who made this 311 tool?", "Where do I report a problem with the 311 server?"],
     },
 }

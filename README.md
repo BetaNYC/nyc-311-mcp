@@ -16,9 +16,9 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 
 ## What's new in 1.3.0
 
-Version 1.3.0 has **23** tools. Two are new, and every BetaNYC MCP server has them:
-`whats_changed` tells you what changed in the server, and `about_betanyc` says who built it and
-where to report a problem. Every change a reader would notice, including corrections, is listed
+Version 1.3.0 has **23** tools. Two are new: `whats_changed` tells you what changed in the
+server, and `about_betanyc` says who built it and where to report a problem with this server.
+Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. Every change a reader would notice, including corrections, is listed
 in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
 [website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
 
@@ -78,8 +78,8 @@ key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 **Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
 have one.
 
-To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23,
-including `draft_311_report`. The [install guide](docs/install.md) has more detail.
+To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23
+(21 on version 1.2.0), including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
 **Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
 your app, delete the `_npx` folder in npm's cache (`~/.npm/_npx` on a Mac or Linux,
@@ -260,7 +260,7 @@ Have a 311 number, like 311-12345678? These tell you where it stands, in words. 
 
 #### About this server
 
-Ask what changed in the server lately, or who built it. Every BetaNYC MCP server has these two tools. They read the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page. No API key needed.
+Ask what changed in the server lately, or who built it. Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. They read the same list as the [What's changed](https://betanyc.github.io/nyc-311-mcp/whats-changed.html) page. No API key needed.
 
 - **`whats_changed`** (New in 1.3.0; no key needed). What changed in this server, newest first: new tools, data fixes, and corrections when an answer was wrong. You can ask for corrections only, or for changes since a date.
   - Try asking:
@@ -268,10 +268,10 @@ Ask what changed in the server lately, or who built it. Every BetaNYC MCP server
     - “Has the 311 server ever corrected a wrong answer?”
   - Inputs: `since`, `tag`, `limit`
 
-- **`about_betanyc`** (New in 1.3.0; no key needed). Who built this server, where to report a problem or ask for a feature, and links to BetaNYC's events, newsletter, and ways to get involved.
+- **`about_betanyc`** (New in 1.3.0; no key needed). Who built this server, where to report a problem with this server or ask for a feature, and links to BetaNYC's events, newsletter, and ways to get involved.
   - Try asking:
     - “Who made this 311 tool?”
-    - “Where do I report a bug in the 311 server?”
+    - “Where do I report a problem with the 311 server?”
   - Inputs: none
 
 ## How the district tools read districts and dates
@@ -444,7 +444,10 @@ python3 scripts/whats_changed.py render WHATS-CHANGED.md --format jekyll --layou
 ```
 
 A release that adds or changes a tool also adds a `WHATS-CHANGED.md` entry tagged MCP, in the
-same pull request as the version bump. `src/betanyc-tools.ts` (the `whats_changed` and
+same pull request as the version bump, headed `## Unreleased: Title`. The release commit
+changes that heading to `## YYYY-MM-DD: Title` (the release date in New York, same title), and
+the tag goes on that commit; the Release workflow refuses to publish while an Unreleased entry
+is left. `src/betanyc-tools.ts` (the `whats_changed` and
 `about_betanyc` tools) is a copy too.
 
 ### Releases

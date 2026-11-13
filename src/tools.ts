@@ -12,6 +12,9 @@ import { LL47_ARG_SHAPES, LL47_TOOLS, runLl47Tool, type Ll47ToolName } from "./l
 import { REPORT_ARG_SHAPES, REPORT_TOOLS, runReportTool, type ReportToolName } from "./how-to-report.js";
 import { DRAFT_ARG_SHAPES, DRAFT_TOOLS, runDraftTool, type DraftToolName } from "./draft-report.js";
 import { SAFETY_LINE } from "./emergency.js";
+
+/** The last line of whats_changed and about_betanyc: SAFETY_LINE's closing 911 sentence, word for word. */
+export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
 import { createBetanycTools } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
@@ -170,10 +173,12 @@ export function parseToolArgs<K extends keyof typeof ARG_SHAPES>(
 export async function callTool(name: string, args: unknown) {
   if (betanyc.handles(name)) {
     // The shared tools answer in readable text plus structuredContent that matches their
-    // outputSchema. The safety line ends the text, as for every tool here; structuredContent
-    // is left exactly as the shared module built it, so it still matches the schema.
+    // outputSchema. They do not answer from City data, so the City-data part of SAFETY_LINE
+    // does not fit them; their text ends with its 911 sentence only (QA on the pilot,
+    // 2026-11-12). structuredContent is left exactly as the shared module built it, which the
+    // standard allows (§ 7, "A server's own wrapper").
     const out = betanyc.call(name, args);
-    return { ...out, content: [{ type: "text" as const, text: `${out.content[0].text}\n\n${SAFETY_LINE}` }] };
+    return { ...out, content: [{ type: "text" as const, text: `${out.content[0].text}\n\n${SHARED_TOOL_LINE}` }] };
   }
   const out = await runToolRaw(name, args);
   const text = out.content[0].text;

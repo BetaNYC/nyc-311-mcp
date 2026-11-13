@@ -16,9 +16,9 @@ Built by [BetaNYC](https://beta.nyc). Free and open source.
 
 ## What's new in 1.3.0
 
-Version 1.3.0 has **23** tools. Two are new, and every BetaNYC MCP server has them:
-`whats_changed` tells you what changed in the server, and `about_betanyc` says who built it and
-where to report a problem. Every change a reader would notice, including corrections, is listed
+Version 1.3.0 has **23** tools. Two are new: `whats_changed` tells you what changed in the
+server, and `about_betanyc` says who built it and where to report a problem with this server.
+Every BetaNYC MCP server is getting these two tools; nyc-311-mcp is the first. Every change a reader would notice, including corrections, is listed
 in [WHATS-CHANGED.md](WHATS-CHANGED.md) and on the
 [website](https://betanyc.github.io/nyc-311-mcp/whats-changed.html).
 
@@ -78,8 +78,8 @@ key? Leave out `--env NYC_311_API_KEY=your_key_here`.
 **Any other MCP app.** Run `npx -y @betanyc/nyc-311-mcp`, with `NYC_311_API_KEY` set if you
 have one.
 
-To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23,
-including `draft_311_report`. The [install guide](docs/install.md) has more detail.
+To check it worked, ask your assistant "Which nyc-311 tools do you have?" You should see 23
+(21 on version 1.2.0), including `draft_311_report`. The [install guide](docs/install.md) has more detail.
 
 **Already on 1.1.0?** `npx` keeps a copy of what it downloaded. If you still see 4 tools, quit
 your app, delete the `_npx` folder in npm's cache (`~/.npm/_npx` on a Mac or Linux,
@@ -284,7 +284,10 @@ python3 scripts/whats_changed.py render WHATS-CHANGED.md --format jekyll --layou
 ```
 
 A release that adds or changes a tool also adds a `WHATS-CHANGED.md` entry tagged MCP, in the
-same pull request as the version bump. `src/betanyc-tools.ts` (the `whats_changed` and
+same pull request as the version bump, headed `## Unreleased: Title`. The release commit
+changes that heading to `## YYYY-MM-DD: Title` (the release date in New York, same title), and
+the tag goes on that commit; the Release workflow refuses to publish while an Unreleased entry
+is left. `src/betanyc-tools.ts` (the `whats_changed` and
 `about_betanyc` tools) is a copy too.
 
 ### Releases

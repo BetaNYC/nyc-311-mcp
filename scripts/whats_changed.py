@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# betanyc-shared: whats_changed.py v1.0.0
-# betanyc-shared-sha256: 01edbf34072d2bb9a17acb44ca9d5b7654283d2b3697b991a6a043284979c575
+# betanyc-shared: whats_changed.py v1.1.0
+# betanyc-shared-sha256: fb8fb55c9eec144c38ab236e4690cb5d0d48c2efb9498ca507ac38f9c2fba86f
 # Canonical copy: betanyc-ai-workspace scripts/whats_changed.py. Do not edit a copy in
 # another repo; change the canonical file, re-stamp it, and copy it again.
 # Drift check: scripts/whats_changed_drift.py. Standard: platform/system/whats-changed-standard.md.
@@ -53,6 +53,9 @@ H1_RE = re.compile(r"^# (.+?)[ \t]*$")
 H2_RE = re.compile(r"^## (.*?)[ \t]*$")
 DEEPER_RE = re.compile(r"^#{3,} ")
 ENTRY_HEADING_RE = re.compile(r"^([0-9]{4}-[0-9]{2}-[0-9]{2}): ([^ \t].*)$")
+# A version bump merges before its tag, so the newest entry may wait for its release date.
+UNRELEASED_HEADING_RE = re.compile(r"^Unreleased: ([^ \t].*)$")
+UNRELEASED = "Unreleased"
 FIELD_RE = re.compile(r"^- \*\*(.+?):\*\*(?: (.*))?$")
 UPDATE_LABEL_RE = re.compile(r"^Update ([^ \t]+)$")
 CONT_RE = re.compile(r"^ {2,}[^ \t]")
@@ -66,7 +69,7 @@ BARE_URL_RE = re.compile(r"(?<![(<])https?://")
 HISTORY_RE = re.compile(r"^([0-9]{4}-[0-9]{2}-[0-9]{2})(?![0-9-])")
 SCHEME_RE = re.compile(r"^([A-Za-z][A-Za-z0-9+.-]*):")
 SAFE_SCHEMES = ("http", "https", "mailto")
-CONTROL_RE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u2028\u2029]")
+CONTROL_RE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f\u2028\u2029]")  # C0, DEL, C1, line/para separators
 PLACEHOLDER_RE = re.compile(r"SITE OR SERVER NAME|HOW OFTEN THE DATA UPDATES|BetaNYC/REPO(?![A-Za-z0-9_-])")
 EXAMPLE_TITLE_RE = re.compile(r"^example:", re.I)
 TRIM = " \t\u00a0\ufeff"  # the one whitespace set both parsers trim
@@ -103,7 +106,7 @@ def github_slug(text: str) -> str:
 
 def is_real_date(s: str) -> bool:
     """YYYY-MM-DD in ASCII digits, a real calendar day, year 1990 or later."""
-    if not DATE_RE.match(s):
+    if not isinstance(s, str) or not DATE_RE.match(s):
         return False
     try:
         d = dt.date.fromisoformat(s)
@@ -240,17 +243,26 @@ def parse(text: str, today: str | None = None) -> dict:
             last_field = None
             h2_lines.append(lineno)
             m = ENTRY_HEADING_RE.match(h2.group(1))
-            if not m:
+            um = None if m else UNRELEASED_HEADING_RE.match(h2.group(1))
+            if not m and not um:
                 err("bad-heading", lineno)
                 current = None
                 skipping = True
                 continue
             skipping = False
-            date, etitle = m.group(1), m.group(2).strip(TRIM)
+            if m:
+                date, etitle = m.group(1), m.group(2).strip(TRIM)
+            else:
+                date, etitle = None, um.group(1).strip(TRIM)
+                if any(e["unreleased"] for e in entries):
+                    err("duplicate-unreleased", lineno)
+                elif entries:
+                    err("unreleased-not-first", lineno)
             current = {
                 "date": date,
+                "unreleased": date is None,
                 "title": etitle,
-                "anchor": github_slug(f"{date}: {etitle}"),
+                "anchor": github_slug(f"{date or UNRELEASED}: {etitle}"),
                 "tags": [],
                 "summary": None,
                 "if_you_used_the_old_numbers": None,
@@ -265,7 +277,9 @@ def parse(text: str, today: str | None = None) -> dict:
                 "_seen": set(),
                 "_raw_tags": None,
             }
-            if not is_real_date(date):
+            if date is None:
+                pass
+            elif not is_real_date(date):
                 err("bad-date", lineno)
             elif date > today:
                 err("future-date", lineno)
@@ -306,7 +320,7 @@ def parse(text: str, today: str | None = None) -> dict:
             um = UPDATE_LABEL_RE.match(label)
             if um:
                 udate = um.group(1)
-                if not is_real_date(udate) or udate < current["date"] or udate > today:
+                if not is_real_date(udate) or udate < (current["date"] or "") or udate > today:
                     err("bad-update-date", lineno)
                 if not value:
                     err("empty-field", lineno)
@@ -395,9 +409,9 @@ def parse(text: str, today: str | None = None) -> dict:
         if e["anchor"] in seen_anchors:
             err("duplicate-anchor", ln)
         seen_anchors.add(e["anchor"])
-        if prev_date and is_real_date(e["date"]) and is_real_date(prev_date) and e["date"] > prev_date:
+        if e["date"] and prev_date and is_real_date(e["date"]) and is_real_date(prev_date) and e["date"] > prev_date:
             err("out-of-order", ln)
-        if is_real_date(e["date"]):
+        if e["date"] and is_real_date(e["date"]):
             prev_date = e["date"]
         for key in ("summary", "if_you_used_the_old_numbers", "who_it_affects", "mcp_version", "more_detail"):
             if e[key] and any(not is_safe_url(m.group(2)) for m in LINK_RE.finditer(e[key])):
@@ -422,7 +436,7 @@ def parse(text: str, today: str | None = None) -> dict:
             err("bad-history-begins", preamble_lines["history_begins"])
         else:
             hb_date = hm.group(1)
-            dated = [e["date"] for e in entries if is_real_date(e["date"])]
+            dated = [e["date"] for e in entries if e["date"] and is_real_date(e["date"])]
             if dated and hb_date > min(dated):
                 err("history-after-entry", preamble_lines["history_begins"])
 
@@ -531,12 +545,27 @@ def check_append_only(path: Path, text: str, base_ref: str) -> list[dict]:
         return []
     # Every entry that parsed at the base must still parse now. A raw-line comparison alone
     # misses an entry hidden by an unclosed comment opened above it.
-    new_anchors = {e["anchor"] for e in parse(text)["entries"]}
-    missing = [e for e in parse(old)["entries"] if e["anchor"] not in new_anchors]
-    errors = [{"code": "old-entry-missing", "line": 0, "anchor": e["anchor"]} for e in missing]
+    new_entries = parse(text)["entries"]
+    old_entries = parse(old)["entries"]
+    new_anchors = {e["anchor"] for e in new_entries}
     old_lines = [ln.rstrip() for ln in old.replace("\r\n", "\n").split("\n")]
     new_lines = [ln.rstrip() for ln in text.replace("\r\n", "\n").split("\n")]
-    old_headings = {ln for ln in old_lines if ENTRY_HEADING_RE.match(ln[3:]) and ln.startswith("## ")}
+    # The one change allowed to an old line: at release, "## Unreleased: Title" becomes
+    # "## YYYY-MM-DD: Title" with the same title. Treat the old heading as the dated one.
+    released: dict[str, str] = {}
+    for oe in old_entries:
+        if oe["unreleased"]:
+            dated = [ne for ne in new_entries if not ne["unreleased"] and ne["title"] == oe["title"]
+                     and ne["date"] and is_real_date(ne["date"])]
+            if dated:
+                released[oe["anchor"]] = dated[0]["anchor"]
+                old_heading = f"## {UNRELEASED}: {oe['title']}"
+                new_heading = f"## {dated[0]['date']}: {oe['title']}"
+                old_lines = [new_heading if ln == old_heading else ln for ln in old_lines]
+    missing = [e for e in old_entries if released.get(e["anchor"], e["anchor"]) not in new_anchors]
+    errors = [{"code": "old-entry-missing", "line": 0, "anchor": e["anchor"]} for e in missing]
+    old_headings = {ln for ln in old_lines if ln.startswith("## ")
+                    and (ENTRY_HEADING_RE.match(ln[3:]) or UNRELEASED_HEADING_RE.match(ln[3:]))}
     line_errors: list[dict] = []
     j = 0
     matched = [False] * len(new_lines)
@@ -784,7 +813,7 @@ def render_entry(e: dict, link_map: LinkMap) -> str:
     parts = [
         f'<article class="wc-entry" id="{a}" data-tags="{" ".join(e["tags"])}" aria-labelledby="{a}-title">',
         f'<h2 id="{a}-title">{html.escape(e["title"])}</h2>',
-        f'<p class="wc-meta">{time_tag(e["date"])}</p>',
+        f'<p class="wc-meta">{"Not released yet" if e["unreleased"] else time_tag(e["date"])}</p>',
         f'<p class="wc-tags"><span class="wc-visually-hidden">Tags: </span>{tags_html}</p>',
     ]
     if e["summary"]:
@@ -885,17 +914,25 @@ def render_quarto(parsed: dict, link_map: LinkMap) -> str:
     return f'---\ntitle: "{title}"\n---\n\n```{{=html}}\n{body}\n```\n'
 
 
+def liquid_safe(body: str) -> str:
+    """Wrap HTML so Jekyll's Liquid never runs anything in it. The whole fragment goes inside
+    {% raw %}...{% endraw %}; a raw block ends at the first {% endraw %}, so every "{%" inside the
+    body is first written as "&#123;%", which a browser shows as "{%" but Liquid does not see.
+    The fragment's own style and script contain no "{%" (a test checks), so only text changes."""
+    return "{% raw %}" + body.replace("{%", "&#123;%") + "{% endraw %}"
+
+
 def render_jekyll(parsed: dict, link_map: LinkMap, layout: str) -> str:
     title = (parsed["title"] or "What's changed").replace('"', '\\"')
     body = render_fragment(parsed, link_map, with_h1=False)
-    return f'---\nlayout: {layout}\ntitle: "{title}"\n---\n{body}\n'
+    return f'---\nlayout: {layout}\ntitle: "{title}"\n---\n{liquid_safe(body)}\n'
 
 
 def active_notices(parsed: dict, page: str, today: str, days: int = NOTICE_DAYS) -> list[dict]:
     t = dt.date.fromisoformat(today)
     out = []
     for e in parsed["entries"]:
-        if (not e.get("valid", True) or "Correction" not in e["tags"] or page not in e["notice_on"]
+        if (not e.get("valid", True) or e.get("unreleased") or "Correction" not in e["tags"] or page not in e["notice_on"]
                 or not is_real_date(e["date"])):
             continue
         age = (t - dt.date.fromisoformat(e["date"])).days
@@ -976,6 +1013,9 @@ HINTS = {
     "line-too-long": f"lines are limited to {MAX_LINE} characters",
     "file-too-large": f"the file is limited to {MAX_CHARS} characters",
     "old-entry-missing": "an entry published at the base ref no longer appears; never delete or hide an entry",
+    "unreleased-entry": "at release, change '## Unreleased: Title' to '## YYYY-MM-DD: Title' with the release date",
+    "duplicate-unreleased": "only one 'Unreleased:' entry is allowed",
+    "unreleased-not-first": "the 'Unreleased:' entry must be the first entry",
 }
 
 
@@ -1003,6 +1043,8 @@ def cmd_check(a: argparse.Namespace) -> int:
     pkg = a.package_json or (a.file.parent / "package.json")
     chg = a.changelog or (a.file.parent / "CHANGELOG.md")
     errors += check_mcp_versions(parsed, pkg, chg)
+    if a.release:
+        errors += [{"code": "unreleased-entry", "line": e["line"]} for e in parsed["entries"] if e["unreleased"]]
     if a.base_ref:
         errors += check_append_only(a.file, text, a.base_ref)
         errors += check_version_bump(a.file, parsed, pkg, a.base_ref)
@@ -1087,6 +1129,8 @@ def build_parser() -> argparse.ArgumentParser:
                    "(default: next to the file, if present)")
     c.add_argument("--base-ref", help="git ref to compare against (append-only and version-bump checks)")
     c.add_argument("--strict", action="store_true", help="warnings fail too")
+    c.add_argument("--release", action="store_true",
+                   help="release gate: fail if an 'Unreleased:' entry is left (run before npm publish)")
     c.set_defaults(func=cmd_check)
 
     j = sub.add_parser("json", help="print the canonical parse as JSON")

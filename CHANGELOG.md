@@ -20,16 +20,19 @@ website. Tracking: BetaNYC/betanyc-ai-workspace#1645 (epic #1637).
 - `about_betanyc`: who built the server, the repository, where to report a problem, and
   BetaNYC's links.
 - `src/betanyc-tools.ts`, copied unchanged from the workspace's
-  `scripts/mcp_shared/betanyc-tools.ts` (v1.0.0). Never edit the copy; change the canonical
-  file and copy it again. Like every other tool, the two new tools end their text with the
-  safety line; their `structuredContent` is the shared module's, unchanged.
+  `scripts/mcp_shared/betanyc-tools.ts` (v1.1.0). Never edit the copy; change the canonical
+  file and copy it again. The two new tools do not answer from City data, so their text ends
+  with the safety line's 911 sentence only, not the City-data part; their
+  `structuredContent` is the shared module's, unchanged.
 - `WHATS-CHANGED.md`, the reader-facing record of changes, backfilled to 1.0.0, and shipped
   in the npm package (`files`).
 - `docs/whats-changed.html`, built from it by `scripts/whats_changed.py` (copied unchanged
   from the workspace), with a `whats-changed` layout that supplies the page's one `<h1>`.
   Every page links to it in the footer.
 - CI: a `whats-changed` job runs `whats_changed.py check --base-ref` (append-only, and a
-  version bump needs an entry) and `render --check` on the page.
+  version bump needs an entry) and `render --check` on the page. The release workflow runs
+  `check --release` before `npm publish`, so a release cannot ship while the
+  `WHATS-CHANGED.md` entry still says `Unreleased`.
 
 ### Changed
 
