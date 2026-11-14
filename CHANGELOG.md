@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - Unreleased
+
+Moves the shared BetaNYC module to 1.3.6. Tracking: BetaNYC/betanyc-ai-workspace#1655
+(epic #1652).
+
+### Changed
+
+- `src/betanyc-tools.ts` is the shared module 1.3.6, copied unchanged from the workspace.
+- `about_data` gives BetaNYC's address for questions and error reports about the data,
+  lab@beta.nyc, as a line in its answer and as `contact_email` in `structuredContent`.
+- On a server with no `NYC_311_API_KEY`, `about_data` says the 311 calendar and status
+  alerts, the request lookups, and (when no copy was saved earlier) the 311 articles are
+  not available on this server, instead of calling them live. Every other source answers
+  as before. New export `unavailableSources()` in `src/tools.ts` decides this once, at
+  startup.
+
 ## [1.3.0] - 2026-11-13
 
 Adds three shared BetaNYC tools (every BetaNYC MCP server is getting them; nyc-311-mcp is

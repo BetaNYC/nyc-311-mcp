@@ -7,6 +7,13 @@ This page lists the changes to nyc-311-mcp that a reader would notice: new tools
 
 To report a bug in this server or ask for a new feature, [open an issue on GitHub](https://github.com/BetaNYC/nyc-311-mcp/issues).
 
+## Unreleased: Answers about the data give BetaNYC's email address
+
+- **Tags:** MCP
+- **What changed:** When you ask where the data comes from, the answer now gives BetaNYC's email address for questions and error reports, lab@beta.nyc. If the server is running without a 311 API key, the answer also says that the 311 calendar, status alerts and request lookups are not available on it, instead of calling them live.
+- **MCP version:** [nyc-311-mcp 1.4.0](CHANGELOG.md)
+- **More detail:** [Where the data comes from](DATA-SOURCES.json) · [Release notes](CHANGELOG.md)
+
 ## 2026-11-13: A What's changed page, and three tools that explain the server
 
 - **Tags:** Site, MCP
