@@ -283,7 +283,8 @@
         "credit_line": "BoardStat by BetaNYC (https://www.beta.nyc/boardstat/), built from NYC Open Data. Data available under the Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/"
       },
       "report_errors": {
-        "upstream_url": "https://www.nyc.gov/opendata/contact-us"
+        "upstream_url": "https://www.nyc.gov/opendata/contact-us",
+        "upstream_name": "NYC Open Data"
       },
       "tools": [
         "find_district",
@@ -349,7 +350,8 @@
         "credit_line": "BoardStat by BetaNYC (https://www.beta.nyc/boardstat/), built from NYC Open Data. Data available under the Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/"
       },
       "report_errors": {
-        "upstream_url": "https://www.nyc.gov/opendata/contact-us"
+        "upstream_url": "https://www.nyc.gov/opendata/contact-us",
+        "upstream_name": "NYC Open Data"
       },
       "tools": [
         "ll47_service_request_report",
@@ -398,7 +400,8 @@
         "credit_line": "Source: NYC Department of City Planning, Community Districts (5crt-au7u), via NYC Open Data."
       },
       "report_errors": {
-        "upstream_url": "https://www.nyc.gov/opendata/contact-us"
+        "upstream_url": "https://www.nyc.gov/opendata/contact-us",
+        "upstream_name": "NYC Open Data"
       },
       "tools": [
         "find_district",
@@ -457,7 +460,8 @@
         "credit_line": "Source: NYC Department of City Planning, City Council Districts (872g-cjhh), via NYC Open Data."
       },
       "report_errors": {
-        "upstream_url": "https://www.nyc.gov/opendata/contact-us"
+        "upstream_url": "https://www.nyc.gov/opendata/contact-us",
+        "upstream_name": "NYC Open Data"
       },
       "tools": [
         "find_district",
@@ -520,7 +524,8 @@
         "credit_line": "Source: NYC Office of Technology and Innovation, 311 Call Center Inquiry (wewp-mm3p), via NYC Open Data."
       },
       "report_errors": {
-        "upstream_url": "https://www.nyc.gov/opendata/contact-us"
+        "upstream_url": "https://www.nyc.gov/opendata/contact-us",
+        "upstream_name": "NYC Open Data"
       },
       "tools": [
         "ll47_directory_assistance_report"
@@ -570,7 +575,8 @@
         "credit_line": "Source: NYC Office of Technology and Innovation, 311 Service Level Agreements (cs9t-e3x8), via NYC Open Data."
       },
       "report_errors": {
-        "upstream_url": "https://www.nyc.gov/opendata/contact-us"
+        "upstream_url": "https://www.nyc.gov/opendata/contact-us",
+        "upstream_name": "NYC Open Data"
       },
       "tools": [
         "draft_311_report"

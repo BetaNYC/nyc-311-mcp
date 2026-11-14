@@ -62,17 +62,53 @@ function boundaryUpdated(key: "community_districts" | "council_districts"): Fres
   return m ? m.sources?.[key]?.rowsUpdatedAt_iso ?? null : FRESHNESS_NOT_FETCHED;
 }
 
-const betanyc = createBetanycTools({
-  serverName: "nyc-311-mcp",
-  version: PACKAGE_VERSION,
-  repoUrl: "https://github.com/BetaNYC/nyc-311-mcp",
-  whatsChangedPath: new URL("../WHATS-CHANGED.md", import.meta.url),
-  dataSourcesPath: new URL("../DATA-SOURCES.json", import.meta.url),
-  pageUrl: "https://betanyc.github.io/nyc-311-mcp/whats-changed.html",
-  freshness: FRESHNESS_HOOKS,
-  // The website copy of data.json (docs/data.json); data.json also ships in the npm package.
-  catalogUrls: { dataJson: "https://betanyc.github.io/nyc-311-mcp/data.json" },
-});
+/** What about_data says, in place of a date, for a source that needs the 311 Public API on a server with no key. */
+export const NO_API_KEY_REASON = "the City's 311 Public API is not set up on this server (no NYC_311_API_KEY)";
+
+/**
+ * The sources this server cannot reach, for about_data's unavailableSources (shared module
+ * 1.3.6). Read once, at startup. Without NYC_311_API_KEY the calendar, status alerts and request
+ * lookups cannot ask the 311 Public API, so about_data must not call them live. The 311 articles
+ * still answer from a copy saved earlier (with a key), marked stale, so they count as unavailable
+ * only when no copy is saved. The 911 lines built into the server always answer, so they are
+ * never on this list. The key is checked the way getApiKey checks it: unset or empty is missing.
+ */
+export function unavailableSources(
+  env: NodeJS.ProcessEnv = process.env,
+  articlesSaved: () => boolean = () => contentClient().savedAt("categories") !== null
+): Record<string, string> {
+  if (env.NYC_311_API_KEY) return {};
+  const off: Record<string, string> = {
+    "calendar-and-status": NO_API_KEY_REASON,
+    "service-request-lookup": NO_API_KEY_REASON,
+  };
+  let saved = false;
+  try {
+    saved = articlesSaved();
+  } catch {
+    // An unusable cache folder holds no saved copy; index.ts reports the folder problem itself.
+  }
+  if (!saved) off["311-articles"] = NO_API_KEY_REASON;
+  return off;
+}
+
+/** The three shared tools. `unavailable` is for tests; the server reads it from its environment. */
+export function makeBetanycTools(unavailable: Record<string, string> = unavailableSources()) {
+  return createBetanycTools({
+    serverName: "nyc-311-mcp",
+    version: PACKAGE_VERSION,
+    repoUrl: "https://github.com/BetaNYC/nyc-311-mcp",
+    whatsChangedPath: new URL("../WHATS-CHANGED.md", import.meta.url),
+    dataSourcesPath: new URL("../DATA-SOURCES.json", import.meta.url),
+    pageUrl: "https://betanyc.github.io/nyc-311-mcp/whats-changed.html",
+    freshness: FRESHNESS_HOOKS,
+    // The website copy of data.json (docs/data.json); data.json also ships in the npm package.
+    catalogUrls: { dataJson: "https://betanyc.github.io/nyc-311-mcp/data.json" },
+    ...(Object.keys(unavailable).length ? { unavailableSources: unavailable } : {}),
+  });
+}
+
+const betanyc = makeBetanycTools();
 
 const STATUS_TYPES = [
   "CodeBlue",

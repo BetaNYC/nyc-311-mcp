@@ -10,9 +10,11 @@ import { existsSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+// First, so tools.js loads as on a server with a key; the keyless server is tested below.
+import "./with-api-key.mjs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { callTool, TOOLS, SHARED_TOOL_LINE, FRESHNESS_HOOKS } from "../dist/tools.js";
+import { callTool, TOOLS, SHARED_TOOL_LINE, FRESHNESS_HOOKS, NO_API_KEY_REASON, makeBetanycTools, unavailableSources } from "../dist/tools.js";
 import { assertEveryToolExplained, BETANYC_INSTRUCTIONS, parseDataSources } from "../dist/betanyc-tools.js";
 import { SERVER_INSTRUCTIONS } from "../dist/instructions.js";
 import { BoardStatData } from "../dist/boardstat-data.js";
@@ -104,7 +106,8 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   assert.equal(s["community-district-boundaries"].as_of, MANIFEST.sources.community_districts.rowsUpdatedAt_iso);
   assert.equal(s["council-district-boundaries"].as_of, MANIFEST.sources.council_districts.rowsUpdatedAt_iso);
   const text = r.content[0].text;
-  assert.match(text, /not an official NYC Office of Technology and Innovation \(OTI\) report/);
+  // Shared module 1.3.7 wording: "this data", "record" (was "these figures", "report" through 1.3.6).
+  assert.match(text, /This data is BetaNYC.s, derived from it, not an official NYC Office of Technology and Innovation \(OTI\) record\./);
   assert.equal(s["community-district-boundaries"].publisher, "NYC Department of City Planning (DCP)");
   assert.match(text, /Call about_betanyc for who built nyc-311-mcp/);
   assert.ok(text.endsWith(`\n\n${SHARED_TOOL_LINE}`));
@@ -195,4 +198,68 @@ test("DATA-SOURCES.json and data.json ship in the npm package; the website copy 
   } else {
     assert.equal(readFileSync(site, "utf8"), readFileSync(new URL("../data.json", import.meta.url), "utf8"), "docs/data.json must match data.json");
   }
+});
+
+test("about_data gives BetaNYC's contact address, lab@beta.nyc, in its answer and in structuredContent", async (t) => {
+  useCache(t, await seededCache());
+  const r = await callTool("about_data", { topic: "get_calendar" });
+  assert.equal(r.structuredContent.contact_email, "lab@beta.nyc");
+  assert.match(r.content[0].text, /Questions or error reports about this data, to BetaNYC: lab@beta\.nyc/);
+  assert.equal(JSON.parse(DS_TEXT).server.contact_email, "lab@beta.nyc");
+});
+
+test("unavailableSources: with no NYC_311_API_KEY, the sources that need the 311 Public API are named", () => {
+  const three = ["311-articles", "calendar-and-status", "service-request-lookup"];
+  assert.deepEqual(unavailableSources({ NYC_311_API_KEY: "k" }, () => false), {}, "a key: every source reachable");
+  assert.deepEqual(Object.keys(unavailableSources({}, () => false)).sort(), three);
+  assert.deepEqual(Object.keys(unavailableSources({ NYC_311_API_KEY: "" }, () => false)).sort(), three, "empty counts as unset, as in getApiKey");
+  // A copy of the articles saved earlier (with a key) still answers, marked stale.
+  assert.deepEqual(Object.keys(unavailableSources({}, () => true)).sort(), ["calendar-and-status", "service-request-lookup"]);
+  // An unusable cache folder holds no saved copy; it does not stop the server starting.
+  assert.deepEqual(Object.keys(unavailableSources({}, () => { throw new Error("bad cache dir"); })).sort(), three);
+  for (const reason of Object.values(unavailableSources({}, () => false))) assert.equal(reason, NO_API_KEY_REASON);
+  // Every id is a source in DATA-SOURCES.json (createBetanycTools also throws at startup if not).
+  const ids = parseDataSources(DS_TEXT).doc.sources.map((s) => s.id);
+  for (const id of three) assert.ok(ids.includes(id), id);
+});
+
+test("about_data on a server with no key: the API sources are not available, and every other source is untouched", async (t) => {
+  useCache(t, await seededCache());
+  const keyless = makeBetanycTools(unavailableSources({}, () => false));
+  const s = bySource(keyless.call("about_data", {}));
+  for (const id of ["calendar-and-status", "service-request-lookup", "311-articles"]) {
+    assert.equal(s[id].as_of_status, "unavailable", id);
+    assert.equal(s[id].as_of, `not available on this server: ${NO_API_KEY_REASON}`, id);
+  }
+  assert.equal(s["built-in-911-lines"].as_of_status, "copied", "built into the server, so it always answers");
+  assert.equal(s["service-requests-by-district"].as_of, MANIFEST.generated_at);
+  assert.equal(s["call-center-inquiries"].as_of, CITY_META_ISO);
+});
+
+test("over stdio, a server started with no NYC_311_API_KEY says so in about_data", async () => {
+  const cache = await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-about-data-nokey-"));
+  const env = { ...process.env, NYC_311_MCP_CACHE_DIR: cache };
+  delete env.NYC_311_API_KEY;
+  const client = new Client({ name: "about-data-test", version: "0" });
+  await client.connect(new StdioClientTransport({ command: process.execPath, args: ["dist/index.js"], env, stderr: "ignore" }));
+  try {
+    const r = await client.callTool({ name: "about_data", arguments: { topic: "get_calendar" } });
+    assert.equal(r.structuredContent.sources[0].as_of_status, "unavailable");
+    assert.match(r.content[0].text, /not available on this server: the City's 311 Public API is not set up on this server \(no NYC_311_API_KEY\)/);
+  } finally {
+    await client.close();
+  }
+});
+
+test("errors in City data go to whoever runs the form: NYC Open Data for its contact form, NYC311 for the API", async (t) => {
+  useCache(t, await seededCache());
+  const s = bySource(await callTool("about_data", {}));
+  // nyc.gov/opendata/contact-us is the Open Data team's form ("Report an error in a dataset"),
+  // whoever publishes the dataset (report_errors.upstream_name, shared module 1.3.7).
+  for (const id of ["service-requests-by-district", "ll47-service-request-reports", "community-district-boundaries", "council-district-boundaries", "call-center-inquiries", "service-level-agreements"]) {
+    assert.equal(s[id].report_errors.in_the_data, "https://www.nyc.gov/opendata/contact-us", id);
+    assert.equal(s[id].report_errors.in_the_data_name, "NYC Open Data", id);
+  }
+  assert.equal(s["calendar-and-status"].report_errors.in_the_data_name, "City of New York (NYC311)");
+  assert.equal(s["built-in-911-lines"].report_errors.in_the_data_name, "BetaNYC");
 });
