@@ -36,9 +36,9 @@ BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
   ends with the safety line's 911 sentence, like the other two shared tools.
 - `DATA-SOURCES.json`, and `data.json` (DCAT-US 3.0) made from it by
   `scripts/whats_changed.py about-data catalog`, at the repo root. Both ship in the npm package
-  (`files`). The website copy (`docs/data.json`) is added once BetaNYC names its monitored
-  contact address, so the placeholder address is never published there. No `croissant.json`: this repo publishes no data files
-  (BoardStat does).
+  (`files`). A copy is on the website too (`docs/data.json`), and `about_data` gives its
+  address. The contact address for data questions is lab@beta.nyc. No `croissant.json`: this
+  repo publishes no data files (BoardStat does).
 - The server instructions tell AI apps to call `about_data` for questions about sources,
   freshness, officialness and checking, and `about_betanyc` for who built the server.
 - `test/about-data.test.mjs`: every tool must be listed under a source
@@ -46,10 +46,9 @@ BetaNYC/betanyc-ai-workspace#1645 (epic #1637); about_data: #1654 (epic #1652).
   over stdio against its output schema.
 - CI: an `about-data` job runs `about-data check --tools-file` with the server's real tool
   list, `about-data catalog --check` for `data.json`, and the pinned validators
-  (the `DATA-SOURCES.json` JSON Schema and the vendored DCAT-US 3.0 schema). The release
-  gate `about-data check --release` is not wired into the Release workflow yet: it fails
-  while the contact address is the placeholder, and goes in once BetaNYC names a monitored
-  address.
+  (the `DATA-SOURCES.json` JSON Schema and the vendored DCAT-US 3.0 schema), and checks that
+  `docs/data.json` matches `data.json`. The Release workflow runs `about-data check
+  --release` before `npm publish`.
 - `WHATS-CHANGED.md`, the reader-facing record of changes, backfilled to 1.0.0, and shipped
   in the npm package (`files`).
 - `docs/whats-changed.html`, built from it by `scripts/whats_changed.py` (copied unchanged

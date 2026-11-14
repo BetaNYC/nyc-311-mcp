@@ -133,14 +133,14 @@ jobs:
 
   # The about-data standard (betanyc-ai-workspace platform/system/about-data-standard.md § 7).
   # DATA-SOURCES.json says where every tool's data comes from; data.json (DCAT-US 3.0) is made
-  # from it, at the repo root (in the npm package). The website copy, docs/data.json, is added once
-  # BetaNYC names its monitored contact address, so the placeholder is never published. This
+  # from it, at the repo root (in the npm package). docs/data.json is the website copy, written with
+  # `about-data catalog DATA-SOURCES.json --dcat docs/data.json`; CI fails unless it matches. This
   # repo publishes no data files of its own (BoardStat does), so there is no croissant.json, and
   # `catalog --check` fails if one appears. scripts/tests/catalog_validate.py, the vendored
   # DCAT-US 3.0 schema under scripts/mcp_shared/vendor/ and scripts/mcp_shared/data-sources.schema.json
   # are copies of the workspace's files: never edit them here. The validators are pinned and run
-  # outside the project; none is a runtime dependency. `about-data check --release` (fails on the
-  # placeholder contact address) joins release.yml once BetaNYC names its monitored address.
+  # outside the project; none is a runtime dependency. The contact address is lab@beta.nyc
+  # (named 2026-11-13); release.yml runs `about-data check --release` before npm publish.
   about-data:
     name: About data (DATA-SOURCES.json, data.json)
     runs-on: ubuntu-latest
@@ -172,6 +172,9 @@ jobs:
 
       - name: data.json is current
         run: python3 scripts/whats_changed.py about-data catalog DATA-SOURCES.json --check
+
+      - name: The website's copy, docs/data.json, matches data.json
+        run: cmp data.json docs/data.json
 
       - name: DATA-SOURCES.json passes its JSON Schema; data.json is valid DCAT-US 3.0
         run: |
