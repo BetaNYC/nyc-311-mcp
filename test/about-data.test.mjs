@@ -250,3 +250,16 @@ test("over stdio, a server started with no NYC_311_API_KEY says so in about_data
     await client.close();
   }
 });
+
+test("errors in City data go to whoever runs the form: NYC Open Data for its contact form, NYC311 for the API", async (t) => {
+  useCache(t, await seededCache());
+  const s = bySource(await callTool("about_data", {}));
+  // nyc.gov/opendata/contact-us is the Open Data team's form ("Report an error in a dataset"),
+  // whoever publishes the dataset (report_errors.upstream_name, shared module 1.3.7).
+  for (const id of ["service-requests-by-district", "ll47-service-request-reports", "community-district-boundaries", "council-district-boundaries", "call-center-inquiries", "service-level-agreements"]) {
+    assert.equal(s[id].report_errors.in_the_data, "https://www.nyc.gov/opendata/contact-us", id);
+    assert.equal(s[id].report_errors.in_the_data_name, "NYC Open Data", id);
+  }
+  assert.equal(s["calendar-and-status"].report_errors.in_the_data_name, "City of New York (NYC311)");
+  assert.equal(s["built-in-911-lines"].report_errors.in_the_data_name, "BetaNYC");
+});

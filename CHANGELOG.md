@@ -19,6 +19,9 @@ Moves the shared BetaNYC module to 1.3.7. Tracking: BetaNYC/betanyc-ai-workspace
   `data.json` now say "this data is BetaNYC's ... not an official record" (was "these figures
   ... not an official report"), and betanyc.github.io counts as BetaNYC's own site when routing
   error reports. `data.json` and `docs/data.json` rebuilt.
+- `DATA-SOURCES.json`: the six sources whose error route is nyc.gov/opendata/contact-us now
+  name NYC Open Data as who handles it (`report_errors.upstream_name`, new in 1.3.7). That form
+  belongs to NYC Open Data's team, so reports no longer read as going to OTI or DCP directly.
 - `about_data` gives BetaNYC's address for questions and error reports about the data,
   lab@beta.nyc, as a line in its answer and as `contact_email` in `structuredContent`.
 - On a server with no `NYC_311_API_KEY`, `about_data` says the 311 calendar and status
