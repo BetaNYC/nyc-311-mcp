@@ -123,7 +123,7 @@ test("about_data for the calendar: live, passed on unchanged, with its correctio
   assert.deepEqual(c.corrections.map((x) => x.date), ["2026-07-06", "2026-07-21"]);
   for (const x of c.corrections) assert.ok(x.url.startsWith("https://betanyc.github.io/nyc-311-mcp/whats-changed.html#2026-07-"), x.url);
   assert.equal(r.structuredContent.note, null);
-  assert.equal(r.structuredContent.catalog.data_json, null, "no public catalog URL until the contact address is named");
+  assert.equal(r.structuredContent.catalog.data_json, "https://betanyc.github.io/nyc-311-mcp/data.json");
   assert.match(r.content[0].text, /Official record: yes, passed on as City of New York \(NYC311\) publishes it\./);
 });
 
@@ -183,13 +183,16 @@ test("over stdio, the SDK client accepts about_data for two topics against its o
   }
 });
 
-test("DATA-SOURCES.json and data.json ship in the npm package; the website gets no copy while the contact is a placeholder", () => {
+test("DATA-SOURCES.json and data.json ship in the npm package; the website copy matches, and only with a real contact", () => {
   const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8" });
   const files = JSON.parse(out)[0].files.map((f) => f.path);
   for (const f of ["DATA-SOURCES.json", "data.json", "WHATS-CHANGED.md"]) assert.ok(files.includes(f), `${f}: ${files.join(", ")}`);
   assert.ok(!files.includes("croissant.json"), "this repo publishes no data files of its own");
   // GitHub Pages serves docs/ from main, so a docs/data.json would publish the placeholder.
+  const site = new URL("../docs/data.json", import.meta.url);
   if (DS_TEXT.includes("contact-not-yet-named@example.invalid")) {
-    assert.equal(existsSync(new URL("../docs/data.json", import.meta.url)), false, "docs/data.json would publish the placeholder contact");
+    assert.equal(existsSync(site), false, "docs/data.json would publish the placeholder contact");
+  } else {
+    assert.equal(readFileSync(site, "utf8"), readFileSync(new URL("../data.json", import.meta.url), "utf8"), "docs/data.json must match data.json");
   }
 });

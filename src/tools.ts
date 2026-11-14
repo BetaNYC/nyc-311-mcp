@@ -70,8 +70,8 @@ const betanyc = createBetanycTools({
   dataSourcesPath: new URL("../DATA-SOURCES.json", import.meta.url),
   pageUrl: "https://betanyc.github.io/nyc-311-mcp/whats-changed.html",
   freshness: FRESHNESS_HOOKS,
-  // No catalogUrls yet: the website copy of data.json waits for BetaNYC's monitored contact
-  // address (it would publish the placeholder). data.json ships in the npm package meanwhile.
+  // The website copy of data.json (docs/data.json); data.json also ships in the npm package.
+  catalogUrls: { dataJson: "https://betanyc.github.io/nyc-311-mcp/data.json" },
 });
 
 const STATUS_TYPES = [
