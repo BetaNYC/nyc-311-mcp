@@ -106,7 +106,8 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   assert.equal(s["community-district-boundaries"].as_of, MANIFEST.sources.community_districts.rowsUpdatedAt_iso);
   assert.equal(s["council-district-boundaries"].as_of, MANIFEST.sources.council_districts.rowsUpdatedAt_iso);
   const text = r.content[0].text;
-  assert.match(text, /not an official NYC Office of Technology and Innovation \(OTI\) report/);
+  // Shared module 1.3.7 wording: "this data", "record" (was "these figures", "report" through 1.3.6).
+  assert.match(text, /This data is BetaNYC.s, derived from it, not an official NYC Office of Technology and Innovation \(OTI\) record\./);
   assert.equal(s["community-district-boundaries"].publisher, "NYC Department of City Planning (DCP)");
   assert.match(text, /Call about_betanyc for who built nyc-311-mcp/);
   assert.ok(text.endsWith(`\n\n${SHARED_TOOL_LINE}`));

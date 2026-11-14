@@ -442,7 +442,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#311-articles",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to City of New York (NYC311): https://api-portal.nyc.gov/)",
+        "fn": "BetaNYC (serves this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to City of New York (NYC311): https://api-portal.nyc.gov/)",
         "hasEmail": "mailto:lab@beta.nyc"
       },
       "publisher": {
@@ -493,7 +493,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official City of New York (NYC311) report.",
+        "Official source: yes. This data is BetaNYC's, derived from it, not an official City of New York (NYC311) record.",
         "Read-only requests to the 311 Public API's content operations (GetCategory, GetContentList, GetContent). Each result is saved on this machine for 7 days (1 day for an article that says something holds right now), and an older saved copy answers, marked stale, when the API cannot be reached.",
         "Changed by BetaNYC: BetaNYC's keyword matching picks which articles answer a description, reading only a few categories. Article HTML is reduced to plain text, and ZIP codes are removed from it. The words are the City's."
       ],
@@ -622,7 +622,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-requests-by-district",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
+        "fn": "BetaNYC (serves this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:lab@beta.nyc"
       },
       "publisher": {
@@ -673,7 +673,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) report.",
+        "Official source: yes. This data is BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) record.",
         "BoardStat (BetaNYC) pulls OTI's dataset from NYC Open Data, the City's open data portal, every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
         "Changed by BetaNYC: Requests created before 2020-01-01 are left out. Each request with usable coordinates is placed in a community district and a Council district by BetaNYC's own point-in-polygon join against the City's current district boundaries, not the City's own district fields. Problem names are grouped where the City spells one two ways. Requests are counted by district, month, problem type, agency and address. ZIP codes are dropped."
       ],
@@ -728,7 +728,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#ll47-service-request-reports",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
+        "fn": "BetaNYC (serves this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:lab@beta.nyc"
       },
       "publisher": {
@@ -779,7 +779,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) report.",
+        "Official source: yes. This data is BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) record.",
         "Built from BoardStat's nightly files (see service-requests-by-district), downloaded once per BoardStat build.",
         "Changed by BetaNYC: Uses BoardStat's district placement, then counts one community district's requests for a month and its fiscal year to date, by agency and problem type, in the shape of the former Charter § 1075 reports. Nothing before 2020-01-01; no ZIP codes."
       ],
@@ -992,7 +992,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#call-center-inquiries",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
+        "fn": "BetaNYC (serves this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:lab@beta.nyc"
       },
       "publisher": {
@@ -1043,7 +1043,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) report.",
+        "Official source: yes. This data is BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) record.",
         "Read-only queries to NYC Open Data, the City's open data portal, where OTI publishes the dataset: one query per month, saved on this machine; the month in progress is asked again after an hour.",
         "Changed by BetaNYC: Calls are counted by topic (inquiry_name) for one month and the fiscal year to date, with the topic named Directory Assistance shown separately. Nothing before 2020-01-01."
       ],
@@ -1090,7 +1090,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#service-level-agreements",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in these figures to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
+        "fn": "BetaNYC (serves this dataset; report errors in this data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to NYC Office of Technology and Innovation (OTI): https://www.nyc.gov/opendata/contact-us)",
         "hasEmail": "mailto:lab@beta.nyc"
       },
       "publisher": {
@@ -1141,7 +1141,7 @@
         }
       ],
       "provenance": [
-        "Official source: yes. These figures are BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) report.",
+        "Official source: yes. This data is BetaNYC's, derived from it, not an official NYC Office of Technology and Innovation (OTI) record.",
         "All rows read from NYC Open Data, the City's open data portal, where OTI publishes the dataset, once and saved on this machine for 30 days; after that the dataset is checked and read again only if it changed.",
         "Changed by BetaNYC: Only the rows for the problem type a draft is about are shown, grouped by Problem Detail with their response times. Rows with no agency, problem or response time are left out."
       ],

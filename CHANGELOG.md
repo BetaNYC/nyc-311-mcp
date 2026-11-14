@@ -9,12 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - Unreleased
 
-Moves the shared BetaNYC module to 1.3.6. Tracking: BetaNYC/betanyc-ai-workspace#1655
+Moves the shared BetaNYC module to 1.3.7. Tracking: BetaNYC/betanyc-ai-workspace#1655
 (epic #1652).
 
 ### Changed
 
-- `src/betanyc-tools.ts` is the shared module 1.3.6, copied unchanged from the workspace.
+- `src/betanyc-tools.ts` and `scripts/whats_changed.py` are the shared module 1.3.7, copied
+  unchanged from the workspace. Where BetaNYC changed the City's data, `about_data` and
+  `data.json` now say "this data is BetaNYC's ... not an official record" (was "these figures
+  ... not an official report"), and betanyc.github.io counts as BetaNYC's own site when routing
+  error reports. `data.json` and `docs/data.json` rebuilt.
 - `about_data` gives BetaNYC's address for questions and error reports about the data,
   lab@beta.nyc, as a line in its answer and as `contact_email` in `structuredContent`.
 - On a server with no `NYC_311_API_KEY`, `about_data` says the 311 calendar and status
