@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - Unreleased
+
+Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace#1655 and
+#1672 (epic #1652).
+
+### Changed
+
+- `src/betanyc-tools.ts`, `scripts/whats_changed.py`, `scripts/mcp_shared/data-sources.schema.json`
+  and `scripts/tests/catalog_validate.py` are the shared module 1.4.0, copied unchanged from the
+  workspace. `about_data` gives every source one of three answers on whether it is official,
+  each naming the source, its publisher and a link: "Publisher: … BetaNYC did not modify it",
+  "BetaNYC modified this data: …" or "BetaNYC produced this". Any step at all, including
+  leaving out ZIP codes or adding a plain-language block, now means BetaNYC modified the data,
+  so `figures_official` is true only for the two district boundary files.
+- `DATA-SOURCES.json` for 1.4.0: each publisher is named as the source itself credits it, with
+  no acronym in parentheses. The three 311 datasets on NYC Open Data: "311" (Open Data's "Data
+  Provided by"; was OTI). The two boundary files: "Department of City Planning". The 311
+  Public API sources: "City of New York" (the API portal credits no one); the three 311 Public API sources are named by the API's own operations
+  and link to each operation's page; `calendar-and-status` is modified (get_status adds a
+  plain_language block); `built-in-911-lines` is the City's own 911 lines, modified by BetaNYC
+  (official, steps filtered and curated), not produced by it, and errors in the City's own
+  text now go to the City (the 311 Public API's support address) as well as to BetaNYC; the BoardStat sources list the
+  steps they were missing (cleaned and fields-removed; fields-removed and reshaped).
+- Earlier in this release, with module 1.3.7: Where BetaNYC changed the City's data, `about_data` and
+  `data.json` now say "this data is BetaNYC's ... not an official record" (was "these figures
+  ... not an official report"), and betanyc.github.io counts as BetaNYC's own site when routing
+  error reports. `data.json` and `docs/data.json` rebuilt.
+- `DATA-SOURCES.json`: the six sources whose error route is nyc.gov/opendata/contact-us now
+  name NYC Open Data as who handles it (`report_errors.upstream_name`, new in 1.3.7). That form
+  belongs to NYC Open Data's team, so reports no longer read as going to OTI or DCP directly.
+- `about_data` gives BetaNYC's address for questions and error reports about the data,
+  lab@beta.nyc, as a line in its answer and as `contact_email` in `structuredContent`.
+- On a server with no `NYC_311_API_KEY`, `about_data` says the 311 calendar and status
+  alerts, the request lookups, and (when no copy was saved earlier) the 311 articles are
+  not available on this server, instead of calling them live. Every other source answers
+  as before. New export `unavailableSources()` in `src/tools.ts` decides this once, at
+  startup.
+
 ## [1.3.0] - 2026-11-13
 
 Adds three shared BetaNYC tools (every BetaNYC MCP server is getting them; nyc-311-mcp is
