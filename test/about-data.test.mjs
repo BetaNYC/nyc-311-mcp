@@ -91,11 +91,11 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   const s = bySource(r);
   const d = s["service-requests-by-district"];
   assert.ok(d, Object.keys(s).join(", "));
-  assert.equal(d.publisher, "NYC Office of Technology and Innovation (OTI)");
+  assert.equal(d.publisher, "NYC Office of Technology and Innovation");
   assert.equal(d.source_url, "https://data.cityofnewyork.us/d/erm2-nwe9");
   assert.equal(d.official, true);
   assert.equal(d.figures_official, false, "BetaNYC placed and counted them");
-  assert.deepEqual(d.changed_by_betanyc.steps, ["filtered", "address-matched", "merged", "counted"]);
+  assert.deepEqual(d.changed_by_betanyc.steps, ["filtered", "cleaned", "fields-removed", "address-matched", "merged", "counted"]);
   assert.equal(d.as_of, MANIFEST.generated_at, "read from the saved manifest");
   assert.equal(d.as_of_status, "read");
   assert.equal(d.coverage.start, "2020-01-01");
@@ -106,28 +106,29 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   assert.equal(s["community-district-boundaries"].as_of, MANIFEST.sources.community_districts.rowsUpdatedAt_iso);
   assert.equal(s["council-district-boundaries"].as_of, MANIFEST.sources.council_districts.rowsUpdatedAt_iso);
   const text = r.content[0].text;
-  // Shared module 1.3.7 wording: "this data", "record" (was "these figures", "report" through 1.3.6).
-  assert.match(text, /This data is BetaNYC.s, derived from it, not an official NYC Office of Technology and Innovation \(OTI\) record\./);
-  assert.equal(s["community-district-boundaries"].publisher, "NYC Department of City Planning (DCP)");
+  // Shared module 1.4.0: one of three answers, naming the source, its publisher and its link.
+  assert.match(text, /^BetaNYC modified this data: .*\. This copy should not be considered the official record\. Official record: 311 Service Requests from 2020 to Present \(NYC Office of Technology and Innovation\), https:\/\/data\.cityofnewyork\.us\/d\/erm2-nwe9$/m);
+  assert.match(text, /^Publisher: NYC Department of City Planning\. BetaNYC did not modify it\. Source: Community Districts, https:\/\/data\.cityofnewyork\.us\/d\/5crt-au7u$/m);
+  assert.equal(s["community-district-boundaries"].publisher, "NYC Department of City Planning");
   assert.match(text, /Call about_betanyc for who built nyc-311-mcp/);
   assert.ok(text.endsWith(`\n\n${SHARED_TOOL_LINE}`));
 });
 
-test("about_data for the calendar: live, passed on unchanged, with its corrections linked", async (t) => {
+test("about_data for the calendar: live, modified by BetaNYC (a plain_language block), with its corrections linked", async (t) => {
   useCache(t, await seededCache());
   const r = await callTool("about_data", { topic: "get_calendar" });
   const [c] = r.structuredContent.sources;
   assert.equal(r.structuredContent.sources.length, 1);
   assert.equal(c.topic, "calendar-and-status");
   assert.equal(c.as_of_status, "live");
-  assert.equal(c.figures_official, true);
+  assert.equal(c.figures_official, false, "get_status adds plain_language");
   assert.equal(c.report_errors.in_the_data_email, "api-support@platform.nyc.gov");
-  assert.equal(c.publisher, "City of New York (NYC311)");
+  assert.equal(c.publisher, "City of New York");
   assert.deepEqual(c.corrections.map((x) => x.date), ["2026-07-06", "2026-07-21"]);
   for (const x of c.corrections) assert.ok(x.url.startsWith("https://betanyc.github.io/nyc-311-mcp/whats-changed.html#2026-07-"), x.url);
   assert.equal(r.structuredContent.note, null);
   assert.equal(r.structuredContent.catalog.data_json, "https://betanyc.github.io/nyc-311-mcp/data.json");
-  assert.match(r.content[0].text, /Official record: yes, passed on as City of New York \(NYC311\) publishes it\./);
+  assert.match(r.content[0].text, /^BetaNYC modified this data: reshaped it\. This copy should not be considered the official record\. Official record: NYC 311 Public API: GetCalendar and Status \(City of New York\), https:\/\/api-portal\.nyc\.gov\/api-details#api=nyc-311-public-api&operation=api-GetCalendar-get$/m);
 });
 
 test("about_data reads the Socrata and 311 content caches, and the built-in 911 date", async (t) => {
@@ -140,10 +141,14 @@ test("about_data reads the Socrata and 311 content caches, and the built-in 911 
   assert.equal(s["built-in-911-lines"].as_of, `copied from the source on ${BUILT_IN_911_READ} and built into this server`);
   assert.equal(s["built-in-911-lines"].as_of_status, "copied");
   assert.equal(s["built-in-911-lines"].report_errors.in_the_data, "https://github.com/BetaNYC/nyc-311-mcp/issues");
-  // ZIP codes left out, every other value as the API sends it: still the official record.
-  assert.equal(s["service-request-lookup"].figures_official, true);
+  // ZIP codes left out and a plain_language block added: from 1.4.0 any step means BetaNYC
+  // modified the data, so this copy is not the official record.
+  assert.equal(s["service-request-lookup"].figures_official, false);
   assert.deepEqual(s["service-request-lookup"].changed_by_betanyc.steps, ["fields-removed", "reshaped"]);
-  assert.equal(s["built-in-911-lines"].official, false, "BetaNYC's curation");
+  // The City's own 911 lines, chosen and copied by BetaNYC: modified, not produced (#1674).
+  assert.equal(s["built-in-911-lines"].official, true);
+  assert.equal(s["built-in-911-lines"].figures_official, false);
+  assert.deepEqual(s["built-in-911-lines"].changed_by_betanyc.steps, ["filtered", "curated"]);
   assert.equal(s["ll47-service-request-reports"].figures_official, false);
 });
 
@@ -251,7 +256,7 @@ test("over stdio, a server started with no NYC_311_API_KEY says so in about_data
   }
 });
 
-test("errors in City data go to whoever runs the form: NYC Open Data for its contact form, NYC311 for the API", async (t) => {
+test("errors in City data go to whoever runs the form: NYC Open Data for its contact form, the City for the API", async (t) => {
   useCache(t, await seededCache());
   const s = bySource(await callTool("about_data", {}));
   // nyc.gov/opendata/contact-us is the Open Data team's form ("Report an error in a dataset"),
@@ -260,6 +265,6 @@ test("errors in City data go to whoever runs the form: NYC Open Data for its con
     assert.equal(s[id].report_errors.in_the_data, "https://www.nyc.gov/opendata/contact-us", id);
     assert.equal(s[id].report_errors.in_the_data_name, "NYC Open Data", id);
   }
-  assert.equal(s["calendar-and-status"].report_errors.in_the_data_name, "City of New York (NYC311)");
+  assert.equal(s["calendar-and-status"].report_errors.in_the_data_name, "City of New York");
   assert.equal(s["built-in-911-lines"].report_errors.in_the_data_name, "BetaNYC");
 });

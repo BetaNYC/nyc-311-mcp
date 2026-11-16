@@ -9,13 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - Unreleased
 
-Moves the shared BetaNYC module to 1.3.7. Tracking: BetaNYC/betanyc-ai-workspace#1655
-(epic #1652).
+Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace#1655 and
+#1672 (epic #1652).
 
 ### Changed
 
-- `src/betanyc-tools.ts` and `scripts/whats_changed.py` are the shared module 1.3.7, copied
-  unchanged from the workspace. Where BetaNYC changed the City's data, `about_data` and
+- `src/betanyc-tools.ts`, `scripts/whats_changed.py`, `scripts/mcp_shared/data-sources.schema.json`
+  and `scripts/tests/catalog_validate.py` are the shared module 1.4.0, copied unchanged from the
+  workspace. `about_data` gives every source one of three answers on whether it is official,
+  each naming the source, its publisher and a link: "Publisher: … BetaNYC did not modify it",
+  "BetaNYC modified this data: …" or "BetaNYC produced this". Any step at all, including
+  leaving out ZIP codes or adding a plain-language block, now means BetaNYC modified the data,
+  so `figures_official` is true only for the two district boundary files.
+- `DATA-SOURCES.json` for 1.4.0: publisher names are spelled out with no acronym in
+  parentheses ("NYC Office of Technology and Innovation", "NYC Department of City Planning",
+  "City of New York"); the three 311 Public API sources are named by the API's own operations
+  and link to each operation's page; `calendar-and-status` is modified (get_status adds a
+  plain_language block); `built-in-911-lines` is the City's own 911 lines, modified by BetaNYC
+  (official, steps filtered and curated), not produced by it; the BoardStat sources list the
+  steps they were missing (cleaned and fields-removed; fields-removed and reshaped).
+- Earlier in this release, with module 1.3.7: Where BetaNYC changed the City's data, `about_data` and
   `data.json` now say "this data is BetaNYC's ... not an official record" (was "these figures
   ... not an official report"), and betanyc.github.io counts as BetaNYC's own site when routing
   error reports. `data.json` and `docs/data.json` rebuilt.

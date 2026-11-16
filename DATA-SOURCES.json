@@ -31,17 +31,20 @@
       "id": "calendar-and-status",
       "title": "311 calendar and status alerts",
       "what": "The City's calendar for alternate side parking, garbage and recycling collection and schools, and whether a City status (Code Blue, a fire hydrant emergency, an OEM emergency event, snow or ice on sidewalks or streets) is in effect.",
-      "source_name": "NYC 311 Public API",
+      "source_name": "NYC 311 Public API: GetCalendar and Status",
       "publisher": {
-        "name": "City of New York (NYC311)",
+        "name": "City of New York",
         "url": "https://portal.311.nyc.gov/about-nyc-311/"
       },
-      "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
+      "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api&operation=api-GetCalendar-get",
       "official": true,
       "how_gathered": "Read-only requests to the City's 311 Public API at the moment you ask, with the operator's own NYC_311_API_KEY.",
       "changes": {
-        "changed": false,
-        "steps": []
+        "changed": true,
+        "steps": [
+          "reshaped"
+        ],
+        "detail": "get_status adds a plain_language block that says in words whether the status is in effect, what it checks, and when it was asked. Every value the API returns is kept as returned."
       },
       "verify_at": "https://portal.311.nyc.gov/",
       "freshness": {
@@ -59,7 +62,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Source: NYC 311 Public API, City of New York (NYC311)."
+        "credit_line": "Source: NYC 311 Public API, City of New York."
       },
       "report_errors": {
         "upstream_url": "https://api-portal.nyc.gov/",
@@ -82,12 +85,12 @@
       "id": "service-request-lookup",
       "title": "Lookup of one 311 request by number",
       "what": "One or several 311 service requests by their 311 numbers: agency, problem, status, when it was submitted, address and the agency's resolution text.",
-      "source_name": "NYC 311 Public API",
+      "source_name": "NYC 311 Public API: GetServiceRequest and GetServiceRequestList",
       "publisher": {
-        "name": "City of New York (NYC311)",
+        "name": "City of New York",
         "url": "https://portal.311.nyc.gov/about-nyc-311/"
       },
-      "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
+      "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api&operation=api-GetServiceRequest-get",
       "official": true,
       "how_gathered": "Read-only requests to the City's 311 Public API at the moment you ask, with the operator's own NYC_311_API_KEY.",
       "changes": {
@@ -115,7 +118,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Source: NYC 311 Public API, City of New York (NYC311)."
+        "credit_line": "Source: NYC 311 Public API, City of New York."
       },
       "report_errors": {
         "upstream_url": "https://api-portal.nyc.gov/",
@@ -137,12 +140,12 @@
       "id": "311-articles",
       "title": "The City's 311 articles on how to report a problem",
       "what": "The knowledge-base articles 311 Online shows (KA numbers), their categories, and the agency and 311 problem type each reportable action goes to.",
-      "source_name": "NYC 311 Public API",
+      "source_name": "NYC 311 Public API: GetCategory, GetContentList and GetContent",
       "publisher": {
-        "name": "City of New York (NYC311)",
+        "name": "City of New York",
         "url": "https://portal.311.nyc.gov/about-nyc-311/"
       },
-      "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api",
+      "source_url": "https://api-portal.nyc.gov/api-details#api=nyc-311-public-api&operation=api-GetContent-get",
       "official": true,
       "how_gathered": "Read-only requests to the 311 Public API's content operations (GetCategory, GetContentList, GetContent). Each result is saved on this machine for 7 days (1 day for an article that says something holds right now), and an older saved copy answers, marked stale, when the API cannot be reached.",
       "changes": {
@@ -151,7 +154,7 @@
           "filtered",
           "reshaped"
         ],
-        "detail": "BetaNYC's keyword matching picks which articles answer a description, reading only a few categories. Article HTML is reduced to plain text, and ZIP codes are removed from it. The words are the City's."
+        "detail": "BetaNYC's keyword matching picks which articles answer a description, reading only a few categories. Article HTML is reduced to plain text, and ZIP codes are removed from it. Apart from the ZIP codes, the words are the City's."
       },
       "verify_at": "https://portal.311.nyc.gov/",
       "freshness": {
@@ -171,7 +174,7 @@
       "terms": {
         "license_name": "None stated by the publisher",
         "terms_url": "https://www.nyc.gov/main/terms-of-use",
-        "credit_line": "Source: NYC 311 Public API, City of New York (NYC311)."
+        "credit_line": "Source: NYC 311 Public API, City of New York."
       },
       "report_errors": {
         "upstream_url": "https://api-portal.nyc.gov/",
@@ -194,15 +197,16 @@
       "what": "A keyword check for descriptions that suggest danger, and the City's own one-line 'Call 911' summaries from twelve 311 articles (fire, gas leak, medical emergency and others), built into the server.",
       "source_name": "311 Online articles",
       "publisher": {
-        "name": "City of New York (NYC311)",
+        "name": "City of New York",
         "url": "https://portal.311.nyc.gov/about-nyc-311/"
       },
       "source_url": "https://portal.311.nyc.gov/",
-      "official": false,
+      "official": true,
       "how_gathered": "BetaNYC copied the City's 'Call 911' summaries word for word from the 311 Public API and wrote the danger keywords itself. The live article is used whenever it can be read; the built-in copy answers when 311's content cannot be reached.",
       "changes": {
         "changed": true,
         "steps": [
+          "filtered",
           "curated"
         ],
         "detail": "BetaNYC chose which dangers to check for and which City articles answer them, and wrote the keyword lists. The 911 lines are the City's words, unchanged."
@@ -245,7 +249,7 @@
       "what": "Every 311 service request since 2020-01-01, placed in its community district and City Council district, with counts by problem type, agency, month and address. BoardStat is BetaNYC's own product, built from the City's data.",
       "source_name": "311 Service Requests from 2020 to Present",
       "publisher": {
-        "name": "NYC Office of Technology and Innovation (OTI)",
+        "name": "NYC Office of Technology and Innovation",
         "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
@@ -255,6 +259,8 @@
         "changed": true,
         "steps": [
           "filtered",
+          "cleaned",
+          "fields-removed",
           "address-matched",
           "merged",
           "counted"
@@ -278,7 +284,7 @@
         ]
       },
       "terms": {
-        "license_name": "No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "license_name": "No restrictions on use: NYC Administrative Code \u00a7 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "terms_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807",
         "credit_line": "BoardStat by BetaNYC (https://www.beta.nyc/boardstat/), built from NYC Open Data. Data available under the Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/"
       },
@@ -314,7 +320,7 @@
       "what": "BetaNYC's rebuild of the monthly 311 service request reports that Local Law 47 of 2005 required for each community district: requests by agency and problem type, and the list of requests for a month.",
       "source_name": "311 Service Requests from 2020 to Present",
       "publisher": {
-        "name": "NYC Office of Technology and Innovation (OTI)",
+        "name": "NYC Office of Technology and Innovation",
         "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
@@ -324,10 +330,12 @@
         "changed": true,
         "steps": [
           "filtered",
+          "fields-removed",
           "address-matched",
-          "counted"
+          "counted",
+          "reshaped"
         ],
-        "detail": "Uses BoardStat's district placement, then counts one community district's requests for a month and its fiscal year to date, by agency and problem type, in the shape of the former Charter § 1075 reports. Nothing before 2020-01-01; no ZIP codes."
+        "detail": "Uses BoardStat's district placement, then counts one community district's requests for a month and its fiscal year to date, by agency and problem type, in the shape of the former Charter \u00a7 1075 reports. Nothing before 2020-01-01; no ZIP codes."
       },
       "verify_at": "https://data.cityofnewyork.us/d/erm2-nwe9",
       "freshness": {
@@ -345,7 +353,7 @@
         ]
       },
       "terms": {
-        "license_name": "No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "license_name": "No restrictions on use: NYC Administrative Code \u00a7 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "terms_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807",
         "credit_line": "BoardStat by BetaNYC (https://www.beta.nyc/boardstat/), built from NYC Open Data. Data available under the Open Database License (ODbL) 1.0: https://opendatacommons.org/licenses/odbl/1-0/"
       },
@@ -359,7 +367,7 @@
       ],
       "caveats": [
         "Report a wrong district, a wrong grouped problem name or a wrong count to BetaNYC first, in this server's issues: those are BetaNYC's work. Only an error in a request's own City record (its type, agency, dates or address as the City published them) goes to NYC Open Data.",
-        "A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075.",
+        "A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter \u00a7 1075.",
         "311 counts are reports, not problems: they show who reports and how, not only how many problems there are. 'Closed' does not mean fixed."
       ],
       "corrections": []
@@ -370,7 +378,7 @@
       "what": "The City's community district boundaries (59 districts and 12 Joint Interest Areas), which BoardStat uses to place each 311 request.",
       "source_name": "Community Districts",
       "publisher": {
-        "name": "NYC Department of City Planning (DCP)",
+        "name": "NYC Department of City Planning",
         "url": "https://www.nyc.gov/site/planning/index.page"
       },
       "source_url": "https://data.cityofnewyork.us/d/5crt-au7u",
@@ -395,7 +403,7 @@
         ]
       },
       "terms": {
-        "license_name": "No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "license_name": "No restrictions on use: NYC Administrative Code \u00a7 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "terms_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807",
         "credit_line": "Source: NYC Department of City Planning, Community Districts (5crt-au7u), via NYC Open Data."
       },
@@ -430,7 +438,7 @@
       "what": "The City's 51 City Council district boundaries, which BoardStat uses to place each 311 request.",
       "source_name": "City Council Districts",
       "publisher": {
-        "name": "NYC Department of City Planning (DCP)",
+        "name": "NYC Department of City Planning",
         "url": "https://www.nyc.gov/site/planning/index.page"
       },
       "source_url": "https://data.cityofnewyork.us/d/872g-cjhh",
@@ -455,7 +463,7 @@
         ]
       },
       "terms": {
-        "license_name": "No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "license_name": "No restrictions on use: NYC Administrative Code \u00a7 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "terms_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807",
         "credit_line": "Source: NYC Department of City Planning, City Council Districts (872g-cjhh), via NYC Open Data."
       },
@@ -485,10 +493,10 @@
     {
       "id": "call-center-inquiries",
       "title": "Calls to 311 agents, for the directory assistance report",
-      "what": "Agent-handled calls to the City's 311 line by date, time and topic, counted for BetaNYC's rebuild of the monthly directory assistance report of former Charter § 1075(c).",
+      "what": "Agent-handled calls to the City's 311 line by date, time and topic, counted for BetaNYC's rebuild of the monthly directory assistance report of former Charter \u00a7 1075(c).",
       "source_name": "311 Call Center Inquiry",
       "publisher": {
-        "name": "NYC Office of Technology and Innovation (OTI)",
+        "name": "NYC Office of Technology and Innovation",
         "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/wewp-mm3p",
@@ -519,7 +527,7 @@
         ]
       },
       "terms": {
-        "license_name": "No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "license_name": "No restrictions on use: NYC Administrative Code \u00a7 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "terms_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807",
         "credit_line": "Source: NYC Office of Technology and Innovation, 311 Call Center Inquiry (wewp-mm3p), via NYC Open Data."
       },
@@ -531,7 +539,7 @@
         "ll47_directory_assistance_report"
       ],
       "caveats": [
-        "A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075."
+        "A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter \u00a7 1075."
       ],
       "corrections": []
     },
@@ -541,7 +549,7 @@
       "what": "The time each City agency has committed to respond to a 311 problem type, and the Problem Detail options for each, used in draft reports.",
       "source_name": "311 Service Level Agreements",
       "publisher": {
-        "name": "NYC Office of Technology and Innovation (OTI)",
+        "name": "NYC Office of Technology and Innovation",
         "url": "https://www.nyc.gov/content/oti/pages/"
       },
       "source_url": "https://data.cityofnewyork.us/d/cs9t-e3x8",
@@ -570,7 +578,7 @@
         ]
       },
       "terms": {
-        "license_name": "No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
+        "license_name": "No restrictions on use: NYC Administrative Code \u00a7 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
         "terms_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807",
         "credit_line": "Source: NYC Office of Technology and Innovation, 311 Service Level Agreements (cs9t-e3x8), via NYC Open Data."
       },
