@@ -126,8 +126,8 @@
       "identifier": "https://portal.311.nyc.gov/",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (lists this dataset; report errors in the data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues)",
-        "hasEmail": "mailto:lab@beta.nyc"
+        "fn": "City of New York",
+        "hasEmail": "mailto:api-support@platform.nyc.gov"
       },
       "publisher": {
         "@type": "Organization",
@@ -156,7 +156,7 @@
       "@id": "https://data.cityofnewyork.us/d/erm2-nwe9",
       "@type": "Dataset",
       "title": "311 Service Requests from 2020 to Present",
-      "description": "311 Service Requests from 2020 to Present, published by NYC Office of Technology and Innovation.",
+      "description": "311 Service Requests from 2020 to Present, published by 311.",
       "identifier": "https://data.cityofnewyork.us/d/erm2-nwe9",
       "contactPoint": {
         "@type": "Kind",
@@ -165,8 +165,7 @@
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Office of Technology and Innovation",
-        "@id": "https://www.nyc.gov/content/oti/pages/"
+        "name": "311"
       },
       "landingPage": {
         "@type": "Document",
@@ -190,7 +189,7 @@
       "@id": "https://data.cityofnewyork.us/d/5crt-au7u",
       "@type": "Dataset",
       "title": "Community Districts",
-      "description": "Community Districts, published by NYC Department of City Planning.",
+      "description": "Community Districts, published by Department of City Planning.",
       "identifier": "https://data.cityofnewyork.us/d/5crt-au7u",
       "contactPoint": {
         "@type": "Kind",
@@ -199,7 +198,7 @@
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Department of City Planning",
+        "name": "Department of City Planning",
         "@id": "https://www.nyc.gov/site/planning/index.page"
       },
       "landingPage": {
@@ -224,7 +223,7 @@
       "@id": "https://data.cityofnewyork.us/d/872g-cjhh",
       "@type": "Dataset",
       "title": "City Council Districts",
-      "description": "City Council Districts, published by NYC Department of City Planning.",
+      "description": "City Council Districts, published by Department of City Planning.",
       "identifier": "https://data.cityofnewyork.us/d/872g-cjhh",
       "contactPoint": {
         "@type": "Kind",
@@ -233,7 +232,7 @@
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Department of City Planning",
+        "name": "Department of City Planning",
         "@id": "https://www.nyc.gov/site/planning/index.page"
       },
       "landingPage": {
@@ -258,7 +257,7 @@
       "@id": "https://data.cityofnewyork.us/d/wewp-mm3p",
       "@type": "Dataset",
       "title": "311 Call Center Inquiry",
-      "description": "311 Call Center Inquiry, published by NYC Office of Technology and Innovation.",
+      "description": "311 Call Center Inquiry, published by 311.",
       "identifier": "https://data.cityofnewyork.us/d/wewp-mm3p",
       "contactPoint": {
         "@type": "Kind",
@@ -267,8 +266,7 @@
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Office of Technology and Innovation",
-        "@id": "https://www.nyc.gov/content/oti/pages/"
+        "name": "311"
       },
       "landingPage": {
         "@type": "Document",
@@ -292,7 +290,7 @@
       "@id": "https://data.cityofnewyork.us/d/cs9t-e3x8",
       "@type": "Dataset",
       "title": "311 Service Level Agreements",
-      "description": "311 Service Level Agreements, published by NYC Office of Technology and Innovation.",
+      "description": "311 Service Level Agreements, published by 311.",
       "identifier": "https://data.cityofnewyork.us/d/cs9t-e3x8",
       "contactPoint": {
         "@type": "Kind",
@@ -301,8 +299,7 @@
       },
       "publisher": {
         "@type": "Organization",
-        "name": "NYC Office of Technology and Innovation",
-        "@id": "https://www.nyc.gov/content/oti/pages/"
+        "name": "311"
       },
       "landingPage": {
         "@type": "Document",
@@ -609,7 +606,7 @@
       "identifier": "https://github.com/BetaNYC/nyc-311-mcp/blob/HEAD/DATA-SOURCES.json#built-in-911-lines",
       "contactPoint": {
         "@type": "Kind",
-        "fn": "BetaNYC (serves this dataset; report errors in the data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues)",
+        "fn": "BetaNYC (serves this dataset; report errors in the data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues; errors in the original records to City of New York: https://api-portal.nyc.gov/)",
         "hasEmail": "mailto:lab@beta.nyc"
       },
       "publisher": {
@@ -632,8 +629,8 @@
           "identifier": "https://portal.311.nyc.gov/",
           "contactPoint": {
             "@type": "Kind",
-            "fn": "BetaNYC (lists this dataset; report errors in the data to BetaNYC: https://github.com/BetaNYC/nyc-311-mcp/issues)",
-            "hasEmail": "mailto:lab@beta.nyc"
+            "fn": "City of New York",
+            "hasEmail": "mailto:api-support@platform.nyc.gov"
           },
           "publisher": {
             "@type": "Organization",
@@ -720,7 +717,7 @@
           "@id": "https://data.cityofnewyork.us/d/erm2-nwe9",
           "@type": "Dataset",
           "title": "311 Service Requests from 2020 to Present",
-          "description": "311 Service Requests from 2020 to Present, published by NYC Office of Technology and Innovation.",
+          "description": "311 Service Requests from 2020 to Present, published by 311.",
           "identifier": "https://data.cityofnewyork.us/d/erm2-nwe9",
           "contactPoint": {
             "@type": "Kind",
@@ -729,8 +726,7 @@
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "311"
           },
           "landingPage": {
             "@type": "Document",
@@ -752,8 +748,8 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out, cleaned it, left some fields out, matched addresses to places, joined it with other data, and counted or added up records. This copy should not be considered the official record. Official record: 311 Service Requests from 2020 to Present (NYC Office of Technology and Innovation), https://data.cityofnewyork.us/d/erm2-nwe9",
-        "BoardStat (BetaNYC) pulls OTI's dataset from NYC Open Data, the City's open data portal, every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
+        "BetaNYC modified this data: left some records out, cleaned it, left some fields out, matched addresses to places, joined it with other data, and counted or added up records. This copy should not be considered the official record. Official record: 311 Service Requests from 2020 to Present, https://data.cityofnewyork.us/d/erm2-nwe9",
+        "BoardStat (BetaNYC) pulls the 311 dataset from NYC Open Data, the City's open data portal, every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
         "Modified by BetaNYC: Requests created before 2020-01-01 are left out. Each request with usable coordinates is placed in a community district and a Council district by BetaNYC's own point-in-polygon join against the City's current district boundaries, not the City's own district fields. Problem names are grouped where the City spells one two ways. Requests are counted by district, month, problem type, agency and address. ZIP codes are dropped."
       ],
       "page": [
@@ -834,7 +830,7 @@
           "@id": "https://data.cityofnewyork.us/d/erm2-nwe9",
           "@type": "Dataset",
           "title": "311 Service Requests from 2020 to Present",
-          "description": "311 Service Requests from 2020 to Present, published by NYC Office of Technology and Innovation.",
+          "description": "311 Service Requests from 2020 to Present, published by 311.",
           "identifier": "https://data.cityofnewyork.us/d/erm2-nwe9",
           "contactPoint": {
             "@type": "Kind",
@@ -843,8 +839,7 @@
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "311"
           },
           "landingPage": {
             "@type": "Document",
@@ -866,7 +861,7 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out, left some fields out, matched addresses to places, counted or added up records, and reshaped it. This copy should not be considered the official record. Official record: 311 Service Requests from 2020 to Present (NYC Office of Technology and Innovation), https://data.cityofnewyork.us/d/erm2-nwe9",
+        "BetaNYC modified this data: left some records out, left some fields out, matched addresses to places, counted or added up records, and reshaped it. This copy should not be considered the official record. Official record: 311 Service Requests from 2020 to Present, https://data.cityofnewyork.us/d/erm2-nwe9",
         "Built from BoardStat's nightly files (see service-requests-by-district), downloaded once per BoardStat build.",
         "Modified by BetaNYC: Uses BoardStat's district placement, then counts one community district's requests for a month and its fiscal year to date, by agency and problem type, in the shape of the former Charter § 1075 reports. Nothing before 2020-01-01; no ZIP codes."
       ],
@@ -944,7 +939,7 @@
           "@id": "https://data.cityofnewyork.us/d/5crt-au7u",
           "@type": "Dataset",
           "title": "Community Districts",
-          "description": "Community Districts, published by NYC Department of City Planning.",
+          "description": "Community Districts, published by Department of City Planning.",
           "identifier": "https://data.cityofnewyork.us/d/5crt-au7u",
           "contactPoint": {
             "@type": "Kind",
@@ -953,7 +948,7 @@
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Department of City Planning",
+            "name": "Department of City Planning",
             "@id": "https://www.nyc.gov/site/planning/index.page"
           },
           "landingPage": {
@@ -976,8 +971,8 @@
         }
       ],
       "provenance": [
-        "Publisher: NYC Department of City Planning. BetaNYC did not modify it. Source: Community Districts, https://data.cityofnewyork.us/d/5crt-au7u",
-        "BoardStat downloads DCP's current release from NYC Open Data, the City's open data portal, when it builds, and records its version and update time in its manifest."
+        "Publisher: Department of City Planning. BetaNYC did not modify it. Source: Community Districts, https://data.cityofnewyork.us/d/5crt-au7u",
+        "BoardStat downloads the Department of City Planning's current release from NYC Open Data, the City's open data portal, when it builds, and records its version and update time in its manifest."
       ],
       "page": [
         {
@@ -993,7 +988,7 @@
       "accrualPeriodicity": "quarterly",
       "rights": [
         "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
-        "Credit: Source: NYC Department of City Planning, Community Districts (5crt-au7u), via NYC Open Data.",
+        "Credit: Source: Department of City Planning, Community Districts (5crt-au7u), via NYC Open Data.",
         "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: Only the current boundaries are used, for every year. Caveat: A request on a shared edge goes to the lowest district id."
@@ -1025,7 +1020,7 @@
           "@id": "https://data.cityofnewyork.us/d/872g-cjhh",
           "@type": "Dataset",
           "title": "City Council Districts",
-          "description": "City Council Districts, published by NYC Department of City Planning.",
+          "description": "City Council Districts, published by Department of City Planning.",
           "identifier": "https://data.cityofnewyork.us/d/872g-cjhh",
           "contactPoint": {
             "@type": "Kind",
@@ -1034,7 +1029,7 @@
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Department of City Planning",
+            "name": "Department of City Planning",
             "@id": "https://www.nyc.gov/site/planning/index.page"
           },
           "landingPage": {
@@ -1057,8 +1052,8 @@
         }
       ],
       "provenance": [
-        "Publisher: NYC Department of City Planning. BetaNYC did not modify it. Source: City Council Districts, https://data.cityofnewyork.us/d/872g-cjhh",
-        "BoardStat downloads DCP's current release from NYC Open Data, the City's open data portal, when it builds, and records its version and update time in its manifest."
+        "Publisher: Department of City Planning. BetaNYC did not modify it. Source: City Council Districts, https://data.cityofnewyork.us/d/872g-cjhh",
+        "BoardStat downloads the Department of City Planning's current release from NYC Open Data, the City's open data portal, when it builds, and records its version and update time in its manifest."
       ],
       "page": [
         {
@@ -1074,7 +1069,7 @@
       "accrualPeriodicity": "quarterly",
       "rights": [
         "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
-        "Credit: Source: NYC Department of City Planning, City Council Districts (872g-cjhh), via NYC Open Data.",
+        "Credit: Source: Department of City Planning, City Council Districts (872g-cjhh), via NYC Open Data.",
         "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: Only the current boundaries are used, for every year, so a request from before the 2023 redistricting is placed in today's district lines. Caveat: The City's own council_district field keeps older lines on older records; BoardStat does not use it to place requests."
@@ -1106,7 +1101,7 @@
           "@id": "https://data.cityofnewyork.us/d/wewp-mm3p",
           "@type": "Dataset",
           "title": "311 Call Center Inquiry",
-          "description": "311 Call Center Inquiry, published by NYC Office of Technology and Innovation.",
+          "description": "311 Call Center Inquiry, published by 311.",
           "identifier": "https://data.cityofnewyork.us/d/wewp-mm3p",
           "contactPoint": {
             "@type": "Kind",
@@ -1115,8 +1110,7 @@
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "311"
           },
           "landingPage": {
             "@type": "Document",
@@ -1138,8 +1132,8 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out and counted or added up records. This copy should not be considered the official record. Official record: 311 Call Center Inquiry (NYC Office of Technology and Innovation), https://data.cityofnewyork.us/d/wewp-mm3p",
-        "Read-only queries to NYC Open Data, the City's open data portal, where OTI publishes the dataset: one query per month, saved on this machine; the month in progress is asked again after an hour.",
+        "BetaNYC modified this data: left some records out and counted or added up records. This copy should not be considered the official record. Official record: 311 Call Center Inquiry, https://data.cityofnewyork.us/d/wewp-mm3p",
+        "Read-only queries to NYC Open Data, the City's open data portal, where 311 publishes the dataset: one query per month, saved on this machine; the month in progress is asked again after an hour.",
         "Modified by BetaNYC: Calls are counted by topic (inquiry_name) for one month and the fiscal year to date, with the topic named Directory Assistance shown separately. Nothing before 2020-01-01."
       ],
       "page": [
@@ -1172,7 +1166,7 @@
       "accrualPeriodicity": "daily",
       "rights": [
         "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
-        "Credit: Source: NYC Office of Technology and Innovation, 311 Call Center Inquiry (wewp-mm3p), via NYC Open Data.",
+        "Credit: Source: 311, 311 Call Center Inquiry (wewp-mm3p), via NYC Open Data.",
         "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: The dataset cannot tell directory-assistance calls from others, so the report counts all agent-handled calls by topic. Known gap: Its agency and call-resolution columns are blank in recent years, so there is no breakdown by agency. Known gap: The dataset's own description says that since March 2020 it does not fully represent the agent-handled calls to 311; the actual calls handled are higher. Caveat: A BetaNYC rebuild from NYC Open Data, not the City's official report; only the City can meet Charter § 1075."
@@ -1204,7 +1198,7 @@
           "@id": "https://data.cityofnewyork.us/d/cs9t-e3x8",
           "@type": "Dataset",
           "title": "311 Service Level Agreements",
-          "description": "311 Service Level Agreements, published by NYC Office of Technology and Innovation.",
+          "description": "311 Service Level Agreements, published by 311.",
           "identifier": "https://data.cityofnewyork.us/d/cs9t-e3x8",
           "contactPoint": {
             "@type": "Kind",
@@ -1213,8 +1207,7 @@
           },
           "publisher": {
             "@type": "Organization",
-            "name": "NYC Office of Technology and Innovation",
-            "@id": "https://www.nyc.gov/content/oti/pages/"
+            "name": "311"
           },
           "landingPage": {
             "@type": "Document",
@@ -1236,8 +1229,8 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out and reshaped it. This copy should not be considered the official record. Official record: 311 Service Level Agreements (NYC Office of Technology and Innovation), https://data.cityofnewyork.us/d/cs9t-e3x8",
-        "All rows read from NYC Open Data, the City's open data portal, where OTI publishes the dataset, once and saved on this machine for 30 days; after that the dataset is checked and read again only if it changed.",
+        "BetaNYC modified this data: left some records out and reshaped it. This copy should not be considered the official record. Official record: 311 Service Level Agreements, https://data.cityofnewyork.us/d/cs9t-e3x8",
+        "All rows read from NYC Open Data, the City's open data portal, where 311 publishes the dataset, once and saved on this machine for 30 days; after that the dataset is checked and read again only if it changed.",
         "Modified by BetaNYC: Only the rows for the problem type a draft is about are shown, grouped by Problem Detail with their response times. Rows with no agency, problem or response time are left out."
       ],
       "page": [
@@ -1264,7 +1257,7 @@
       "accrualPeriodicity": "annually",
       "rights": [
         "License: No restrictions on use: NYC Administrative Code § 23-502(d) (the Open Data Law, Local Law 11 of 2012)",
-        "Credit: Source: NYC Office of Technology and Innovation, 311 Service Level Agreements (cs9t-e3x8), via NYC Open Data.",
+        "Credit: Source: 311, 311 Service Level Agreements (cs9t-e3x8), via NYC Open Data.",
         "Terms of use: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-216807"
       ],
       "scopeNote": "Known gap: The dataset says it updates annually but has not changed in a long time; every answer labels its options old and gives the date the City last updated it. Caveat: Options and response times may be out of date."

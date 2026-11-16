@@ -91,7 +91,7 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   const s = bySource(r);
   const d = s["service-requests-by-district"];
   assert.ok(d, Object.keys(s).join(", "));
-  assert.equal(d.publisher, "NYC Office of Technology and Innovation");
+  assert.equal(d.publisher, "311", "as NYC Open Data credits it (Data Provided by)");
   assert.equal(d.source_url, "https://data.cityofnewyork.us/d/erm2-nwe9");
   assert.equal(d.official, true);
   assert.equal(d.figures_official, false, "BetaNYC placed and counted them");
@@ -107,9 +107,9 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   assert.equal(s["council-district-boundaries"].as_of, MANIFEST.sources.council_districts.rowsUpdatedAt_iso);
   const text = r.content[0].text;
   // Shared module 1.4.0: one of three answers, naming the source, its publisher and its link.
-  assert.match(text, /^BetaNYC modified this data: .*\. This copy should not be considered the official record\. Official record: 311 Service Requests from 2020 to Present \(NYC Office of Technology and Innovation\), https:\/\/data\.cityofnewyork\.us\/d\/erm2-nwe9$/m);
-  assert.match(text, /^Publisher: NYC Department of City Planning\. BetaNYC did not modify it\. Source: Community Districts, https:\/\/data\.cityofnewyork\.us\/d\/5crt-au7u$/m);
-  assert.equal(s["community-district-boundaries"].publisher, "NYC Department of City Planning");
+  assert.match(text, /^BetaNYC modified this data: .*\. This copy should not be considered the official record\. Official record: 311 Service Requests from 2020 to Present, https:\/\/data\.cityofnewyork\.us\/d\/erm2-nwe9$/m);
+  assert.match(text, /^Publisher: Department of City Planning\. BetaNYC did not modify it\. Source: Community Districts, https:\/\/data\.cityofnewyork\.us\/d\/5crt-au7u$/m);
+  assert.equal(s["community-district-boundaries"].publisher, "Department of City Planning");
   assert.match(text, /Call about_betanyc for who built nyc-311-mcp/);
   assert.ok(text.endsWith(`\n\n${SHARED_TOOL_LINE}`));
 });
@@ -140,7 +140,9 @@ test("about_data reads the Socrata and 311 content caches, and the built-in 911 
   assert.equal(s["311-articles"].as_of, ARTICLES_AT);
   assert.equal(s["built-in-911-lines"].as_of, `copied from the source on ${BUILT_IN_911_READ} and built into this server`);
   assert.equal(s["built-in-911-lines"].as_of_status, "copied");
-  assert.equal(s["built-in-911-lines"].report_errors.in_the_data, "https://github.com/BetaNYC/nyc-311-mcp/issues");
+  // Errors in the City's own 911 text go to the City as well as to BetaNYC.
+  assert.equal(s["built-in-911-lines"].report_errors.in_the_data, "https://api-portal.nyc.gov/");
+  assert.equal(s["built-in-911-lines"].report_errors.in_these_figures, "https://github.com/BetaNYC/nyc-311-mcp/issues");
   // ZIP codes left out and a plain_language block added: from 1.4.0 any step means BetaNYC
   // modified the data, so this copy is not the official record.
   assert.equal(s["service-request-lookup"].figures_official, false);
@@ -266,5 +268,5 @@ test("errors in City data go to whoever runs the form: NYC Open Data for its con
     assert.equal(s[id].report_errors.in_the_data_name, "NYC Open Data", id);
   }
   assert.equal(s["calendar-and-status"].report_errors.in_the_data_name, "City of New York");
-  assert.equal(s["built-in-911-lines"].report_errors.in_the_data_name, "BetaNYC");
+  assert.equal(s["built-in-911-lines"].report_errors.in_the_data_name, "City of New York");
 });

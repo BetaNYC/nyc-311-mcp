@@ -21,12 +21,14 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
   "BetaNYC modified this data: …" or "BetaNYC produced this". Any step at all, including
   leaving out ZIP codes or adding a plain-language block, now means BetaNYC modified the data,
   so `figures_official` is true only for the two district boundary files.
-- `DATA-SOURCES.json` for 1.4.0: publisher names are spelled out with no acronym in
-  parentheses ("NYC Office of Technology and Innovation", "NYC Department of City Planning",
-  "City of New York"); the three 311 Public API sources are named by the API's own operations
+- `DATA-SOURCES.json` for 1.4.0: each publisher is named as the source itself credits it, with
+  no acronym in parentheses. The three 311 datasets on NYC Open Data: "311" (Open Data's "Data
+  Provided by"; was OTI). The two boundary files: "Department of City Planning". The 311
+  Public API sources: "City of New York" (the API portal credits no one); the three 311 Public API sources are named by the API's own operations
   and link to each operation's page; `calendar-and-status` is modified (get_status adds a
   plain_language block); `built-in-911-lines` is the City's own 911 lines, modified by BetaNYC
-  (official, steps filtered and curated), not produced by it; the BoardStat sources list the
+  (official, steps filtered and curated), not produced by it, and errors in the City's own
+  text now go to the City (the 311 Public API's support address) as well as to BetaNYC; the BoardStat sources list the
   steps they were missing (cleaned and fields-removed; fields-removed and reshaped).
 - Earlier in this release, with module 1.3.7: Where BetaNYC changed the City's data, `about_data` and
   `data.json` now say "this data is BetaNYC's ... not an official record" (was "these figures
