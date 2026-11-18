@@ -760,10 +760,13 @@ const slowly = (ms, init) =>
     init.signal.addEventListener("abort", () => (clearTimeout(t), reject(init.signal.reason ?? new Error("aborted"))), { once: true });
   });
 /** Advance the mocked timers in steps until `done()` or `limit` ms; returns the mocked ms that passed. */
+// Each step gives the code 15 ms of real time before the clock moves on. It was 3 ms, which let
+// a busy CI runner (Node 20, more test files running beside it) count real file reads as mocked
+// seconds: the answer came at 13,750 mocked ms against a 12,000 ms wait (2026-11-18, #53).
 async function advance(done, limit, step = 250) {
   let t = 0;
   while (!done() && t < limit) {
-    await pause(3);
+    await pause(15);
     mock.timers.tick(step);
     t += step;
   }
