@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { TOOLS } from "../dist/tools.js";
 import { SERVER_INSTRUCTIONS } from "../dist/instructions.js";
+import { toolListSize } from "../dist/betanyc-tools.js";
 
 // Every tool definition is sent to the model on every turn, so its size is a cost.
 // Shared explanations live once in the server instructions (src/instructions.ts), not
@@ -15,15 +16,18 @@ import { SERVER_INSTRUCTIONS } from "../dist/instructions.js";
 // Raised on purpose 2026-11-13 for about_data (still 1.3.0, unreleased), the third shared
 // tool, also from the copied file, with the line it adds to the instructions. Measured
 // 42,694 characters; the budget is that plus about 10%.
+// 2026-11-18 (#39): measured with the shared module's toolListSize, the same sum as before, so
+// the budget is unchanged. Shared module 1.5.0 plus annotations on every tool: 46,203 characters.
 const BUDGET_CHARS = 47_000;
 // The shared tools come from betanyc-tools.ts, copied unchanged, so they are not trimmed
 // here; they get their own cap. about_data measured 4,760 characters at shared module 1.3.2 and
 // 5,538 at 1.3.5 (its output schema gained the error-route fields); the cap is that plus ~15%.
+// 6,235 at 1.5.0 (2026-11-18), still under the cap.
 const SHARED = new Set(["whats_changed", "about_betanyc", "about_data"]);
 const SHARED_MAX = 6_500;
 
 test("tool definitions plus server instructions stay within the size budget", () => {
-  const size = JSON.stringify(TOOLS).length + SERVER_INSTRUCTIONS.length;
+  const size = toolListSize(TOOLS, SERVER_INSTRUCTIONS);
   assert.ok(size <= BUDGET_CHARS, `tools/list JSON + instructions is ${size} characters, over the ${BUDGET_CHARS} budget`);
 });
 

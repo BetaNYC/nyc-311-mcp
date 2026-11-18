@@ -20,7 +20,7 @@ import { contentClient } from "./content-311.js";
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
-import { createBetanycTools, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
+import { annotateTools, createBetanycTools, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
 
 /**
@@ -118,7 +118,7 @@ const STATUS_TYPES = [
   "SnowOnStreet",
 ] as const;
 
-export const TOOLS = [
+const DOMAIN_TOOLS = [
   {
     name: "get_calendar",
     description:
@@ -192,6 +192,28 @@ export const TOOLS = [
   ...REPORT_TOOLS,
   // A ready-to-paste 311 report the person files themselves (#18).
   ...DRAFT_TOOLS,
+];
+
+/** Titles for people where the tool's name does not read well with "_" as spaces. */
+const TITLES: Record<string, string> = {
+  boardstat_link: "BoardStat link",
+  boardstat_status: "BoardStat status",
+  ll47_service_request_report: "Local Law 47 service request report",
+  ll47_directory_assistance_report: "Local Law 47 directory assistance report",
+  cb_monthly_list: "Community board monthly list",
+};
+
+/**
+ * Every tool only reads: none files, changes or closes a 311 request (#39). Every domain tool can
+ * reach the network when it answers (the 311 Public API, NYC Open Data, or BoardStat's files on
+ * beta.nyc, downloaded on first use), so each is openWorldHint true. The three shared tools declare
+ * their own annotations.
+ */
+export const TOOLS = [
+  ...annotateTools(
+    DOMAIN_TOOLS.map((t) => (TITLES[t.name] ? { ...t, annotations: { title: TITLES[t.name] } } : t)),
+    true
+  ),
   // What's changed in this server, who built it, and where its data comes from (BetaNYC standard tools).
   ...betanyc.tools,
 ];

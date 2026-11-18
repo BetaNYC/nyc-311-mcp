@@ -115,6 +115,9 @@ You don't need to know the tool names. Ask in plain English and your assistant p
 tool. The [website](https://betanyc.github.io/nyc-311-mcp/tools.html) has the same list with a
 replay of a real answer for each.
 
+Every tool only reads. None of them files, changes or closes a 311 request, and each one
+tells your AI app so (MCP `readOnlyHint`).
+
 #### Help reporting a problem
 
 Tell it what's wrong in your own words. It finds the City's own 311 article for that problem, the agency that handles it, and every way to report it. It can also write a short report for you to paste in. It never files anything. You do that yourself.

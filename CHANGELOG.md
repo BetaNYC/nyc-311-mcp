@@ -44,6 +44,15 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
   not available on this server, instead of calling them live. Every other source answers
   as before. New export `unavailableSources()` in `src/tools.ts` decides this once, at
   startup.
+- Shared module 1.5.0 and `scripts/whats_changed.py` 1.4.1 (with
+  `scripts/mcp_shared/data-sources.schema.json`), copied unchanged. 1.5.0 adds helpers for a
+  server's own tools; the three shared tools answer as before. Depends on
+  BetaNYC/betanyc-ai-workspace#1702. (#38)
+- Every tool declares MCP `annotations`: `readOnlyHint: true`, `openWorldHint: true` (each
+  domain tool can reach the 311 Public API, NYC Open Data or BoardStat's files), and a
+  `title`. No tool files, changes or closes a 311 request. `test/annotations.test.mjs`. (#39)
+- `test/tool-size.test.mjs` measures with the shared `toolListSize` (the same sum); the
+  budget stays 47,000 characters (46,203 now).
 
 ## [1.3.0] - 2026-11-13
 
