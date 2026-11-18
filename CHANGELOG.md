@@ -67,6 +67,14 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
   validation); a longer list is refused with a plain sentence before anything reaches the
   City. `src/plain-errors.ts` now passes a schema's own too-big message through, as it already
   did for too-small. `test/provenance-and-lists.test.mjs`. (#43)
+- `eval/`: 13 realistic questions with answers known before scoring (DuckDB over the
+  fixtures, the City's recorded 311 articles and request answers), run offline by
+  `npm run eval`; first run recorded in `eval/runs/2026-11-18.md` (13 of 13).
+  `test/eval.test.mjs` keeps it runnable. (#46)
+- The two live checks moved from `scripts/` to `test/live/` (`boardstat-live-check.mjs`,
+  `run-call-center-report.mjs`); `test/live-split.test.mjs` keeps them out of `npm test`. (#47)
+- `test/stdout-clean.test.mjs` starts the server and checks every stdout line is a JSON-RPC
+  message. (#48)
 
 ## [1.3.0] - 2026-11-13
 

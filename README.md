@@ -423,6 +423,18 @@ Run the tests (they build first and need no API key or network):
 npm test
 ```
 
+Run the evaluation set: 13 questions a resident or a community board might ask, each with an
+answer known before scoring, offline against the test fixtures. `--record` saves the result in
+`eval/runs/`.
+
+```bash
+npm run eval
+node eval/run.mjs --record
+```
+
+Checks that call live services are in `test/live/`. `npm test` and CI never run them; each
+file's first lines say how to run it.
+
 ### Data sources
 
 - The four lookup tools and the three reporting-help tools use the

@@ -3,7 +3,7 @@
 // computed over the same fixture files with scripts/boardstat_oracle.py (written from the law's
 // list and BoardStat's columns, not from src/ll47-reports.ts). The call-center report replays
 // real responses from NYC Open Data (wewp-mm3p), recorded 2026-11-07 by
-// scripts/run-call-center-report.mjs and trimmed to nine topics.
+// test/live/run-call-center-report.mjs and trimmed to nine topics.
 import { test, mock } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile } from "node:fs/promises";

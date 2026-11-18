@@ -45,6 +45,7 @@
     "dev": "tsc --watch",
     "start": "node dist/index.js",
     "test": "npm run build && node --test dist/nyc-311.test.js test/*.test.mjs",
+    "eval": "npm run build && node eval/run.mjs",
     "prepare": "npm run build"
   },
   "dependencies": {

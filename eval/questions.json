@@ -1,0 +1,295 @@
+{
+  "_readme": [
+    "Fixed question set for nyc-311-mcp, written 2026-11-18 before scoring (#46). Each question is one a resident, a community board or a Council office might ask, with the tool and arguments that answer it and a known right answer.",
+    "Known answers come from outside this package's code: the district and Local Law 47 numbers from DuckDB over the fixture files (scripts/boardstat_oracle.py, test/fixtures/boardstat/expected*.json); the 311 articles from the City's own article titles in the recorded 311 Public API answers (test/fixtures/content/); the request lookup from the recorded GetServiceRequest answer (test/fixtures/api/) and the 311 API's documented status code 614110003 = Closed.",
+    "Checks: `equals` (the value at `path` equals this), `includes` (the value at `path`, as text, contains this, ignoring case), `min` (a number at least this). Paths are dotted; numbers index lists.",
+    "Invariant checked on every answer: it names a source with an https link and says how current it is (data_as_of, fetched_at or as_of).",
+    "Run offline: npm run build && node eval/run.mjs [--record]. Results: eval/runs/."
+  ],
+  "questions": [
+    {
+      "id": "Q01",
+      "q": "What do people in Queens Joint Interest Area 484 (which includes Jacob Riis Park) report to 311 most, since 2021?",
+      "tool": "top_problems",
+      "args": {
+        "community_district": 484,
+        "from_date": "2021-01-01",
+        "limit": 10
+      },
+      "checks": [
+        {
+          "path": "data.problems.0.problem",
+          "equals": "Street Light Condition"
+        },
+        {
+          "path": "data.problems.0.requests",
+          "equals": 203
+        },
+        {
+          "path": "data.requests",
+          "equals": 687
+        }
+      ],
+      "known_from": "expected.json top_problems_all"
+    },
+    {
+      "id": "Q02",
+      "q": "Which agency gets the most 311 requests in district 484, and how many of them are not closed?",
+      "tool": "agency_response",
+      "args": {
+        "community_district": 484,
+        "from_date": "2020-01-01",
+        "limit": 100
+      },
+      "checks": [
+        {
+          "path": "data.agencies.0.agency",
+          "equals": "DOT"
+        },
+        {
+          "path": "data.agencies.0.requests",
+          "equals": 376
+        },
+        {
+          "path": "data.agencies.0.not_closed",
+          "equals": 96
+        }
+      ],
+      "known_from": "expected.json agency_response_all"
+    },
+    {
+      "id": "Q03",
+      "q": "How many 311 requests in district 484 are still not closed, and which agency has the most?",
+      "tool": "still_open",
+      "args": {
+        "community_district": 484,
+        "limit": 5
+      },
+      "checks": [
+        {
+          "path": "data.not_closed",
+          "equals": 116
+        },
+        {
+          "path": "data.by_agency.0.agency",
+          "equals": "DOT"
+        }
+      ],
+      "known_from": "expected.json still_open_all"
+    },
+    {
+      "id": "Q04",
+      "q": "Which address in district 484 gets the most 311 requests?",
+      "tool": "top_addresses",
+      "args": {
+        "community_district": 484,
+        "from_date": "2020-01-01",
+        "limit": 5
+      },
+      "checks": [
+        {
+          "path": "data.addresses.0.address",
+          "equals": "JACOB RIIS PARK"
+        },
+        {
+          "path": "data.addresses.0.requests",
+          "equals": 67
+        }
+      ],
+      "known_from": "expected.json top_addresses_all"
+    },
+    {
+      "id": "Q05",
+      "q": "What has been reported to 311 at Jacob Riis Park in Queens?",
+      "tool": "address_history",
+      "args": {
+        "address": "jacob riis park",
+        "borough": "Queens",
+        "limit": 5
+      },
+      "checks": [
+        {
+          "path": "data.address",
+          "equals": "JACOB RIIS PARK"
+        },
+        {
+          "path": "data.requests",
+          "equals": 67
+        },
+        {
+          "path": "data.by_problem.0.problem",
+          "equals": "Street Light Condition"
+        }
+      ],
+      "known_from": "expected.json address_history_top"
+    },
+    {
+      "id": "Q06",
+      "q": "How many 311 requests has district 484 had so far in fiscal year 2027?",
+      "tool": "district_summary",
+      "args": {
+        "community_district": 484,
+        "fiscal_year": 2027
+      },
+      "checks": [
+        {
+          "path": "data.requests",
+          "equals": 24
+        },
+        {
+          "path": "data.not_closed",
+          "equals": 1
+        }
+      ],
+      "known_from": "expected.json district_summary_fy2027"
+    },
+    {
+      "id": "Q07",
+      "q": "Give me the Local Law 47 service request report for community district 484 for October 2025.",
+      "tool": "ll47_service_request_report",
+      "args": {
+        "community_district": 484,
+        "month": "2025-10"
+      },
+      "checks": [
+        {
+          "path": "data.month.requests",
+          "equals": 11
+        },
+        {
+          "path": "data.month.closed",
+          "equals": 9
+        },
+        {
+          "path": "data.month.by_category.0.category",
+          "equals": "Illegal Parking"
+        }
+      ],
+      "known_from": "expected-ll47.json sr_484_2025_10"
+    },
+    {
+      "id": "Q08",
+      "q": "How many 311 requests in district 484 are marked Pending?",
+      "tool": "find_requests",
+      "args": {
+        "community_district": 484,
+        "from_date": "2020-01-01",
+        "to_date": "2026-11-04",
+        "limit": 200,
+        "statuses": [
+          "pending"
+        ]
+      },
+      "checks": [
+        {
+          "path": "data.requests",
+          "equals": 95
+        }
+      ],
+      "known_from": "expected-lookup.json pending_484"
+    },
+    {
+      "id": "Q09",
+      "q": "My neighbor plays loud music every night. How do I report it to 311?",
+      "tool": "how_to_report",
+      "args": {
+        "description": "my neighbor plays loud music every night"
+      },
+      "checks": [
+        {
+          "path": "best_match.ka_number",
+          "equals": "KA-01017"
+        },
+        {
+          "path": "best_match.title",
+          "equals": "Noise from Neighbor"
+        }
+      ],
+      "known_from": "the City's article KA-01017 'Noise from Neighbor', in the recorded Noise category (GetContentList/311-12.json)"
+    },
+    {
+      "id": "Q10",
+      "q": "There's a big pothole on my street. Who do I tell?",
+      "tool": "how_to_report",
+      "args": {
+        "description": "there is a big pothole on my street"
+      },
+      "checks": [
+        {
+          "path": "best_match.ka_number",
+          "equals": "KA-01093"
+        },
+        {
+          "path": "best_match.title",
+          "equals": "Pothole or Cave-In on Street"
+        }
+      ],
+      "known_from": "the City's article KA-01093 'Pothole or Cave-In on Street' (GetContentList/311-81.json); KA-01106 is the highway article"
+    },
+    {
+      "id": "Q11",
+      "q": "I smell gas in my building. Should I report it to 311?",
+      "tool": "how_to_report",
+      "args": {
+        "description": "I smell gas in my building"
+      },
+      "checks": [
+        {
+          "path": "emergency",
+          "not_null": true
+        },
+        {
+          "path": "first_line",
+          "includes": "911"
+        }
+      ],
+      "known_from": "the City's article KA-02048 'Gas Leak' sends a gas smell to 911, not 311"
+    },
+    {
+      "id": "Q12",
+      "q": "What happened with 311 request 311-17323508?",
+      "tool": "get_service_request",
+      "args": {
+        "sr_number": "311-17323508"
+      },
+      "checks": [
+        {
+          "path": "Agency",
+          "equals": "Department of Sanitation"
+        },
+        {
+          "path": "plain_language.status",
+          "equals": "Closed"
+        },
+        {
+          "path": "plain_language.address_lookup.address",
+          "equals": "180 EAST 94 STREET"
+        }
+      ],
+      "known_from": "the recorded GetServiceRequest answer of 2026-11-07 (test/fixtures/api/), Status 614110003 = Closed in the 311 API's documentation"
+    },
+    {
+      "id": "Q13",
+      "q": "Look up 311-17323508, 311-17323514 and 311-70999528 together.",
+      "tool": "get_service_request_list",
+      "args": {
+        "sr_numbers": [
+          "311-17323508",
+          "311-17323514",
+          "311-70999528"
+        ]
+      },
+      "checks": [
+        {
+          "path": "not_found.0",
+          "equals": "311-70999528"
+        },
+        {
+          "path": "SRResponses.length",
+          "equals": 2
+        }
+      ],
+      "known_from": "the recorded GetServiceRequestList answer of 2026-11-07 (test/fixtures/api/): two requests came back, and 311-70999528 was left out"
+    }
+  ]
+}

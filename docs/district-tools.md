@@ -125,7 +125,7 @@ Every district tool returns this shape (`districtEnvelope` in `src/envelope.ts`)
 - `warning` appears only when a cached build answered because beta.nyc could not be reached.
 
 The example `data` above is real: the 4,297 requests open in Manhattan CD 1 in the
-2026-11-07 build (`scripts/boardstat-live-check.mjs`).
+2026-11-07 build (`test/live/boardstat-live-check.mjs`).
 
 ## Finding the district for an address
 
