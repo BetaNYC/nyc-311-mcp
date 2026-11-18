@@ -60,6 +60,13 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
 - Every error answer goes through the shared `toolError`: `NYC_311_API_KEY` and
   `SOCRATA_APP_TOKEN` are replaced by `[redacted]` and stack-frame lines are dropped.
   `test/secrets-and-errors.test.mjs` forces errors that echo both keys. (#44, #45)
+- get_calendar, get_status, get_service_request and get_service_request_list add a
+  `provenance` block (shared `provenance()`): source and publisher as `DATA-SOURCES.json`
+  names them, its link, and `as_of`, the fetch time. (#41, #42)
+- get_service_request_list takes at most 20 numbers (`maxItems` in the schema and in
+  validation); a longer list is refused with a plain sentence before anything reaches the
+  City. `src/plain-errors.ts` now passes a schema's own too-big message through, as it already
+  did for too-small. `test/provenance-and-lists.test.mjs`. (#43)
 
 ## [1.3.0] - 2026-11-13
 

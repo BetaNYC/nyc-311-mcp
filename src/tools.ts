@@ -20,8 +20,9 @@ import { contentClient } from "./content-311.js";
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
-import { annotateTools, createBetanycTools, toolError, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
+import { annotateTools, createBetanycTools, provenance, toolError, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
+import { readFileSync } from "node:fs";
 
 /**
  * whats_changed, about_betanyc and about_data, the three shared BetaNYC tools. Every BetaNYC
@@ -110,6 +111,26 @@ export function makeBetanycTools(unavailable: Record<string, string> = unavailab
 
 const betanyc = makeBetanycTools();
 
+/**
+ * Most 311 numbers in one get_service_request_list call (#43). The City documents no limit;
+ * this one keeps one answer small (each request comes back with its plain_language block) and
+ * matches the 20-a-time pages of list_311_categories.
+ */
+export const MAX_SR_NUMBERS = 20;
+
+/**
+ * The source, publisher, link and as-of for an answer from the 311 Public API (#41, #42), named
+ * as DATA-SOURCES.json names it, so the two cannot drift. These are live calls: as of = now.
+ */
+const DATA_SOURCES = JSON.parse(readFileSync(new URL("../DATA-SOURCES.json", import.meta.url), "utf8")) as {
+  sources: { id: string; source_name: string; publisher: { name: string }; source_url: string }[];
+};
+export function liveSource(id: "calendar-and-status" | "service-request-lookup", now: Date = new Date()) {
+  const s = DATA_SOURCES.sources.find((x) => x.id === id);
+  if (!s) throw new Error(`DATA-SOURCES.json has no source '${id}'.`);
+  return provenance({ sourceName: s.source_name, publisher: s.publisher.name, sourceUrl: s.source_url, kind: "live" }, now).provenance;
+}
+
 const STATUS_TYPES = [
   "CodeBlue",
   "FireHydrant",
@@ -178,7 +199,8 @@ const DOMAIN_TOOLS = [
           type: "array",
           items: { type: "string" },
           minItems: 1,
-          description: "Array of service request numbers, e.g. ['311-17323508', '311-17323514']",
+          maxItems: MAX_SR_NUMBERS,
+          description: "Array of service request numbers, at most 20, e.g. ['311-17323508', '311-17323514']",
         },
       },
       required: ["sr_numbers"],
@@ -228,7 +250,10 @@ const ARG_SHAPES = {
   get_service_request: { sr_number: z.string() },
   // An empty list is refused here, never sent to the City (the API answers it with a raw 400).
   get_service_request_list: {
-    sr_numbers: z.array(z.string()).min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508']."),
+    sr_numbers: z
+      .array(z.string())
+      .min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508'].")
+      .max(MAX_SR_NUMBERS, `Give at most ${MAX_SR_NUMBERS} 311 numbers in sr_numbers. Split a longer list into calls of ${MAX_SR_NUMBERS} or fewer.`),
   },
   ...DISTRICT_ARG_SHAPES,
   ...LL47_ARG_SHAPES,
@@ -304,6 +329,11 @@ function withSafety(result: unknown): unknown {
   }
   return { safety_line: SAFETY_LINE, results: result };
 }
+/** The answer with a `provenance` block (source, publisher, link, as of) added at the end. */
+function withSource(result: unknown, id: Parameters<typeof liveSource>[0]): unknown {
+  const body = result && typeof result === "object" && !Array.isArray(result) ? result : { results: result };
+  return { ...body, provenance: liveSource(id) };
+}
 const json = (result: unknown) => JSON.stringify(withSafety(result), null, 2);
 
 async function runToolRaw(name: string, args: unknown): Promise<{ content: { type: "text"; text: string }[]; isError?: true }> {
@@ -317,13 +347,13 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
       case "get_calendar": {
         const { date, from_date, to_date } = parseToolArgs("get_calendar", args);
         const results = await getCalendar({ date, fromDate: from_date, toDate: to_date });
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "calendar-and-status")) }] };
       }
 
       case "get_status": {
         const { type } = parseToolArgs("get_status", args);
         const results = describeStatus(type, await getStatus(type));
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "calendar-and-status")) }] };
       }
 
       case "get_service_request": {
@@ -336,7 +366,7 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
           throw new Error(/ error 404/.test(message) ? notFoundMessage(sr_number, message) : message);
         }
         results = describeServiceRequest(results);
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "service-request-lookup")) }] };
       }
 
       case "get_service_request_list": {
@@ -349,7 +379,7 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
           throw new Error(/ error 404/.test(message) ? listNotFoundMessage(sr_numbers, message) : message);
         }
         const results = describeServiceRequestList(raw, sr_numbers);
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "service-request-lookup")) }] };
       }
 
       default:

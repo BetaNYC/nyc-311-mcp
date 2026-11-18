@@ -399,9 +399,13 @@ status in words (the API sends a code, `614110003` means Closed) and the address
 
 #### `get_service_request_list`
 
-Several requests at once (`sr_numbers`, a list). Each comes back as in `get_service_request`.
-The City leaves out a number it can't find without saying so, so since 1.2.0 they are listed
-in `not_found`.
+Several requests at once (`sr_numbers`, a list of up to 20; split a longer list into several
+calls). Each comes back as in `get_service_request`. The City leaves out a number it can't find
+without saying so, so since 1.2.0 they are listed in `not_found`.
+
+All four of these tools add a `provenance` block to their answer: the source and its publisher,
+as `DATA-SOURCES.json` names them, a link to the City's documentation for the API operation, and
+`as_of`, the time the answer was fetched from the City.
 
 ### Run it from source
 
