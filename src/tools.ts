@@ -20,7 +20,7 @@ import { contentClient } from "./content-311.js";
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
-import { annotateTools, createBetanycTools, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
+import { annotateTools, createBetanycTools, toolError, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
 
 /**
@@ -286,6 +286,11 @@ export async function callTool(name: string, args: unknown) {
   return { content: [{ type: "text", text: `${text}\n\n${SAFETY_LINE}` }] };
 }
 
+/** The keys this server reads from its environment; never part of an answer (#44). */
+function secretValues(env: NodeJS.ProcessEnv = process.env): string[] {
+  return [env.NYC_311_API_KEY, env.SOCRATA_APP_TOKEN].filter((v): v is string => typeof v === "string" && v.trim() !== "");
+}
+
 /** An error message without the sentence, which the response adds once at the end. */
 function withoutSafetyLine(message: string): string {
   return message.split(`${SAFETY_LINE} `).join("").split(SAFETY_LINE).join("").trim();
@@ -374,6 +379,10 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
     const message = err instanceof Error ? err.message : String(err);
     // The reporting-help tools put the safety line first on every error too, argument
     // errors included: a person describing a problem may be in danger (QA on #23, #24).
-    return { content: [{ type: "text", text: `Error: ${withoutSafetyLine(message)}` }], isError: true };
+    // toolError ("Error: …") drops stack-frame lines and replaces either key with
+    // "[redacted]", in case an upstream body or an exception ever echoes one (#44, #45).
+    // Upstream bodies are already cut where they are read (nyc-311.ts 500, soda.ts 300 characters).
+    const out = toolError(withoutSafetyLine(message), { secrets: secretValues() });
+    return { content: [{ type: "text", text: out.content[0].text }], isError: true };
   }
 }

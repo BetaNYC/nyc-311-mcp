@@ -103,7 +103,8 @@ tools and the Local Law 47 reports work without one.
 3. Copy a key from your [profile page](https://api-portal.nyc.gov/profile). Each subscription
    has a primary and a secondary key. Either one works.
 
-Keep the key to yourself. Never paste it into a GitHub issue.
+Keep the key to yourself. Never paste it into a GitHub issue. The server sends it only in a
+request header to api.nyc.gov, and removes it from any error message before you see one.
 
 The portal lists two other products. **NYC 311 Public — High Demand** gives a higher rate
 limit. **NYC 311 Developer Partner** is for creating service requests, which this server never

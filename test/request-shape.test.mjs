@@ -13,6 +13,7 @@ import {
   getServiceRequestList,
   todayIso,
 } from "../dist/nyc-311.js";
+import { USER_AGENT } from "../dist/version.js";
 
 process.env.NYC_311_API_KEY = "test-key-never-sent-anywhere";
 const BASE = "https://api.nyc.gov/public/api";
@@ -31,7 +32,8 @@ const take = () => {
   calls = [];
   return c;
 };
-const KEY_HEADER = { "Ocp-Apim-Subscription-Key": "test-key-never-sent-anywhere" };
+// #40 added the User-Agent naming this package to every request, on purpose.
+const KEY_HEADER = { "Ocp-Apim-Subscription-Key": "test-key-never-sent-anywhere", "User-Agent": USER_AGENT };
 
 test("getStatus requests /Status/<type> for every type", async () => {
   for (const type of ["CodeBlue", "FireHydrant", "OEM", "SnowOnSidewalk", "SnowOnStreet"]) {

@@ -10,7 +10,7 @@ To report a bug in this server or ask for a new feature, [open an issue on GitHu
 ## Unreleased: Answers about the data give BetaNYC's email address
 
 - **Tags:** MCP
-- **What changed:** When you ask where the data comes from, the answer now gives BetaNYC's email address for questions and error reports, lab@beta.nyc. It also says plainly, for each source, whether it is the publisher's own record or a copy BetaNYC modified or produced, and names the dataset, its publisher and a link to it. If the server is running without a 311 API key, the answer also says that the 311 calendar, status alerts and request lookups are not available on it, instead of calling them live. Every tool now also tells your AI app that it only reads: none of them files, changes or closes a 311 request.
+- **What changed:** When you ask where the data comes from, the answer now gives BetaNYC's email address for questions and error reports, lab@beta.nyc. It also says plainly, for each source, whether it is the publisher's own record or a copy BetaNYC modified or produced, and names the dataset, its publisher and a link to it. If the server is running without a 311 API key, the answer also says that the 311 calendar, status alerts and request lookups are not available on it, instead of calling them live. Every tool now also tells your AI app that it only reads: none of them files, changes or closes a 311 request. If the City's 311 API does not answer within 30 seconds, the calendar, status alerts and request lookups now say so in plain words instead of waiting with no end.
 - **MCP version:** [nyc-311-mcp 1.4.0](CHANGELOG.md)
 - **More detail:** [Where the data comes from](DATA-SOURCES.json) · [Release notes](CHANGELOG.md)
 

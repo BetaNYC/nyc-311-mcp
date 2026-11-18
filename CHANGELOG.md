@@ -53,6 +53,13 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
   `title`. No tool files, changes or closes a 311 request. `test/annotations.test.mjs`. (#39)
 - `test/tool-size.test.mjs` measures with the shared `toolListSize` (the same sum); the
   budget stays 47,000 characters (46,203 now).
+- 311 Public API requests (`src/nyc-311.ts`) have a 30 s timeout, send the package
+  User-Agent, and retry a 502, 503 or 504 once, honoring Retry-After inside the same 20 s
+  budget as a 429. A timeout or a network failure ends in a plain sentence.
+  `test/upstream-311.test.mjs`; `test/request-shape.test.mjs` now pins the User-Agent. (#40)
+- Every error answer goes through the shared `toolError`: `NYC_311_API_KEY` and
+  `SOCRATA_APP_TOKEN` are replaced by `[redacted]` and stack-frame lines are dropped.
+  `test/secrets-and-errors.test.mjs` forces errors that echo both keys. (#44, #45)
 
 ## [1.3.0] - 2026-11-13
 

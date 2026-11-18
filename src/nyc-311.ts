@@ -1,3 +1,5 @@
+import { USER_AGENT } from "./version.js";
+
 export const BASE_URL = "https://api.nyc.gov/public/api";
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
@@ -107,14 +109,44 @@ export async function errorFromResponse(res: Response): Promise<Error> {
   return new Error(message);
 }
 
+/**
+ * Every request to the 311 Public API (#40): a 30 s timeout, so a hung connection cannot hold a
+ * tool call open with no end (the other clients here already had one: content-311.ts 30 s,
+ * soda.ts 120 s); the User-Agent naming this package; and one retry on 502, 503 or 504, which
+ * honors Retry-After within the same 20 s budget as a 429. No background polling.
+ */
+export const REQUEST_TIMEOUT_MS = 30_000;
+const RETRY_5XX = new Set([502, 503, 504]);
+
+async function fetchOnce(url: string, init: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, {
+      ...init,
+      headers: { ...(init.headers as Record<string, string>), "User-Agent": USER_AGENT },
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    });
+  } catch (err) {
+    const name = (err as { name?: string } | null)?.name;
+    if (name === "TimeoutError" || name === "AbortError") {
+      throw new Error(`The City's 311 API sent no answer within ${REQUEST_TIMEOUT_MS / 1000} seconds. Try again in a minute.`);
+    }
+    const first = (err instanceof Error ? err.message : String(err)).split(/\r?\n/)[0].trim();
+    throw new Error(`Could not reach the City's 311 API (${first}). Check the internet connection and try again in a minute.`);
+  }
+}
+
 async function fetchWithRetry(
   url: string,
   init: RequestInit,
   retries = MAX_429_RETRIES
 ): Promise<Response> {
-  let res = await fetch(url, init);
+  let res = await fetchOnce(url, init);
   let waited = 0;
-  for (let attempt = 0; res.status === 429 && attempt < retries; attempt++) {
+  let tries5xx = 0;
+  for (let attempt = 0; ; attempt++) {
+    const limited = res.status === 429;
+    if (limited ? attempt >= retries : !(RETRY_5XX.has(res.status) && tries5xx < 1)) break;
+    if (!limited) tries5xx++;
     // Honor the wait the API asks for, backing off at least 0.5 s then 1 s; never more
     // than MAX_429_WAIT_S in all. A longer wait is reported, not waited out.
     const asked = waitSecondsFrom(res.headers.get("retry-after"), await res.clone().text().catch(() => ""));
@@ -123,7 +155,7 @@ async function fetchWithRetry(
     if (waited + wait > MAX_429_WAIT_S) break;
     await sleep(wait * 1000);
     waited += wait;
-    res = await fetch(url, init);
+    res = await fetchOnce(url, init);
   }
   return res;
 }
