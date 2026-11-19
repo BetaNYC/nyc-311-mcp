@@ -403,14 +403,18 @@ Several requests at once (`sr_numbers`). Each comes back as in `get_service_requ
 leaves out a number it can't find without saying so, so since 1.2.0 they are listed in
 `not_found`.
 
-The list can hold up to 200 different numbers; repeats are dropped first and don't count. The
-City documents no limit, so the server asks it for 20 at a time, one batch after another, each
-with the same timeout and retry rules as any other request. `lookup` says how many numbers were
-asked for, how many different ones, how many were found, and how many batches were sent. If a
-batch fails (a rate limit, a timeout, an error from the City), the server sends no more batches:
-the answer keeps what the earlier batches found and lists the rest in `not_looked_up`, with
-`not_looked_up_note` saying why. A list of more than 200 different numbers is refused before
-anything is sent; split it into calls of 200 or fewer.
+The list can hold up to 200 different numbers; spaces around a number are trimmed, and repeats
+are dropped first and don't count. The City documents no limit, so the server asks it for 20 at
+a time, one batch after another, a quarter second apart, each with the same timeout and 5xx
+retry as any other request. Results come back in the order you asked. `lookup` says how many
+numbers were asked for, how many different ones, how many were found, and how many batches were
+sent. The server stops sending batches when one fails (a timeout, an error from the City), at
+the first rate limit (HTTP 429, never retried here), or when the call has run 45 seconds (a
+batch still waiting gets only the time left). The answer then keeps what the earlier batches
+found and lists the rest in `not_looked_up`, with `not_looked_up_note` saying why ("out of
+time: ask again for these" when time ran out). A list of more than 200 different numbers, or
+more than 2,000 entries counting repeats, is refused before anything is sent; split it into
+smaller calls.
 
 All four of these tools add a `provenance` block to their answer: the source and its publisher,
 as `DATA-SOURCES.json` names them, a link to the City's documentation for that API (one link per
