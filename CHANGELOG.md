@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.4.0] - Unreleased
+## [1.4.0] - 2026-11-19
 
 Moves the shared BetaNYC module to 1.5.2 (by way of 1.4.0, 1.5.0 and 1.5.1). Tracking:
 BetaNYC/betanyc-ai-workspace#1655 and #1672 (epic #1652); this repo's epic #49.
