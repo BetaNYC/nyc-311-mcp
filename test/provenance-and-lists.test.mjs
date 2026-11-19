@@ -1,6 +1,6 @@
 // #41, #42: the four answers from the 311 Public API name their source and publisher, link it,
 // and say when they were fetched, in the words DATA-SOURCES.json uses.
-// #43: get_service_request_list takes at most MAX_SR_NUMBERS numbers. No network: fetch is stubbed.
+// #43: get_service_request_list takes at most MAX_SR_NUMBERS different numbers (test/sr-batches.test.mjs has the batching). No network: fetch is stubbed.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -46,14 +46,16 @@ for (const [tool, args, id] of CASES) {
   });
 }
 
-test(`get_service_request_list declares and enforces a maximum of ${MAX_SR_NUMBERS}`, async () => {
+test(`get_service_request_list caps different numbers, not list length, at ${MAX_SR_NUMBERS}`, async () => {
   const schema = TOOLS.find((t) => t.name === "get_service_request_list").inputSchema.properties.sr_numbers;
-  assert.equal(schema.maxItems, MAX_SR_NUMBERS);
+  // No maxItems: duplicates do not count toward the cap, so only the server can apply it.
+  assert.equal(schema.maxItems, undefined);
+  assert.equal(MAX_SR_NUMBERS, 200);
   const many = Array.from({ length: 500 }, (_, i) => `311-${10000000 + i}`);
   calls = 0;
   const r = await callTool("get_service_request_list", { sr_numbers: many });
   assert.equal(r.isError, true);
-  assert.match(r.content[0].text, new RegExp(`at most ${MAX_SR_NUMBERS} 311 numbers.*Split a longer list`));
+  assert.match(r.content[0].text, new RegExp(`at most ${MAX_SR_NUMBERS} different 311 numbers.*this list has 500.*Split it`));
   assert.equal(calls, 0, "a list over the cap must not reach the City");
   const full = await callTool("get_service_request_list", { sr_numbers: many.slice(0, MAX_SR_NUMBERS) });
   assert.notEqual(full.isError, true);

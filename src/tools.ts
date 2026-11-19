@@ -3,7 +3,9 @@ import {
   getCalendar,
   getStatus,
   getServiceRequest,
-  getServiceRequestList,
+  getServiceRequestBatches,
+  MAX_SR_NUMBERS,
+  SR_BATCH_SIZE,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
 import { describeStatus } from "./status.js";
@@ -16,6 +18,7 @@ import { boardstatData } from "./district-tools.js";
 import { CALL_CENTER_DATASET, sodaClient, type SodaMetadata } from "./soda.js";
 import { SLA_KEY, type SlaCache } from "./draft-report.js";
 import { contentClient } from "./content-311.js";
+import { redactZip } from "./envelope.js";
 
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
@@ -112,11 +115,10 @@ export function makeBetanycTools(unavailable: Record<string, string> = unavailab
 const betanyc = makeBetanycTools();
 
 /**
- * Most 311 numbers in one get_service_request_list call (#43). The City documents no limit;
- * this one keeps one answer small (each request comes back with its plain_language block) and
- * matches the 20-a-time pages of list_311_categories.
+ * get_service_request_list takes up to MAX_SR_NUMBERS different numbers and sends them
+ * SR_BATCH_SIZE at a time (nyc-311.ts getServiceRequestBatches). Re-exported for tests.
  */
-export const MAX_SR_NUMBERS = 20;
+export { MAX_SR_NUMBERS, SR_BATCH_SIZE };
 
 /**
  * The source, publisher, link and as-of for an answer from the 311 Public API (#41, #42), named
@@ -190,7 +192,7 @@ const DOMAIN_TOOLS = [
   {
     name: "get_service_request_list",
     description:
-      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error).",
+      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error). Duplicates are dropped; the server sends 20 at a time, one batch after another. If a batch fails, the answer keeps what was found and lists not_looked_up.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -199,8 +201,7 @@ const DOMAIN_TOOLS = [
           type: "array",
           items: { type: "string" },
           minItems: 1,
-          maxItems: MAX_SR_NUMBERS,
-          description: "Array of service request numbers, at most 20, e.g. ['311-17323508', '311-17323514']",
+          description: "Service request numbers, up to 200 different ones, e.g. ['311-17323508', '311-17323514']",
         },
       },
       required: ["sr_numbers"],
@@ -249,11 +250,9 @@ const ARG_SHAPES = {
   get_status: { type: z.enum(STATUS_TYPES) },
   get_service_request: { sr_number: z.string() },
   // An empty list is refused here, never sent to the City (the API answers it with a raw 400).
+  // The cap counts different numbers, so getServiceRequestBatches applies it after dropping duplicates.
   get_service_request_list: {
-    sr_numbers: z
-      .array(z.string())
-      .min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508'].")
-      .max(MAX_SR_NUMBERS, `Give at most ${MAX_SR_NUMBERS} 311 numbers in sr_numbers. Split a longer list into calls of ${MAX_SR_NUMBERS} or fewer.`),
+    sr_numbers: z.array(z.string()).min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508']."),
   },
   ...DISTRICT_ARG_SHAPES,
   ...LL47_ARG_SHAPES,
@@ -316,6 +315,15 @@ function secretValues(env: NodeJS.ProcessEnv = process.env): string[] {
   return [env.NYC_311_API_KEY, env.SOCRATA_APP_TOKEN].filter((v): v is string => typeof v === "string" && v.trim() !== "");
 }
 
+/**
+ * Why a long list stopped early, for a successful (partial) answer, which does not pass through
+ * toolError: no upstream body, keys redacted the way toolError redacts them, ZIP codes removed.
+ */
+function plainReason(message: string): string {
+  const short = message.split(" Response body:")[0];
+  return redactZip(toolError(short, { secrets: secretValues() }).content[0].text.replace(/^Error: /, ""));
+}
+
 /** An error message without the sentence, which the response adds once at the end. */
 function withoutSafetyLine(message: string): string {
   return message.split(`${SAFETY_LINE} `).join("").split(SAFETY_LINE).join("").trim();
@@ -371,14 +379,35 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
 
       case "get_service_request_list": {
         const { sr_numbers } = parseToolArgs("get_service_request_list", args);
-        let raw: unknown;
+        let got: Awaited<ReturnType<typeof getServiceRequestBatches>>;
         try {
-          raw = await getServiceRequestList(sr_numbers);
+          got = await getServiceRequestBatches(sr_numbers);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          throw new Error(/ error 404/.test(message) ? listNotFoundMessage(sr_numbers, message) : message);
+          const unique = [...new Set(sr_numbers)];
+          throw new Error(/ error 404/.test(message) ? listNotFoundMessage(unique, message) : message);
         }
-        const results = describeServiceRequestList(raw, sr_numbers);
+        const described = describeServiceRequestList({ SRResponses: got.SRResponses }, got.looked_up) as Record<string, unknown>;
+        const found = Array.isArray(described.SRResponses) ? described.SRResponses.length : 0;
+        const results = {
+          ...described,
+          lookup: {
+            asked_for: got.asked_for,
+            different_numbers: got.unique.length,
+            found,
+            batches_sent: got.batches_sent,
+            batches_needed: got.batches_needed,
+            batch_size: SR_BATCH_SIZE,
+          },
+          ...(got.stopped_because
+            ? {
+                not_looked_up: got.not_looked_up,
+                not_looked_up_note:
+                  `Stopped after ${got.batches_sent} of ${got.batches_needed} batches, so ${got.not_looked_up.length} numbers were not looked up: ` +
+                  `${got.not_looked_up.join(", ")}. Why: ${plainReason(got.stopped_because)} No further batches were sent. Ask for these numbers again later.`,
+              }
+            : {}),
+        };
         return { content: [{ type: "text", text: json(withSource(results, "service-request-lookup")) }] };
       }
 
@@ -409,9 +438,11 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
     const message = err instanceof Error ? err.message : String(err);
     // The reporting-help tools put the safety line first on every error too, argument
     // errors included: a person describing a problem may be in danger (QA on #23, #24).
-    // toolError ("Error: …") drops stack-frame lines and replaces either key with
-    // "[redacted]", in case an upstream body or an exception ever echoes one (#44, #45).
-    // Upstream bodies are already cut where they are read (nyc-311.ts 500, soda.ts 300 characters).
+    // toolError ("Error: …") replaces either key with "[redacted]" (also percent-, form-,
+    // JSON- and base64-encoded), in case an upstream body or an exception ever echoes one (#44,
+    // #45). From shared module 1.5.1 it passes the message's own lines on as written, so no
+    // stack frame may reach it: nyc-311.ts keeps only the first line of a network error, and
+    // upstream bodies are cut where they are read (nyc-311.ts 500, soda.ts 300 characters).
     const out = toolError(withoutSafetyLine(message), { secrets: secretValues() });
     return { content: [{ type: "text", text: out.content[0].text }], isError: true };
   }

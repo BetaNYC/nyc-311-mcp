@@ -18,11 +18,13 @@ import { toolListSize } from "../dist/betanyc-tools.js";
 // 42,694 characters; the budget is that plus about 10%.
 // 2026-11-18 (#39): measured with the shared module's toolListSize, the same sum as before, so
 // the budget is unchanged. Shared module 1.5.0 plus annotations on every tool: 46,203 characters.
+// Shared module 1.5.1: 46,229. get_service_request_list sending long lists in batches (#49
+// review), 2026-11-18: 46,375, so the budget is unchanged.
 const BUDGET_CHARS = 47_000;
 // The shared tools come from betanyc-tools.ts, copied unchanged, so they are not trimmed
 // here; they get their own cap. about_data measured 4,760 characters at shared module 1.3.2 and
 // 5,538 at 1.3.5 (its output schema gained the error-route fields); the cap is that plus ~15%.
-// 6,235 at 1.5.0 (2026-11-18), still under the cap.
+// 6,235 at 1.5.0 and at 1.5.1 (2026-11-18), still under the cap.
 const SHARED = new Set(["whats_changed", "about_betanyc", "about_data"]);
 const SHARED_MAX = 6_500;
 

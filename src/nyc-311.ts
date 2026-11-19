@@ -118,6 +118,16 @@ export async function errorFromResponse(res: Response): Promise<Error> {
 export const REQUEST_TIMEOUT_MS = 30_000;
 const RETRY_5XX = new Set([502, 503, 504]);
 
+/** A timeout or a network failure, as one plain sentence (no stack, first line of the cause only). */
+function plainFetchError(err: unknown): Error {
+  const name = (err as { name?: string } | null)?.name;
+  if (name === "TimeoutError" || name === "AbortError") {
+    return new Error(`The City's 311 API sent no answer within ${REQUEST_TIMEOUT_MS / 1000} seconds. Try again in a minute.`);
+  }
+  const first = (err instanceof Error ? err.message : String(err)).split(/\r?\n/)[0].trim();
+  return new Error(`Could not reach the City's 311 API (${first}). Check the internet connection and try again in a minute.`);
+}
+
 async function fetchOnce(url: string, init: RequestInit): Promise<Response> {
   try {
     return await fetch(url, {
@@ -126,12 +136,26 @@ async function fetchOnce(url: string, init: RequestInit): Promise<Response> {
       signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     });
   } catch (err) {
-    const name = (err as { name?: string } | null)?.name;
-    if (name === "TimeoutError" || name === "AbortError") {
-      throw new Error(`The City's 311 API sent no answer within ${REQUEST_TIMEOUT_MS / 1000} seconds. Try again in a minute.`);
-    }
-    const first = (err instanceof Error ? err.message : String(err)).split(/\r?\n/)[0].trim();
-    throw new Error(`Could not reach the City's 311 API (${first}). Check the internet connection and try again in a minute.`);
+    throw plainFetchError(err);
+  }
+}
+
+/**
+ * A successful answer's body, read and parsed inside one try/catch: the 30 s timeout still runs
+ * while the body arrives, and a body that is not JSON (an HTML error page sent with a 200) must
+ * not surface as a raw SyntaxError. Either ends in a plain sentence.
+ */
+async function readJson(res: Response): Promise<unknown> {
+  let text: string;
+  try {
+    text = await res.text();
+  } catch (err) {
+    throw plainFetchError(err);
+  }
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error("The City's 311 API sent an answer that could not be read (it was not JSON). Try again in a minute.");
   }
 }
 
@@ -189,7 +213,7 @@ async function apiFetch(
   if (!res.ok) {
     throw await errorFromResponse(res);
   }
-  return res.json();
+  return readJson(res);
 }
 
 // ─── Date helpers ──────────────────────────────────────────────────────────────
@@ -295,4 +319,86 @@ export async function getServiceRequestList(
   return apiFetch("/GetServiceRequestList", {
     body: { SRNumbers: srNumbers.map(assertSrNumber) },
   });
+}
+
+// ─── Long lists, in batches ────────────────────────────────────────────────────
+
+/**
+ * get_service_request_list sends at most this many numbers to GetServiceRequestList per request.
+ * The City documents no limit (portal, operation api-GetServiceRequestList-post); 20 keeps each
+ * request and its answer small and matches the 20-a-time pages of list_311_categories.
+ */
+export const SR_BATCH_SIZE = 20;
+/** Most different 311 numbers in one get_service_request_list call: 10 batches (owner's decision, #43 review). */
+export const MAX_SR_NUMBERS = 200;
+
+export interface SrBatchesResult {
+  /** Every request the API returned, in the order the batches were sent. */
+  SRResponses: unknown[];
+  /** How many numbers the caller gave, duplicates included. */
+  asked_for: number;
+  /** The different numbers, in the order given: what was (or would have been) sent. */
+  unique: string[];
+  /** The numbers whose batch was answered (found or not). */
+  looked_up: string[];
+  /** The numbers never sent, because an earlier batch failed. */
+  not_looked_up: string[];
+  batches_sent: number;
+  batches_needed: number;
+  /** Why the lookups stopped early, in plain words; null when every batch was answered. */
+  stopped_because: string | null;
+}
+
+/**
+ * A list of 311 numbers of any length up to MAX_SR_NUMBERS different ones. Duplicates are
+ * dropped first and never count toward the cap. Every number is checked, and the cap applied,
+ * before anything is sent. Then batches of SR_BATCH_SIZE go out one at a time, never in
+ * parallel, each through apiFetch, so the timeout, the 5xx retry and the 429 wait apply to each.
+ * A batch the API answers with 404 (none of its numbers found) counts as answered: its numbers
+ * are not found. Any other failure stops the lookups at once (a 429 above all: another request
+ * would only spend more of the key's limit): what earlier batches got is kept and the rest are
+ * listed as not looked up. When the first batch fails nothing was found, so the error is thrown.
+ */
+export async function getServiceRequestBatches(srNumbers: string[]): Promise<SrBatchesResult> {
+  const unique = [...new Set(srNumbers.map(assertSrNumber))];
+  if (unique.length > MAX_SR_NUMBERS) {
+    throw new Error(
+      `get_service_request_list takes at most ${MAX_SR_NUMBERS} different 311 numbers in one call; this list has ${unique.length}. Split it into calls of ${MAX_SR_NUMBERS} or fewer.`
+    );
+  }
+  const batches: string[][] = [];
+  for (let i = 0; i < unique.length; i += SR_BATCH_SIZE) batches.push(unique.slice(i, i + SR_BATCH_SIZE));
+  const out: SrBatchesResult = {
+    SRResponses: [],
+    asked_for: srNumbers.length,
+    unique,
+    looked_up: [],
+    not_looked_up: [],
+    batches_sent: 0,
+    batches_needed: batches.length,
+    stopped_because: null,
+  };
+  let missed404: Error | null = null;
+  for (const [i, batch] of batches.entries()) {
+    out.batches_sent++;
+    try {
+      const raw = (await getServiceRequestList(batch)) as { SRResponses?: unknown } | null;
+      if (Array.isArray(raw?.SRResponses)) out.SRResponses.push(...raw.SRResponses);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      if (/ error 404/.test(message) && !(err instanceof RateLimitedError)) {
+        missed404 = err instanceof Error ? err : new Error(message);
+        out.looked_up.push(...batch);
+        continue;
+      }
+      if (i === 0) throw err;
+      out.not_looked_up = batches.slice(i).flat();
+      out.stopped_because = message;
+      break;
+    }
+    out.looked_up.push(...batch);
+  }
+  // Every batch answered 404: the City found none of the numbers. Same error as one 404 call.
+  if (missed404 && out.SRResponses.length === 0 && out.not_looked_up.length === 0) throw missed404;
+  return out;
 }

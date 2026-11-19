@@ -72,3 +72,52 @@ test("a network failure ends in a plain sentence", async () => {
   stub([() => Promise.reject(new TypeError("fetch failed"))]);
   await assert.rejects(getStatus("CodeBlue"), /Could not reach the City's 311 API \(fetch failed\)\. Check the internet connection/);
 });
+
+// Review of #40: the body is read and parsed inside the same try/catch as the request, so a
+// timeout while the body arrives, or a body that is not JSON, ends in a plain sentence too.
+test("a timeout while the answer's body is read ends in the same plain sentence", async () => {
+  const body = new ReadableStream({
+    start(c) {
+      c.enqueue(new TextEncoder().encode('{"inEff'));
+      c.error(new DOMException("The operation was aborted due to timeout", "TimeoutError"));
+    },
+  });
+  stub([new Response(body, { status: 200 })]);
+  await assert.rejects(getStatus("CodeBlue"), (e) => {
+    assert.equal(e.message, `The City's 311 API sent no answer within ${REQUEST_TIMEOUT_MS / 1000} seconds. Try again in a minute.`);
+    return true;
+  });
+});
+
+test("a connection lost while the body is read ends in a plain sentence", async () => {
+  const body = new ReadableStream({
+    start(c) {
+      c.error(new TypeError("terminated\n    at Fetch.onAborted (node:internal/deps/undici:1:1)"));
+    },
+  });
+  stub([new Response(body, { status: 200 })]);
+  await assert.rejects(getStatus("CodeBlue"), (e) => {
+    assert.equal(e.message, "Could not reach the City's 311 API (terminated). Check the internet connection and try again in a minute.");
+    return true;
+  });
+});
+
+test("a 200 whose body is not JSON ends in a plain sentence, not a SyntaxError", async () => {
+  for (const text of ["<html><body>Service Unavailable</body></html>", ""]) {
+    stub([new Response(text, { status: 200, headers: { "content-type": "text/html" } })]);
+    await assert.rejects(getServiceRequestList(["311-1"]), (e) => {
+      assert.ok(!(e instanceof SyntaxError), "a raw SyntaxError came through");
+      assert.equal(e.message, "The City's 311 API sent an answer that could not be read (it was not JSON). Try again in a minute.");
+      return true;
+    });
+  }
+});
+
+test("through the tool, a non-JSON answer is a plain isError sentence", async () => {
+  stub([new Response("<html>oops</html>", { status: 200 })]);
+  const { callTool } = await import("../dist/tools.js");
+  const r = await callTool("get_status", { type: "CodeBlue" });
+  assert.equal(r.isError, true);
+  assert.match(r.content[0].text, /^Error: The City's 311 API sent an answer that could not be read \(it was not JSON\)\./);
+  assert.doesNotMatch(r.content[0].text, /Unexpected token|SyntaxError|JSON at position/);
+});
