@@ -759,10 +759,24 @@ const slowly = (ms, init) =>
     const t = setTimeout(() => resolve(null), ms);
     init.signal.addEventListener("abort", () => (clearTimeout(t), reject(init.signal.reason ?? new Error("aborted"))), { once: true });
   });
+/**
+ * Wait in real time, with the mocked clock standing still, until `ready()`. The fiscal-year call
+ * reads its saved months from disk (real I/O) before it sets its answer-wait timer; a mocked
+ * clock that moves on during those reads counts them as mocked seconds that no timer sees, and
+ * the answer then seems to come late (13,750 mocked ms against a 12,000 ms wait on a busy CI
+ * runner, 2026-11-18, #53). Waiting for the first slow request to be in flight means the timer
+ * is set before the clock moves at all. Fails plainly if it never happens.
+ */
+async function untilReal(ready, what, limitMs = 10_000) {
+  const t0 = Date.now();
+  while (!ready()) {
+    if (Date.now() - t0 > limitMs) throw new Error(`gave up after ${limitMs} ms of real time waiting for ${what}`);
+    await pause(2);
+  }
+}
 /** Advance the mocked timers in steps until `done()` or `limit` ms; returns the mocked ms that passed. */
-// Each step gives the code 15 ms of real time before the clock moves on. It was 3 ms, which let
-// a busy CI runner (Node 20, more test files running beside it) count real file reads as mocked
-// seconds: the answer came at 13,750 mocked ms against a 12,000 ms wait (2026-11-18, #53).
+// Each step gives the code 15 ms of real time before the clock moves on (was 3 ms). That only
+// makes a race rarer; untilReal() removes it for the timing that is asserted.
 async function advance(done, limit, step = 250) {
   let t = 0;
   while (!done() && t < limit) {
@@ -806,6 +820,7 @@ test("fiscal-year call, slow portal: answers within the wait from saved months, 
   t.after(() => mock.timers.reset());
   let env;
   const first = directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW).then((e) => (env = e));
+  await untilReal(() => active === 1, "the first slow month request");
   const waited = await advance(() => env, 60_000);
   await first;
   t.diagnostic(`first fiscal-year call answered after ${waited} ms on the mocked clock`);
