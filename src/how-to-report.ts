@@ -944,9 +944,11 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
   const notHandled = [...new Set(sentences(all).filter((s) => NOT_HANDLED.test(s)))].slice(0, 3);
   const ways: { method: string; how: string; url?: string; source: string }[] = [];
   if (actions.length && !phoneOnly) {
+    // Up to 6 names here; the rest are named as being in report_actions, which has every one.
+    const names = [...new Set(actions.map((x) => x.name ?? x.section))];
     ways.push({
       method: "online",
-      how: `On the article's page on 311 Online, which has a report option for: ${[...new Set(actions.map((x) => x.name ?? x.section))].slice(0, 6).join("; ")}.`,
+      how: `On the article's page on 311 Online, which has a report option for: ${names.slice(0, 6).join("; ")}${names.length > 6 ? `; and ${names.length - 6} more (all ${names.length} are in report_actions)` : ""}.`,
       url: articleUrl(a.ka_number),
       source: "The article's reportable actions (GetContent ContentAction).",
     });
@@ -981,8 +983,8 @@ function describeArticle(q: Query, a: Article, rank: number, score: number, hits
       : {}),
     ...(otherPlace ? { exact_match: false as const } : {}),
     ...(matchedSection ? { matched_section: matchedSection } : {}),
-    report_actions: actions.slice(0, 15),
-    report_actions_truncated: actions.length > 15,
+    // Every report option, none left out (KA-02136 has 60): the person picks one.
+    report_actions: actions,
     what_happens_next: (bestSection && whatHappensNext(bestSection.text)) ?? whatHappensNext(all),
     file_a_complaint: (bestSection && fileAComplaint(bestSection.text)) ?? fileAComplaint(a.sections[0]?.text ?? ""),
     the_city_says_it_does_not: notHandled,

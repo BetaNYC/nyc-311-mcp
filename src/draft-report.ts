@@ -93,7 +93,9 @@ export type DetailOption = { problem_detail: string; additional_details: string[
 /**
  * The Problem Detail options the dataset lists for one problem type (case aside; the
  * dataset has "HEAT/HOT WATER" and "Heat/Hot Water" both), for one agency when the
- * article named one and the dataset has rows for it.
+ * article named one and the dataset has rows for it. Every option and every Additional
+ * Detail, none left out: the person picks from them (live check 2026-11-19: a cut at 15
+ * hid "Rough, Pitted or Cracked Roads", the street pothole option).
  */
 export function detailOptions(rows: SlaRow[], problem: string, agency: string | null): DetailOption[] {
   let hit = rows.filter((r) => r.problem.toLowerCase() === problem.toLowerCase());
@@ -106,14 +108,16 @@ export function detailOptions(rows: SlaRow[], problem: string, agency: string | 
     g.sla.add(r.sla_days);
     by.set(r.problem_details, g);
   }
-  return [...by.entries()].map(([d, g]) => ({ problem_detail: d, additional_details: [...g.add].slice(0, 12), response_time: [...g.sla] }));
+  return [...by.entries()].map(([d, g]) => ({ problem_detail: d, additional_details: [...g.add], response_time: [...g.sla] }));
 }
 
-const MAX_OPTIONS = 15;
-
-/** One option as a line: "Defacement: Advertisement, Graffiti (60 days)". */
+/**
+ * One option as a line, the City's words unchanged: "Defacement: Advertisement; Graffiti;
+ * Other (60 days)". Additional Details are split by "; ", as some have commas of their own
+ * ("Refund, Return, or Exchange Refused") and none has a semicolon.
+ */
 export function optionText(o: DetailOption): string {
-  return `${o.problem_detail}${o.additional_details.length ? `: ${o.additional_details.join(", ")}` : ""} (${o.response_time.join(" or ")})`;
+  return `${o.problem_detail}${o.additional_details.length ? `: ${o.additional_details.join("; ")}` : ""} (${o.response_time.join(" or ")})`;
 }
 
 // Words that say where, not what ("my block" is not "Blocked - Construction").
@@ -491,7 +495,7 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
     placeholders.push("which problem this is");
     questions.push("Which 311 article fits? Try how_to_report with other words, or list_311_categories.");
   } else if (!best.problem_type && best.report_actions.length) {
-    questions.push(`Which of the article's report options fits? ${uniq(best.report_actions.map((x) => x.name ?? x.section)).slice(0, 6).join("; ")}.`);
+    questions.push(`Which of the article's report options fits? ${uniq(best.report_actions.map((x) => x.name ?? x.section)).join("; ")}.`);
   }
   if (suggested) questions.push(`Is it "${suggested}"? That is the closest of the City's 2024 Problem Detail options to their words.`);
   else if (options.length > 1 && !chosen) {
@@ -593,8 +597,8 @@ async function oneReport(said: string, match: Matched, args: DraftArgs, client: 
         ? {
             as_of: sla!.rows_updated,
             label: `From the City's 311 Service Level Agreements dataset, last updated ${sla!.rows_updated}. Old: the form's choices may differ. In brackets, the time the agency committed to respond in, as of then, not a promise of when it will be handled.`,
-            options: options.slice(0, MAX_OPTIONS).map(optionText),
-            ...(options.length > MAX_OPTIONS ? { more: options.length - MAX_OPTIONS } : {}),
+            count: options.length,
+            options: options.map(optionText),
           }
         : null,
     },

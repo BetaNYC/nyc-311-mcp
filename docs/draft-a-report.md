@@ -89,6 +89,11 @@ options old and the form's choices may differ.
   copy: the draft is made without options, and says so.
 - Matched on the article's problem type, case aside (the dataset has both "HEAT/HOT WATER" and
   "Heat/Hot Water"), and on the article's agency when it named one. "N/A" is treated as blank.
+- Every option is listed, each with all its Additional Details, in the dataset's words, and
+  `count` says how many. Additional Details are split by "; ", since some have commas of their own.
+  Until 1.4.0 the list stopped at 15 options and 12 Additional Details. For a street pothole
+  (KA-01093) that hid "Rough, Pitted or Cracked Roads", the option that fits it best. The
+  longest list, Consumer Complaint, has 87 options.
 - A Problem Detail goes **into the draft** only when the article's report option names it and the
   person's words say so too. KA-01093's only report option is "Cave-in"; a person who said
   "pothole" does not get "Cave-in" in their draft. A detail guessed from the words alone is a

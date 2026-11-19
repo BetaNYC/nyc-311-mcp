@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.4.0] - Unreleased
+## [1.4.0] - 2026-11-19
 
 Moves the shared BetaNYC module to 1.5.2 (by way of 1.4.0, 1.5.0 and 1.5.1). Tracking:
 BetaNYC/betanyc-ai-workspace#1655 and #1672 (epic #1652); this repo's epic #49.
@@ -124,6 +124,18 @@ BetaNYC/betanyc-ai-workspace#1655 and #1672 (epic #1652); this repo's epic #49.
   `run-call-center-report.mjs`); `test/live-split.test.mjs` keeps them out of `npm test`. (#47)
 - `test/stdout-clean.test.mjs` starts the server and checks every stdout line is a JSON-RPC
   message. (#48)
+
+### Fixed
+
+- `draft_311_report` lists every Problem Detail option and every Additional Detail, in the
+  City's words, with a `count`. Before, it stopped at 15 options and said only "more: 2", with
+  no way to see the rest; for a street pothole that hid "Rough, Pitted or Cracked Roads", the
+  option that fits it best (live check 2026-11-19). Additional Details stopped at 12 and are
+  now split by "; ", since some have commas of their own. `how_to_report` gives every report
+  option of an article in `report_actions` (KA-02136 has 60; it gave 15 and
+  `report_actions_truncated`, now gone). Its online "how" names the first 6 and says how many
+  more are in `report_actions`. `test/choices-complete.test.mjs` checks every list in the
+  recorded data against the City's rows. (#49)
 
 ## [1.3.0] - 2026-11-13
 

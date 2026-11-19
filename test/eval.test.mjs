@@ -2,6 +2,7 @@
 // questions, each with checks and the place its known answer came from. Its score is recorded in
 // eval/runs/; here every question must still pass, so a change that breaks a known answer shows.
 import { test } from "node:test";
+import { readFileSync } from "node:fs";
 import assert from "node:assert/strict";
 import { QUESTIONS, runEval, sourceAndAsOf } from "../eval/run.mjs";
 
@@ -46,4 +47,12 @@ test("every tool family is in the eval, and district 484 is not most of it", () 
 test("every eval question passes offline", async () => {
   const rows = await runEval();
   assert.deepEqual(rows.filter((r) => !r.ok).map((r) => `${r.id}: ${r.failed.join("; ")}`), []);
+});
+
+// #49: the README said 13 questions after the set grew to 15. It must name the real count.
+test("README names the eval set's real question count", () => {
+  const readme = readFileSync(new URL("../README.md", import.meta.url), "utf8");
+  const m = readme.match(/Run the evaluation set: (\d+) questions/);
+  assert.ok(m, "README no longer says how many questions the eval set has");
+  assert.equal(Number(m[1]), QUESTIONS.length, "README.md and eval/questions.json disagree");
 });
