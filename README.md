@@ -438,7 +438,7 @@ Run the tests (they build first and need no API key or network):
 npm test
 ```
 
-Run the evaluation set: 13 questions a resident or a community board might ask, each with an
+Run the evaluation set: 15 questions a resident or a community board might ask, each with an
 answer known before scoring, offline against the test fixtures. `--record` saves the result in
 `eval/runs/`.
 
