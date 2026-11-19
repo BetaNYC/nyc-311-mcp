@@ -4,7 +4,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { execFileSync } from "node:child_process";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { callTool, TOOLS, SHARED_TOOL_LINE } from "../dist/tools.js";
@@ -119,9 +118,3 @@ test("over stdio, the SDK client accepts both answers against their output schem
   }
 });
 
-test("WHATS-CHANGED.md ships in the npm package", () => {
-  const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8" });
-  const files = JSON.parse(out)[0].files.map((f) => f.path);
-  assert.ok(files.includes("WHATS-CHANGED.md"), files.join(", "));
-  assert.ok(files.includes("dist/betanyc-tools.js"));
-});

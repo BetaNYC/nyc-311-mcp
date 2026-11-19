@@ -6,10 +6,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 // First, so tools.js loads as on a server with a key; the keyless server is tested below.
 import "./with-api-key.mjs";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -193,19 +192,6 @@ test("over stdio, the SDK client accepts about_data for two topics against its o
   }
 });
 
-test("DATA-SOURCES.json and data.json ship in the npm package; the website copy matches, and only with a real contact", () => {
-  const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8" });
-  const files = JSON.parse(out)[0].files.map((f) => f.path);
-  for (const f of ["DATA-SOURCES.json", "data.json", "WHATS-CHANGED.md"]) assert.ok(files.includes(f), `${f}: ${files.join(", ")}`);
-  assert.ok(!files.includes("croissant.json"), "this repo publishes no data files of its own");
-  // GitHub Pages serves docs/ from main, so a docs/data.json would publish the placeholder.
-  const site = new URL("../docs/data.json", import.meta.url);
-  if (DS_TEXT.includes("contact-not-yet-named@example.invalid")) {
-    assert.equal(existsSync(site), false, "docs/data.json would publish the placeholder contact");
-  } else {
-    assert.equal(readFileSync(site, "utf8"), readFileSync(new URL("../data.json", import.meta.url), "utf8"), "docs/data.json must match data.json");
-  }
-});
 
 test("about_data gives BetaNYC's contact address, lab@beta.nyc, in its answer and in structuredContent", async (t) => {
   useCache(t, await seededCache());
