@@ -243,7 +243,15 @@ test("B: a batch in flight gets only the time left, then the run stops with what
   };
   const started = Date.now();
   const asked = numbers(45);
-  const got = await getServiceRequestBatches(asked, { now: clock.now, sleep: clock.sleep });
+  // AbortSignal.timeout's timer does not keep Node alive (a running server has stdin open for
+  // that); here nothing else would, so the test runner would end the file while batch 2 waits.
+  const keepAlive = setInterval(() => {}, 1_000);
+  let got;
+  try {
+    got = await getServiceRequestBatches(asked, { now: clock.now, sleep: clock.sleep });
+  } finally {
+    clearInterval(keepAlive);
+  }
   const took = Date.now() - started;
   assert.ok(took < 5_000, `batch 2 was given ${took} ms, more than the time left`);
   assert.equal(n, 2);
