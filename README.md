@@ -259,7 +259,7 @@ Have a 311 number, like 311-12345678? These tell you where it stands, in words. 
     - “What happened with 311 request 311-17323508?”
   - Inputs: `sr_number` (required)
 
-- **`get_service_request_list`** (Improved in 1.2.0; needs the free 311 API key). Several 311 numbers at once. Any number the City can't find is listed, so nothing quietly goes missing.
+- **`get_service_request_list`** (Improved in 1.2.0; needs the free 311 API key). Several 311 numbers at once, up to 200 different ones. Any number the City can't find is listed, so nothing quietly goes missing.
   - Try asking:
     - “Check these three 311 numbers for me: …”
   - Inputs: `sr_numbers` (required)
@@ -399,13 +399,24 @@ status in words (the API sends a code, `614110003` means Closed) and the address
 
 #### `get_service_request_list`
 
-Several requests at once (`sr_numbers`, a list of up to 20; split a longer list into several
-calls). Each comes back as in `get_service_request`. The City leaves out a number it can't find
-without saying so, so since 1.2.0 they are listed in `not_found`.
+Several requests at once (`sr_numbers`). Each comes back as in `get_service_request`. The City
+leaves out a number it can't find without saying so, so since 1.2.0 they are listed in
+`not_found`.
+
+The list can hold up to 200 different numbers; repeats are dropped first and don't count. The
+City documents no limit, so the server asks it for 20 at a time, one batch after another, each
+with the same timeout and retry rules as any other request. `lookup` says how many numbers were
+asked for, how many different ones, how many were found, and how many batches were sent. If a
+batch fails (a rate limit, a timeout, an error from the City), the server sends no more batches:
+the answer keeps what the earlier batches found and lists the rest in `not_looked_up`, with
+`not_looked_up_note` saying why. A list of more than 200 different numbers is refused before
+anything is sent; split it into calls of 200 or fewer.
 
 All four of these tools add a `provenance` block to their answer: the source and its publisher,
-as `DATA-SOURCES.json` names them, a link to the City's documentation for the API operation, and
-`as_of`, the time the answer was fetched from the City.
+as `DATA-SOURCES.json` names them, a link to the City's documentation for that API (one link per
+source: `get_calendar` and `get_status` link to the GetCalendar page, the two request lookups to
+the GetServiceRequest page), and `as_of`, the time the answer was fetched from the City
+(`as_of_kind: "retrieved"`, with the same time in `retrieved_at`).
 
 ### Run it from source
 

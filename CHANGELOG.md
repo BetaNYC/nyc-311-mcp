@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - Unreleased
 
-Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace#1655 and
-#1672 (epic #1652).
+Moves the shared BetaNYC module to 1.5.1 (by way of 1.4.0 and 1.5.0). Tracking:
+BetaNYC/betanyc-ai-workspace#1655 and #1672 (epic #1652); this repo's epic #49.
 
 ### Changed
 
@@ -63,10 +63,36 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
 - get_calendar, get_status, get_service_request and get_service_request_list add a
   `provenance` block (shared `provenance()`): source and publisher as `DATA-SOURCES.json`
   names them, its link, and `as_of`, the fetch time. (#41, #42)
-- get_service_request_list takes at most 20 numbers (`maxItems` in the schema and in
-  validation); a longer list is refused with a plain sentence before anything reaches the
-  City. `src/plain-errors.ts` now passes a schema's own too-big message through, as it already
-  did for too-small. `test/provenance-and-lists.test.mjs`. (#43)
+- get_service_request_list takes up to 200 different numbers in one call and sends them to
+  the City 20 at a time, one batch after another, through the same 311 client (timeout, 5xx
+  retry, 429 wait). Duplicates are dropped first and do not count. A list of more than 200
+  different numbers, or with a malformed number, is refused before anything is sent. If a
+  batch fails, no further batch is sent (a 429 above all): the answer keeps what earlier
+  batches found and lists the rest in `not_looked_up` with the reason (no upstream body; keys
+  redacted). A batch the City answers with 404 counts as not found. `lookup` gives the counts
+  and batches sent. The schema has no `maxItems` (duplicates would count against it).
+  `test/sr-batches.test.mjs`, `test/provenance-and-lists.test.mjs`. (#43; first a refusal over
+  20, changed in the #49 review: the City documents no limit and 20 was our own.)
+- Shared module 1.5.1, copied unchanged (raw file sha256 `567838e0…3a72d`; stamp hash on its
+  line 2, `e1e15642…13e96`, which leaves that line out). Tool annotations must now have
+  `readOnlyHint: true`, a boolean `openWorldHint` and a title; `provenance` gains
+  `as_of_kind` and `retrieved_at`, and its text gives the fetch time in New York time to the
+  minute; `toolError` scrubs more encoded forms of a key (8 characters or longer) and no
+  longer drops lines from the server's own message, so `src/nyc-311.ts` keeps passing on only
+  the first line of a network error. (#49)
+- 311 Public API answers are read and parsed inside the same try/catch as the request: a
+  timeout or a dropped connection while the body arrives, or a body that is not JSON, ends in
+  a plain sentence instead of a raw `SyntaxError`. `test/upstream-311.test.mjs`. (#49)
+- `npm pack` checks moved to `test/serial/pack.test.mjs`, which `npm test` runs alone after
+  the main suite: on CI's npm, `prepare` ran `tsc` despite `--ignore-scripts` and rewrote
+  `dist/` while other test files imported it. `test/live-split.test.mjs` keeps the split. (#49)
+- `test/ll47-reports.test.mjs`: the mocked-clock test waits, in real time, for the first
+  slow request to be in flight before it moves the clock, so real file reads are never counted
+  as mocked seconds. (#49)
+- `eval/`: the source-and-as-of check reads only the answer's own provenance block; Q04, Q07
+  and Q08 moved off district 484; Q14 (`get_calendar`) and Q15 (`get_status`) added, answered
+  from `test/fixtures/api/calendar-and-status.json`. Recorded in `eval/runs/2026-11-18-2.md`
+  (15 of 15). `--record` no longer overwrites an earlier run's file. (#49)
 - `eval/`: 13 realistic questions with answers known before scoring (DuckDB over the
   fixtures, the City's recorded 311 articles and request answers), run offline by
   `npm run eval`; first run recorded in `eval/runs/2026-11-18.md` (13 of 13).
