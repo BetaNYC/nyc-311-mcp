@@ -173,7 +173,7 @@ test("every report carries the Phase 0 envelope and a mandate block naming the s
     for (const k of ["data_as_of", "latest_request", "boardstat_url", "caveats", "source", "data"]) assert.ok(k in env, `${section}: no ${k}`);
     assert.ok(env.mandate.charter_section.includes(section));
     assert.equal(env.mandate.status, status);
-    assert.equal(env.mandate.note, "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.");
+    assert.equal(env.mandate.note, "BetaNYC produced this. It is not an official record: a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.");
     assert.ok(env.mandate.omissions.some((o) => /ZIP code breakdown: omitted by BetaNYC's decision/.test(o) && /postal delivery areas, not City districts/.test(o)));
     assert.ok(env.mandate.omissions.some((o) => /before 2020-01-01/.test(o) && /April 1, 2004/.test(o)));
     if (status === "repealed") assert.match(env.mandate.repealed_by, /Local Law 69 of 2023/);

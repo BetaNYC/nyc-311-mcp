@@ -6,6 +6,8 @@ import {
   getServiceRequestBatches,
   MAX_SR_NUMBERS,
   SR_BATCH_SIZE,
+  uniqueSrNumbers,
+  upstreamBodyOf,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
 import { describeStatus } from "./status.js";
@@ -19,6 +21,7 @@ import { CALL_CENTER_DATASET, sodaClient, type SodaMetadata } from "./soda.js";
 import { SLA_KEY, type SlaCache } from "./draft-report.js";
 import { contentClient } from "./content-311.js";
 import { redactZip } from "./envelope.js";
+import { cleanWarning, secretValues } from "./warning-text.js";
 
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
@@ -192,7 +195,7 @@ const DOMAIN_TOOLS = [
   {
     name: "get_service_request_list",
     description:
-      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error). Duplicates are dropped; the server sends 20 at a time, one batch after another. If a batch fails, the answer keeps what was found and lists not_looked_up.",
+      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error). Duplicates are dropped; the server sends 20 at a time, one batch after another, for at most 45 seconds. A failed batch, a 429 or running out of time stops it: the answer keeps what was found and lists not_looked_up.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -310,18 +313,14 @@ export async function callTool(name: string, args: unknown) {
   return { content: [{ type: "text", text: `${text}\n\n${SAFETY_LINE}` }] };
 }
 
-/** The keys this server reads from its environment; never part of an answer (#44). */
-function secretValues(env: NodeJS.ProcessEnv = process.env): string[] {
-  return [env.NYC_311_API_KEY, env.SOCRATA_APP_TOKEN].filter((v): v is string => typeof v === "string" && v.trim() !== "");
-}
-
 /**
  * Why a long list stopped early, for a successful (partial) answer, which does not pass through
- * toolError: no upstream body, keys redacted the way toolError redacts them, ZIP codes removed.
+ * toolError: one line (the City's body is never in the message), keys redacted, ZIP codes removed,
+ * ending with a full stop so it does not run into the next sentence.
  */
 function plainReason(message: string): string {
-  const short = message.split(" Response body:")[0];
-  return redactZip(toolError(short, { secrets: secretValues() }).content[0].text.replace(/^Error: /, ""));
+  const line = redactZip(cleanWarning(message));
+  return /[.!?…]$/.test(line) ? line : `${line}.`;
 }
 
 /** An error message without the sentence, which the response adds once at the end. */
@@ -371,7 +370,8 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
           results = await getServiceRequest(sr_number);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          throw new Error(/ error 404/.test(message) ? notFoundMessage(sr_number, message) : message);
+          if (!/ error 404/.test(message)) throw err;
+          throw new Error(notFoundMessage(sr_number, `${message} ${upstreamBodyOf(err) ?? ""}`));
         }
         results = describeServiceRequest(results);
         return { content: [{ type: "text", text: json(withSource(results, "service-request-lookup")) }] };
@@ -384,8 +384,8 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
           got = await getServiceRequestBatches(sr_numbers);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          const unique = [...new Set(sr_numbers)];
-          throw new Error(/ error 404/.test(message) ? listNotFoundMessage(unique, message) : message);
+          if (!/ error 404/.test(message)) throw err;
+          throw new Error(listNotFoundMessage(uniqueSrNumbers(sr_numbers), `${message} ${upstreamBodyOf(err) ?? ""}`));
         }
         const described = describeServiceRequestList({ SRResponses: got.SRResponses }, got.looked_up) as Record<string, unknown>;
         const found = Array.isArray(described.SRResponses) ? described.SRResponses.length : 0;
@@ -440,10 +440,10 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
     // errors included: a person describing a problem may be in danger (QA on #23, #24).
     // toolError ("Error: …") replaces either key with "[redacted]" (also percent-, form-,
     // JSON- and base64-encoded), in case an upstream body or an exception ever echoes one (#44,
-    // #45). From shared module 1.5.1 it passes the message's own lines on as written, so no
-    // stack frame may reach it: nyc-311.ts keeps only the first line of a network error, and
-    // upstream bodies are cut where they are read (nyc-311.ts 500, soda.ts 300 characters).
-    const out = toolError(withoutSafetyLine(message), { secrets: secretValues() });
+    // #45). Shared module 1.5.2 drops stack-frame lines from the message and the body alike and
+    // caps the message at 1,000 characters. A City API's own body is never in the message: it
+    // comes as upstreamBody (nyc-311.ts UpstreamError), which toolError cuts at 500 characters.
+    const out = toolError(withoutSafetyLine(message), { secrets: secretValues(), upstreamBody: upstreamBodyOf(err) });
     return { content: [{ type: "text", text: out.content[0].text }], isError: true };
   }
 }

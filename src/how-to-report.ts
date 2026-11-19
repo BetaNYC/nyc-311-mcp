@@ -14,6 +14,7 @@
 // (its sections, its "Call 911" lines, its "What Happens Next"), and for the ways
 // to reach 311, portal.311.nyc.gov/about-nyc-311/ (read 2026-11-07, REACH_311).
 
+import { cleanWarning } from "./warning-text.js";
 import { z } from "zod";
 import { assertNoZip, redactZip, scrubZipValues } from "./envelope.js";
 import { articleUrl, contentClient, NotFoundError, CATEGORY_ID, PORTAL, type Article, type ArticleSummary, type Category, type ContentAction, type ContentClient, type Fetched } from "./content-311.js";
@@ -1359,7 +1360,7 @@ async function howToReportInner(args: z.infer<z.ZodObject<typeof HOW_SHAPE>>, cl
         ...(env.stale ? { warning: env.warning } : {}),
       };
     } catch (err) {
-      in_your_district = { problem: lead.problem_type, note: `Not counted: ${err instanceof Error ? err.message : String(err)}` };
+      in_your_district = { problem: lead.problem_type, note: `Not counted: ${cleanWarning(err)}` };
     }
   }
 
@@ -1418,7 +1419,7 @@ function offlineDanger(q: Query, err: unknown) {
     best_match: null,
     alternatives: [],
     no_match: null,
-    content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${err instanceof Error ? err.message : String(err)}`,
+    content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${cleanWarning(err)}`,
     how_to_reach_311: REACH_311,
     not_filed: NOT_FILED,
     caveats: ["Danger detection here is keyword-based. Call 911 first if anyone may be in danger.", NOT_FILED],

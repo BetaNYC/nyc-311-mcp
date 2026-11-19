@@ -171,3 +171,165 @@ test("every batch answered 404: the usual 'none of these' error", async () => {
   assert.match(r.content[0].text, /311 has none of these service requests/);
   assert.equal(seen.batches.length, 2);
 });
+
+// ── #49 review, round 2 ─────────────────────────────────────────────────────────
+
+const { getServiceRequestBatches, OUT_OF_TIME, SR_BATCH_GAP_MS, SR_LIST_BUDGET_MS, MAX_SR_LIST_ENTRIES } = await import("../dist/nyc-311.js");
+
+// A. A 429 is never retried inside a batch run: one request for that batch, none after.
+for (const [label, headers] of [["no Retry-After", {}], ["retry-after: 3", { "retry-after": "3" }]]) {
+  test(`A: a 429 with ${label} on batch 2 ends the run at once: one request for it, none after`, async () => {
+    const seen = stub((n) => (n === 2 ? new Response("", { status: 429, headers }) : null));
+    const asked = numbers(60);
+    const r = await callTool("get_service_request_list", { sr_numbers: asked });
+    assert.notEqual(r.isError, true, r.content[0].text);
+    assert.equal(seen.batches.length, 2, "batch 2 sent once, batch 3 never");
+    const a = answer(r);
+    assert.equal(a.lookup.found, 20);
+    assert.deepEqual(a.not_looked_up, asked.slice(20));
+    assert.match(a.not_looked_up_note, /HTTP 429/);
+  });
+}
+
+// B. Pacing and the time budget, on a fake clock.
+function fakeClock() {
+  const c = { t: 1_000_000, sleeps: [] };
+  c.now = () => c.t;
+  c.sleep = async (ms) => {
+    c.sleeps.push(ms);
+    c.t += ms;
+  };
+  return c;
+}
+
+test("B: batches go out 250 ms apart, and the whole call has 45 seconds", async () => {
+  assert.equal(SR_BATCH_GAP_MS, 250);
+  assert.equal(SR_LIST_BUDGET_MS, 45_000);
+  const clock = fakeClock();
+  const seen = stub();
+  const got = await getServiceRequestBatches(numbers(61), { now: clock.now, sleep: clock.sleep });
+  assert.equal(seen.batches.length, 4);
+  assert.deepEqual(clock.sleeps, [250, 250, 250], "one gap between each two batches, none before the first");
+  assert.equal(got.stopped_because, null);
+});
+
+test("B: when the budget is spent, no batch starts: what was fetched comes back, the rest is out of time", async () => {
+  const clock = fakeClock();
+  const seen = stub(() => {
+    clock.t += 23_000; // each batch takes 23 s on the fake clock
+    return null;
+  });
+  const asked = numbers(80);
+  const got = await getServiceRequestBatches(asked, { now: clock.now, sleep: clock.sleep });
+  assert.equal(seen.batches.length, 2, "batch 3 must not start after 45 s");
+  assert.equal(got.SRResponses.length, 40);
+  assert.deepEqual(got.not_looked_up, asked.slice(40));
+  assert.equal(got.stopped_because, OUT_OF_TIME);
+  assert.equal(OUT_OF_TIME, "out of time: ask again for these");
+});
+
+test("B: a batch in flight gets only the time left, then the run stops with what it has", async () => {
+  const clock = fakeClock();
+  let n = 0;
+  globalThis.fetch = async (url, init = {}) => {
+    n++;
+    const srs = JSON.parse(init.body).SRNumbers;
+    if (n === 1) {
+      clock.t += 44_000; // 44 s used; after the 250 ms gap, 750 ms are left
+      return Response.json({ SRResponses: srs.map(SR) });
+    }
+    // Batch 2 hangs until its signal fires: that must be the 750 ms left, not the 30 s timeout.
+    return new Promise((_, reject) => init.signal.addEventListener("abort", () => reject(init.signal.reason)));
+  };
+  const started = Date.now();
+  const asked = numbers(45);
+  const got = await getServiceRequestBatches(asked, { now: clock.now, sleep: clock.sleep });
+  const took = Date.now() - started;
+  assert.ok(took < 5_000, `batch 2 was given ${took} ms, more than the time left`);
+  assert.equal(n, 2);
+  assert.equal(got.SRResponses.length, 20);
+  assert.deepEqual(got.not_looked_up, asked.slice(20));
+  assert.equal(got.stopped_because, OUT_OF_TIME);
+});
+
+test("B: a 5xx retry wait longer than the time left is not waited out", async () => {
+  const clock = fakeClock();
+  const seen = stub((n) => {
+    if (n === 1) {
+      clock.t += 34_000; // after the gap, 10.75 s are left: less than the 15 s the City asks
+      return null;
+    }
+    return new Response("", { status: 503, statusText: "Service Unavailable", headers: { "retry-after": "15" } });
+  });
+  const started = Date.now();
+  const got = await getServiceRequestBatches(numbers(45), { now: clock.now, sleep: clock.sleep });
+  assert.ok(Date.now() - started < 5_000, "the retry wait was waited out");
+  assert.equal(seen.batches.length, 2, "batch 2 sent once, not retried, and batch 3 never");
+  assert.equal(got.SRResponses.length, 20);
+  assert.match(got.stopped_because, /NYC 311 API error 503/);
+});
+
+// C. The 311 API's body never reaches the message; it is toolError's upstreamBody.
+test("C: a 500 whose body holds a stack frame: plain sentence, body under 'The source said', frame dropped", async () => {
+  globalThis.fetch = async () =>
+    new Response(`upstream trouble\n    at evil (/Users/x/secret/path.js:1:2)\nmore ${KEY}`, { status: 500, statusText: "Internal Server Error" });
+  const r = await callTool("get_service_request", { sr_number: "311-17323508" });
+  assert.equal(r.isError, true);
+  const t = r.content[0].text;
+  assert.match(t, /^Error: NYC 311 API error 500: Internal Server Error\nThe source said: upstream trouble\nmore \[redacted\]/);
+  assert.ok(!t.includes("/Users/x/secret"), "the stack frame leaked");
+  assert.ok(!t.includes(KEY));
+  assert.doesNotMatch(t, /Response body/);
+});
+
+// E. Small ones.
+test("E: results come back in the order asked, duplicates at their first place, whatever order the City answers in", async () => {
+  globalThis.fetch = async (url, init = {}) => {
+    const srs = JSON.parse(init.body).SRNumbers;
+    return Response.json({ SRResponses: [...srs].reverse().map(SR) });
+  };
+  const [a, b, c] = numbers(3);
+  const r = await callTool("get_service_request_list", { sr_numbers: [b, a, b, c, a] });
+  assert.notEqual(r.isError, true, r.content[0].text);
+  assert.deepEqual(answer(r).SRResponses.map((x) => x.SRNumber), [b, a, c]);
+});
+
+test("E: spaces around a number are trimmed before it is checked, and a trimmed duplicate is one number", async () => {
+  const seen = stub();
+  const [a, b] = numbers(2);
+  const r = await callTool("get_service_request_list", { sr_numbers: [` ${a}`, `${b} `, a] });
+  assert.notEqual(r.isError, true, r.content[0].text);
+  assert.deepEqual(seen.batches, [[a, b]]);
+  assert.equal(answer(r).lookup.different_numbers, 2);
+});
+
+test("E: 311-0020000001 and 311-20000001 are two numbers (no document says they are one)", async () => {
+  const seen = stub();
+  const r = await callTool("get_service_request_list", { sr_numbers: ["311-0020000001", "311-20000001"] });
+  assert.notEqual(r.isError, true, r.content[0].text);
+  assert.deepEqual(seen.batches, [["311-0020000001", "311-20000001"]]);
+});
+
+test("E: a raw list longer than 2,000 entries is refused before duplicates are removed, with no request", async () => {
+  assert.equal(MAX_SR_LIST_ENTRIES, 2_000);
+  const seen = stub();
+  const r = await callTool("get_service_request_list", { sr_numbers: Array(2_001).fill("311-20000000") });
+  assert.equal(r.isError, true);
+  assert.match(r.content[0].text, /^Error: get_service_request_list takes at most 2,000 entries in sr_numbers, duplicates included; this list has 2,001\./);
+  assert.equal(seen.batches.length, 0);
+  const ok = await callTool("get_service_request_list", { sr_numbers: Array(2_000).fill("311-20000000") });
+  assert.notEqual(ok.isError, true, ok.content[0].text);
+});
+
+test("E: not_looked_up_note ends its reason with a full stop before the next sentence", async () => {
+  stub((n) => (n === 2 ? new Response("", { status: 400, statusText: "Bad Request" }) : null));
+  const r = await callTool("get_service_request_list", { sr_numbers: numbers(25) });
+  assert.match(answer(r).not_looked_up_note, /Why: NYC 311 API error 400: Bad Request\. No further batches were sent\./);
+  const clock = fakeClock();
+  stub(() => {
+    clock.t += 46_000;
+    return null;
+  });
+  const got = await getServiceRequestBatches(numbers(25), { now: clock.now, sleep: clock.sleep });
+  assert.equal(got.stopped_because, OUT_OF_TIME);
+});

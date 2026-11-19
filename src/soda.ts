@@ -20,6 +20,7 @@
 // ZIP codes: this dataset has no ZIP column, and no query here may name one
 // (assertNoZipSoql), by decision (#12).
 
+import { cleanWarning } from "./warning-text.js";
 import { readFileSync } from "node:fs";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -173,7 +174,15 @@ export class SodaClient {
           status = res.status;
           retryAfter = res.headers.get("retry-after");
           if (res.ok) {
-            const body = await res.json();
+            // Read and parse here, under the same timer: a 200 that is not JSON (an HTML error
+            // page) must end in a plain sentence, never a raw SyntaxError (#49 review, round 2).
+            const raw = await res.text();
+            let body: unknown;
+            try {
+              body = JSON.parse(raw);
+            } catch {
+              throw new Error(`NYC Open Data sent an answer for ${url.pathname} that could not be read (it was not JSON). Try again in a minute.`);
+            }
             this.gap = Math.max(this.minGap, this.gap / 2);
             return body;
           }
@@ -181,7 +190,7 @@ export class SodaClient {
           lastErr = new Error(`NYC Open Data returned HTTP ${res.status} for ${url.pathname}: ${text}`);
           if (res.status !== 429 && res.status < 500) throw lastErr;
         } catch (err) {
-          if (status !== null && status !== 429 && status < 500) throw err;
+          if (status !== null && status !== 429 && status < 500) throw ac.signal.aborted && ac.signal.reason instanceof Error ? ac.signal.reason : err;
           lastErr = ac.signal.aborted && ac.signal.reason instanceof Error ? ac.signal.reason : err;
         } finally {
           clearTimeout(timer);
@@ -228,7 +237,7 @@ export class SodaClient {
     } catch (err) {
       const saved = await this.readCache<SodaMetadata>(`meta/${id}`);
       if (!saved) throw err;
-      const reason = err instanceof Error ? err.message : String(err);
+      const reason = cleanWarning(err);
       this.log("soda_stale", { id, reason });
       return {
         meta: saved.value,
