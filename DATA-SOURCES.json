@@ -253,7 +253,7 @@
         "name": "311"
       },
       "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
-      "official": true,
+      "official": false,
       "how_gathered": "BoardStat (BetaNYC) pulls the 311 dataset from NYC Open Data, the City's open data portal, every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
       "changes": {
         "changed": true,
@@ -323,8 +323,8 @@
         "name": "311"
       },
       "source_url": "https://data.cityofnewyork.us/d/erm2-nwe9",
-      "official": true,
-      "how_gathered": "Built from BoardStat's nightly files (see service-requests-by-district), downloaded once per BoardStat build.",
+      "official": false,
+      "how_gathered": "Built from BoardStat's nightly files (https://www.beta.nyc/boardstat/data/), which BetaNYC builds every night from NYC Open Data (see service-requests-by-district), downloaded once per BoardStat build.",
       "changes": {
         "changed": true,
         "steps": [
@@ -498,7 +498,7 @@
         "name": "311"
       },
       "source_url": "https://data.cityofnewyork.us/d/wewp-mm3p",
-      "official": true,
+      "official": false,
       "how_gathered": "Read-only queries to NYC Open Data, the City's open data portal, where 311 publishes the dataset: one query per month, saved on this machine; the month in progress is asked again after an hour.",
       "changes": {
         "changed": true,

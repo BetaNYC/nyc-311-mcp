@@ -92,7 +92,7 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   assert.ok(d, Object.keys(s).join(", "));
   assert.equal(d.publisher, "311", "as NYC Open Data credits it (Data Provided by)");
   assert.equal(d.source_url, "https://data.cityofnewyork.us/d/erm2-nwe9");
-  assert.equal(d.official, true);
+  assert.equal(d.official, false, "BetaNYC builds these counts (#49 review, round 2)");
   assert.equal(d.figures_official, false, "BetaNYC placed and counted them");
   assert.deepEqual(d.changed_by_betanyc.steps, ["filtered", "cleaned", "fields-removed", "address-matched", "merged", "counted"]);
   assert.equal(d.as_of, MANIFEST.generated_at, "read from the saved manifest");
@@ -106,7 +106,7 @@ test("about_data for the district tools: BoardStat's build time, the owning agen
   assert.equal(s["council-district-boundaries"].as_of, MANIFEST.sources.council_districts.rowsUpdatedAt_iso);
   const text = r.content[0].text;
   // Shared module 1.4.0: one of three answers, naming the source, its publisher and its link.
-  assert.match(text, /^BetaNYC modified this data: .*\. This copy should not be considered the official record\. Official record: 311 Service Requests from 2020 to Present, https:\/\/data\.cityofnewyork\.us\/d\/erm2-nwe9$/m);
+  assert.match(text, /^BetaNYC produced this\. It is not an official record\. Built from: 311 Service Requests from 2020 to Present, https:\/\/data\.cityofnewyork\.us\/d\/erm2-nwe9$/m);
   assert.match(text, /^Publisher: Department of City Planning\. BetaNYC did not modify it\. Source: Community Districts, https:\/\/data\.cityofnewyork\.us\/d\/5crt-au7u$/m);
   assert.equal(s["community-district-boundaries"].publisher, "Department of City Planning");
   assert.match(text, /Call about_betanyc for who built nyc-311-mcp/);
@@ -255,4 +255,37 @@ test("errors in City data go to whoever runs the form: NYC Open Data for its con
   }
   assert.equal(s["calendar-and-status"].report_errors.in_the_data_name, "City of New York");
   assert.equal(s["built-in-911-lines"].report_errors.in_the_data_name, "City of New York");
+});
+
+// #49 review, round 2: the counts BetaNYC builds are labeled produced by BetaNYC, never the
+// official record, in about_data and in each answer alike.
+for (const topic of ["district_summary", "ll47_service_request_report"]) {
+  test(`about_data for ${topic} says BetaNYC produced the counts and never calls them the official record`, async (t) => {
+    useCache(t, await seededCache());
+    const r = await callTool("about_data", { topic });
+    assert.notEqual(r.isError, true, r.content[0].text);
+    const text = r.content[0].text;
+    assert.match(text, /^BetaNYC produced this\. It is not an official record\. Built from: 311 Service Requests from 2020 to Present, https:\/\/data\.cityofnewyork\.us\/d\/erm2-nwe9$/m);
+    assert.match(text, /https:\/\/www\.beta\.nyc\/boardstat\/data\//, "names BoardStat's nightly files, with the link");
+    // No line about the 311 requests calls them published as is, or names an official record of them.
+    for (const line of text.split("\n").filter((l) => l.includes("erm2-nwe9"))) {
+      assert.doesNotMatch(line, /did not modify it|Official record:/, line);
+    }
+    const s = bySource(r);
+    const id = topic === "district_summary" ? "service-requests-by-district" : "ll47-service-request-reports";
+    assert.equal(s[id].official, false);
+    assert.equal(s[id].figures_official, false);
+  });
+}
+
+test("the answers say the same: district answers and Local Law 47 reports open with BetaNYC produced this", async () => {
+  const { CAVEATS } = await import("../dist/envelope.js");
+  const { NOT_OFFICIAL, MANDATES } = await import("../dist/ll47-reports.js");
+  assert.match(CAVEATS[0], /^BetaNYC produced this\. It is not an official record/);
+  assert.match(NOT_OFFICIAL, /^BetaNYC produced this\. It is not an official record/);
+  for (const m of Object.values(MANDATES)) assert.equal(m.note, NOT_OFFICIAL);
+  const doc = JSON.parse(readFileSync(new URL("../DATA-SOURCES.json", import.meta.url), "utf8"));
+  for (const id of ["service-requests-by-district", "ll47-service-request-reports", "call-center-inquiries"]) {
+    assert.equal(doc.sources.find((x) => x.id === id).official, false, id);
+  }
 });

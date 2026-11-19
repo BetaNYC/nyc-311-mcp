@@ -8,6 +8,8 @@ import type { BoardStatManifest, ManifestResult } from "./boardstat-data.js";
  * in Council offices and community board meetings.
  */
 export const CAVEATS: readonly string[] = [
+  // about_data's own words for this source (produced-by-betanyc), so the answer and about_data agree.
+  "BetaNYC produced this. It is not an official record: BoardStat counts it from NYC Open Data's 311 requests.",
   "311 counts are reports, not problems: they reflect who reports and how, not only how many problems exist.",
   "\"Closed\" means the agency closed the request. It does not mean the problem was fixed.",
   "BoardStat's data starts 2020-01-01. Requests from before then are not included.",
