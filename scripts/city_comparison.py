@@ -8,7 +8,7 @@ fixes nothing: each difference is reported, with the counts that point to its ca
     npm run build
     echo '[{"name":"ll47_service_request_report","args":{"month":"2026-10","read_every_district":true,"limit":1000}}]' \\
       | node scripts/run-district-tools.mjs <boardstat-data-dir> > /tmp/sr.json
-    node scripts/run-call-center-report.mjs '{"month":"2026-10","limit":2000}' > /tmp/da.json
+    node test/live/run-call-center-report.mjs '{"month":"2026-10","limit":2000}' > /tmp/da.json
     python3 scripts/city_comparison.py docs/city-311-reporting/2026-11-02 /tmp/sr.json /tmp/da.json
 
 No network. Standard library only.

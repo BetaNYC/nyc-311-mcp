@@ -3,7 +3,7 @@
 // computed over the same fixture files with scripts/boardstat_oracle.py (written from the law's
 // list and BoardStat's columns, not from src/ll47-reports.ts). The call-center report replays
 // real responses from NYC Open Data (wewp-mm3p), recorded 2026-11-07 by
-// scripts/run-call-center-report.mjs and trimmed to nine topics.
+// test/live/run-call-center-report.mjs and trimmed to nine topics.
 import { test, mock } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile } from "node:fs/promises";
@@ -173,7 +173,7 @@ test("every report carries the Phase 0 envelope and a mandate block naming the s
     for (const k of ["data_as_of", "latest_request", "boardstat_url", "caveats", "source", "data"]) assert.ok(k in env, `${section}: no ${k}`);
     assert.ok(env.mandate.charter_section.includes(section));
     assert.equal(env.mandate.status, status);
-    assert.equal(env.mandate.note, "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.");
+    assert.equal(env.mandate.note, "BetaNYC produced this. It is not an official record: a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.");
     assert.ok(env.mandate.omissions.some((o) => /ZIP code breakdown: omitted by BetaNYC's decision/.test(o) && /postal delivery areas, not City districts/.test(o)));
     assert.ok(env.mandate.omissions.some((o) => /before 2020-01-01/.test(o) && /April 1, 2004/.test(o)));
     if (status === "repealed") assert.match(env.mandate.repealed_by, /Local Law 69 of 2023/);
@@ -759,11 +759,28 @@ const slowly = (ms, init) =>
     const t = setTimeout(() => resolve(null), ms);
     init.signal.addEventListener("abort", () => (clearTimeout(t), reject(init.signal.reason ?? new Error("aborted"))), { once: true });
   });
+/**
+ * Wait in real time, with the mocked clock standing still, until `ready()`. The fiscal-year call
+ * reads its saved months from disk (real I/O) before it sets its answer-wait timer; a mocked
+ * clock that moves on during those reads counts them as mocked seconds that no timer sees, and
+ * the answer then seems to come late (13,750 mocked ms against a 12,000 ms wait on a busy CI
+ * runner, 2026-11-18, #53). Waiting for the first slow request to be in flight means the timer
+ * is set before the clock moves at all. Fails plainly if it never happens.
+ */
+async function untilReal(ready, what, limitMs = 10_000) {
+  const t0 = Date.now();
+  while (!ready()) {
+    if (Date.now() - t0 > limitMs) throw new Error(`gave up after ${limitMs} ms of real time waiting for ${what}`);
+    await pause(2);
+  }
+}
 /** Advance the mocked timers in steps until `done()` or `limit` ms; returns the mocked ms that passed. */
+// Each step gives the code 15 ms of real time before the clock moves on (was 3 ms). That only
+// makes a race rarer; untilReal() removes it for the timing that is asserted.
 async function advance(done, limit, step = 250) {
   let t = 0;
   while (!done() && t < limit) {
-    await pause(3);
+    await pause(15);
     mock.timers.tick(step);
     t += step;
   }
@@ -803,6 +820,7 @@ test("fiscal-year call, slow portal: answers within the wait from saved months, 
   t.after(() => mock.timers.reset());
   let env;
   const first = directoryAssistanceReport(daArgs({ fiscal_year: 2027 }), soda, NOW).then((e) => (env = e));
+  await untilReal(() => active === 1, "the first slow month request");
   const waited = await advance(() => env, 60_000);
   await first;
   t.diagnostic(`first fiscal-year call answered after ${waited} ms on the mocked clock`);

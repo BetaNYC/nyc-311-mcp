@@ -4,16 +4,16 @@
 // `npm test`. Used to compare with the City's 311 Reporting dashboards and to record the
 // raw responses the unit tests replay.
 //
-//   npm run build && node scripts/run-call-center-report.mjs '{"month":"2026-10"}' [record-dir]
+//   npm run build && node test/live/run-call-center-report.mjs '{"month":"2026-10"}' [record-dir]
 //
 // With record-dir, every raw response body is written there (metadata as view.json,
 // each month's rows as <YYYY-MM>.json), so test fixtures are real responses, not guesses.
 import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { SodaClient } from "../dist/soda.js";
-import { directoryAssistanceReport } from "../dist/ll47-reports.js";
-import { parseToolArgs } from "../dist/tools.js";
+import { SodaClient } from "../../dist/soda.js";
+import { directoryAssistanceReport } from "../../dist/ll47-reports.js";
+import { parseToolArgs } from "../../dist/tools.js";
 
 const args = parseToolArgs("ll47_directory_assistance_report", JSON.parse(process.argv[2] ?? "{}"));
 const record = process.argv[3];

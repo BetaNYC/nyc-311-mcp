@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - Unreleased
 
-Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace#1655 and
-#1672 (epic #1652).
+Moves the shared BetaNYC module to 1.5.2 (by way of 1.4.0, 1.5.0 and 1.5.1). Tracking:
+BetaNYC/betanyc-ai-workspace#1655 and #1672 (epic #1652); this repo's epic #49.
 
 ### Changed
 
@@ -44,6 +44,82 @@ Moves the shared BetaNYC module to 1.4.0. Tracking: BetaNYC/betanyc-ai-workspace
   not available on this server, instead of calling them live. Every other source answers
   as before. New export `unavailableSources()` in `src/tools.ts` decides this once, at
   startup.
+- Shared module 1.5.0 and `scripts/whats_changed.py` 1.4.1 (with
+  `scripts/mcp_shared/data-sources.schema.json`), copied unchanged. 1.5.0 adds helpers for a
+  server's own tools; the three shared tools answer as before. Depends on
+  BetaNYC/betanyc-ai-workspace#1702. (#38)
+- Every tool declares MCP `annotations`: `readOnlyHint: true`, `openWorldHint: true` (each
+  domain tool can reach the 311 Public API, NYC Open Data or BoardStat's files), and a
+  `title`. No tool files, changes or closes a 311 request. `test/annotations.test.mjs`. (#39)
+- `test/tool-size.test.mjs` measures with the shared `toolListSize` (the same sum); the
+  budget stays 47,000 characters (46,203 now).
+- 311 Public API requests (`src/nyc-311.ts`) have a 30 s timeout, send the package
+  User-Agent, and retry a 502, 503 or 504 once, honoring Retry-After inside the same 20 s
+  budget as a 429. A timeout or a network failure ends in a plain sentence.
+  `test/upstream-311.test.mjs`; `test/request-shape.test.mjs` now pins the User-Agent. (#40)
+- Every error answer goes through the shared `toolError`: `NYC_311_API_KEY` and
+  `SOCRATA_APP_TOKEN` are replaced by `[redacted]` and stack-frame lines are dropped.
+  `test/secrets-and-errors.test.mjs` forces errors that echo both keys. (#44, #45)
+- get_calendar, get_status, get_service_request and get_service_request_list add a
+  `provenance` block (shared `provenance()`): source and publisher as `DATA-SOURCES.json`
+  names them, its link, and `as_of`, the fetch time. (#41, #42)
+- get_service_request_list takes up to 200 different numbers in one call and sends them to
+  the City 20 at a time, one batch after another, 250 ms apart, through the same 311 client
+  (timeout, one 5xx retry). Each number is trimmed; duplicates are dropped first and do not
+  count. A raw list of more than 2,000 entries, more than 200 different numbers, or a
+  malformed number is refused before anything is sent. A 429 is never retried in a batch: it
+  stops the run at once. The whole call has 45 seconds: no batch starts after that, and a
+  batch in flight gets only the time left. When a batch fails, a 429 comes, or time runs out,
+  no further batch is sent: the answer keeps what earlier batches found and lists the rest in
+  `not_looked_up` with the reason (no upstream body; keys redacted; "out of time: ask again
+  for these" when time ran out). A batch the City answers with 404 counts as not found.
+  Results come back in the order asked. `lookup` gives the counts and batches sent. The schema
+  has no `maxItems` (duplicates would count against it). `test/sr-batches.test.mjs`,
+  `test/provenance-and-lists.test.mjs`. (#43; first a refusal over 20, changed in the #49
+  review: the City documents no limit and 20 was our own.)
+- Shared module 1.5.2, copied unchanged (raw file sha256 `bcc117e7…b2b33`, 125,208 bytes;
+  stamp hash on its line 2, `eb29cbfb…9c9aa`, which leaves that line out). By way of 1.5.1:
+  tool annotations must have `readOnlyHint: true`, a boolean `openWorldHint` and a title;
+  `provenance` gains `as_of_kind` and `retrieved_at`, and its text gives the fetch time in New
+  York time to the minute; `toolError` scrubs more encoded forms of a key (8 characters or
+  longer). New in 1.5.2: `toolError` drops stack-frame lines from the message too and caps it
+  at 1,000 characters; `errorSummary()` gives one plain line of an unknown error;
+  `provenance()` takes an optional `changedByBetanyc`. (#49)
+- A 311 Public API error keeps the City's body out of its message (`UpstreamError` in
+  `src/nyc-311.ts`); the error path passes it to `toolError` as `upstreamBody`, which drops
+  stack-frame lines, redacts the keys and cuts it at 500 characters. (#49)
+- Warnings and notes inside a successful answer (a stale copy, a month that failed, "Not
+  counted") are one clean line from `cleanWarning()` (`src/warning-text.ts`): the error's first
+  plain line, keys redacted, at most 300 characters. NYC Open Data and the 311 content API now
+  read and parse a 200's body under the request's timer; a body that is not JSON gives a plain
+  sentence. `test/warnings-clean.test.mjs`. (#49)
+- `DATA-SOURCES.json`: the three sources whose counts BetaNYC builds
+  (`service-requests-by-district`, `ll47-service-request-reports`, `call-center-inquiries`)
+  are `official: false`, so `about_data` says "BetaNYC produced this. It is not an official
+  record. Built from: …" (was "BetaNYC modified this data … Official record: …"). District
+  answers (first caveat) and Local Law 47 reports (`mandate.note`) open with the same words.
+  `data.json` and `docs/data.json` rebuilt. (#49)
+- 311 Public API answers are read and parsed inside the same try/catch as the request: a
+  timeout or a dropped connection while the body arrives, or a body that is not JSON, ends in
+  a plain sentence instead of a raw `SyntaxError`. `test/upstream-311.test.mjs`. (#49)
+- `npm pack` checks moved to `test/serial/pack.test.mjs`, which `npm test` runs alone after
+  the main suite: on CI's npm, `prepare` ran `tsc` despite `--ignore-scripts` and rewrote
+  `dist/` while other test files imported it. `test/live-split.test.mjs` keeps the split. (#49)
+- `test/ll47-reports.test.mjs`: the mocked-clock test waits, in real time, for the first
+  slow request to be in flight before it moves the clock, so real file reads are never counted
+  as mocked seconds. (#49)
+- `eval/`: the source-and-as-of check reads only the answer's own provenance block; Q04, Q07
+  and Q08 moved off district 484; Q14 (`get_calendar`) and Q15 (`get_status`) added, answered
+  from `test/fixtures/api/calendar-and-status.json`. Recorded in `eval/runs/2026-11-18-2.md`
+  (15 of 15). `--record` no longer overwrites an earlier run's file. (#49)
+- `eval/`: 13 realistic questions with answers known before scoring (DuckDB over the
+  fixtures, the City's recorded 311 articles and request answers), run offline by
+  `npm run eval`; first run recorded in `eval/runs/2026-11-18.md` (13 of 13).
+  `test/eval.test.mjs` keeps it runnable. (#46)
+- The two live checks moved from `scripts/` to `test/live/` (`boardstat-live-check.mjs`,
+  `run-call-center-report.mjs`); `test/live-split.test.mjs` keeps them out of `npm test`. (#47)
+- `test/stdout-clean.test.mjs` starts the server and checks every stdout line is a JSON-RPC
+  message. (#48)
 
 ## [1.3.0] - 2026-11-13
 

@@ -103,7 +103,8 @@ tools and the Local Law 47 reports work without one.
 3. Copy a key from your [profile page](https://api-portal.nyc.gov/profile). Each subscription
    has a primary and a secondary key. Either one works.
 
-Keep the key to yourself. Never paste it into a GitHub issue.
+Keep the key to yourself. Never paste it into a GitHub issue. The server sends it only in a
+request header to api.nyc.gov, and removes it from any error message before you see one.
 
 The portal lists two other products. **NYC 311 Public — High Demand** gives a higher rate
 limit. **NYC 311 Developer Partner** is for creating service requests, which this server never
@@ -114,6 +115,9 @@ does. You don't need either.
 You don't need to know the tool names. Ask in plain English and your assistant picks the
 tool. The [website](https://betanyc.github.io/nyc-311-mcp/tools.html) has the same list with a
 replay of a real answer for each.
+
+Every tool only reads. None of them files, changes or closes a 311 request, and each one
+tells your AI app so (MCP `readOnlyHint`).
 
 #### Help reporting a problem
 
@@ -255,7 +259,7 @@ Have a 311 number, like 311-12345678? These tell you where it stands, in words. 
     - “What happened with 311 request 311-17323508?”
   - Inputs: `sr_number` (required)
 
-- **`get_service_request_list`** (Improved in 1.2.0; needs the free 311 API key). Several 311 numbers at once. Any number the City can't find is listed, so nothing quietly goes missing.
+- **`get_service_request_list`** (Improved in 1.2.0; needs the free 311 API key). Several 311 numbers at once, up to 200 different ones. Any number the City can't find is listed, so nothing quietly goes missing.
   - Try asking:
     - “Check these three 311 numbers for me: …”
   - Inputs: `sr_numbers` (required)
@@ -395,9 +399,28 @@ status in words (the API sends a code, `614110003` means Closed) and the address
 
 #### `get_service_request_list`
 
-Several requests at once (`sr_numbers`, a list). Each comes back as in `get_service_request`.
-The City leaves out a number it can't find without saying so, so since 1.2.0 they are listed
-in `not_found`.
+Several requests at once (`sr_numbers`). Each comes back as in `get_service_request`. The City
+leaves out a number it can't find without saying so, so since 1.2.0 they are listed in
+`not_found`.
+
+The list can hold up to 200 different numbers; spaces around a number are trimmed, and repeats
+are dropped first and don't count. The City documents no limit, so the server asks it for 20 at
+a time, one batch after another, a quarter second apart, each with the same timeout and 5xx
+retry as any other request. Results come back in the order you asked. `lookup` says how many
+numbers were asked for, how many different ones, how many were found, and how many batches were
+sent. The server stops sending batches when one fails (a timeout, an error from the City), at
+the first rate limit (HTTP 429, never retried here), or when the call has run 45 seconds (a
+batch still waiting gets only the time left). The answer then keeps what the earlier batches
+found and lists the rest in `not_looked_up`, with `not_looked_up_note` saying why ("out of
+time: ask again for these" when time ran out). A list of more than 200 different numbers, or
+more than 2,000 entries counting repeats, is refused before anything is sent; split it into
+smaller calls.
+
+All four of these tools add a `provenance` block to their answer: the source and its publisher,
+as `DATA-SOURCES.json` names them, a link to the City's documentation for that API (one link per
+source: `get_calendar` and `get_status` link to the GetCalendar page, the two request lookups to
+the GetServiceRequest page), and `as_of`, the time the answer was fetched from the City
+(`as_of_kind: "retrieved"`, with the same time in `retrieved_at`).
 
 ### Run it from source
 
@@ -414,6 +437,18 @@ Run the tests (they build first and need no API key or network):
 ```bash
 npm test
 ```
+
+Run the evaluation set: 13 questions a resident or a community board might ask, each with an
+answer known before scoring, offline against the test fixtures. `--record` saves the result in
+`eval/runs/`.
+
+```bash
+npm run eval
+node eval/run.mjs --record
+```
+
+Checks that call live services are in `test/live/`. `npm test` and CI never run them; each
+file's first lines say how to run it.
 
 ### Data sources
 

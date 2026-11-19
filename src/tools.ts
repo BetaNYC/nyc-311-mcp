@@ -3,7 +3,11 @@ import {
   getCalendar,
   getStatus,
   getServiceRequest,
-  getServiceRequestList,
+  getServiceRequestBatches,
+  MAX_SR_NUMBERS,
+  SR_BATCH_SIZE,
+  uniqueSrNumbers,
+  upstreamBodyOf,
 } from "./nyc-311.js";
 import { DISTRICT_ARG_SHAPES, DISTRICT_TOOLS, runDistrictTool, type DistrictToolName } from "./district-tools.js";
 import { describeStatus } from "./status.js";
@@ -16,12 +20,15 @@ import { boardstatData } from "./district-tools.js";
 import { CALL_CENTER_DATASET, sodaClient, type SodaMetadata } from "./soda.js";
 import { SLA_KEY, type SlaCache } from "./draft-report.js";
 import { contentClient } from "./content-311.js";
+import { redactZip } from "./envelope.js";
+import { cleanWarning, secretValues } from "./warning-text.js";
 
 /** The last line of whats_changed, about_betanyc and about_data: SAFETY_LINE's closing 911 sentence, word for word. */
 export const SHARED_TOOL_LINE = "If this is an emergency, or if you think this is an emergency, call 911.";
 import { plainArgsError } from "./plain-errors.js";
-import { createBetanycTools, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
+import { annotateTools, createBetanycTools, provenance, toolError, FRESHNESS_NOT_FETCHED, type FreshnessValue } from "./betanyc-tools.js";
 import { PACKAGE_VERSION } from "./version.js";
+import { readFileSync } from "node:fs";
 
 /**
  * whats_changed, about_betanyc and about_data, the three shared BetaNYC tools. Every BetaNYC
@@ -110,6 +117,25 @@ export function makeBetanycTools(unavailable: Record<string, string> = unavailab
 
 const betanyc = makeBetanycTools();
 
+/**
+ * get_service_request_list takes up to MAX_SR_NUMBERS different numbers and sends them
+ * SR_BATCH_SIZE at a time (nyc-311.ts getServiceRequestBatches). Re-exported for tests.
+ */
+export { MAX_SR_NUMBERS, SR_BATCH_SIZE };
+
+/**
+ * The source, publisher, link and as-of for an answer from the 311 Public API (#41, #42), named
+ * as DATA-SOURCES.json names it, so the two cannot drift. These are live calls: as of = now.
+ */
+const DATA_SOURCES = JSON.parse(readFileSync(new URL("../DATA-SOURCES.json", import.meta.url), "utf8")) as {
+  sources: { id: string; source_name: string; publisher: { name: string }; source_url: string }[];
+};
+export function liveSource(id: "calendar-and-status" | "service-request-lookup", now: Date = new Date()) {
+  const s = DATA_SOURCES.sources.find((x) => x.id === id);
+  if (!s) throw new Error(`DATA-SOURCES.json has no source '${id}'.`);
+  return provenance({ sourceName: s.source_name, publisher: s.publisher.name, sourceUrl: s.source_url, kind: "live" }, now).provenance;
+}
+
 const STATUS_TYPES = [
   "CodeBlue",
   "FireHydrant",
@@ -118,7 +144,7 @@ const STATUS_TYPES = [
   "SnowOnStreet",
 ] as const;
 
-export const TOOLS = [
+const DOMAIN_TOOLS = [
   {
     name: "get_calendar",
     description:
@@ -169,7 +195,7 @@ export const TOOLS = [
   {
     name: "get_service_request_list",
     description:
-      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error).",
+      "Look up several 311 service requests by their 311 numbers in one call. Each comes back as in get_service_request, with its plain_language block; numbers the API did not find are listed in not_found (the API leaves them out without an error). Duplicates are dropped; the server sends 20 at a time, one batch after another, for at most 45 seconds. A failed batch, a 429 or running out of time stops it: the answer keeps what was found and lists not_looked_up.",
     inputSchema: {
       type: "object",
       additionalProperties: false,
@@ -178,7 +204,7 @@ export const TOOLS = [
           type: "array",
           items: { type: "string" },
           minItems: 1,
-          description: "Array of service request numbers, e.g. ['311-17323508', '311-17323514']",
+          description: "Service request numbers, up to 200 different ones, e.g. ['311-17323508', '311-17323514']",
         },
       },
       required: ["sr_numbers"],
@@ -192,6 +218,28 @@ export const TOOLS = [
   ...REPORT_TOOLS,
   // A ready-to-paste 311 report the person files themselves (#18).
   ...DRAFT_TOOLS,
+];
+
+/** Titles for people where the tool's name does not read well with "_" as spaces. */
+const TITLES: Record<string, string> = {
+  boardstat_link: "BoardStat link",
+  boardstat_status: "BoardStat status",
+  ll47_service_request_report: "Local Law 47 service request report",
+  ll47_directory_assistance_report: "Local Law 47 directory assistance report",
+  cb_monthly_list: "Community board monthly list",
+};
+
+/**
+ * Every tool only reads: none files, changes or closes a 311 request (#39). Every domain tool can
+ * reach the network when it answers (the 311 Public API, NYC Open Data, or BoardStat's files on
+ * beta.nyc, downloaded on first use), so each is openWorldHint true. The three shared tools declare
+ * their own annotations.
+ */
+export const TOOLS = [
+  ...annotateTools(
+    DOMAIN_TOOLS.map((t) => (TITLES[t.name] ? { ...t, annotations: { title: TITLES[t.name] } } : t)),
+    true
+  ),
   // What's changed in this server, who built it, and where its data comes from (BetaNYC standard tools).
   ...betanyc.tools,
 ];
@@ -205,6 +253,7 @@ const ARG_SHAPES = {
   get_status: { type: z.enum(STATUS_TYPES) },
   get_service_request: { sr_number: z.string() },
   // An empty list is refused here, never sent to the City (the API answers it with a raw 400).
+  // The cap counts different numbers, so getServiceRequestBatches applies it after dropping duplicates.
   get_service_request_list: {
     sr_numbers: z.array(z.string()).min(1, "Give at least one 311 number in sr_numbers, for example ['311-17323508']."),
   },
@@ -264,6 +313,16 @@ export async function callTool(name: string, args: unknown) {
   return { content: [{ type: "text", text: `${text}\n\n${SAFETY_LINE}` }] };
 }
 
+/**
+ * Why a long list stopped early, for a successful (partial) answer, which does not pass through
+ * toolError: one line (the City's body is never in the message), keys redacted, ZIP codes removed,
+ * ending with a full stop so it does not run into the next sentence.
+ */
+function plainReason(message: string): string {
+  const line = redactZip(cleanWarning(message));
+  return /[.!?…]$/.test(line) ? line : `${line}.`;
+}
+
 /** An error message without the sentence, which the response adds once at the end. */
 function withoutSafetyLine(message: string): string {
   return message.split(`${SAFETY_LINE} `).join("").split(SAFETY_LINE).join("").trim();
@@ -276,6 +335,11 @@ function withSafety(result: unknown): unknown {
     return { safety_line: SAFETY_LINE, ...rest };
   }
   return { safety_line: SAFETY_LINE, results: result };
+}
+/** The answer with a `provenance` block (source, publisher, link, as of) added at the end. */
+function withSource(result: unknown, id: Parameters<typeof liveSource>[0]): unknown {
+  const body = result && typeof result === "object" && !Array.isArray(result) ? result : { results: result };
+  return { ...body, provenance: liveSource(id) };
 }
 const json = (result: unknown) => JSON.stringify(withSafety(result), null, 2);
 
@@ -290,13 +354,13 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
       case "get_calendar": {
         const { date, from_date, to_date } = parseToolArgs("get_calendar", args);
         const results = await getCalendar({ date, fromDate: from_date, toDate: to_date });
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "calendar-and-status")) }] };
       }
 
       case "get_status": {
         const { type } = parseToolArgs("get_status", args);
         const results = describeStatus(type, await getStatus(type));
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "calendar-and-status")) }] };
       }
 
       case "get_service_request": {
@@ -306,23 +370,45 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
           results = await getServiceRequest(sr_number);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          throw new Error(/ error 404/.test(message) ? notFoundMessage(sr_number, message) : message);
+          if (!/ error 404/.test(message)) throw err;
+          throw new Error(notFoundMessage(sr_number, `${message} ${upstreamBodyOf(err) ?? ""}`));
         }
         results = describeServiceRequest(results);
-        return { content: [{ type: "text", text: json(results) }] };
+        return { content: [{ type: "text", text: json(withSource(results, "service-request-lookup")) }] };
       }
 
       case "get_service_request_list": {
         const { sr_numbers } = parseToolArgs("get_service_request_list", args);
-        let raw: unknown;
+        let got: Awaited<ReturnType<typeof getServiceRequestBatches>>;
         try {
-          raw = await getServiceRequestList(sr_numbers);
+          got = await getServiceRequestBatches(sr_numbers);
         } catch (err) {
           const message = err instanceof Error ? err.message : String(err);
-          throw new Error(/ error 404/.test(message) ? listNotFoundMessage(sr_numbers, message) : message);
+          if (!/ error 404/.test(message)) throw err;
+          throw new Error(listNotFoundMessage(uniqueSrNumbers(sr_numbers), `${message} ${upstreamBodyOf(err) ?? ""}`));
         }
-        const results = describeServiceRequestList(raw, sr_numbers);
-        return { content: [{ type: "text", text: json(results) }] };
+        const described = describeServiceRequestList({ SRResponses: got.SRResponses }, got.looked_up) as Record<string, unknown>;
+        const found = Array.isArray(described.SRResponses) ? described.SRResponses.length : 0;
+        const results = {
+          ...described,
+          lookup: {
+            asked_for: got.asked_for,
+            different_numbers: got.unique.length,
+            found,
+            batches_sent: got.batches_sent,
+            batches_needed: got.batches_needed,
+            batch_size: SR_BATCH_SIZE,
+          },
+          ...(got.stopped_because
+            ? {
+                not_looked_up: got.not_looked_up,
+                not_looked_up_note:
+                  `Stopped after ${got.batches_sent} of ${got.batches_needed} batches, so ${got.not_looked_up.length} numbers were not looked up: ` +
+                  `${got.not_looked_up.join(", ")}. Why: ${plainReason(got.stopped_because)} No further batches were sent. Ask for these numbers again later.`,
+              }
+            : {}),
+        };
+        return { content: [{ type: "text", text: json(withSource(results, "service-request-lookup")) }] };
       }
 
       default:
@@ -352,6 +438,12 @@ async function runToolRaw(name: string, args: unknown): Promise<{ content: { typ
     const message = err instanceof Error ? err.message : String(err);
     // The reporting-help tools put the safety line first on every error too, argument
     // errors included: a person describing a problem may be in danger (QA on #23, #24).
-    return { content: [{ type: "text", text: `Error: ${withoutSafetyLine(message)}` }], isError: true };
+    // toolError ("Error: …") replaces either key with "[redacted]" (also percent-, form-,
+    // JSON- and base64-encoded), in case an upstream body or an exception ever echoes one (#44,
+    // #45). Shared module 1.5.2 drops stack-frame lines from the message and the body alike and
+    // caps the message at 1,000 characters. A City API's own body is never in the message: it
+    // comes as upstreamBody (nyc-311.ts UpstreamError), which toolError cuts at 500 characters.
+    const out = toolError(withoutSafetyLine(message), { secrets: secretValues(), upstreamBody: upstreamBodyOf(err) });
+    return { content: [{ type: "text", text: out.content[0].text }], isError: true };
   }
 }

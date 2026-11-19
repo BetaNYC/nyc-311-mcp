@@ -24,6 +24,7 @@
 // ZIP codes never leave this module: every Parquet read drops any column whose
 // name contains "zip" (Noel's decision, 2026-11-07, epic #12).
 
+import { cleanWarning } from "./warning-text.js";
 import { createWriteStream, readFileSync } from "node:fs";
 import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { randomBytes } from "node:crypto";
@@ -317,7 +318,7 @@ export class BoardStatData {
         }
       });
     } catch (err) {
-      const reason = err instanceof Error ? err.message : String(err);
+      const reason = cleanWarning(err);
       this.lastFailure = { at: this.now(), reason };
       if (cached) {
         this.log("manifest_stale", { reason, generated_at: cached.manifest.generated_at });

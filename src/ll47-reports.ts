@@ -21,6 +21,7 @@
 // through soda.ts: one $group query per month, cached until the dataset changes (the month in
 // progress, and the one before it for 7 days, also after an hour: OPEN_MONTH_TTL_MS).
 
+import { cleanWarning } from "./warning-text.js";
 import { z } from "zod";
 import type { BoardStatManifest } from "./boardstat-data.js";
 import {
@@ -59,8 +60,9 @@ import { CALL_CENTER_DATASET, DeadlineError, sodaClient, sodaTrouble, timedOutAf
 
 // ─── The mandate block every report carries ───────────────────────────────────
 
-const NOT_OFFICIAL =
-  "This is a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.";
+// Opens with about_data's own words for these sources (produced-by-betanyc), so the two agree.
+export const NOT_OFFICIAL =
+  "BetaNYC produced this. It is not an official record: a BetaNYC rebuild from NYC Open Data, not the City's official report. Only the City can meet § 1075.";
 
 const OMISSIONS = [
   "ZIP code breakdown: omitted by BetaNYC's decision. ZIP codes are postal delivery areas, not City districts, so this server does not use them.",
@@ -733,7 +735,7 @@ async function monthCalls(
             ? `NYC Open Data was too slow: it sent no answer within ${waitInWords(allowed)}`
           : trouble === "down"
             ? "NYC Open Data was not responding (it returned an error or could not be reached)"
-            : `NYC Open Data failed: ${err instanceof Error ? err.message : String(err)}`;
+            : `NYC Open Data failed: ${cleanWarning(err)}`;
     return { ym, missing, trouble };
   }
 }
@@ -839,7 +841,7 @@ function loadMonths(
             ? `NYC Open Data was too slow: it sent no answer within ${waitInWords(allowed)}; ask again later`
             : t === "down"
               ? "NYC Open Data was not responding (it returned an error or could not be reached)"
-              : `NYC Open Data failed: ${err instanceof Error ? err.message : String(err)}`;
+              : `NYC Open Data failed: ${cleanWarning(err)}`;
       return { ym, missing, trouble: t, ...(err instanceof DeadlineError ? { late: true } : {}) };
     }
   };
@@ -894,7 +896,7 @@ function loadMonths(
           }
         }
       } catch (err) {
-        j.done({ ym: j.ym, missing: `failed: ${err instanceof Error ? err.message : String(err)}`, trouble: null });
+        j.done({ ym: j.ym, missing: `failed: ${cleanWarning(err)}`, trouble: null });
       }
     }
   };

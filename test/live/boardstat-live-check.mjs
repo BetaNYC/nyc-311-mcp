@@ -3,7 +3,7 @@
 // reads BoardStat's live published files through the same data layer the
 // district tools will use, and prints what it found.
 //
-//   npm run build && node scripts/boardstat-live-check.mjs [cache-dir]
+//   npm run build && node test/live/boardstat-live-check.mjs [cache-dir]
 //
 // Downloads about 17 MB from www.beta.nyc once (manifest, month aggregate,
 // Manhattan CD 1 detail, the address list, both boundary files), one request at
@@ -11,8 +11,8 @@
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { BoardStatData, lookupAddress } from "../dist/boardstat-data.js";
-import { districtEnvelope } from "../dist/envelope.js";
+import { BoardStatData, lookupAddress } from "../../dist/boardstat-data.js";
+import { districtEnvelope } from "../../dist/envelope.js";
 
 const cacheDir = process.argv[2] ?? (await mkdtemp(path.join(tmpdir(), "nyc-311-mcp-live-")));
 const data = new BoardStatData({ cacheDir });

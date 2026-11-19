@@ -17,6 +17,7 @@
 //
 // ZIP codes: none in any answer. A ZIP the person typed is left out of the draft.
 
+import { cleanWarning } from "./warning-text.js";
 import { z } from "zod";
 import { assertNoZip, redactZip, scrubZipValues } from "./envelope.js";
 import { contentClient, PORTAL, type Article, type ContentClient } from "./content-311.js";
@@ -72,7 +73,7 @@ export async function slaTable(soda: SodaClient): Promise<SlaTable | null> {
       ...saved.value,
       fetched_at: new Date(saved.fetched_at_ms).toISOString(),
       stale: true,
-      warning: `NYC Open Data could not be reached (${err instanceof Error ? err.message : String(err)}). The Problem Detail options come from the copy saved ${new Date(saved.fetched_at_ms).toISOString()}.`,
+      warning: `NYC Open Data could not be reached (${cleanWarning(err)}). The Problem Detail options come from the copy saved ${new Date(saved.fetched_at_ms).toISOString()}.`,
     };
   }
 }
@@ -303,7 +304,7 @@ async function draftReportInner(args: DraftArgs, client: ContentClient, soda: So
     if (!dangerOther) throw err;
     const emergency = emergencyLead(dangerOther, BUILT_IN_911)!;
     if (emergency.ka_number) emergency.source += ` (the City's words, built into this server as read ${BUILT_IN_911_READ}, because 311's content could not be reached just now)`;
-    return notDrafted(emergency.call_911, emergency, { content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${err instanceof Error ? err.message : String(err)}` });
+    return notDrafted(emergency.call_911, emergency, { content_unavailable: `311's articles could not be reached, so only the safety answer is given. ${cleanWarning(err)}` });
   }
 
   // Danger: no draft whenever assessDanger flags it, in the whole description or in any

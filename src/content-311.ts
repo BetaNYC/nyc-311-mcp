@@ -38,6 +38,7 @@
 // addresses. The text is reduced to plain text here; how-to-report.ts redacts ZIP
 // codes from everything it returns.
 
+import { cleanWarning } from "./warning-text.js";
 import { readFileSync } from "node:fs";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -211,7 +212,7 @@ export class ContentClient {
         return { value, fetched_at, stale: false };
       } catch (err) {
         if (!saved || err instanceof NotFoundError) throw err;
-        const reason = err instanceof Error ? err.message : String(err);
+        const reason = cleanWarning(err);
         this.log("content_311_stale", { key, reason: err instanceof MissingKeyError ? "NYC_311_API_KEY not set" : reason });
         return {
           value: saved.value,
@@ -261,15 +262,25 @@ export class ContentClient {
         const ac = new AbortController();
         const timer = setTimeout(() => ac.abort(new Error(`the 311 API sent no answer within ${this.timeout} ms (${pathname})`)), this.timeout);
         let res: Response;
+        let text = "";
         try {
           this.requests++;
           res = await this.fetchImpl(url.toString(), { headers, signal: ac.signal });
+          // The body is read under the same timer as the request.
+          if (res.ok) text = await res.text();
         } catch (err) {
           throw ac.signal.aborted && ac.signal.reason instanceof Error ? ac.signal.reason : err;
         } finally {
           clearTimeout(timer);
         }
-        if (res.ok) return res.json();
+        if (res.ok) {
+          // A 200 that is not JSON (an HTML error page) ends in a plain sentence (#49 review, round 2).
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new Error("The City's 311 API sent an answer that could not be read (it was not JSON). Try again in a minute.");
+          }
+        }
         if ((res.status === 429 || res.status === 503) && attempt === 1) {
           const wait = retryAfterMs(res.headers.get("retry-after"));
           this.log("content_311_retry", { path: pathname, status: res.status, wait_ms: wait });

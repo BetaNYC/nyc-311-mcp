@@ -66,7 +66,7 @@ export function plainArgsError(tool: string, error: z.ZodError, shape: Shape, ar
   const a = (args && typeof args === "object" ? args : {}) as Record<string, unknown>;
   const lines = [...new Set(error.issues.map((i) => {
     // A custom message (written in the schema) stands on its own.
-    if (i.code === "custom" || (i.code === "too_small" && i.message && !/^(String|Array|Number) must/.test(i.message))) return i.message;
+    if (i.code === "custom" || ((i.code === "too_small" || i.code === "too_big") && i.message && !/^(String|Array|Number) must/.test(i.message))) return i.message;
     return sentence(i, shape, a);
   }))];
   return new Error(`${tool}: ${lines.slice(0, 3).join(" ")} Check the argument and try again; the tool's description lists what each one takes.`);

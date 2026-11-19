@@ -748,7 +748,7 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out, cleaned it, left some fields out, matched addresses to places, joined it with other data, and counted or added up records. This copy should not be considered the official record. Official record: 311 Service Requests from 2020 to Present, https://data.cityofnewyork.us/d/erm2-nwe9",
+        "BetaNYC produced this. It is not an official record. Built from: 311 Service Requests from 2020 to Present, https://data.cityofnewyork.us/d/erm2-nwe9",
         "BoardStat (BetaNYC) pulls the 311 dataset from NYC Open Data, the City's open data portal, every night and publishes files at https://www.beta.nyc/boardstat/data/. This server downloads those files once per BoardStat build and reads them on this machine.",
         "Modified by BetaNYC: Requests created before 2020-01-01 are left out. Each request with usable coordinates is placed in a community district and a Council district by BetaNYC's own point-in-polygon join against the City's current district boundaries, not the City's own district fields. Problem names are grouped where the City spells one two ways. Requests are counted by district, month, problem type, agency and address. ZIP codes are dropped."
       ],
@@ -861,8 +861,8 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out, left some fields out, matched addresses to places, counted or added up records, and reshaped it. This copy should not be considered the official record. Official record: 311 Service Requests from 2020 to Present, https://data.cityofnewyork.us/d/erm2-nwe9",
-        "Built from BoardStat's nightly files (see service-requests-by-district), downloaded once per BoardStat build.",
+        "BetaNYC produced this. It is not an official record. Built from: 311 Service Requests from 2020 to Present, https://data.cityofnewyork.us/d/erm2-nwe9",
+        "Built from BoardStat's nightly files (https://www.beta.nyc/boardstat/data/), which BetaNYC builds every night from NYC Open Data (see service-requests-by-district), downloaded once per BoardStat build.",
         "Modified by BetaNYC: Uses BoardStat's district placement, then counts one community district's requests for a month and its fiscal year to date, by agency and problem type, in the shape of the former Charter § 1075 reports. Nothing before 2020-01-01; no ZIP codes."
       ],
       "page": [
@@ -1132,7 +1132,7 @@
         }
       ],
       "provenance": [
-        "BetaNYC modified this data: left some records out and counted or added up records. This copy should not be considered the official record. Official record: 311 Call Center Inquiry, https://data.cityofnewyork.us/d/wewp-mm3p",
+        "BetaNYC produced this. It is not an official record. Built from: 311 Call Center Inquiry, https://data.cityofnewyork.us/d/wewp-mm3p",
         "Read-only queries to NYC Open Data, the City's open data portal, where 311 publishes the dataset: one query per month, saved on this machine; the month in progress is asked again after an hour.",
         "Modified by BetaNYC: Calls are counted by topic (inquiry_name) for one month and the fiscal year to date, with the topic named Directory Assistance shown separately. Nothing before 2020-01-01."
       ],
