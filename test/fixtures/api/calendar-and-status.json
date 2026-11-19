@@ -1,0 +1,31 @@
+{
+ "_about": "Offline answers for the eval's get_calendar and get_status questions (#49 review). Not a new call to the City: no request was made to write this file. The GetCalendar body is the one README.md shows for get_calendar ('A normal weekday', 2026-11-09), added with the site's real demos in #29. The Status bodies are the shapes the live API returned on 2026-11-08, as src/status.ts and test/status.test.mjs record them: every status returns inEffect true or false; OEM also returns eventName, empty when nothing is in effect. If the City changes these answers, this file does not change with them.",
+ "responses": {
+  "calendar_2026_11_09": {
+   "request": { "operation": "GetCalendar", "params": { "fromdate": "2026-11-09", "todate": "2026-11-09" } },
+   "http_status": 200,
+   "body": {
+    "days": [
+     {
+      "today_id": "20261109",
+      "items": [
+       { "type": "Alternate Side Parking", "status": "IN EFFECT", "details": "Alternate side parking and meters are in effect." },
+       { "type": "Collections", "status": "ON SCHEDULE", "details": "Trash, recycling, and compost collections are on schedule." },
+       { "type": "Schools", "status": "OPEN", "details": "Public schools are open." }
+      ]
+     }
+    ]
+   }
+  },
+  "status_codeblue": {
+   "request": { "operation": "Status/CodeBlue" },
+   "http_status": 200,
+   "body": { "inEffect": false }
+  },
+  "status_oem": {
+   "request": { "operation": "Status/OEM" },
+   "http_status": 200,
+   "body": { "eventName": "", "inEffect": false }
+  }
+ }
+}

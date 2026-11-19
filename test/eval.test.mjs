@@ -15,10 +15,32 @@ test("the eval set has at least 10 questions, each with checks and a known answe
   }
 });
 
-test("the source-and-as-of invariant fails an answer with no link or no as-of", () => {
-  assert.equal(sourceAndAsOf({ data_as_of: "2026-11-07T00:00:00Z" }).ok, false);
-  assert.equal(sourceAndAsOf({ url: "https://x.example/" }).ok, false);
-  assert.equal(sourceAndAsOf({ url: "https://x.example/", as_of: "2026-11-07" }).ok, true);
+test("the source-and-as-of invariant reads only the answer's own provenance block", () => {
+  const now = new Date().toISOString();
+  const prov = { source: "NYC 311 Public API: GetCalendar and Status", publisher: "City of New York", source_url: "https://api-portal.nyc.gov/x", as_of: now, as_of_kind: "retrieved" };
+  assert.equal(sourceAndAsOf({ days: [], provenance: prov }).ok, true);
+  assert.equal(sourceAndAsOf({ data_as_of: "2026-11-07T10:36:39Z", source: { url: "https://www.beta.nyc/boardstat/" }, data: {} }).ok, true);
+  assert.equal(sourceAndAsOf({ source: { url: "https://api-portal.nyc.gov/x", fetched_at: now } }).ok, true);
+  // #49 review: a link and an as-of anywhere in the answer used to be enough. Not any more.
+  assert.equal(sourceAndAsOf({ SRResponses: [{ portal_url: "https://portal.311.nyc.gov/a", as_of: "2026-11-07" }] }).ok, false, "nested link and date");
+  assert.equal(sourceAndAsOf({ url: "https://x.example/", as_of: "2026-11-07" }).ok, false, "top-level loose keys are no provenance block");
+  assert.equal(sourceAndAsOf({ data_as_of: "2026-11-07T00:00:00Z" }).ok, false, "no source");
+  assert.equal(sourceAndAsOf({ source: { url: "https://x.example/" }, rows: [{ data_as_of: "2026-11-07" }] }).ok, false, "as-of only in a row");
+  assert.equal(sourceAndAsOf({ provenance: { ...prov, source_url: "http://api-portal.nyc.gov/x" } }).ok, false, "http, not https");
+  assert.equal(sourceAndAsOf({ provenance: { ...prov, as_of: "not a date" } }).ok, false, "garbled date");
+  assert.equal(sourceAndAsOf({ provenance: { ...prov, as_of: "2999-01-01" } }).ok, false, "future date");
+  assert.equal(sourceAndAsOf({ provenance: { ...prov, as_of: null, as_of_kind: "unknown" } }).ok, false, "unknown as-of");
+  assert.equal(sourceAndAsOf({ provenance: { ...prov, publisher: "" } }).ok, false, "no publisher");
+  assert.equal(sourceAndAsOf({ provenance: prov, data_as_of: "x", source: { url: "https://x.example/" } }).ok, true, "a provenance block wins over other keys");
+});
+
+test("every tool family is in the eval, and district 484 is not most of it", () => {
+  const tools = new Set(QUESTIONS.map((q) => q.tool));
+  for (const t of ["get_calendar", "get_status", "get_service_request", "get_service_request_list", "how_to_report", "ll47_service_request_report", "cb_monthly_list", "find_requests"]) {
+    assert.ok(tools.has(t), `no question for ${t}`);
+  }
+  const about484 = QUESTIONS.filter((q) => q.args.community_district === 484 || /\b484\b|Jacob Riis/.test(q.q)).length;
+  assert.ok(about484 * 2 < QUESTIONS.length, `${about484} of ${QUESTIONS.length} questions are about district 484`);
 });
 
 test("every eval question passes offline", async () => {

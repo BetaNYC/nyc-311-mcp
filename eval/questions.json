@@ -1,9 +1,9 @@
 {
   "_readme": [
-    "Fixed question set for nyc-311-mcp, written 2026-11-18 before scoring (#46). Each question is one a resident, a community board or a Council office might ask, with the tool and arguments that answer it and a known right answer.",
-    "Known answers come from outside this package's code: the district and Local Law 47 numbers from DuckDB over the fixture files (scripts/boardstat_oracle.py, test/fixtures/boardstat/expected*.json); the 311 articles from the City's own article titles in the recorded 311 Public API answers (test/fixtures/content/); the request lookup from the recorded GetServiceRequest answer (test/fixtures/api/) and the 311 API's documented status code 614110003 = Closed.",
+    "Fixed question set for nyc-311-mcp, written 2026-11-18 before scoring (#46). Each question is one a resident, a community board or a Council office might ask, with the tool and arguments that answer it and a known right answer. Revised 2026-11-18 (#49 review): Q04, Q07 and Q08 moved off district 484 (to community district 101 and Council District 1), and Q14 (get_calendar) and Q15 (get_status) were added.",
+    "Known answers come from outside this package's code: the district and Local Law 47 numbers from DuckDB over the fixture files (scripts/boardstat_oracle.py, test/fixtures/boardstat/expected*.json); the 311 articles from the City's own article titles in the recorded 311 Public API answers (test/fixtures/content/); the request lookup from the recorded GetServiceRequest answer (test/fixtures/api/) and the 311 API's documented status code 614110003 = Closed. The calendar and status answers come from test/fixtures/api/calendar-and-status.json (see its _about: README.md's get_calendar example and the status shapes seen live on 2026-11-08, not a new call).",
     "Checks: `equals` (the value at `path` equals this), `includes` (the value at `path`, as text, contains this, ignoring case), `min` (a number at least this). Paths are dotted; numbers index lists.",
-    "Invariant checked on every answer: it names a source with an https link and says how current it is (data_as_of, fetched_at or as_of).",
+    "Invariant checked on every answer, in the answer's own provenance block only (never a link or date found elsewhere in it): the 311 Public API tools' `provenance` (source, publisher, an https source_url, as_of a real date and as_of_kind); the district and Local Law 47 tools' top-level `source.url` (https) and `data_as_of`; how_to_report's top-level `source.url` (https) and `source.fetched_at`. A date must parse and not be in the future.",
     "Run offline: npm run build && node eval/run.mjs [--record]. Results: eval/runs/."
   ],
   "questions": [
@@ -79,24 +79,28 @@
     },
     {
       "id": "Q04",
-      "q": "Which address in district 484 gets the most 311 requests?",
-      "tool": "top_addresses",
+      "q": "Give me community board 1 in Manhattan's monthly list of 311 requests for November 2026.",
+      "tool": "cb_monthly_list",
       "args": {
-        "community_district": 484,
-        "from_date": "2020-01-01",
-        "limit": 5
+        "community_district": 101,
+        "month": "2026-11",
+        "limit": 1000
       },
       "checks": [
         {
-          "path": "data.addresses.0.address",
-          "equals": "JACOB RIIS PARK"
+          "path": "data.counts.new_this_month",
+          "equals": 50
         },
         {
-          "path": "data.addresses.0.requests",
-          "equals": 67
+          "path": "data.counts.unresolved_from_prior_months",
+          "equals": 0
+        },
+        {
+          "path": "data.rows.0.unique_key",
+          "equals": "70988342"
         }
       ],
-      "known_from": "expected.json top_addresses_all"
+      "known_from": "expected-ll47.json cb_101_2026_11"
     },
     {
       "id": "Q05",
@@ -145,48 +149,58 @@
     },
     {
       "id": "Q07",
-      "q": "Give me the Local Law 47 service request report for community district 484 for October 2025.",
+      "q": "Give me the Local Law 47 service request report for Council District 1 for January 2020.",
       "tool": "ll47_service_request_report",
       "args": {
-        "community_district": 484,
-        "month": "2025-10"
+        "council_district": 1,
+        "month": "2020-01"
       },
       "checks": [
         {
           "path": "data.month.requests",
-          "equals": 11
+          "equals": 150
         },
         {
           "path": "data.month.closed",
-          "equals": 9
+          "equals": 150
         },
         {
           "path": "data.month.by_category.0.category",
-          "equals": "Illegal Parking"
+          "equals": "Panhandling"
+        },
+        {
+          "path": "data.month.by_category.0.requests",
+          "equals": 35
         }
       ],
-      "known_from": "expected-ll47.json sr_484_2025_10"
+      "known_from": "expected-ll47.json sr_cc1_2020_01"
     },
     {
       "id": "Q08",
-      "q": "How many 311 requests in district 484 are marked Pending?",
+      "q": "How many 311 requests in Council District 1 are not closed yet, and what status are they in?",
       "tool": "find_requests",
       "args": {
-        "community_district": 484,
+        "council_district": 1,
         "from_date": "2020-01-01",
         "to_date": "2026-11-04",
-        "limit": 200,
-        "statuses": [
-          "pending"
-        ]
+        "limit": 50,
+        "status": "not_closed"
       },
       "checks": [
         {
           "path": "data.requests",
-          "equals": 95
+          "equals": 50
+        },
+        {
+          "path": "data.by_status.0.status",
+          "equals": "In Progress"
+        },
+        {
+          "path": "data.by_status.0.requests",
+          "equals": 38
         }
       ],
-      "known_from": "expected-lookup.json pending_484"
+      "known_from": "expected-lookup.json not_closed_cc1"
     },
     {
       "id": "Q09",
@@ -290,6 +304,56 @@
         }
       ],
       "known_from": "the recorded GetServiceRequestList answer of 2026-11-07 (test/fixtures/api/): two requests came back, and 311-70999528 was left out"
+    },
+    {
+      "id": "Q14",
+      "q": "Is alternate side parking in effect on Monday, November 9, 2026? Is trash pickup on schedule?",
+      "tool": "get_calendar",
+      "args": {
+        "date": "2026-11-09"
+      },
+      "checks": [
+        {
+          "path": "days.0.today_id",
+          "equals": "20261109"
+        },
+        {
+          "path": "days.0.items.0.type",
+          "equals": "Alternate Side Parking"
+        },
+        {
+          "path": "days.0.items.0.status",
+          "equals": "IN EFFECT"
+        },
+        {
+          "path": "days.0.items.1.status",
+          "equals": "ON SCHEDULE"
+        }
+      ],
+      "known_from": "test/fixtures/api/calendar-and-status.json calendar_2026_11_09 (README.md's get_calendar example, #29)"
+    },
+    {
+      "id": "Q15",
+      "q": "Is Code Blue in effect right now?",
+      "tool": "get_status",
+      "args": {
+        "type": "CodeBlue"
+      },
+      "checks": [
+        {
+          "path": "inEffect",
+          "equals": false
+        },
+        {
+          "path": "plain_language.in_effect",
+          "equals": false
+        },
+        {
+          "path": "plain_language.answer",
+          "includes": "Code Blue is not in effect"
+        }
+      ],
+      "known_from": "test/fixtures/api/calendar-and-status.json status_codeblue (the shape the live API returned on 2026-11-08)"
     }
   ]
 }
