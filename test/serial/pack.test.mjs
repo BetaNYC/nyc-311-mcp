@@ -27,3 +27,33 @@ test("the website copy of data.json matches, and only with a real contact", () =
     assert.equal(readFileSync(site, "utf8"), readFileSync(new URL("../../data.json", import.meta.url), "utf8"), "docs/data.json must match data.json");
   }
 });
+
+// Nothing that is only for development ships (#49, post-merge check): no compiled test files
+// (src/nyc-311.test.ts builds to dist/ because npm test runs it from there), no tests, no
+// eval, no env files, no Python caches, no Finder files. And everything `files` promises does.
+const FORBIDDEN = [
+  [/\.test\./, "a test file"],
+  [/(^|\/)test\//, "the test folder"],
+  [/(^|\/)eval\//, "the eval folder"],
+  [/(^|\/)\.env/, "an env file"],
+  [/(^|\/)__pycache__(\/|$)/, "a Python cache"],
+  [/\.pyc$/, "a Python cache file"],
+  [/(^|\/)\.DS_Store$/, "a Finder file"],
+];
+
+test("the package ships no test, eval, env, cache or Finder files", () => {
+  const files = packed();
+  const bad = files.flatMap((f) => FORBIDDEN.filter(([re]) => re.test(f)).map(([, why]) => `${f} (${why})`));
+  assert.deepEqual(bad, [], `should not ship: ${bad.join(", ")}`);
+});
+
+test("the package ships dist/, WHATS-CHANGED.md and everything package.json `files` promises", () => {
+  const files = packed();
+  const pkg = JSON.parse(readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
+  assert.ok(files.includes("dist/index.js"), "dist/index.js (the server) is missing");
+  assert.ok(files.includes("WHATS-CHANGED.md"));
+  for (const entry of pkg.files.filter((e) => !e.startsWith("!"))) {
+    const found = files.some((f) => f === entry || f.startsWith(`${entry.replace(/\/$/, "")}/`));
+    assert.ok(found, `package.json files promises ${entry}, but the package has nothing for it`);
+  }
+});

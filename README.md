@@ -458,7 +458,10 @@ file's first lines say how to run it.
 - The eleven district tools, `ll47_service_request_report`, and `cb_monthly_list` read the
   files [BoardStat](https://www.beta.nyc/boardstat/) publishes every night from NYC Open
   Data's [311 Service Requests](https://data.cityofnewyork.us/d/erm2-nwe9) dataset. Only
-  `www.beta.nyc` is contacted.
+  `www.beta.nyc` is contacted. Set `BOARDSTAT_DATA_URL` to read another copy of those files
+  instead, such as a mirror, or a local copy while testing. The default is
+  `https://www.beta.nyc/boardstat/data/`. It must be an `https://` link (`http://` only for
+  `localhost` or `127.0.0.1`), or the server stops at startup with an error that names it.
 - `ll47_directory_assistance_report` reads NYC Open Data's 311 Call Center Inquiry dataset
   (`wewp-mm3p`), one month at a time, and saves what it reads. Set `SOCRATA_APP_TOKEN` if you
   have one. It works without one.

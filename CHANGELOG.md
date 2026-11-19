@@ -102,6 +102,10 @@ BetaNYC/betanyc-ai-workspace#1655 and #1672 (epic #1652); this repo's epic #49.
 - 311 Public API answers are read and parsed inside the same try/catch as the request: a
   timeout or a dropped connection while the body arrives, or a body that is not JSON, ends in
   a plain sentence instead of a raw `SyntaxError`. `test/upstream-311.test.mjs`. (#49)
+- The npm package no longer ships the compiled test file (`dist/nyc-311.test.*`, also in
+  1.3.0): `package.json` `files` leaves it out, and `test/serial/pack.test.mjs` fails on any
+  test, eval, env, Python-cache or `.DS_Store` file, or a missing `files` entry. README names
+  `BOARDSTAT_DATA_URL`; `test/env-documented.test.mjs` checks every variable read in `src/`. (#49)
 - `npm pack` checks moved to `test/serial/pack.test.mjs`, which `npm test` runs alone after
   the main suite: on CI's npm, `prepare` ran `tsc` despite `--ignore-scripts` and rewrote
   `dist/` while other test files imported it. `test/live-split.test.mjs` keeps the split. (#49)

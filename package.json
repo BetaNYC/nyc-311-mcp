@@ -36,6 +36,7 @@
   },
   "files": [
     "dist",
+    "!dist/**/*.test.*",
     "WHATS-CHANGED.md",
     "DATA-SOURCES.json",
     "data.json"
